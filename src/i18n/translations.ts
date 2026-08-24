@@ -39,6 +39,15 @@ const translations = {
     hero_trust_2: "Vaste prijsafspraak vooraf",
     hero_trust_3: "Vakkundige garantie",
 
+    // Nudges & Conversion triggers
+    nudge_wa_online: "Nu online · reactie < 15 min",
+    nudge_wa_bubble: "Vragen over uw verbouwing of richtprijs? App ons gerust met foto's voor direct advies 💬",
+    nudge_wa_btn: "Start WhatsApp chat",
+    nudge_bar_text: "Plannen voor een verbouwing? Ontvang binnen 24u een gratis richtprijs.",
+    nudge_bar_wa: "App uw foto's 💬",
+    nudge_bar_quote: "Offerte aanvragen ⚡",
+    nudge_estimator_tip: "Tip: Stuur een foto van uw ruimte via WhatsApp voor een exacte prijsindicatie binnen 2 uur!",
+
     // Stats
     stat_1_val: "25+", stat_1_lbl: "jaar ervaring",
     stat_2_val: "1.500+", stat_2_lbl: "projecten afgerond",
@@ -192,6 +201,15 @@ const translations = {
     hero_trust_1: "Quick response within 24h",
     hero_trust_2: "Fixed price agreement upfront",
     hero_trust_3: "Workmanship warranty",
+
+    // Nudges & Conversion triggers
+    nudge_wa_online: "Now online · reply < 15 min",
+    nudge_wa_bubble: "Questions about your renovation or estimate? Chat with us on WhatsApp for fast advice 💬",
+    nudge_wa_btn: "Start WhatsApp chat",
+    nudge_bar_text: "Planning a renovation? Get a free estimate within 24 hours.",
+    nudge_bar_wa: "Chat on WhatsApp 💬",
+    nudge_bar_quote: "Request Quote ⚡",
+    nudge_estimator_tip: "Tip: Send a photo of your space via WhatsApp for an exact price estimate within 2 hours!",
 
     // Stats
     stat_1_val: "25+", stat_1_lbl: "years experience",
@@ -347,6 +365,15 @@ const translations = {
     hero_trust_2: "Фіксована ціна заздалегідь",
     hero_trust_3: "Офіційна гарантія якості",
 
+    // Nudges & Conversion triggers
+    nudge_wa_online: "Зараз онлайн · відповідь < 15 хв",
+    nudge_wa_bubble: "Є питання щодо ремонту чи вартості? Напишіть нам у WhatsApp з фото для швидкої оцінки 💬",
+    nudge_wa_btn: "Написати у WhatsApp",
+    nudge_bar_text: "Плануєте ремонт? Отримайте безкоштовний кошторис за 24 години.",
+    nudge_bar_wa: "Фото у WhatsApp 💬",
+    nudge_bar_quote: "Замовити кошторис ⚡",
+    nudge_estimator_tip: "Порада: Надішліть фото вашого приміщення у WhatsApp для точної оцінки за 2 години!",
+
     // Stats
     stat_1_val: "25+", stat_1_lbl: "років досвіду",
     stat_2_val: "1.500+", stat_2_lbl: "завершених об'єктів",
@@ -500,6 +527,15 @@ const translations = {
     hero_trust_1: "Быстрый ответ в течение 24ч",
     hero_trust_2: "Фиксированная цена заранее",
     hero_trust_3: "Официальная гарантия",
+
+    // Nudges & Conversion triggers
+    nudge_wa_online: "Сейчас онлайн · ответ < 15 мин",
+    nudge_wa_bubble: "Есть вопросы по ремонту или смете? Напишите нам в WhatsApp с фото для быстрой оценки 💬",
+    nudge_wa_btn: "Написать в WhatsApp",
+    nudge_bar_text: "Планируете ремонт? Получите бесплатную смету за 24 часа.",
+    nudge_bar_wa: "Фото в WhatsApp 💬",
+    nudge_bar_quote: "Запросить смету ⚡",
+    nudge_estimator_tip: "Совет: Отправьте фото вашего помещения в WhatsApp для точной оценки за 2 часа!",
 
     // Stats
     stat_1_val: "25+", stat_1_lbl: "лет опыта",

@@ -254,6 +254,23 @@ export default function CostEstimator({
               {t("est_apply_btn")} &rarr;
             </button>
           </div>
+
+          {/* Quick WhatsApp Photo Nudge */}
+          <div className="mt-5 p-4 rounded-xl bg-emerald-50/90 border border-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-2.5 text-emerald-950 font-semibold text-center sm:text-left">
+              <span className="text-lg">💬</span>
+              <span>{t("nudge_estimator_tip")}</span>
+            </div>
+            <a
+              href="https://wa.me/31612345678?text=Hallo%20Bouwvast,%20ik%20heb%20de%20calculator%20gebruikt%20en%20stuur%20graag%20foto's%20voor%20een%20prijsindicatie"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs no-underline flex items-center gap-1.5 shadow-xs transition-colors shrink-0"
+            >
+              <Icon name="whatsapp" size={16} />
+              <span>WhatsApp Foto's &rarr;</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>

@@ -15,6 +15,7 @@ import ScrollProgress from "./components/ScrollProgress";
 import SocialProofToast from "./components/SocialProofToast";
 import CookieConsent from "./components/CookieConsent";
 import QuoteModal from "./components/QuoteModal";
+import NudgeWidgets from "./components/NudgeWidgets";
 import { SERVICE_BY_SLUG } from "./data/services";
 import { useLang } from "./i18n/LangContext";
 import Icon from "./components/Icon";
@@ -125,16 +126,8 @@ export default function App() {
 
       <Footer navigate={navigate} />
 
-      {/* Floating WhatsApp CTA */}
-      <a
-        href={CONTACT.whatsappTemplate ?? `tel:${CONTACT.phoneTel}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="wa-float"
-        aria-label="Direct contact via WhatsApp"
-      >
-        <Icon name="whatsapp" size={28} />
-      </a>
+      {/* Conversion Nudges (Floating WhatsApp Bubble & Sticky Quote Bar) */}
+      <NudgeWidgets onOpenQuoteModal={() => openQuoteModal()} />
 
       {/* Live Social Proof Toast */}
       <SocialProofToast />
