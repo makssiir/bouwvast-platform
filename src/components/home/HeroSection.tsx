@@ -15,14 +15,28 @@ export default function HeroSection({ navigate }: { navigate: (p: Page) => void 
     }
   };
 
+  const handleCalculatorClick = () => {
+    const calcEl = document.getElementById("calculator");
+    if (calcEl) {
+      calcEl.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section className="hero hero--home">
       <div className="container hero-grid">
         <div className="hero-copy">
-          <h1>Vakkundige bouw & renovatie — vakkundig en betrouwbaar geregeld</h1>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-950/70 border border-emerald-500/30 text-emerald-300 text-xs font-bold mb-4 backdrop-blur-xs w-fit">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>{t("hero_label")}</span>
+          </div>
+
+          <h1>
+            {t("hero_title")} <span className="text-[#4ade80] block">{t("hero_title_accent")}</span>
+          </h1>
+
           <p className="lead-xl">
-            Bouwvast verzorgt renovaties, afbouw, schilderwerk, badkamers, keukens en montagewerk.
-            Vanuit één vast aanspreekpunt regelen we de intake, heldere planning en vakkundige uitvoering.
+            {t("hero_sub")}
           </p>
 
           <div className="btn-row hero-actions">
@@ -31,30 +45,26 @@ export default function HeroSection({ navigate }: { navigate: (p: Page) => void 
               className="btn btn-primary btn-lg"
             >
               <Icon name="check" size={20} />
-              Vrijblijvende offerte aanvragen
+              {t("hero_cta_primary")}
             </button>
-            <a 
-              href={`tel:${CONTACT.phoneTel}`}
+            <button 
+              onClick={handleCalculatorClick}
               className="btn btn-outline-white btn-lg"
             >
-              <Icon name="phone" size={20} />
-              {CONTACT.phoneDisplay}
-            </a>
+              <Icon name="tools" size={20} />
+              {t("est_eyebrow")}
+            </button>
           </div>
-
-          <p className="hero-hint">
-            Binnen 24 uur een heldere reactie en richtprijs voor uw klus of verbouwing.
-          </p>
 
           <div className="hero-sub" aria-label="Certificeringen en garanties">
             <span>
-              <Icon name="check" size={16} /> 25+ jaar gecombineerde ervaring
+              <Icon name="check" size={16} color="#4ade80" /> {t("hero_trust_1")}
             </span>
             <span>
-              <Icon name="shield" size={16} /> VCA gecertificeerd & garantie
+              <Icon name="shield" size={16} color="#4ade80" /> {t("hero_trust_2")}
             </span>
             <span>
-              <Icon name="pin" size={16} /> Regio Amersfoort, Utrecht & Gooi
+              <Icon name="check" size={16} color="#4ade80" /> {t("hero_trust_3")}
             </span>
           </div>
         </div>
@@ -62,14 +72,14 @@ export default function HeroSection({ navigate }: { navigate: (p: Page) => void 
         <figure className="hero-photo">
           <img
             src="/images/renovation-ladder.webp"
-            alt="Vakman aan het werk bij een renovatieproject van Bouwvast"
+            alt="Bouwvast project"
             width={1100}
             height={730}
             fetchPriority="high"
           />
           <figcaption className="hero-person-badge">
-            <Icon name="check" size={18} />
-            <span>Bouwvast-project · Regio Amersfoort</span>
+            <Icon name="check" size={18} color="#4ade80" />
+            <span>Bouwvast · Kwaliteit & Garantie</span>
           </figcaption>
         </figure>
       </div>
