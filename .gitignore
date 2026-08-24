@@ -1,0 +1,22 @@
+node_modules/
+dist/
+build/
+.cache/
+.env*
+.vite/
+vite.config.*.timestamp-*
+*.tsbuildinfo
+*-debug.log*
+logs/
+*.log
+.claude-replay.*
+.tmp-*
+.DS_Store
+*.DS_Store
+
+# Reference source folder
+elektoria-improved/
+
+# Platform-managed agentplat state
+/.plugins/
+/.opencode-skills/
