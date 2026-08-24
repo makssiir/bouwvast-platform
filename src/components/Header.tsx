@@ -38,7 +38,7 @@ export default function Header({
     { label: t("nav_services"), page: "diensten" },
     { label: t("nav_projects"), page: "projecten" },
     { label: t("nav_area"), page: "werkgebied" },
-    { label: "Kennisbank", page: "kennisbank" },
+    { label: t("nav_kennisbank"), page: "kennisbank" },
     { label: t("nav_business"), page: "zakelijk" },
     { label: t("nav_about"), page: "over-ons" },
     { label: t("nav_contact"), page: "contact" },

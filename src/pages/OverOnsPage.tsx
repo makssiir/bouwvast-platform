@@ -35,11 +35,11 @@ export default function OverOnsPage({ navigate }: { navigate: (p: Page) => void 
           <div className="breadcrumb mb-4 text-[#86efac]">
             <button onClick={() => navigate("home")} className="bg-transparent border-0 p-0 text-[#86efac] hover:text-white cursor-pointer">Home</button>
             <span className="mx-2">›</span>
-            <span className="text-white font-semibold">Over Bouwvast</span>
+            <span className="text-white font-semibold">{t("nav_about")}</span>
           </div>
-          <h1>Over Bouwvast</h1>
+          <h1>{t("about_page_title")}</h1>
           <p className="lead-xl max-w-2xl">
-            Het platform voor betrouwbare vakmensen in Amersfoort en Midden-Nederland. Kwaliteit, rust en duidelijkheid bij elke verbouwing.
+            {t("about_page_sub")}
           </p>
         </div>
       </section>

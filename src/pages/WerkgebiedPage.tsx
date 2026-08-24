@@ -16,11 +16,11 @@ export default function WerkgebiedPage({ navigate }: { navigate: (p: Page) => vo
           <div className="breadcrumb mb-4 text-[#86efac]">
             <button onClick={() => navigate("home")} className="bg-transparent border-0 p-0 text-[#86efac] hover:text-white cursor-pointer">Home</button>
             <span className="mx-2">›</span>
-            <span className="text-white font-semibold">Werkgebied</span>
+            <span className="text-white font-semibold">{t("nav_area")}</span>
           </div>
           <h1>{t("area_page_title")}</h1>
           <p className="lead-xl max-w-2xl">
-            Bouwvast is actief in Midden-Nederland. Bekijk hieronder alle gemeenten en plaatsen binnen ons verzorgingsgebied.
+            {t("area_page_sub")}
           </p>
         </div>
       </section>

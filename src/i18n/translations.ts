@@ -70,7 +70,7 @@ const translations = {
     est_apply_btn: "Offerte aanvragen voor deze berekening",
     est_disclaimer: "* Indicatieve berekening incl. btw. Definitieve prijs volgt na vrijblijvende opname op locatie.",
 
-    // Services section
+    // Services section & pages
     services_label: "Onze Vakgebieden",
     services_title: "Waarmee kan Bouwvast u helpen?",
     services_sub: "Bekijk per discipline wat we voor u kunnen betekenen, wat erbij hoort en welke richtprijzen gelden.",
@@ -93,7 +93,7 @@ const translations = {
     svc_bathroom: "Badkamer & Keuken",
     svc_bathroom_desc: "Complete renovatie, leidingwerk, tegelwerk en luxe sanitairmontage.",
     svc_general: "Algemene Bouwwerkzaamheden",
-    svc_general_desc: "Multidisciplinaire verbouwingen en projecten van ontwerp tot oplevering.",
+    svc_general_desc: "Multidisciplinary verbouwingen en projecten van ontwerp tot oplevering.",
 
     // Before/After
     ba_label: "Het verschil",
@@ -136,6 +136,26 @@ const translations = {
     price_label: "Tarieven",
     price_title: "Duidelijke prijzen vooraf",
     price_sub: "Bij Bouwvast hanteren we transparante tarieven zonder verborgen kosten achteraf.",
+
+    // Area & City Page
+    area_page_title: "Werkgebied & Gemeenten",
+    area_page_sub: "Bouwvast is actief in heel Midden-Nederland en alle grote steden. Bekijk alle gemeenten en plaatsen binnen ons werkgebied.",
+    area_places: "plaatsen",
+    city_page_title: "Aannemer & Verbouwing in",
+    city_page_sub: "Vakkundige woningrenovatie, badkamers, stucwerk en schilderwerk in",
+
+    // Projects Page
+    projects_label: "Ons Portfolio",
+    projects_title: "Recent opgeleverde projecten",
+    projects_sub: "Een greep uit onze recente verbouwingen en renovaties in Nederland.",
+
+    // About Page
+    about_page_title: "Over Bouwvast Nederland",
+    about_page_sub: "Betrouwbaar vakmanschap, één vast aanspreekpunt en garantie op elke verbouwing.",
+
+    // Business Page
+    b2b_page_title: "Zakelijke Samenwerking & Partners",
+    b2b_page_sub: "Uw betrouwbare uitvoerende bouwpartner voor aannemers, keukenzaken, VvE's en vastgoedbeheerders.",
 
     // FAQ
     faq_label: "FAQ",
@@ -233,7 +253,7 @@ const translations = {
     est_apply_btn: "Request quote for this calculation",
     est_disclaimer: "* Indicative calculation incl. VAT. Final price confirmed after non-binding on-site inspection.",
 
-    // Services section
+    // Services section & pages
     services_label: "Our Disciplines",
     services_title: "How can Bouwvast assist your build?",
     services_sub: "Explore each discipline, what deliverables are included, and transparent pricing benchmarks.",
@@ -299,6 +319,26 @@ const translations = {
     price_label: "Pricing",
     price_title: "Transparent Rates Upfront",
     price_sub: "At Bouwvast, we practice transparent rates without unexpected surprise fees.",
+
+    // Area & City Page
+    area_page_title: "Service Areas & Municipalities",
+    area_page_sub: "Bouwvast is active throughout Central Netherlands and all major metropolitan cities.",
+    area_places: "locations",
+    city_page_title: "Contractor & Renovations in",
+    city_page_sub: "Professional home renovation, bathroom remodeling, plastering, and painting in",
+
+    // Projects Page
+    projects_label: "Our Portfolio",
+    projects_title: "Recently completed projects",
+    projects_sub: "A selection of our recent renovations and builds across the Netherlands.",
+
+    // About Page
+    about_page_title: "About Bouwvast Netherlands",
+    about_page_sub: "Reliable craftsmanship, dedicated contact person, and full warranty on every build.",
+
+    // Business Page
+    b2b_page_title: "Business Partnerships & B2B",
+    b2b_page_sub: "Your trusted executing construction partner for general contractors, showrooms, and HOAs.",
 
     // FAQ
     faq_label: "FAQ",
@@ -396,7 +436,7 @@ const translations = {
     est_apply_btn: "Замовити розрахунок за цією калькуляцією",
     est_disclaimer: "* Орієнтовний розрахунок з ПДВ. Точна ціна визначається після безкоштовного огляду на об'єкті.",
 
-    // Services section
+    // Services section & pages
     services_label: "Наші Напрямки",
     services_title: "Чим Bouwvast може вам допомогти?",
     services_sub: "Дізнайтеся більше про кожен напрямок, перелік робіт та прозорі цінові орієнтири.",
@@ -462,6 +502,26 @@ const translations = {
     price_label: "Тарифи",
     price_title: "Прозорі розцінки заздалегідь",
     price_sub: "У Bouwvast діють прозорі ціни без прихованих платежів чи непередбачених витрат.",
+
+    // Area & City Page
+    area_page_title: "Зона робіт та Муніципалітети",
+    area_page_sub: "Bouwvast працює по всьому центральному регіону та у великих містах Нідерландів.",
+    area_places: "локацій",
+    city_page_title: "Підрядник та Ремонт у м.",
+    city_page_sub: "Професійний ремонт житла, санвузли, штукатурка та малярні роботи у",
+
+    // Projects Page
+    projects_label: "Наше Портфоліо",
+    projects_title: "Нещодавно виконані об'єкти",
+    projects_sub: "Добірка реалізованих проєктів та ремонтів у Нідерландах.",
+
+    // About Page
+    about_page_title: "Про компанію Bouwvast Нідерланди",
+    about_page_sub: "Надійна майстерність, персональний контакт та офіційна гарантія на кожен проєкт.",
+
+    // Business Page
+    b2b_page_title: "Для Бізнесу та Партнерів",
+    b2b_page_sub: "Ваш надійний генеральний підрядник для будівельних компаній, ОСББ (VvE) та керуючих організацій.",
 
     // FAQ
     faq_label: "FAQ",
@@ -559,7 +619,7 @@ const translations = {
     est_apply_btn: "Запросить смету по этому расчету",
     est_disclaimer: "* Ориентировочный расчет с НДС. Точная стоимость определяется после бесплатного выезда на объект.",
 
-    // Services section
+    // Services section & pages
     services_label: "Наши Направления",
     services_title: "Чем Bouwvast может вам помочь?",
     services_sub: "Узнайте больше о каждом направлении, перечне работ и прозрачных ценах.",
@@ -625,6 +685,26 @@ const translations = {
     price_label: "Тарифы",
     price_title: "Прозрачные расценки заранее",
     price_sub: "В Bouwvast действуют прозрачные цены без скрытых платежей и непредвиденных доплат.",
+
+    // Area & City Page
+    area_page_title: "Зона обслуживания и Города",
+    area_page_sub: "Bouwvast работает по всем Нидерландам и во всех крупных городах.",
+    area_places: "городов",
+    city_page_title: "Подрядчик и Ремонт в г.",
+    city_page_sub: "Профессиональный ремонт квартир, санузлы, штукатурка и покраска в",
+
+    // Projects Page
+    projects_label: "Наше Портфолио",
+    projects_title: "Недавно сданные объекты",
+    projects_sub: "Подборка реализованных проектов и ремонтов в Нидерландах.",
+
+    // About Page
+    about_page_title: "О компании Bouwvast Нидерланды",
+    about_page_sub: "Надежное мастерство, единый менеджер и гарантия на каждый проект.",
+
+    // Business Page
+    b2b_page_title: "Для Бизнеса и Партнеров",
+    b2b_page_sub: "Ваш надежный генеральный подрядчик для строителей, шоурумов и ТСЖ (VvE).",
 
     // FAQ
     faq_label: "FAQ",

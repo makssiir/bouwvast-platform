@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import type { Page } from "../App";
 import { ARTICLES, type Article } from "../data/articles";
+import { useLang } from "../i18n/LangContext";
 import Icon from "../components/Icon";
 
 export default function KennisbankPage({ navigate }: { navigate: (p: Page) => void }) {
+  const { t } = useLang();
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [activeArticle, setActiveArticle] = useState<Article | null>(null);
 
@@ -26,9 +28,9 @@ export default function KennisbankPage({ navigate }: { navigate: (p: Page) => vo
           <div className="breadcrumb mb-4 text-[#86efac]">
             <button onClick={() => navigate("home")} className="bg-transparent border-0 p-0 text-[#86efac] hover:text-white cursor-pointer">Home</button>
             <span className="mx-2">›</span>
-            <span className="text-white font-semibold">Kennisbank</span>
+            <span className="text-white font-semibold">{t("nav_kennisbank")}</span>
           </div>
-          <h1>Kennisbank & Verbouwingsgidsen</h1>
+          <h1>{t("nav_kennisbank")}</h1>
           <p className="lead-xl max-w-2xl">
             Praktische gidsen, actuele richtprijzen en vakkundig advies voor uw verbouwing of renovatie.
           </p>

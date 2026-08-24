@@ -40,11 +40,11 @@ export default function BusinessPage({ navigate }: { navigate: (page: Page) => v
           <div className="breadcrumb mb-4 text-[#86efac]">
             <button onClick={() => navigate("home")} className="bg-transparent border-0 p-0 text-[#86efac] hover:text-white cursor-pointer">Home</button>
             <span className="mx-2">›</span>
-            <span className="text-white font-semibold">Zakelijk & Partners</span>
+            <span className="text-white font-semibold">{t("nav_business")}</span>
           </div>
-          <h1>Zakelijke Samenwerking — Bouwvast</h1>
+          <h1>{t("b2b_page_title")}</h1>
           <p className="lead-xl max-w-2xl">
-            Uw betrouwbare uitvoerende partner voor aannemers, keukenzaken, VvE's en vastgoedbeheerders in Midden-Nederland.
+            {t("b2b_page_sub")}
           </p>
         </div>
       </section>
