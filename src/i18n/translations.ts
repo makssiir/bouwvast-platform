@@ -18,7 +18,7 @@ export type TranslationKey = keyof typeof translations.nl;
 
 const translations = {
   nl: {
-    // Nav
+    // Navigation
     nav_services: "Diensten",
     nav_projects: "Projecten",
     nav_about: "Over ons",
@@ -93,7 +93,7 @@ const translations = {
     svc_bathroom: "Badkamer & Keuken",
     svc_bathroom_desc: "Complete renovatie, leidingwerk, tegelwerk en luxe sanitairmontage.",
     svc_general: "Algemene Bouwwerkzaamheden",
-    svc_general_desc: "Multidisciplinary verbouwingen en projecten van ontwerp tot oplevering.",
+    svc_general_desc: "Multidisciplinaire verbouwingen en projecten van ontwerp tot oplevering.",
 
     // Before/After
     ba_label: "Het verschil",
@@ -137,6 +137,14 @@ const translations = {
     price_title: "Duidelijke prijzen vooraf",
     price_sub: "Bij Bouwvast hanteren we transparante tarieven zonder verborgen kosten achteraf.",
 
+    // Founder Trust Card
+    trust_card_label: "Vakmanschap & Betrouwbaarheid",
+    trust_card_title: "\"Bouwen op vertrouwen en heldere afspraken.\"",
+    trust_card_desc: "Bij Bouwvast geloven we dat een verbouwing soepel en zorgeloos moet verlopen. Wij combineren jarenlange praktijkervaring met één vast aanspreekpunt en transparante prijzen. Geen verrassingen achteraf, maar een resultaat waar u jarenlang van geniet.",
+    trust_badge_1: "VCA Gecertificeerd",
+    trust_badge_2: "Garantie op Uitvoering",
+    trust_badge_3: "Vaste Prijscalculatie",
+
     // Area & City Page
     area_page_title: "Werkgebied & Gemeenten",
     area_page_sub: "Bouwvast is actief in heel Midden-Nederland en alle grote steden. Bekijk alle gemeenten en plaatsen binnen ons werkgebied.",
@@ -178,11 +186,29 @@ const translations = {
     form_city: "Woonplaats / Postcode",
     form_type: "Type werkzaamheden",
     form_desc: "Beschrijf uw wensen en bijzonderheden...",
-    form_date: "Gewenste startdatum",
+    form_time: "Gewenste startperiode",
+    form_choose_time: "Selecteer gewenste startperiode...",
+    form_time_morning: "Zo snel mogelijk / met spoed",
+    form_time_afternoon: "Binnen 1 maand",
+    form_time_all_day: "Binnen 1 tot 3 maanden",
+    form_time_consultation: "Nog aan het oriënteren",
+    form_photos: "Foto's toevoegen",
+    form_optional: "optioneel",
+    form_photos_hint: "Upload maximaal 5 foto's (JPG, PNG, WebP) voor een snellere offerte.",
+    form_photos_selected: "{n} foto('s) geselecteerd",
+    form_required: "Selecteer type werk...",
     form_submit: "Verstuur aanvraag →",
     form_privacy: "Uw gegevens worden vertrouwelijk behandeld en uitsluitend voor deze offerte gebruikt.",
     form_success_title: "Aanvraag succesvol ontvangen!",
     form_success_sub: "Bedankt voor uw aanvraag. Een van onze bouwadviseurs neemt binnen 24 uur contact met u op.",
+
+    // Wizard Modal steps
+    wizard_step_1_title: "1. Waarmee kunnen we u helpen?",
+    wizard_step_2_title: "2. Omschrijf uw klus of verbouwing",
+    wizard_step_3_title: "3. Contactgegevens voor offerte",
+    wizard_next: "Volgende stap →",
+    wizard_back: "← Vorige",
+    wizard_modal_title: "Offerte Aanvragen",
 
     // CTA
     cta_title: "Klaar om uw verbouwing te starten?",
@@ -201,7 +227,7 @@ const translations = {
   },
 
   en: {
-    // Nav
+    // Navigation
     nav_services: "Services",
     nav_projects: "Projects",
     nav_about: "About Us",
@@ -320,6 +346,14 @@ const translations = {
     price_title: "Transparent Rates Upfront",
     price_sub: "At Bouwvast, we practice transparent rates without unexpected surprise fees.",
 
+    // Founder Trust Card
+    trust_card_label: "Craftsmanship & Reliability",
+    trust_card_title: "\"Building on trust and clear agreements.\"",
+    trust_card_desc: "At Bouwvast, we believe renovations should be smooth and worry-free. We combine decades of experience with a single point of contact and transparent pricing.",
+    trust_badge_1: "VCA Certified",
+    trust_badge_2: "Execution Warranty",
+    trust_badge_3: "Fixed Calculation",
+
     // Area & City Page
     area_page_title: "Service Areas & Municipalities",
     area_page_sub: "Bouwvast is active throughout Central Netherlands and all major metropolitan cities.",
@@ -361,11 +395,29 @@ const translations = {
     form_city: "City / Postal Code",
     form_type: "Service Category",
     form_desc: "Describe your project requirements...",
-    form_date: "Preferred Start Date",
+    form_time: "Preferred Start Period",
+    form_choose_time: "Select preferred start period...",
+    form_time_morning: "As soon as possible / Urgent",
+    form_time_afternoon: "Within 1 month",
+    form_time_all_day: "Within 1 to 3 months",
+    form_time_consultation: "Still orienting / Planning",
+    form_photos: "Attach Photos",
+    form_optional: "optional",
+    form_photos_hint: "Upload up to 5 photos (JPG, PNG, WebP) for faster and more precise pricing.",
+    form_photos_selected: "{n} photo(s) selected",
+    form_required: "Select service...",
     form_submit: "Submit Quote Request →",
     form_privacy: "Your details are treated confidentially and used solely for this quotation.",
     form_success_title: "Inquiry Successfully Received!",
     form_success_sub: "Thank you for reaching out. One of our building advisors will contact you within 24 hours.",
+
+    // Wizard Modal steps
+    wizard_step_1_title: "1. How can we help you?",
+    wizard_step_2_title: "2. Describe your renovation or project",
+    wizard_step_3_title: "3. Contact details for your quote",
+    wizard_next: "Next Step →",
+    wizard_back: "← Back",
+    wizard_modal_title: "Request a Quote",
 
     // CTA
     cta_title: "Ready to start your building project?",
@@ -384,7 +436,7 @@ const translations = {
   },
 
   uk: {
-    // Nav
+    // Navigation
     nav_services: "Послуги",
     nav_projects: "Проєкти",
     nav_about: "Про нас",
@@ -503,6 +555,14 @@ const translations = {
     price_title: "Прозорі розцінки заздалегідь",
     price_sub: "У Bouwvast діють прозорі ціни без прихованих платежів чи непередбачених витрат.",
 
+    // Founder Trust Card
+    trust_card_label: "Майстерність та Надійність",
+    trust_card_title: "\"Будуємо на довірі та чітких домовленостях.\"",
+    trust_card_desc: "У Bouwvast ми переконані, що ремонт має бути спокійним та комфортним. Ми поєднуємо багаторічний досвід, персональний контакт та прозорі ціни.",
+    trust_badge_1: "VCA Сертифікація",
+    trust_badge_2: "Гарантія на Роботи",
+    trust_badge_3: "Фіксований Розрахунок",
+
     // Area & City Page
     area_page_title: "Зона робіт та Муніципалітети",
     area_page_sub: "Bouwvast працює по всьому центральному регіону та у великих містах Нідерландів.",
@@ -544,11 +604,29 @@ const translations = {
     form_city: "Місто / Поштовий індекс",
     form_type: "Категорія робіт",
     form_desc: "Опишіть ваш проєкт та особливості...",
-    form_date: "Бажана дата початку",
+    form_time: "Бажаний період початку",
+    form_choose_time: "Оберіть період початку...",
+    form_time_morning: "Якомога швидше / Терміново",
+    form_time_afternoon: "Протягом 1 місяця",
+    form_time_all_day: "Протягом 1-3 місяців",
+    form_time_consultation: "Планування / Консультація",
+    form_photos: "Додати фотографії",
+    form_optional: "опціонально",
+    form_photos_hint: "Завантажте до 5 фото (JPG, PNG, WebP) для швидкого та точного кошторису.",
+    form_photos_selected: "Обрано {n} фото",
+    form_required: "Оберіть послугу...",
     form_submit: "Надіслати запит →",
     form_privacy: "Ваші дані конфіденційні та використовуються виключно для складання пропозиції.",
     form_success_title: "Запит успішно надіслано!",
     form_success_sub: "Дякуємо! Наш будівельний консультант зв'яжеться з вами протягом 24 годин.",
+
+    // Wizard Modal steps
+    wizard_step_1_title: "1. Чим ми можемо вам допомогти?",
+    wizard_step_2_title: "2. Опишіть завдання або ремонт",
+    wizard_step_3_title: "3. Контактні дані для кошторису",
+    wizard_next: "Наступний крок →",
+    wizard_back: "← Назад",
+    wizard_modal_title: "Замовити Кошторис",
 
     // CTA
     cta_title: "Готові розпочати ремонт?",
@@ -567,7 +645,7 @@ const translations = {
   },
 
   ru: {
-    // Nav
+    // Navigation
     nav_services: "Услуги",
     nav_projects: "Проекты",
     nav_about: "О нас",
@@ -686,6 +764,14 @@ const translations = {
     price_title: "Прозрачные расценки заранее",
     price_sub: "В Bouwvast действуют прозрачные цены без скрытых платежей и непредвиденных доплат.",
 
+    // Founder Trust Card
+    trust_card_label: "Мастерство и Надежность",
+    trust_card_title: "\"Строим на доверии и четких договоренностях.\"",
+    trust_card_desc: "В Bouwvast мы убеждены, что ремонт должен проходить спокойно и комфортно. Мы объединяем многолетний опыт, единого менеджера и прозрачные расчеты.",
+    trust_badge_1: "VCA Сертификация",
+    trust_badge_2: "Гарантия на Работы",
+    trust_badge_3: "Фиксированный Расчет",
+
     // Area & City Page
     area_page_title: "Зона обслуживания и Города",
     area_page_sub: "Bouwvast работает по всем Нидерландам и во всех крупных городах.",
@@ -727,11 +813,29 @@ const translations = {
     form_city: "Город / Индекс",
     form_type: "Категория работ",
     form_desc: "Опишите ваш проект и пожелания...",
-    form_date: "Желаемая дата начала",
+    form_time: "Желаемый период начала",
+    form_choose_time: "Выберите период начала...",
+    form_time_morning: "Как можно скорее / Срочно",
+    form_time_afternoon: "В течение 1 месяца",
+    form_time_all_day: "В течение 1-3 месяцев",
+    form_time_consultation: "Планирование / Консультация",
+    form_photos: "Добавить фото",
+    form_optional: "опционально",
+    form_photos_hint: "Загрузите до 5 фото (JPG, PNG, WebP) для быстрого и точного расчета сметы.",
+    form_photos_selected: "Выбрано {n} фото",
+    form_required: "Выберите услугу...",
     form_submit: "Отправить заявку →",
     form_privacy: "Ваши данные строго конфиденциальны и используются только для составления сметы.",
     form_success_title: "Заявка успешно принята!",
     form_success_sub: "Спасибо! Наш специалист свяжется с вами в течение 24 часов.",
+
+    // Wizard Modal steps
+    wizard_step_1_title: "1. Чем мы можем вам помочь?",
+    wizard_step_2_title: "2. Опишите проект или ремонт",
+    wizard_step_3_title: "3. Контактные данные для сметы",
+    wizard_next: "Следующий шаг →",
+    wizard_back: "← Назад",
+    wizard_modal_title: "Запросить Смету",
 
     // CTA
     cta_title: "Готовы начать ремонт?",

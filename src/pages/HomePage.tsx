@@ -266,24 +266,24 @@ function FounderTrustCard({ navigate }: { navigate: (p: Page) => void }) {
           <div className="grid md:grid-cols-[1.5fr_1fr] gap-8 items-center">
             <div>
               <span className="text-xs uppercase tracking-widest text-[#4ade80] font-bold block mb-2">
-                Vakmanschap & Betrouwbaarheid
+                {t("trust_card_label")}
               </span>
               <h2 className="text-2xl md:text-3xl font-extrabold text-white mb-4 leading-tight">
-                "Bouwen op vertrouwen en heldere afspraken."
+                {t("trust_card_title")}
               </h2>
               <p className="text-slate-300 text-sm leading-relaxed mb-6">
-                Bij Bouwvast geloven we dat een verbouwing soepel en zorgeloos moet verlopen. Wij combineren jarenlange praktijkervaring met één vast aanspreekpunt en transparante prijzen. Geen verrassingen achteraf, maar een resultaat waar u jarenlang van geniet.
+                {t("trust_card_desc")}
               </p>
               
               <div className="flex flex-wrap gap-4 text-xs font-semibold text-slate-200 mb-6">
                 <span className="flex items-center gap-1.5 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
-                  <span className="text-[#4ade80]">✓</span> VCA Gecertificeerd
+                  <span className="text-[#4ade80]">✓</span> {t("trust_badge_1")}
                 </span>
                 <span className="flex items-center gap-1.5 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
-                  <span className="text-[#4ade80]">✓</span> Garantie op Uitvoering
+                  <span className="text-[#4ade80]">✓</span> {t("trust_badge_2")}
                 </span>
                 <span className="flex items-center gap-1.5 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
-                  <span className="text-[#4ade80]">✓</span> Vaste Prijscalculatie
+                  <span className="text-[#4ade80]">✓</span> {t("trust_badge_3")}
                 </span>
               </div>
 
@@ -531,19 +531,19 @@ function QuoteFormSection() {
                 <div className="w-8 h-8 rounded-full bg-[var(--brand-tint)] text-[var(--brand)] flex items-center justify-center font-bold">
                   ✓
                 </div>
-                <span className="text-sm font-semibold text-[var(--fg)]">100% vrijblijvend & gratis</span>
+                <span className="text-sm font-semibold text-[var(--fg)]">{t("hero_trust_1")}</span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-[var(--brand-tint)] text-[var(--brand)] flex items-center justify-center font-bold">
                   ✓
                 </div>
-                <span className="text-sm font-semibold text-[var(--fg)]">Binnen 24 uur een heldere reactie</span>
+                <span className="text-sm font-semibold text-[var(--fg)]">{t("hero_trust_2")}</span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-[var(--brand-tint)] text-[var(--brand)] flex items-center justify-center font-bold">
                   ✓
                 </div>
-                <span className="text-sm font-semibold text-[var(--fg)]">Eén vast aanspreekpunt</span>
+                <span className="text-sm font-semibold text-[var(--fg)]">{t("hero_trust_3")}</span>
               </div>
             </div>
           </div>
