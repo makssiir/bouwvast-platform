@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import Icon from "../Icon";
+import { useLang } from "../../i18n/LangContext";
 
 interface EstimatorOption {
   id: string;
-  name: string;
+  nameKey: string;
+  defaultName: string;
   unit: string;
   defaultQty: number;
   minQty: number;
@@ -17,8 +19,9 @@ interface EstimatorOption {
 const SERVICES_DATA: EstimatorOption[] = [
   {
     id: "stucwerk",
-    name: "Stuc- & Pleisterwerk",
-    unit: "m² wand / plafond",
+    nameKey: "svc_finishing",
+    defaultName: "Stuc- & Pleisterwerk",
+    unit: "m²",
     defaultQty: 60,
     minQty: 15,
     maxQty: 250,
@@ -29,8 +32,9 @@ const SERVICES_DATA: EstimatorOption[] = [
   },
   {
     id: "schilderwerk",
-    name: "Schilderwerk Binnen",
-    unit: "m² oppervlakte",
+    nameKey: "svc_painting",
+    defaultName: "Schilderwerk Binnen",
+    unit: "m²",
     defaultQty: 80,
     minQty: 20,
     maxQty: 300,
@@ -41,8 +45,9 @@ const SERVICES_DATA: EstimatorOption[] = [
   },
   {
     id: "badkamer",
-    name: "Badkamer Renovatie",
-    unit: "m² vloeroppervlakte",
+    nameKey: "svc_bathroom",
+    defaultName: "Badkamer Renovatie",
+    unit: "m²",
     defaultQty: 7,
     minQty: 3,
     maxQty: 25,
@@ -53,8 +58,9 @@ const SERVICES_DATA: EstimatorOption[] = [
   },
   {
     id: "renovatie",
-    name: "Woningrenovatie",
-    unit: "m² woonoppervlak",
+    nameKey: "svc_renovation",
+    defaultName: "Woningrenovatie",
+    unit: "m²",
     defaultQty: 50,
     minQty: 20,
     maxQty: 200,
@@ -70,6 +76,7 @@ export default function CostEstimator({
 }: {
   onSelectCalculation?: (details: string) => void;
 }) {
+  const { t } = useLang();
   const [selectedService, setSelectedService] = useState<EstimatorOption>(SERVICES_DATA[0]);
   const [qty, setQty] = useState(SERVICES_DATA[0].defaultQty);
   const [tier, setTier] = useState<"standard" | "premium" | "luxury">("premium");
@@ -93,7 +100,8 @@ export default function CostEstimator({
   const totalMax = Math.round(rawMax / 50) * 50;
 
   const handleApply = () => {
-    const calculationSummary = `${selectedService.name} (${qty} ${selectedService.unit}) - Niveau: ${tier.toUpperCase()}, Inclusief materialen: ${includeMaterials ? 'Ja' : 'Nee'}, Sloopwerk: ${includeDemo ? 'Ja' : 'Nee'}. Geschatte richtprijs: €${totalMin.toLocaleString()} - €${totalMax.toLocaleString()}`;
+    const serviceName = t(selectedService.nameKey as any) || selectedService.defaultName;
+    const calculationSummary = `${serviceName} (${qty} ${selectedService.unit}) - ${tier.toUpperCase()}: €${totalMin.toLocaleString()} - €${totalMax.toLocaleString()}`;
     
     if (onSelectCalculation) {
       onSelectCalculation(calculationSummary);
@@ -104,7 +112,7 @@ export default function CostEstimator({
       quoteEl.scrollIntoView({ behavior: "smooth" });
       const descInput = document.getElementById("quote-description") as HTMLTextAreaElement;
       if (descInput) {
-        descInput.value = `Ik heb de online calculator gebruikt voor een berekening:\n${calculationSummary}\n\nGraag ontvang ik een definitieve offerte.`;
+        descInput.value = `${t("est_title")}:\n${calculationSummary}`;
       }
     }
   };
@@ -113,22 +121,21 @@ export default function CostEstimator({
     <section className="section bg-[var(--muted-bg)] border-y border-[var(--border)]" id="calculator">
       <div className="container">
         <div className="center mb-10">
-          <span className="eyebrow">Direct inzicht</span>
-          <h2>Bereken direct uw richtprijs</h2>
-          <p className="lead">
-            Selecteer uw type werkzaamheden en oppervlakte voor een realtime indicatie van de kosten.
-          </p>
+          <span className="eyebrow">{t("est_eyebrow")}</span>
+          <h2>{t("est_title")}</h2>
+          <p className="lead">{t("est_sub")}</p>
         </div>
 
         <div className="max-w-4xl mx-auto card p-6 md:p-10 shadow-lg border-2 border-[var(--brand)] bg-white">
           {/* Step 1: Select Service */}
           <div className="mb-8">
             <label className="block text-xs font-bold uppercase tracking-wider text-[var(--muted)] mb-3">
-              1. Kies het type werkzaamheden
+              {t("est_step_1")}
             </label>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {SERVICES_DATA.map((s) => {
                 const isActive = selectedService.id === s.id;
+                const displayName = t(s.nameKey as any) || s.defaultName;
                 return (
                   <button
                     key={s.id}
@@ -136,7 +143,7 @@ export default function CostEstimator({
                     className={`p-3.5 rounded-xl border text-center transition-all cursor-pointer flex flex-col items-center gap-2 ${isActive ? 'border-[var(--brand)] bg-[var(--brand-subtle)] text-[var(--brand-dark)] shadow-xs' : 'border-[var(--border)] bg-white text-[var(--fg)] hover:border-[var(--brand)]'}`}
                   >
                     <Icon name={s.icon} size={22} color={isActive ? "var(--brand)" : "var(--muted)"} />
-                    <span className="text-xs font-bold leading-tight">{s.name}</span>
+                    <span className="text-xs font-bold leading-tight">{displayName}</span>
                   </button>
                 );
               })}
@@ -147,10 +154,10 @@ export default function CostEstimator({
           <div className="mb-8 bg-[var(--muted-bg)] p-5 rounded-xl border border-[var(--border)]">
             <div className="flex justify-between items-center mb-3">
               <label className="text-sm font-bold text-[var(--fg)]">
-                2. Geschatte omvang ({selectedService.unit})
+                {t("est_step_2")} ({selectedService.unit})
               </label>
               <span className="text-xl font-extrabold text-[var(--brand)] bg-white px-3 py-1 rounded-lg border border-[var(--border)]">
-                {qty} {selectedService.unit.split(" ")[0]}
+                {qty} {selectedService.unit}
               </span>
             </div>
             <input
@@ -160,84 +167,91 @@ export default function CostEstimator({
               step={selectedService.step}
               value={qty}
               onChange={(e) => setQty(Number(e.target.value))}
-              className="w-full h-2.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[var(--brand)]"
+              aria-label={t("est_step_2")}
+              aria-valuemin={selectedService.minQty}
+              aria-valuemax={selectedService.maxQty}
+              aria-valuenow={qty}
+              className="w-full accent-[var(--brand)] h-2 bg-gray-200 rounded-lg cursor-pointer"
             />
-            <div className="flex justify-between text-xs text-[var(--muted)] mt-2">
-              <span>Min. {selectedService.minQty} {selectedService.unit.split(" ")[0]}</span>
-              <span>Gemiddeld {selectedService.defaultQty}</span>
-              <span>Max. {selectedService.maxQty} {selectedService.unit.split(" ")[0]}</span>
+            <div className="flex justify-between text-[11px] text-[var(--muted)] mt-1.5 font-medium">
+              <span>{selectedService.minQty} {selectedService.unit}</span>
+              <span>{Math.round((selectedService.minQty + selectedService.maxQty) / 2)} {selectedService.unit}</span>
+              <span>{selectedService.maxQty} {selectedService.unit}</span>
             </div>
           </div>
 
-          {/* Step 3: Tier & Options */}
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-[var(--muted)] mb-2.5">
-                3. Afwerkingsniveau
-              </label>
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { id: "standard", label: "Standaard" },
-                  { id: "premium", label: "Hoogwaardig" },
-                  { id: "luxury", label: "Turn-key Luxe" },
-                ].map((t) => (
-                  <button
-                    key={t.id}
-                    onClick={() => setTier(t.id as any)}
-                    className={`py-2 px-2 text-xs font-bold rounded-lg border transition-all cursor-pointer ${tier === t.id ? 'bg-[var(--brand)] text-white border-[var(--brand)]' : 'bg-white border-[var(--border)] text-[var(--muted)] hover:text-[var(--fg)]'}`}
-                  >
-                    {t.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-[var(--muted)] mb-2.5">
-                4. Extra opties
-              </label>
-              <div className="space-y-2">
-                <label className="flex items-center gap-2.5 text-xs font-medium text-[var(--fg)] cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={includeMaterials}
-                    onChange={(e) => setIncludeMaterials(e.target.checked)}
-                    className="w-4 h-4 rounded accent-[var(--brand)]"
-                  />
-                  Inclusief A-merk materialen & levering
-                </label>
-                <label className="flex items-center gap-2.5 text-xs font-medium text-[var(--fg)] cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={includeDemo}
-                    onChange={(e) => setIncludeDemo(e.target.checked)}
-                    className="w-4 h-4 rounded accent-[var(--brand)]"
-                  />
-                  Inclusief slopen en puinafvoer
-                </label>
-              </div>
+          {/* Step 3: Material Quality Tier */}
+          <div className="mb-8">
+            <label className="block text-xs font-bold uppercase tracking-wider text-[var(--muted)] mb-3">
+              {t("est_step_3")}
+            </label>
+            <div className="grid sm:grid-cols-3 gap-3">
+              {[
+                { id: "standard", name: t("est_tier_std"), desc: t("est_tier_std_desc") },
+                { id: "premium", name: t("est_tier_prem"), desc: t("est_tier_prem_desc") },
+                { id: "luxury", name: t("est_tier_lux"), desc: t("est_tier_lux_desc") },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setTier(item.id as any)}
+                  aria-pressed={tier === item.id}
+                  className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all ${tier === item.id ? 'border-[var(--brand)] bg-[var(--brand-subtle)] ring-1 ring-[var(--brand)]' : 'border-[var(--border)] bg-white hover:bg-gray-50'}`}
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-xs text-[var(--fg)]">{item.name}</span>
+                    {tier === item.id && <span className="text-[var(--brand)] text-xs font-bold">✓</span>}
+                  </div>
+                  <span className="text-[11px] text-[var(--muted)] block leading-tight">{item.desc}</span>
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* Calculation Output Box */}
-          <div className="rounded-2xl p-6 bg-[linear-gradient(135deg,#14532d,#15803d)] text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
+          {/* Options: Demolition & Materials */}
+          <div className="grid sm:grid-cols-2 gap-4 mb-8 pt-4 border-t border-[var(--border)]">
+            <label className="flex items-center gap-3 p-3 rounded-lg border border-[var(--border)] bg-white cursor-pointer hover:bg-gray-50 text-xs">
+              <input
+                type="checkbox"
+                checked={includeDemo}
+                onChange={(e) => setIncludeDemo(e.target.checked)}
+                className="w-4 h-4 accent-[var(--brand)] rounded"
+              />
+              <span className="font-semibold text-[var(--fg)]">{t("est_opt_demo")}</span>
+            </label>
+
+            <label className="flex items-center gap-3 p-3 rounded-lg border border-[var(--border)] bg-white cursor-pointer hover:bg-gray-50 text-xs">
+              <input
+                type="checkbox"
+                checked={includeMaterials}
+                onChange={(e) => setIncludeMaterials(e.target.checked)}
+                className="w-4 h-4 accent-[var(--brand)] rounded"
+              />
+              <span className="font-semibold text-[var(--fg)]">{t("est_opt_mat")}</span>
+            </label>
+          </div>
+
+          {/* Result Price Band */}
+          <div className="p-6 rounded-2xl bg-gradient-to-br from-[#0f172a] to-[#1e293b] text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
             <div>
-              <span className="text-xs uppercase tracking-widest text-[#86efac] font-bold">
-                Geschatte richtprijs (incl. btw)
+              <span className="text-xs uppercase tracking-widest text-[#4ade80] font-bold block mb-1">
+                {t("est_est_price")}
               </span>
-              <div className="text-3xl md:text-4xl font-extrabold mt-1 tracking-tight">
-                € {totalMin.toLocaleString("nl-NL")} – € {totalMax.toLocaleString("nl-NL")}
+              <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex items-baseline gap-2">
+                <span>€{totalMin.toLocaleString()}</span>
+                <span className="text-gray-400 font-light text-2xl">—</span>
+                <span>€{totalMax.toLocaleString()}</span>
               </div>
-              <p className="text-xs text-[#dcfce7] m-0 mt-1">
-                * Indicatieve bandbreedte. Definitieve prijs volgt na vrijblijvende opname.
-              </p>
+              <span className="text-[11px] text-gray-400 block mt-1.5">
+                {t("est_disclaimer")}
+              </span>
             </div>
 
             <button
               onClick={handleApply}
-              className="btn btn-white btn-lg shrink-0 font-extrabold text-[var(--brand-dark)] shadow-lg hover:scale-105"
+              className="w-full md:w-auto px-6 py-3.5 rounded-xl font-bold text-sm bg-[var(--brand)] hover:bg-[var(--brand-dark)] text-white shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 border-0"
             >
-              Vraag offerte aan met deze berekening &rarr;
+              <Icon name="check" size={18} />
+              {t("est_apply_btn")} &rarr;
             </button>
           </div>
         </div>

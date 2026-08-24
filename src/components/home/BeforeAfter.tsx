@@ -1,34 +1,50 @@
 import React, { useState, useRef } from "react";
 import Icon from "../Icon";
+import { useLang } from "../../i18n/LangContext";
 
-const COMPARISONS = [
+interface ComparisonItem {
+  id: string;
+  titleKey: string;
+  defaultTitle: string;
+  location: string;
+  beforeImg: string;
+  afterImg: string;
+  descKey?: string;
+  defaultDesc: string;
+}
+
+const COMPARISONS: ComparisonItem[] = [
   {
     id: "kitchen",
-    title: "Complete Keukenrenovatie",
+    titleKey: "svc_bathroom",
+    defaultTitle: "Complete Keukenrenovatie",
     location: "Amersfoort Vathorst",
     beforeImg: "/images/kitchen-before.jpg",
     afterImg: "/images/kitchen-after.jpg",
-    desc: "Van gestripte leidingen en kaal metselwerk naar een moderne luxe keuken met mat-antraciet kasten, inductie en visgraatvloer.",
+    defaultDesc: "Van gedateerde eikenhouten kasten naar een moderne luxe keuken met mat-antraciet kasten, inductie en visgraatvloer.",
   },
   {
     id: "renovation",
-    title: "Woningrenovatie & Stucwerk",
+    titleKey: "svc_renovation",
+    defaultTitle: "Woningrenovatie & Stucwerk",
     location: "Leusden",
     beforeImg: "/images/living-before.jpg",
     afterImg: "/images/living-after.jpg",
-    desc: "Complete aanpak van ruwe wanden, elektra-inbouw, spiegelglad stucwerk en eikenhouten visgraatvloer.",
+    defaultDesc: "Complete aanpak van ruwe wanden, strak sausklaar stucwerk en eikenhouten visgraatvloer.",
   },
   {
     id: "bathroom",
-    title: "Badkamer & Sanitair Renovatie",
+    titleKey: "svc_bathroom",
+    defaultTitle: "Badkamer & Sanitair Renovatie",
     location: "Utrecht Oost",
     beforeImg: "/images/bath-before.jpg",
     afterImg: "/images/bath-after.jpg",
-    desc: "Van gedateerd tegel- en sloopwerk naar een moderne inloopdouche met grootformaat betonlook tegels en eiken meubel.",
+    defaultDesc: "Van gedateerd tegelwerk naar een moderne inloopdouche met grootformaat betonlook tegels en eiken meubel.",
   },
 ];
 
 export default function BeforeAfter() {
+  const { t } = useLang();
   const [activeIdx, setActiveIdx] = useState(0);
   const [pos, setPos] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -48,11 +64,9 @@ export default function BeforeAfter() {
     <section className="section" id="voor-na">
       <div className="container">
         <div className="center mb-10">
-          <span className="eyebrow">Het verschil</span>
-          <h2>Voor & Na: Echte transformaties</h2>
-          <p className="lead">
-            Sleep met de balk om het verschil vóór en na onze werkzaamheden te bekijken.
-          </p>
+          <span className="eyebrow">{t("ba_label")}</span>
+          <h2>{t("ba_title")}</h2>
+          <p className="lead">{t("ba_sub")}</p>
 
           {/* Selector pills */}
           <div className="flex flex-wrap justify-center gap-2.5 mt-4">
@@ -65,7 +79,7 @@ export default function BeforeAfter() {
                 }}
                 className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${activeIdx === idx ? 'bg-[var(--brand)] text-white shadow-md' : 'bg-white border border-[var(--border)] text-[var(--muted)] hover:text-[var(--fg)] hover:border-[var(--brand)]'}`}
               >
-                {comp.title}
+                {comp.defaultTitle}
               </button>
             ))}
           </div>
@@ -87,7 +101,7 @@ export default function BeforeAfter() {
               dragging.current = false;
             }}
             role="slider"
-            aria-label="Voor en na schuifregelaar"
+            aria-label={t("ba_hint")}
             aria-valuenow={Math.round(pos)}
             aria-valuemin={0}
             aria-valuemax={100}
@@ -100,18 +114,18 @@ export default function BeforeAfter() {
             {/* After (Base Layer) */}
             <img
               src={current.afterImg}
-              alt="Na renovatie"
+              alt={t("ba_after")}
               className="absolute inset-0 w-full h-full object-cover"
               draggable={false}
             />
             <span className="absolute top-4 right-4 z-10 px-3.5 py-1 rounded-full text-xs font-bold text-white bg-[var(--brand)] shadow-lg">
-              Ná oplevering
+              {t("ba_after")}
             </span>
 
             {/* Before (Clipped Layer) */}
             <img
               src={current.beforeImg}
-              alt="Vóór renovatie"
+              alt={t("ba_before")}
               className="absolute inset-0 w-full h-full object-cover"
               style={{
                 clipPath: `inset(0 ${100 - pos}% 0 0)`,
@@ -123,7 +137,7 @@ export default function BeforeAfter() {
               className="absolute top-4 left-4 z-10 px-3.5 py-1 rounded-full text-xs font-bold text-white bg-[rgba(15,23,42,0.85)] backdrop-blur-xs shadow-lg transition-opacity"
               style={{ opacity: pos > 15 ? 1 : 0 }}
             >
-              Vóór aanvang
+              {t("ba_before")}
             </span>
 
             {/* Divider Line & Glow Handle */}
@@ -139,13 +153,13 @@ export default function BeforeAfter() {
 
             {/* Helper label */}
             <span className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 px-4 py-1.5 rounded-full text-xs font-semibold text-white bg-[rgba(15,23,42,0.8)] backdrop-blur-xs shadow-md pointer-events-none">
-              ◀ Sleep om te vergelijken ▶
+              ◀ {t("ba_hint")} ▶
             </span>
           </div>
 
           <div className="mt-5 text-center">
-            <h3 className="text-lg font-bold text-[var(--fg)] m-0">{current.title} — {current.location}</h3>
-            <p className="text-sm text-[var(--muted)] mt-1.5 max-w-xl mx-auto">{current.desc}</p>
+            <h3 className="text-lg font-bold text-[var(--fg)] m-0">{current.defaultTitle} — {current.location}</h3>
+            <p className="text-sm text-[var(--muted)] mt-1.5 max-w-xl mx-auto">{current.defaultDesc}</p>
           </div>
         </div>
       </div>
