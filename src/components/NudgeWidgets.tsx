@@ -11,7 +11,7 @@ export default function NudgeWidgets({
   const { t } = useLang();
   const [bubbleDismissed, setBubbleDismissed] = useState(false);
   const [showScrollNudge, setShowScrollNudge] = useState(false);
-  const [bubbleOpen, setBubbleOpen] = useState(true);
+  const [bubbleOpen, setBubbleOpen] = useState(false);
 
   useEffect(() => {
     // Show speech bubble after 2.5 seconds on the page
@@ -43,13 +43,13 @@ export default function NudgeWidgets({
 
   return (
     <>
-      {/* 1. Floating WhatsApp with Interactive Speech Nudge Bubble */}
-      <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3 select-none">
+      {/* 1. Floating WhatsApp with Non-Overlapping Speech Bubble */}
+      <div className="nudge-container select-none">
         
-        {/* Animated Speech Bubble */}
+        {/* Animated Speech Bubble (Cleanly stacked above button) */}
         {bubbleOpen && !bubbleDismissed && (
           <div 
-            className="w-72 sm:w-80 p-4 rounded-2xl bg-white text-[var(--fg)] shadow-2xl border border-[var(--border)] animate-[fade-in-up_0.25s_ease-out] relative"
+            className="nudge-bubble animate-[fade-in-up_0.25s_ease-out]"
             role="status"
             aria-live="polite"
           >
@@ -59,14 +59,14 @@ export default function NudgeWidgets({
                 setBubbleOpen(false);
                 setBubbleDismissed(true);
               }}
-              className="absolute top-2.5 right-2.5 w-6 h-6 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-800 flex items-center justify-center text-xs border-0 cursor-pointer transition-colors"
+              className="absolute top-3 right-3 w-6 h-6 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-800 flex items-center justify-center text-xs border-0 cursor-pointer transition-colors"
               aria-label="Sluit melding"
             >
               ✕
             </button>
 
             {/* Header: Status */}
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-2 mb-2 pr-6">
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
@@ -81,31 +81,23 @@ export default function NudgeWidgets({
               {t("nudge_wa_bubble")}
             </p>
 
-            {/* Action buttons */}
-            <div className="flex gap-2">
-              <a
-                href={CONTACT.whatsappTemplate ?? `tel:${CONTACT.phoneTel}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 py-2 px-3 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold text-center no-underline flex items-center justify-center gap-1.5 shadow-xs transition-colors"
-              >
-                <Icon name="whatsapp" size={16} />
-                <span>{t("nudge_wa_btn")}</span>
-              </a>
-              <button
-                onClick={onOpenQuoteModal}
-                className="py-2 px-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-[var(--fg)] text-xs font-bold border-0 cursor-pointer transition-colors"
-              >
-                Offerte
-              </button>
-            </div>
+            {/* Single full-width clean WhatsApp Action */}
+            <a
+              href={CONTACT.whatsappTemplate ?? `tel:${CONTACT.phoneTel}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-2.5 px-3 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold text-center no-underline flex items-center justify-center gap-2 shadow-xs transition-colors"
+            >
+              <Icon name="whatsapp" size={16} />
+              <span>{t("nudge_wa_btn")}</span>
+            </a>
 
-            {/* Tail arrow */}
-            <div className="absolute -bottom-2 right-6 w-4 h-4 bg-white border-r border-b border-[var(--border)] rotate-45" />
+            {/* Downward triangle pointer targeting the WhatsApp button */}
+            <div className="absolute -bottom-1.5 right-6 w-3 h-3 bg-white border-r border-b border-[var(--border)] rotate-45 pointer-events-none" />
           </div>
         )}
 
-        {/* WhatsApp Floating Circle Button */}
+        {/* WhatsApp Floating Circle Button (Directly below bubble with margin) */}
         <a
           href={CONTACT.whatsappTemplate ?? `tel:${CONTACT.phoneTel}`}
           target="_blank"

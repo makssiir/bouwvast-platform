@@ -1226,12 +1226,35 @@ td.price {
   gap: 1rem;
 }
 
-/* Floating WhatsApp / Phone Button */
-.wa-float {
+/* Floating WhatsApp & Nudge Container */
+.nudge-container {
   position: fixed;
   bottom: 24px;
   right: 24px;
   z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.nudge-bubble {
+  pointer-events: auto;
+  width: 320px;
+  max-width: calc(100vw - 36px);
+  background: #ffffff;
+  color: var(--fg);
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.18), 0 4px 12px rgba(15, 23, 42, 0.08);
+  border: 1px solid var(--border);
+  position: relative;
+}
+
+.wa-float {
+  pointer-events: auto;
+  position: relative;
   background: #22c55e;
   color: #fff;
   width: 56px;
@@ -1243,6 +1266,7 @@ td.price {
   box-shadow: 0 8px 24px rgba(34, 197, 94, 0.4);
   transition: transform 0.2s, background 0.2s;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .wa-float:hover {
@@ -1251,9 +1275,16 @@ td.price {
 }
 
 @media (max-width: 768px) {
+  .nudge-container {
+    bottom: 78px;
+    right: 16px;
+    gap: 8px;
+  }
+  .nudge-bubble {
+    width: 290px;
+    padding: 14px;
+  }
   .wa-float {
-    bottom: 74px;
-    right: 18px;
     width: 48px;
     height: 48px;
   }
