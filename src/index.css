@@ -1276,7 +1276,8 @@ td.price {
 
 @media (max-width: 768px) {
   .nudge-container {
-    bottom: 78px;
+    /* 56px bar + 12px gap + safe area */
+    bottom: calc(68px + env(safe-area-inset-bottom, 0px));
     right: 16px;
     gap: 8px;
   }
@@ -1307,9 +1308,16 @@ td.price {
     background: #ffffff;
     border-top: 1px solid var(--border);
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    /* account for iOS home indicator */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .mobile-contact-bar a,
+  .mobile-contact-bar button {
+    min-height: 56px;
   }
   body {
-    padding-bottom: 54px;
+    /* 56px bar + safe area inset */
+    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
   }
 }
 
