@@ -155,7 +155,7 @@ export default function CostEstimator({
           {/* Progress Bar */}
           <div className="flex justify-between items-center mb-6 border-b border-[var(--border)] pb-4">
             <div className="text-xs font-bold text-[var(--muted)]">
-              {step === 1 ? t("step_1_of_3" as any) || "Stap 1 van 3" : step === 2 ? t("step_2_of_3" as any) || "Stap 2 van 3" : t("step_3_of_3" as any) || "Stap 3 van 3"}
+              {step === 1 ? t("step_1_of_3") : step === 2 ? t("step_2_of_3") : t("step_3_of_3")}
             </div>
             <div className="flex gap-1.5">
               <div className={`h-1.5 w-8 rounded-full ${step >= 1 ? 'bg-[var(--brand)]' : 'bg-gray-200'}`}></div>
@@ -201,7 +201,7 @@ export default function CostEstimator({
               
               <div className="flex justify-end mt-6">
                 <button onClick={handleNext} className="btn btn-primary px-8">
-                  {t("btn_next" as any) || "Volgende"} &rarr;
+                  {t("btn_next")} &rarr;
                 </button>
               </div>
             </div>
@@ -277,10 +277,10 @@ export default function CostEstimator({
               
               <div className="flex justify-between mt-8">
                 <button onClick={handleBack} className="btn btn-outline">
-                  &larr; {t("btn_back" as any) || "Terug"}
+                  &larr; {t("btn_back")}
                 </button>
                 <button onClick={handleNext} className="btn btn-primary px-8">
-                  {t("btn_next" as any) || "Volgende"} &rarr;
+                  {t("btn_next")} &rarr;
                 </button>
               </div>
             </div>
@@ -328,7 +328,7 @@ export default function CostEstimator({
                           </span>
                           {item.id === "premium" && (
                             <span className="inline-block px-1.5 py-0.5 bg-amber-100 text-amber-700 text-[9px] uppercase tracking-wider font-extrabold rounded">
-                              {t("badge_best_value" as any) || "Meest gekozen"}
+                              {t("badge_best_value")}
                             </span>
                           )}
                         </div>
@@ -373,7 +373,7 @@ export default function CostEstimator({
               
               <div className="flex justify-start mt-6">
                 <button onClick={handleBack} className="btn btn-outline">
-                  &larr; {t("btn_back" as any) || "Terug"}
+                  &larr; {t("btn_back")}
                 </button>
               </div>
             </div>
