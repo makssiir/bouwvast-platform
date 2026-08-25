@@ -530,10 +530,12 @@ function KennisbankPreviewSection({
 function FAQSection() {
   const { t } = useLang()
   const faqs = [
-    { q: t("faq_1_q"), a: t("faq_1_a") },
-    { q: t("faq_2_q"), a: t("faq_2_a") },
-    { q: t("faq_3_q"), a: t("faq_3_a") },
-    { q: t("faq_4_q"), a: t("faq_4_a") },
+    { q: t("faq_1_q" as any), a: t("faq_1_a" as any) },
+    { q: t("faq_2_q" as any), a: t("faq_2_a" as any) },
+    { q: t("faq_1b_q" as any), a: t("faq_1b_a" as any) },
+    { q: t("faq_2b_q" as any), a: t("faq_2b_a" as any) },
+    { q: t("faq_3_q" as any), a: t("faq_3_a" as any) },
+    { q: t("faq_4_q" as any), a: t("faq_4_a" as any) },
   ]
 
   return (

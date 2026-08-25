@@ -62,6 +62,17 @@ const translations = {
     stat_4_val: "€55",
     stat_4_lbl: "vanaf tarief p/u incl. btw",
 
+    // Multi-step & CRO
+    btn_next: "Volgende stap",
+    btn_back: "Terug",
+    btn_submit_request: "Verstuur Aanvraag",
+    step_1_of_3: "Stap 1 van 3",
+    step_2_of_3: "Stap 2 van 3",
+    step_3_of_3: "Stap 3 van 3",
+    step_1_of_2: "Stap 1 van 2",
+    step_2_of_2: "Stap 2 van 2",
+    badge_best_value: "Meest gekozen",
+
     // Estimator
     est_eyebrow: "Direct inzicht",
     est_title: "Bereken direct uw richtprijs",
@@ -206,11 +217,15 @@ const translations = {
     // FAQ
     faq_label: "FAQ",
     faq_title: "Veelgestelde vragen over verbouwen",
-    faq_1_q: "Welke werkzaamheden voeren jullie uit?",
-    faq_1_a:
+    faq_1_q: "Zijn de getoonde prijzen inclusief BTW?",
+    faq_1_a: "Onze calculator toont richtprijzen exclusief BTW, aangezien veel particuliere woningen (ouder dan 2 jaar) in aanmerking komen voor het lage 9% BTW-tarief op specifieke werkzaamheden. In een formele offerte splitsen we dit exact voor u uit.",
+    faq_1b_q: "Welke werkzaamheden voeren jullie uit?",
+    faq_1b_a:
       "Wij voeren complete woningrenovaties, badkamers, stucwerk, schilderwerk, timmerwerk, loodgieterswerk, gevelwerk en onderhoud uit.",
-    faq_2_q: "Werken jullie ook voor zakelijke opdrachtgevers?",
-    faq_2_a:
+    faq_2_q: "Wat als er tijdens de verbouwing verborgen gebreken opduiken?",
+    faq_2_a: "Transparantie staat voorop. Mochten we onvoorziene zaken (zoals houtrot of leidinglekkages) tegenkomen, dan bespreken we dit direct met u. We bieden een oplossing en prijs aan vóórdat we verdere kosten maken. Geen verrassingen achteraf.",
+    faq_2b_q: "Werken jullie ook voor zakelijke opdrachtgevers?",
+    faq_2b_a:
       "Ja, wij werken dagelijks voor particulieren, aannemers, VvE's en vastgoedbeheerders.",
     faq_3_q: "In welke regio zijn jullie actief?",
     faq_3_a:
@@ -313,6 +328,15 @@ const translations = {
     nav_contact: "Contact",
     nav_cta: "Request a Quote",
     nav_business: "Business",
+    btn_next: "Next step",
+    btn_back: "Back",
+    btn_submit_request: "Submit Request",
+    step_1_of_3: "Step 1 of 3",
+    step_2_of_3: "Step 2 of 3",
+    step_3_of_3: "Step 3 of 3",
+    step_1_of_2: "Step 1 of 2",
+    step_2_of_2: "Step 2 of 2",
+    badge_best_value: "Most popular",
 
     // Hero
     hero_label: "Professional Contractors & Builders in the Netherlands",
@@ -491,11 +515,15 @@ const translations = {
     // FAQ
     faq_label: "FAQ",
     faq_title: "Frequently Asked Questions",
-    faq_1_q: "What types of construction work do you handle?",
-    faq_1_a:
+    faq_1_q: "Are the prices shown inclusive of VAT?",
+    faq_1_a: "Our calculator shows estimates excluding VAT, as many private homes (older than 2 years) qualify for the reduced 9% VAT rate on specific works. In a formal quote, we detail this exactly for you.",
+    faq_1b_q: "What types of construction work do you handle?",
+    faq_1b_a:
       "We manage complete home renovations, bathrooms, plastering, painting, carpentry, plumbing, masonry, and ongoing maintenance.",
-    faq_2_q: "Do you work with commercial clients?",
-    faq_2_a:
+    faq_2_q: "What if hidden defects arise during the renovation?",
+    faq_2_a: "Transparency is our priority. Should we encounter unforeseen issues (like wood rot or pipe leaks), we discuss this directly with you. We offer a solution and price before incurring any further costs. No surprises afterwards.",
+    faq_2b_q: "Do you work with commercial clients?",
+    faq_2b_a:
       "Yes, we partner daily with private homeowners, general contractors, HOAs (VvE), and property managers.",
     faq_3_q: "In which areas do you operate?",
     faq_3_a:
@@ -598,6 +626,15 @@ const translations = {
     nav_contact: "Контакти",
     nav_cta: "Замовити розрахунок",
     nav_business: "Для бізнесу",
+    btn_next: "Наступний крок",
+    btn_back: "Назад",
+    btn_submit_request: "Надіслати запит",
+    step_1_of_3: "Крок 1 з 3",
+    step_2_of_3: "Крок 2 з 3",
+    step_3_of_3: "Крок 3 з 3",
+    step_1_of_2: "Крок 1 з 2",
+    step_2_of_2: "Крок 2 з 2",
+    badge_best_value: "Найпопулярніший",
 
     // Hero
     hero_label: "Майстри та Будівельники в Нідерландах",
@@ -775,11 +812,15 @@ const translations = {
     // FAQ
     faq_label: "FAQ",
     faq_title: "Часті запитання про ремонт",
-    faq_1_q: "Які саме роботи ви виконуєте?",
-    faq_1_a:
+    faq_1_q: "Чи включають ціни ПДВ?",
+    faq_1_a: "Наш калькулятор показує орієнтовні ціни без ПДВ, оскільки багато приватних будинків (старше 2 років) мають право на знижену ставку ПДВ 9% на певні роботи. В офіційній пропозиції ми детально це розпишемо.",
+    faq_1b_q: "Які саме роботи ви виконуєте?",
+    faq_1b_a:
       "Ми виконуємо повний комплекс будівельних робіт: ремонт житла, санвузли, штукатурку, фарбування, столярні роботи, сантехніку, фасади та обслуговування.",
-    faq_2_q: "Чи працюєте ви з юридичними особами?",
-    faq_2_a:
+    faq_2_q: "Що робити, якщо під час ремонту виявляться приховані дефекти?",
+    faq_2_a: "Прозорість - наш пріоритет. Якщо ми виявимо непередбачувані проблеми (наприклад, гниття деревини або протікання труб), ми негайно обговоримо це з вами. Ми запропонуємо рішення та ціну до того, як понесемо додаткові витрати. Ніяких сюрпризів.",
+    faq_2b_q: "Чи працюєте ви з юридичними особами?",
+    faq_2b_a:
       "Так, ми щодня співпрацюємо з приватними замовниками, будівельними компаніями, ОСББ (VvE) та управляючими організаціями.",
     faq_3_q: "У яких регіонах ви працюєте?",
     faq_3_a:
@@ -881,6 +922,15 @@ const translations = {
     nav_contact: "Контакты",
     nav_cta: "Запросить смету",
     nav_business: "Для бизнеса",
+    btn_next: "Следующий шаг",
+    btn_back: "Назад",
+    btn_submit_request: "Отправить заявку",
+    step_1_of_3: "Шаг 1 из 3",
+    step_2_of_3: "Шаг 2 из 3",
+    step_3_of_3: "Шаг 3 из 3",
+    step_1_of_2: "Шаг 1 из 2",
+    step_2_of_2: "Шаг 2 из 2",
+    badge_best_value: "Наиболее популярный",
 
     // Hero
     hero_label: "Мастера и Подрядчики в Нидерландах",
@@ -1058,11 +1108,15 @@ const translations = {
     // FAQ
     faq_label: "FAQ",
     faq_title: "Частые вопросы о ремонте",
-    faq_1_q: "Какие виды работ вы выполняете?",
-    faq_1_a:
+    faq_1_q: "Включен ли НДС в цены?",
+    faq_1_a: "Наш калькулятор показывает ориентировочные цены без НДС, так как многие частные дома (старше 2 лет) имеют право на сниженную ставку НДС 9% на определенные работы. В официальном предложении мы детально это распишем.",
+    faq_1b_q: "Какие виды работ вы выполняете?",
+    faq_1b_a:
       "Мы выполняем полный комплекс: ремонт жилья, санузлы, штукатурку, покраску, столярные работы, сантехнику, фасады и обслуживание.",
-    faq_2_q: "Работаете ли вы с компаниями?",
-    faq_2_a:
+    faq_2_q: "Что делать, если во время ремонта обнаружатся скрытые дефекты?",
+    faq_2_a: "Прозрачность - наш приоритет. Если мы обнаружим непредвиденные проблемы (например, гниение древесины или протечки труб), мы немедленно обсудим это с вами. Мы предложим решение и цену до того, как понесем дополнительные расходы. Никаких сюрпризов.",
+    faq_2b_q: "Работаете ли вы с компаниями?",
+    faq_2b_a:
       "Да, мы ежедневно сотрудничаем с частными клиентами, генподрядчиками, ТСЖ (VvE) и управляющими компаниями.",
     faq_3_q: "В каких регионах вы работаете?",
     faq_3_a: "Работаем по всем Нидерландам с фокусом на крупных городах.",

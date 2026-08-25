@@ -84,6 +84,10 @@ export default function CostEstimator({
   const [tier, setTier] = useState<"standard" | "premium" | "luxury">("premium")
   const [includeDemo, setIncludeDemo] = useState(false)
   const [includeMaterials, setIncludeMaterials] = useState(true)
+  const [step, setStep] = useState(1)
+
+  const handleNext = () => setStep(s => Math.min(3, s + 1))
+  const handleBack = () => setStep(s => Math.max(1, s - 1))
 
   const handleServiceChange = (s: EstimatorOption) => {
     setSelectedService(s)
@@ -148,180 +152,232 @@ export default function CostEstimator({
         </div>
 
         <div className="max-w-4xl mx-auto card p-6 md:p-10 shadow-lg border-2 border-[var(--brand)] bg-white">
-          {/* Step 1: Select Service */}
-          <div className="mb-8">
-            <label className="block text-xs font-bold uppercase tracking-wider text-[var(--muted)] mb-3">
-              {t("est_step_1")}
-            </label>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {SERVICES_DATA.map((s) => {
-                const isActive = selectedService.id === s.id
-                const displayName = t(s.nameKey as any) || s.defaultName
-                return (
-                  <button
-                    key={s.id}
-                    onClick={() => handleServiceChange(s)}
-                    className={`p-3.5 rounded-xl border text-center transition-all cursor-pointer flex flex-col items-center gap-2 ${
-                      isActive
-                        ? "border-[var(--brand)] bg-[var(--brand-subtle)] text-[var(--brand-dark)] shadow-xs"
-                        : "border-[var(--border)] bg-white text-[var(--fg)] hover:border-[var(--brand)]"
-                    }`}
-                  >
-                    <Icon
-                      name={s.icon}
-                      size={22}
-                      color={isActive ? "var(--brand)" : "var(--muted)"}
-                    />
-                    <span className="text-xs font-bold leading-tight">
-                      {displayName}
-                    </span>
-                  </button>
-                )
-              })}
+          {/* Progress Bar */}
+          <div className="flex justify-between items-center mb-6 border-b border-[var(--border)] pb-4">
+            <div className="text-xs font-bold text-[var(--muted)]">
+              {step === 1 ? t("step_1_of_3" as any) || "Stap 1 van 3" : step === 2 ? t("step_2_of_3" as any) || "Stap 2 van 3" : t("step_3_of_3" as any) || "Stap 3 van 3"}
+            </div>
+            <div className="flex gap-1.5">
+              <div className={`h-1.5 w-8 rounded-full ${step >= 1 ? 'bg-[var(--brand)]' : 'bg-gray-200'}`}></div>
+              <div className={`h-1.5 w-8 rounded-full ${step >= 2 ? 'bg-[var(--brand)]' : 'bg-gray-200'}`}></div>
+              <div className={`h-1.5 w-8 rounded-full ${step >= 3 ? 'bg-[var(--brand)]' : 'bg-gray-200'}`}></div>
             </div>
           </div>
 
-          {/* Step 2: Sliders & Quantity */}
-          <div className="mb-8 bg-[var(--muted-bg)] p-5 rounded-xl border border-[var(--border)]">
-            <div className="flex justify-between items-center mb-3">
-              <label className="text-sm font-bold text-[var(--fg)]">
-                {t("est_step_2")} ({selectedService.unit})
-              </label>
-              <span className="text-xl font-extrabold text-[var(--brand)] bg-white px-3 py-1 rounded-lg border border-[var(--border)]">
-                {qty} {selectedService.unit}
-              </span>
-            </div>
-            <input
-              type="range"
-              min={selectedService.minQty}
-              max={selectedService.maxQty}
-              step={selectedService.step}
-              value={qty}
-              onChange={(e) => setQty(Number(e.target.value))}
-              aria-label={t("est_step_2")}
-              aria-valuemin={selectedService.minQty}
-              aria-valuemax={selectedService.maxQty}
-              aria-valuenow={qty}
-              className="w-full accent-[var(--brand)] h-2 bg-gray-200 rounded-lg cursor-pointer"
-            />
-            <div className="flex justify-between text-[11px] text-[var(--muted)] mt-1.5 font-medium">
-              <span>
-                {selectedService.minQty} {selectedService.unit}
-              </span>
-              <span>
-                {Math.round(
-                  (selectedService.minQty + selectedService.maxQty) / 2,
-                )}{" "}
-                {selectedService.unit}
-              </span>
-              <span>
-                {selectedService.maxQty} {selectedService.unit}
-              </span>
-            </div>
-          </div>
-
-          {/* Step 3: Material Quality Tier */}
-          <div className="mb-8">
-            <label className="block text-xs font-bold uppercase tracking-wider text-[var(--muted)] mb-3">
-              {t("est_step_3")}
-            </label>
-            <div className="grid sm:grid-cols-3 gap-3">
-              {[
-                {
-                  id: "standard",
-                  name: t("est_tier_std"),
-                  desc: t("est_tier_std_desc"),
-                },
-                {
-                  id: "premium",
-                  name: t("est_tier_prem"),
-                  desc: t("est_tier_prem_desc"),
-                },
-                {
-                  id: "luxury",
-                  name: t("est_tier_lux"),
-                  desc: t("est_tier_lux_desc"),
-                },
-              ].map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => setTier(item.id as any)}
-                  aria-pressed={tier === item.id}
-                  className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all ${
-                    tier === item.id
-                      ? "border-[var(--brand)] bg-[var(--brand-subtle)] ring-1 ring-[var(--brand)]"
-                      : "border-[var(--border)] bg-white hover:bg-gray-50"
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="font-bold text-xs text-[var(--fg)]">
-                      {item.name}
-                    </span>
-                    {tier === item.id && (
-                      <span className="text-[var(--brand)] text-xs font-bold">
-                        ✓
-                      </span>
-                    )}
-                  </div>
-                  <span className="text-[11px] text-[var(--muted)] block leading-tight">
-                    {item.desc}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Options: Demolition & Materials */}
-          <div className="grid sm:grid-cols-2 gap-4 mb-8 pt-4 border-t border-[var(--border)]">
-            <label className="flex items-center gap-3 p-3 rounded-lg border border-[var(--border)] bg-white cursor-pointer hover:bg-gray-50 text-xs">
-              <input
-                type="checkbox"
-                checked={includeDemo}
-                onChange={(e) => setIncludeDemo(e.target.checked)}
-                className="w-4 h-4 accent-[var(--brand)] rounded"
-              />
-              <span className="font-semibold text-[var(--fg)]">
-                {t("est_opt_demo")}
-              </span>
-            </label>
-
-            <label className="flex items-center gap-3 p-3 rounded-lg border border-[var(--border)] bg-white cursor-pointer hover:bg-gray-50 text-xs">
-              <input
-                type="checkbox"
-                checked={includeMaterials}
-                onChange={(e) => setIncludeMaterials(e.target.checked)}
-                className="w-4 h-4 accent-[var(--brand)] rounded"
-              />
-              <span className="font-semibold text-[var(--fg)]">
-                {t("est_opt_mat")}
-              </span>
-            </label>
-          </div>
-
-          {/* Result Price Band */}
-          <div className="p-6 rounded-2xl bg-gradient-to-br from-[#0f172a] to-[#1e293b] text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
-            <div>
-              <span className="text-xs uppercase tracking-widest text-[#4ade80] font-bold block mb-1">
-                {t("est_est_price")}
-              </span>
-              <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex items-baseline gap-2">
-                <span>€{totalMin.toLocaleString()}</span>
-                <span className="text-gray-400 font-light text-2xl">—</span>
-                <span>€{totalMax.toLocaleString()}</span>
+          {step === 1 && (
+            <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+              {/* Step 1: Select Service */}
+              <div className="mb-8">
+                <label className="block text-xs font-bold uppercase tracking-wider text-[var(--muted)] mb-3">
+                  {t("est_step_1")}
+                </label>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {SERVICES_DATA.map((s) => {
+                    const isActive = selectedService.id === s.id
+                    const displayName = t(s.nameKey as any) || s.defaultName
+                    return (
+                      <button
+                        key={s.id}
+                        onClick={() => handleServiceChange(s)}
+                        className={`p-3.5 rounded-xl border text-center transition-all cursor-pointer flex flex-col items-center gap-2 ${
+                          isActive
+                            ? "border-[var(--brand)] bg-[var(--brand-subtle)] text-[var(--brand-dark)] shadow-xs"
+                            : "border-[var(--border)] bg-white text-[var(--fg)] hover:border-[var(--brand)]"
+                        }`}
+                      >
+                        <Icon
+                          name={s.icon}
+                          size={22}
+                          color={isActive ? "var(--brand)" : "var(--muted)"}
+                        />
+                        <span className="text-xs font-bold leading-tight">
+                          {displayName}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
               </div>
-              <span className="text-[11px] text-gray-400 block mt-1.5">
-                {t("est_disclaimer")}
-              </span>
+              
+              <div className="flex justify-end mt-6">
+                <button onClick={handleNext} className="btn btn-primary px-8">
+                  {t("btn_next" as any) || "Volgende"} &rarr;
+                </button>
+              </div>
             </div>
+          )}
 
-            <button
-              onClick={handleApply}
-              className="w-full md:w-auto px-6 py-3.5 rounded-xl font-bold text-sm bg-[var(--brand)] hover:bg-[var(--brand-dark)] text-white shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 border-0"
-            >
-              <Icon name="check" size={18} />
-              {t("est_apply_btn")} &rarr;
-            </button>
-          </div>
+          {step === 2 && (
+            <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+              {/* Step 2: Sliders & Quantity */}
+              <div className="mb-8 bg-[var(--muted-bg)] p-5 rounded-xl border border-[var(--border)]">
+                <div className="flex justify-between items-center mb-3">
+                  <label className="text-sm font-bold text-[var(--fg)]">
+                    {t("est_step_2")} ({selectedService.unit})
+                  </label>
+                  <span className="text-xl font-extrabold text-[var(--brand)] bg-white px-3 py-1 rounded-lg border border-[var(--border)]">
+                    {qty} {selectedService.unit}
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min={selectedService.minQty}
+                  max={selectedService.maxQty}
+                  step={selectedService.step}
+                  value={qty}
+                  onChange={(e) => setQty(Number(e.target.value))}
+                  aria-label={t("est_step_2")}
+                  aria-valuemin={selectedService.minQty}
+                  aria-valuemax={selectedService.maxQty}
+                  aria-valuenow={qty}
+                  className="w-full accent-[var(--brand)] h-2 bg-gray-200 rounded-lg cursor-pointer"
+                />
+                <div className="flex justify-between text-[11px] text-[var(--muted)] mt-1.5 font-medium">
+                  <span>
+                    {selectedService.minQty} {selectedService.unit}
+                  </span>
+                  <span>
+                    {Math.round(
+                      (selectedService.minQty + selectedService.maxQty) / 2,
+                    )}{" "}
+                    {selectedService.unit}
+                  </span>
+                  <span>
+                    {selectedService.maxQty} {selectedService.unit}
+                  </span>
+                </div>
+              </div>
+
+              {/* Options: Demolition & Materials */}
+              <div className="grid sm:grid-cols-2 gap-4 mb-8 pt-4 border-t border-[var(--border)]">
+                <label className="flex items-center gap-3 p-3 rounded-lg border border-[var(--border)] bg-white cursor-pointer hover:bg-gray-50 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={includeDemo}
+                    onChange={(e) => setIncludeDemo(e.target.checked)}
+                    className="w-4 h-4 accent-[var(--brand)] rounded"
+                  />
+                  <span className="font-semibold text-[var(--fg)]">
+                    {t("est_opt_demo")}
+                  </span>
+                </label>
+
+                <label className="flex items-center gap-3 p-3 rounded-lg border border-[var(--border)] bg-white cursor-pointer hover:bg-gray-50 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={includeMaterials}
+                    onChange={(e) => setIncludeMaterials(e.target.checked)}
+                    className="w-4 h-4 accent-[var(--brand)] rounded"
+                  />
+                  <span className="font-semibold text-[var(--fg)]">
+                    {t("est_opt_mat")}
+                  </span>
+                </label>
+              </div>
+              
+              <div className="flex justify-between mt-8">
+                <button onClick={handleBack} className="btn btn-outline">
+                  &larr; {t("btn_back" as any) || "Terug"}
+                </button>
+                <button onClick={handleNext} className="btn btn-primary px-8">
+                  {t("btn_next" as any) || "Volgende"} &rarr;
+                </button>
+              </div>
+            </div>
+          )}
+
+          {step === 3 && (
+            <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+              {/* Step 3: Material Quality Tier */}
+              <div className="mb-8">
+                <label className="block text-xs font-bold uppercase tracking-wider text-[var(--muted)] mb-3">
+                  {t("est_step_3")}
+                </label>
+                <div className="grid sm:grid-cols-3 gap-3">
+                  {[
+                    {
+                      id: "standard",
+                      name: t("est_tier_std"),
+                      desc: t("est_tier_std_desc"),
+                    },
+                    {
+                      id: "premium",
+                      name: t("est_tier_prem"),
+                      desc: t("est_tier_prem_desc"),
+                    },
+                    {
+                      id: "luxury",
+                      name: t("est_tier_lux"),
+                      desc: t("est_tier_lux_desc"),
+                    },
+                  ].map((item) => (
+                    <button
+                      key={item.id}
+                      onClick={() => setTier(item.id as any)}
+                      aria-pressed={tier === item.id}
+                      className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all ${
+                        tier === item.id
+                          ? "border-[var(--brand)] bg-[var(--brand-subtle)] ring-1 ring-[var(--brand)]"
+                          : "border-[var(--border)] bg-white hover:bg-gray-50"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-xs text-[var(--fg)]">
+                            {item.name}
+                          </span>
+                          {item.id === "premium" && (
+                            <span className="inline-block px-1.5 py-0.5 bg-amber-100 text-amber-700 text-[9px] uppercase tracking-wider font-extrabold rounded">
+                              {t("badge_best_value" as any) || "Meest gekozen"}
+                            </span>
+                          )}
+                        </div>
+                        {tier === item.id && (
+                          <span className="text-[var(--brand)] text-xs font-bold">
+                            ✓
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-[11px] text-[var(--muted)] block leading-tight">
+                        {item.desc}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Result Price Band */}
+              <div className="p-6 rounded-2xl bg-gradient-to-br from-[#0f172a] to-[#1e293b] text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+                <div>
+                  <span className="text-xs uppercase tracking-widest text-[#4ade80] font-bold block mb-1">
+                    {t("est_est_price")}
+                  </span>
+                  <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex items-baseline gap-2">
+                    <span>€{totalMin.toLocaleString()}</span>
+                    <span className="text-gray-400 font-light text-2xl">—</span>
+                    <span>€{totalMax.toLocaleString()}</span>
+                  </div>
+                  <span className="text-[11px] text-gray-400 block mt-1.5">
+                    {t("est_disclaimer")}
+                  </span>
+                </div>
+
+                <button
+                  onClick={handleApply}
+                  className="w-full md:w-auto px-6 py-3.5 rounded-xl font-bold text-sm bg-[var(--brand)] hover:bg-[var(--brand-dark)] text-white shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 border-0"
+                >
+                  <Icon name="check" size={18} />
+                  {t("est_apply_btn")} &rarr;
+                </button>
+              </div>
+              
+              <div className="flex justify-start mt-6">
+                <button onClick={handleBack} className="btn btn-outline">
+                  &larr; {t("btn_back" as any) || "Terug"}
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Quick WhatsApp Photo Nudge */}
           <div className="mt-5 p-4 rounded-xl bg-emerald-50/90 border border-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">

@@ -26,7 +26,7 @@ import type { TranslationKey } from "./i18n/translations"
 export type Page = "home" | "diensten" | "projecten" | "werkgebied" | "contact" | "over-ons" | "zakelijk" | "kennisbank" | {
   type: "service"
   slug: string
-} | { type: "city" city: string serviceSlug?: string }
+} | { type: "city"; city: string; serviceSlug?: string }
 
 export default function App() {
   const [page, setPage] = useState<Page>("home")
