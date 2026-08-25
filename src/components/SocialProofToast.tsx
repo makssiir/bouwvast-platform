@@ -83,7 +83,7 @@ export default function SocialProofToast() {
   return (
     <aside
       aria-label="Recente aanvragen"
-      className="fixed bottom-20 max-md:bottom-28 left-6 max-md:left-4 max-md:right-4 z-50 max-w-sm bg-white rounded-xl border border-[var(--border)] p-3.5 shadow-xl transition-all duration-500 animate-[fade-in-up_0.4s_ease-out]"
+      className="fixed bottom-20 max-md:top-24 max-md:bottom-auto left-6 max-md:left-4 max-md:right-4 z-50 max-w-sm bg-white rounded-xl border border-[var(--border)] p-3.5 shadow-xl transition-all duration-500 animate-[fade-in-up_0.4s_ease-out]"
     >
       <div className="flex items-start gap-3">
         {/* Pulsing Green Dot */}

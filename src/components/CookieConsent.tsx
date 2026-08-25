@@ -28,7 +28,7 @@ export default function CookieConsent() {
   return (
     <aside
       aria-label={t("cookie_title")}
-      className="fixed bottom-4 max-md:bottom-[70px] inset-x-4 md:inset-x-auto md:right-6 md:max-w-md z-50 p-5 rounded-2xl bg-white border border-[var(--border)] shadow-2xl animate-[fade-in-up_0.4s_ease-out]"
+      className="fixed z-[100] max-md:bottom-0 max-md:left-0 max-md:right-0 max-md:rounded-t-2xl max-md:rounded-b-none md:bottom-4 md:inset-x-auto md:right-6 md:max-w-md p-5 md:rounded-2xl bg-white max-md:border-t md:border border-[var(--border)] shadow-[0_-10px_40px_rgba(0,0,0,0.1)] md:shadow-2xl animate-[fade-in-up_0.4s_ease-out]"
     >
       <h2 className="text-sm font-bold text-[var(--fg)] mb-1.5">
         {t("cookie_title")}
