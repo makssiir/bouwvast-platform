@@ -37,6 +37,12 @@ export default function Header({
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
 
+  // Lock body scroll when mobile menu overlay is open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : ""
+    return () => { document.body.style.overflow = "" }
+  }, [menuOpen])
+
   const NAV = [
     { label: t("nav_services"), page: "diensten" },
     { label: t("nav_projects"), page: "projecten" },
@@ -167,7 +173,7 @@ export default function Header({
       </div>
 
       {menuOpen && (
-        <div id="nav-mobile" className="open container pb-20">
+        <div id="nav-mobile">
           <ul>
             {NAV.map((n) => (
               <li key={n.page}>
@@ -176,7 +182,7 @@ export default function Header({
                     navigate(n.page as Page)
                     setMenuOpen(false)
                   }}
-                  className={`w-full text-left py-2 bg-transparent border-0 cursor-pointer text-base font-semibold ${
+                  className={`w-full text-left py-4 bg-transparent border-0 cursor-pointer text-base font-semibold ${
                     page === n.page
                       ? "text-[var(--brand)] font-bold"
                       : "text-[var(--fg)]"
@@ -187,7 +193,6 @@ export default function Header({
               </li>
             ))}
           </ul>
-
         </div>
       )}
     </header>
