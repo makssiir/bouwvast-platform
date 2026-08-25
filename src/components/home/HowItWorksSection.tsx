@@ -1,6 +1,10 @@
-import type { Page } from "../../App";
+import type { Page } from "../../App"
 
-export default function HowItWorksSection({ navigate }: { navigate: (p: Page) => void }) {
+export default function HowItWorksSection({
+  navigate,
+}: {
+  navigate: (p: Page) => void
+}) {
   const steps = [
     {
       no: 1,
@@ -17,14 +21,15 @@ export default function HowItWorksSection({ navigate }: { navigate: (p: Page) =>
       title: "3. Vakkundige oplevering",
       text: "Na akkoord voeren onze ervaren vakmensen het werk netjes en volgens afspraak uit, inclusief garantie en nazorg.",
     },
-  ];
+  ]
 
   return (
     <section className="section section--muted" id="hoe-het-werkt">
       <div className="container">
         <h2 className="center">Zo werkt het</h2>
         <p className="lead center">
-          Eén vertrouwd aanspreekpunt voor intake en planning, met vakkundige uitvoering op locatie.
+          Eén vertrouwd aanspreekpunt voor intake en planning, met vakkundige
+          uitvoering op locatie.
         </p>
 
         <ol className="grid grid-3 list-none p-0 m-0">
@@ -40,12 +45,12 @@ export default function HowItWorksSection({ navigate }: { navigate: (p: Page) =>
         </ol>
 
         <div className="btn-row centered-actions">
-          <button 
+          <button
             className="btn btn-primary"
             onClick={() => {
-              const quoteEl = document.getElementById("quote");
-              if (quoteEl) quoteEl.scrollIntoView({ behavior: "smooth" });
-              else navigate("contact");
+              const quoteEl = document.getElementById("quote")
+              if (quoteEl) quoteEl.scrollIntoView({ behavior: "smooth" })
+              else navigate("contact")
             }}
           >
             Start uw aanvraag
@@ -53,5 +58,5 @@ export default function HowItWorksSection({ navigate }: { navigate: (p: Page) =>
         </div>
       </div>
     </section>
-  );
+  )
 }

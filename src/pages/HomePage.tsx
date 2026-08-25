@@ -1,24 +1,28 @@
-import React, { useState } from "react";
-import type { Page } from "../App";
-import QuoteForm from "../components/QuoteForm";
-import Icon from "../components/Icon";
-import { CONTACT } from "../data/contact";
-import { ARTICLES } from "../data/articles";
-import { useLang } from "../i18n/LangContext";
+import React, { useState } from "react"
+import type { Page } from "../App"
+import QuoteForm from "../components/QuoteForm"
+import Icon from "../components/Icon"
+import { CONTACT } from "../data/contact"
+import { ARTICLES } from "../data/articles"
+import { useLang } from "../i18n/LangContext"
 
-import HeroSection from "../components/home/HeroSection";
-import ServicesSection from "../components/home/ServicesSection";
-import HowItWorksSection from "../components/home/HowItWorksSection";
-import CostEstimator from "../components/home/CostEstimator";
-import BeforeAfter from "../components/home/BeforeAfter";
-import ProjectModal, { type ProjectDetail } from "../components/ProjectModal";
+import HeroSection from "../components/home/HeroSection"
+import ServicesSection from "../components/home/ServicesSection"
+import HowItWorksSection from "../components/home/HowItWorksSection"
+import CostEstimator from "../components/home/CostEstimator"
+import BeforeAfter from "../components/home/BeforeAfter"
+import ProjectModal, { type ProjectDetail } from "../components/ProjectModal"
 
-export default function HomePage({ navigate }: { navigate: (p: Page) => void }) {
-  const [activeProject, setActiveProject] = useState<ProjectDetail | null>(null);
+export default function HomePage({
+  navigate,
+}: {
+  navigate: (p: Page) => void
+}) {
+  const [activeProject, setActiveProject] = useState<ProjectDetail | null>(null)
 
   const handleRequestQuoteFromProject = (serviceSlug: string) => {
-    navigate({ type: "service", slug: serviceSlug });
-  };
+    navigate({ type: "service", slug: serviceSlug })
+  }
 
   return (
     <main id="main">
@@ -32,7 +36,10 @@ export default function HomePage({ navigate }: { navigate: (p: Page) => void }) 
       <GoogleReviews />
       <PricingPreviewSection navigate={navigate} />
       <FounderTrustCard navigate={navigate} />
-      <ProjectGallery onOpenProject={(p) => setActiveProject(p)} navigate={navigate} />
+      <ProjectGallery
+        onOpenProject={(p) => setActiveProject(p)}
+        navigate={navigate}
+      />
       <KennisbankPreviewSection navigate={navigate} />
       <FAQSection />
       <QuoteFormSection />
@@ -45,20 +52,20 @@ export default function HomePage({ navigate }: { navigate: (p: Page) => void }) 
         onRequestQuote={handleRequestQuoteFromProject}
       />
     </main>
-  );
+  )
 }
 
 /* ==========================================================================
    1. STATS BAND
    ========================================================================== */
 function StatsBand() {
-  const { t } = useLang();
+  const { t } = useLang()
   const facts = [
     { value: t("stat_1_val"), label: t("stat_1_lbl") },
     { value: t("stat_2_val"), label: t("stat_2_lbl") },
     { value: t("stat_3_val"), label: t("stat_3_lbl") },
     { value: t("stat_4_val"), label: t("stat_4_lbl") },
-  ];
+  ]
 
   return (
     <section className="stats-band" aria-label="Bouwvast in het kort">
@@ -73,14 +80,14 @@ function StatsBand() {
         </dl>
       </div>
     </section>
-  );
+  )
 }
 
 /* ==========================================================================
    2. AUDIENCE SECTION ("Voor wie")
    ========================================================================== */
 function AudienceSection({ navigate }: { navigate: (p: Page) => void }) {
-  const { t } = useLang();
+  const { t } = useLang()
 
   return (
     <section className="section home-audience-strip">
@@ -90,9 +97,7 @@ function AudienceSection({ navigate }: { navigate: (p: Page) => void }) {
             <span className="eyebrow">{t("aud_label")}</span>
             <h2>{t("aud_title")}</h2>
           </div>
-          <p className="text-[var(--muted)] text-base m-0">
-            {t("aud_sub")}
-          </p>
+          <p className="text-[var(--muted)] text-base m-0">{t("aud_sub")}</p>
         </div>
 
         <div className="home-audience-grid">
@@ -102,10 +107,8 @@ function AudienceSection({ navigate }: { navigate: (p: Page) => void }) {
             </div>
             <span className="card-eyebrow">{t("aud_part_title")}</span>
             <h3>{t("aud_part_heading")}</h3>
-            <p className="text-[var(--muted)] mb-4">
-              {t("aud_part_desc")}
-            </p>
-            <button 
+            <p className="text-[var(--muted)] mb-4">{t("aud_part_desc")}</p>
+            <button
               onClick={() => navigate("diensten")}
               className="more bg-transparent border-0 p-0 cursor-pointer"
             >
@@ -119,10 +122,8 @@ function AudienceSection({ navigate }: { navigate: (p: Page) => void }) {
             </div>
             <span className="card-eyebrow">{t("aud_b2b_title")}</span>
             <h3>{t("aud_b2b_heading")}</h3>
-            <p className="text-[var(--muted)] mb-4">
-              {t("aud_b2b_desc")}
-            </p>
-            <button 
+            <p className="text-[var(--muted)] mb-4">{t("aud_b2b_desc")}</p>
+            <button
               onClick={() => navigate("zakelijk")}
               className="more text-[#0284c7] bg-transparent border-0 p-0 cursor-pointer"
             >
@@ -132,14 +133,14 @@ function AudienceSection({ navigate }: { navigate: (p: Page) => void }) {
         </div>
       </div>
     </section>
-  );
+  )
 }
 
 /* ==========================================================================
    3. GOOGLE REVIEWS
    ========================================================================== */
 function GoogleReviews() {
-  const { t } = useLang();
+  const { t } = useLang()
   const reviews = [
     {
       name: "Mark van Dijk",
@@ -159,7 +160,7 @@ function GoogleReviews() {
       time: "2 maanden geleden",
       text: "Snel geholpen met een acute lekkage en herstel van leidingwerk. Duidelijke prijsafspraak vooraf en binnen no-time vakkundig opgelost.",
     },
-  ];
+  ]
 
   return (
     <section className="section">
@@ -178,38 +179,72 @@ function GoogleReviews() {
           {reviews.map((r, i) => (
             <div className="card" key={i}>
               <div className="review-head">
-                <div className="avatar">
-                  {r.name[0]}
-                </div>
+                <div className="avatar">{r.name[0]}</div>
                 <div>
                   <h3 className="text-base m-0 font-bold">{r.name}</h3>
-                  <span className="text-xs text-[var(--muted)]">📍 {r.city} · {r.time}</span>
+                  <span className="text-xs text-[var(--muted)]">
+                    📍 {r.city} · {r.time}
+                  </span>
                 </div>
               </div>
-              <p className="text-[var(--muted)] text-sm leading-relaxed m-0">"{r.text}"</p>
+              <p className="text-[var(--muted)] text-sm leading-relaxed m-0">
+                "{r.text}"
+              </p>
             </div>
           ))}
         </div>
       </div>
     </section>
-  );
+  )
 }
 
 /* ==========================================================================
    4. TRANSPARANTE TARIEVEN
    ========================================================================== */
 function PricingPreviewSection({ navigate }: { navigate: (p: Page) => void }) {
-  const { t } = useLang();
+  const { t } = useLang()
   const prices = [
-    { label: "Uurtarief vakman (arbeid)", price: "€55 / uur", slug: "algemeen" },
-    { label: "Complete woningrenovatie", price: "Vaste offerte", slug: "renovatie" },
-    { label: "Badkamer- & sanitairrenovatie", price: "Vaste projectprijs", slug: "badkamer-keuken" },
-    { label: "Stucwerk & wandafwerking", price: "Vanaf €45 / m²", slug: "afbouw" },
-    { label: "Binnenschilderwerk & sauswerk", price: "Vanaf €35 / m²", slug: "schilderwerk" },
-    { label: "Timmerwerk, kozijnen & deuren", price: "Vanaf €55 / uur", slug: "timmerman" },
-    { label: "Loodgieter & leidingwerk", price: "Vanaf €65 / uur", slug: "loodgieter" },
-    { label: "Gevelrenovatie & voegwerk", price: "Vanaf €48 / m²", slug: "gevel-buitenwerk" },
-  ];
+    {
+      label: "Uurtarief vakman (arbeid)",
+      price: "€55 / uur",
+      slug: "algemeen",
+    },
+    {
+      label: "Complete woningrenovatie",
+      price: "Vaste offerte",
+      slug: "renovatie",
+    },
+    {
+      label: "Badkamer- & sanitairrenovatie",
+      price: "Vaste projectprijs",
+      slug: "badkamer-keuken",
+    },
+    {
+      label: "Stucwerk & wandafwerking",
+      price: "Vanaf €45 / m²",
+      slug: "afbouw",
+    },
+    {
+      label: "Binnenschilderwerk & sauswerk",
+      price: "Vanaf €35 / m²",
+      slug: "schilderwerk",
+    },
+    {
+      label: "Timmerwerk, kozijnen & deuren",
+      price: "Vanaf €55 / uur",
+      slug: "timmerman",
+    },
+    {
+      label: "Loodgieter & leidingwerk",
+      price: "Vanaf €65 / uur",
+      slug: "loodgieter",
+    },
+    {
+      label: "Gevelrenovatie & voegwerk",
+      price: "Vanaf €48 / m²",
+      slug: "gevel-buitenwerk",
+    },
+  ]
 
   return (
     <section className="section section--muted" id="tarieven">
@@ -217,10 +252,8 @@ function PricingPreviewSection({ navigate }: { navigate: (p: Page) => void }) {
         <div>
           <span className="eyebrow">{t("price_label")}</span>
           <h2>{t("price_title")}</h2>
-          <p className="text-[var(--muted)] mb-6">
-            {t("price_sub")}
-          </p>
-          <button 
+          <p className="text-[var(--muted)] mb-6">{t("price_sub")}</p>
+          <button
             className="btn btn-outline"
             onClick={() => navigate("diensten")}
           >
@@ -235,8 +268,10 @@ function PricingPreviewSection({ navigate }: { navigate: (p: Page) => void }) {
               {prices.map((row) => (
                 <tr key={row.label}>
                   <td>
-                    <button 
-                      onClick={() => navigate({ type: "service", slug: row.slug })}
+                    <button
+                      onClick={() =>
+                        navigate({ type: "service", slug: row.slug })
+                      }
                       className="bg-transparent border-0 p-0 text-left font-semibold text-[var(--fg)] hover:text-[var(--brand)] cursor-pointer"
                     >
                       {row.label}
@@ -250,14 +285,14 @@ function PricingPreviewSection({ navigate }: { navigate: (p: Page) => void }) {
         </div>
       </div>
     </section>
-  );
+  )
 }
 
 /* ==========================================================================
    5. FOUNDER TRUST CARD
    ========================================================================== */
 function FounderTrustCard({ navigate }: { navigate: (p: Page) => void }) {
-  const { t } = useLang();
+  const { t } = useLang()
 
   return (
     <section className="section">
@@ -274,7 +309,7 @@ function FounderTrustCard({ navigate }: { navigate: (p: Page) => void }) {
               <p className="text-slate-300 text-sm leading-relaxed mb-6">
                 {t("trust_card_desc")}
               </p>
-              
+
               <div className="flex flex-wrap gap-4 text-xs font-semibold text-slate-200 mb-6">
                 <span className="flex items-center gap-1.5 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
                   <span className="text-[#4ade80]">✓</span> {t("trust_badge_1")}
@@ -304,14 +339,16 @@ function FounderTrustCard({ navigate }: { navigate: (p: Page) => void }) {
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-4">
-                <span className="text-xs font-bold text-white">Vakteam Bouwvast Nederland</span>
+                <span className="text-xs font-bold text-white">
+                  Vakteam Bouwvast Nederland
+                </span>
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-  );
+  )
 }
 
 /* ==========================================================================
@@ -321,10 +358,10 @@ function ProjectGallery({
   onOpenProject,
   navigate,
 }: {
-  onOpenProject: (p: ProjectDetail) => void;
-  navigate: (p: Page) => void;
+  onOpenProject: (p: ProjectDetail) => void
+  navigate: (p: Page) => void
 }) {
-  const { t } = useLang();
+  const { t } = useLang()
   const sampleProjects: ProjectDetail[] = [
     {
       title: "Complete Keukenrenovatie & Visgraatvloer",
@@ -356,7 +393,7 @@ function ProjectGallery({
       materials: "60x120cm keramische tegels, Grohe inbouwkranen",
       serviceSlug: "badkamer-keuken",
     },
-  ];
+  ]
 
   return (
     <section className="section" id="projecten">
@@ -415,38 +452,48 @@ function ProjectGallery({
         </div>
       </div>
     </section>
-  );
+  )
 }
 
 /* ==========================================================================
    7. KENNISBANK PREVIEW
    ========================================================================== */
-function KennisbankPreviewSection({ navigate }: { navigate: (p: Page) => void }) {
-  const { t } = useLang();
-  const previewArticles = ARTICLES.slice(0, 3);
+function KennisbankPreviewSection({
+  navigate,
+}: {
+  navigate: (p: Page) => void
+}) {
+  const { t } = useLang()
+  const previewArticles = ARTICLES.slice(0, 3)
 
   return (
-    <section className="section bg-[var(--muted-bg)] border-t border-[var(--border)]" id="kennisbank">
+    <section
+      className="section bg-[var(--muted-bg)] border-t border-[var(--border)]"
+      id="kennisbank"
+    >
       <div className="container">
         <div className="center mb-10">
           <span className="eyebrow">Advies & Tips</span>
           <h2>Kennisbank voor huiseigenaren</h2>
           <p className="lead">
-            Praktische gidsen over verbouwingskosten, voorbereiding en bouwvoorschriften.
+            Praktische gidsen over verbouwingskosten, voorbereiding en
+            bouwvoorschriften.
           </p>
         </div>
 
         <div className="grid grid-3">
           {previewArticles.map((art) => (
             <article
-              key={art.id}
+              key={art.slug}
               onClick={() => navigate("kennisbank" as any)}
               className="card overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 flex flex-col justify-between bg-white"
             >
               <div className="p-6 flex-1 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between text-xs text-[var(--muted)] mb-3">
-                    <span className="font-bold text-[var(--brand)]">{art.category}</span>
+                    <span className="font-bold text-[var(--brand)]">
+                      {art.category}
+                    </span>
                     <span>⏱ {art.readTime}</span>
                   </div>
                   <h3 className="text-base font-bold text-[var(--fg)] mb-2 leading-snug">
@@ -474,20 +521,20 @@ function KennisbankPreviewSection({ navigate }: { navigate: (p: Page) => void })
         </div>
       </div>
     </section>
-  );
+  )
 }
 
 /* ==========================================================================
    8. FAQ SECTION
    ========================================================================== */
 function FAQSection() {
-  const { t } = useLang();
+  const { t } = useLang()
   const faqs = [
     { q: t("faq_1_q"), a: t("faq_1_a") },
     { q: t("faq_2_q"), a: t("faq_2_a") },
     { q: t("faq_3_q"), a: t("faq_3_a") },
     { q: t("faq_4_q"), a: t("faq_4_a") },
-  ];
+  ]
 
   return (
     <section className="section section--muted" id="faq">
@@ -507,14 +554,14 @@ function FAQSection() {
         </div>
       </div>
     </section>
-  );
+  )
 }
 
 /* ==========================================================================
    9. CRM QUOTE FORM SECTION
    ========================================================================== */
 function QuoteFormSection() {
-  const { t } = useLang();
+  const { t } = useLang()
 
   return (
     <section id="quote" className="section">
@@ -531,19 +578,25 @@ function QuoteFormSection() {
                 <div className="w-8 h-8 rounded-full bg-[var(--brand-tint)] text-[var(--brand)] flex items-center justify-center font-bold">
                   ✓
                 </div>
-                <span className="text-sm font-semibold text-[var(--fg)]">{t("hero_trust_1")}</span>
+                <span className="text-sm font-semibold text-[var(--fg)]">
+                  {t("hero_trust_1")}
+                </span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-[var(--brand-tint)] text-[var(--brand)] flex items-center justify-center font-bold">
                   ✓
                 </div>
-                <span className="text-sm font-semibold text-[var(--fg)]">{t("hero_trust_2")}</span>
+                <span className="text-sm font-semibold text-[var(--fg)]">
+                  {t("hero_trust_2")}
+                </span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-[var(--brand-tint)] text-[var(--brand)] flex items-center justify-center font-bold">
                   ✓
                 </div>
-                <span className="text-sm font-semibold text-[var(--fg)]">{t("hero_trust_3")}</span>
+                <span className="text-sm font-semibold text-[var(--fg)]">
+                  {t("hero_trust_3")}
+                </span>
               </div>
             </div>
           </div>
@@ -554,20 +607,20 @@ function QuoteFormSection() {
         </div>
       </div>
     </section>
-  );
+  )
 }
 
 /* ==========================================================================
    10. CTA SECTION
    ========================================================================== */
 function CTASection({ navigate }: { navigate: (p: Page) => void }) {
-  const { t } = useLang();
+  const { t } = useLang()
 
   const handleQuoteClick = () => {
-    const quoteEl = document.getElementById("quote");
-    if (quoteEl) quoteEl.scrollIntoView({ behavior: "smooth" });
-    else navigate("contact");
-  };
+    const quoteEl = document.getElementById("quote")
+    if (quoteEl) quoteEl.scrollIntoView({ behavior: "smooth" })
+    else navigate("contact")
+  }
 
   return (
     <section className="section section--muted">
@@ -576,14 +629,11 @@ function CTASection({ navigate }: { navigate: (p: Page) => void }) {
           <h2>{t("cta_title")}</h2>
           <p>{t("cta_sub")}</p>
           <div className="btn-row justify-center">
-            <button 
-              onClick={handleQuoteClick}
-              className="btn btn-white btn-lg"
-            >
+            <button onClick={handleQuoteClick} className="btn btn-white btn-lg">
               <Icon name="check" size={20} />
               {t("cta_btn")}
             </button>
-            <a 
+            <a
               href={`tel:${CONTACT.phoneTel}`}
               className="btn btn-outline-white btn-lg"
             >
@@ -594,13 +644,33 @@ function CTASection({ navigate }: { navigate: (p: Page) => void }) {
         </div>
       </div>
     </section>
-  );
+  )
 }
 
-export function SectionLabel({ children }: { children: string }) {
-  return <span className="eyebrow">{children}</span>;
+export function SectionLabel({
+  children,
+  white,
+}: {
+  children: string
+  white?: boolean
+}) {
+  return (
+    <span className={`eyebrow ${white ? "text-white/80" : ""}`}>
+      {children}
+    </span>
+  )
 }
 
-export function H2({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <h2 className={className}>{children}</h2>;
+export function H2({
+  children,
+  className = "",
+  white,
+}: {
+  children: React.ReactNode
+  className?: string
+  white?: boolean
+}) {
+  return (
+    <h2 className={`${className} ${white ? "text-white" : ""}`}>{children}</h2>
+  )
 }

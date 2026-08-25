@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
-import Icon from "./Icon";
-import { SERVICES } from "../data/services";
-import { submitLead } from "../lib/leads";
-import { track } from "../lib/analytics";
-import { useLang } from "../i18n/LangContext";
+import React, { useState, useEffect } from "react"
+import Icon from "./Icon"
+import { SERVICES } from "../data/services"
+import { submitLead } from "../lib/leads"
+import { track } from "../lib/analytics"
+import { useLang } from "../i18n/LangContext"
 
 export default function QuoteModal({
   isOpen,
   onClose,
   initialService = "",
 }: {
-  isOpen: boolean;
-  onClose: () => void;
-  initialService?: string;
+  isOpen: boolean
+  onClose: () => void
+  initialService?: string
 }) {
-  const { lang, t } = useLang();
-  const [step, setStep] = useState(1);
+  const { lang, t } = useLang()
+  const [step, setStep] = useState(1)
   const [formData, setFormData] = useState({
     service: initialService,
     description: "",
@@ -25,44 +25,44 @@ export default function QuoteModal({
     phone: "",
     email: "",
     city: "Amersfoort",
-  });
-  const [photos, setPhotos] = useState<File[]>([]);
-  const [submitted, setSubmitted] = useState(false);
+  })
+  const [photos, setPhotos] = useState<File[]>([])
+  const [submitted, setSubmitted] = useState(false)
 
   useEffect(() => {
     if (initialService) {
-      setFormData((prev) => ({ ...prev, service: initialService }));
+      setFormData((prev) => ({ ...prev, service: initialService }))
     }
-  }, [initialService]);
+  }, [initialService])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
+      if (e.key === "Escape") onClose()
+    }
     if (isOpen) {
-      document.body.style.overflow = "hidden";
-      window.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden"
+      window.addEventListener("keydown", handleKeyDown)
     }
     return () => {
-      document.body.style.overflow = "unset";
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen, onClose]);
+      document.body.style.overflow = "unset"
+      window.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [isOpen, onClose])
 
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   const handleNext = () => {
-    if (step === 1 && !formData.service) return;
-    if (step === 2 && !formData.description) return;
-    setStep((s) => s + 1);
-  };
+    if (step === 1 && !formData.service) return
+    if (step === 2 && !formData.description) return
+    setStep((s) => s + 1)
+  }
 
   const handleBack = () => {
-    setStep((s) => Math.max(1, s - 1));
-  };
+    setStep((s) => Math.max(1, s - 1))
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     await submitLead({
       id: crypto.randomUUID(),
       name: formData.name,
@@ -78,14 +78,14 @@ export default function QuoteModal({
       language: lang,
       sourcePage: "quote_modal",
       createdAt: new Date().toISOString(),
-    });
-    track("form_submitted", { sourcePage: "quote_modal" });
-    setSubmitted(true);
-  };
+    })
+    track("form_submitted", { sourcePage: "quote_modal" })
+    setSubmitted(true)
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[rgba(15,23,42,0.8)] backdrop-blur-xs animate-[fade-in_0.2s_ease-out]">
-      <div 
+      <div
         className="relative w-full max-w-xl rounded-2xl bg-white shadow-2xl overflow-hidden border border-[var(--border)] animate-[scale-up_0.25s_ease-out]"
         onClick={(e) => e.stopPropagation()}
       >
@@ -93,7 +93,9 @@ export default function QuoteModal({
         <div className="p-6 border-b border-[var(--border)] flex items-center justify-between bg-[var(--muted-bg)]">
           <div>
             <span className="eyebrow text-xs">{t("hero_label")}</span>
-            <h2 className="text-xl font-bold text-[var(--fg)] m-0">{t("wizard_modal_title")}</h2>
+            <h2 className="text-xl font-bold text-[var(--fg)] m-0">
+              {t("wizard_modal_title")}
+            </h2>
           </div>
           <button
             onClick={onClose}
@@ -120,15 +122,17 @@ export default function QuoteModal({
               <div className="w-16 h-16 rounded-full bg-[var(--brand-tint)] text-[var(--brand)] flex items-center justify-center mx-auto mb-4">
                 <Icon name="check" size={32} />
               </div>
-              <h3 className="text-2xl font-bold text-[var(--fg)] mb-2">{t("form_success_title")}</h3>
+              <h3 className="text-2xl font-bold text-[var(--fg)] mb-2">
+                {t("form_success_title")}
+              </h3>
               <p className="text-sm text-[var(--muted)] max-w-sm mx-auto mb-6">
                 {t("form_success_sub")}
               </p>
               <button
                 onClick={() => {
-                  setSubmitted(false);
-                  setStep(1);
-                  onClose();
+                  setSubmitted(false)
+                  setStep(1)
+                  onClose()
                 }}
                 className="btn btn-primary"
               >
@@ -140,22 +144,39 @@ export default function QuoteModal({
               {/* Step 1: Select service */}
               {step === 1 && (
                 <div>
-                  <h3 className="text-base font-bold mb-4">{t("wizard_step_1_title")}</h3>
+                  <h3 className="text-base font-bold mb-4">
+                    {t("wizard_step_1_title")}
+                  </h3>
                   <div className="grid grid-cols-2 gap-3 max-h-72 overflow-y-auto pr-1">
                     {SERVICES.map((s) => {
-                      const serviceName = t(s.nameKey) || s.name;
-                      const isSelected = formData.service === s.name || formData.service === serviceName;
+                      const serviceName = t(s.nameKey) || s.name
+                      const isSelected =
+                        formData.service === s.name ||
+                        formData.service === serviceName
                       return (
                         <button
                           key={s.slug}
                           type="button"
-                          onClick={() => setFormData((prev) => ({ ...prev, service: s.name }))}
-                          className={`p-3.5 rounded-xl border text-left flex items-center gap-3 transition-all cursor-pointer ${isSelected ? 'border-[var(--brand)] bg-[var(--brand-subtle)] font-bold text-[var(--brand-dark)] shadow-xs' : 'border-[var(--border)] bg-white hover:border-[var(--brand)] text-[var(--fg)]'}`}
+                          onClick={() =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              service: s.name,
+                            }))
+                          }
+                          className={`p-3.5 rounded-xl border text-left flex items-center gap-3 transition-all cursor-pointer ${
+                            isSelected
+                              ? "border-[var(--brand)] bg-[var(--brand-subtle)] font-bold text-[var(--brand-dark)] shadow-xs"
+                              : "border-[var(--border)] bg-white hover:border-[var(--brand)] text-[var(--fg)]"
+                          }`}
                         >
-                          <Icon name={s.icon} size={20} color={isSelected ? "var(--brand)" : "var(--muted)"} />
+                          <Icon
+                            name={s.icon}
+                            size={20}
+                            color={isSelected ? "var(--brand)" : "var(--muted)"}
+                          />
                           <span className="text-xs">{serviceName}</span>
                         </button>
-                      );
+                      )
                     })}
                   </div>
                   <div className="mt-6 flex justify-end">
@@ -174,7 +195,9 @@ export default function QuoteModal({
               {/* Step 2: Description & Photos */}
               {step === 2 && (
                 <div>
-                  <h3 className="text-base font-bold mb-4">{t("wizard_step_2_title")}</h3>
+                  <h3 className="text-base font-bold mb-4">
+                    {t("wizard_step_2_title")}
+                  </h3>
                   <div className="space-y-4">
                     <div>
                       <label className="block text-xs font-bold text-[var(--fg)] mb-1">
@@ -184,7 +207,12 @@ export default function QuoteModal({
                         required
                         rows={3}
                         value={formData.description}
-                        onChange={(e) => setFormData((p) => ({ ...p, description: e.target.value }))}
+                        onChange={(e) =>
+                          setFormData((p) => ({
+                            ...p,
+                            description: e.target.value,
+                          }))
+                        }
                         className="field resize-none text-sm"
                         placeholder="Bijv. Woningrenovatie, stucwerk of badkamer..."
                       />
@@ -196,13 +224,24 @@ export default function QuoteModal({
                       </label>
                       <select
                         value={formData.preferredTime}
-                        onChange={(e) => setFormData((p) => ({ ...p, preferredTime: e.target.value }))}
+                        onChange={(e) =>
+                          setFormData((p) => ({
+                            ...p,
+                            preferredTime: e.target.value,
+                          }))
+                        }
                         className="field text-sm"
                       >
                         <option value="asap">{t("form_time_morning")}</option>
-                        <option value="1-month">{t("form_time_afternoon")}</option>
-                        <option value="3-months">{t("form_time_all_day")}</option>
-                        <option value="orienting">{t("form_time_consultation")}</option>
+                        <option value="1-month">
+                          {t("form_time_afternoon")}
+                        </option>
+                        <option value="3-months">
+                          {t("form_time_all_day")}
+                        </option>
+                        <option value="orienting">
+                          {t("form_time_consultation")}
+                        </option>
                       </select>
                     </div>
 
@@ -214,14 +253,20 @@ export default function QuoteModal({
                         type="file"
                         multiple
                         accept="image/*"
-                        onChange={(e) => setPhotos(Array.from(e.target.files ?? []))}
+                        onChange={(e) =>
+                          setPhotos(Array.from(e.target.files ?? []))
+                        }
                         className="block w-full text-xs text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-[var(--brand)] file:text-white cursor-pointer"
                       />
                     </div>
                   </div>
 
                   <div className="mt-6 flex justify-between">
-                    <button type="button" onClick={handleBack} className="btn btn-white">
+                    <button
+                      type="button"
+                      onClick={handleBack}
+                      className="btn btn-white"
+                    >
                       {t("wizard_back")}
                     </button>
                     <button
@@ -239,15 +284,21 @@ export default function QuoteModal({
               {/* Step 3: Contact Details */}
               {step === 3 && (
                 <form onSubmit={handleSubmit}>
-                  <h3 className="text-base font-bold mb-4">{t("wizard_step_3_title")}</h3>
+                  <h3 className="text-base font-bold mb-4">
+                    {t("wizard_step_3_title")}
+                  </h3>
                   <div className="space-y-3">
                     <div>
-                      <label className="block text-xs font-bold text-[var(--fg)] mb-1">{t("form_name")} *</label>
+                      <label className="block text-xs font-bold text-[var(--fg)] mb-1">
+                        {t("form_name")} *
+                      </label>
                       <input
                         required
                         type="text"
                         value={formData.name}
-                        onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
+                        onChange={(e) =>
+                          setFormData((p) => ({ ...p, name: e.target.value }))
+                        }
                         className="field text-sm"
                         placeholder="Jan de Vries"
                       />
@@ -255,23 +306,34 @@ export default function QuoteModal({
 
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-xs font-bold text-[var(--fg)] mb-1">{t("form_phone")} *</label>
+                        <label className="block text-xs font-bold text-[var(--fg)] mb-1">
+                          {t("form_phone")} *
+                        </label>
                         <input
                           required
                           type="tel"
                           value={formData.phone}
-                          onChange={(e) => setFormData((p) => ({ ...p, phone: e.target.value }))}
+                          onChange={(e) =>
+                            setFormData((p) => ({
+                              ...p,
+                              phone: e.target.value,
+                            }))
+                          }
                           className="field text-sm"
                           placeholder="06 12345678"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-[var(--fg)] mb-1">{t("form_city")} *</label>
+                        <label className="block text-xs font-bold text-[var(--fg)] mb-1">
+                          {t("form_city")} *
+                        </label>
                         <input
                           required
                           type="text"
                           value={formData.city}
-                          onChange={(e) => setFormData((p) => ({ ...p, city: e.target.value }))}
+                          onChange={(e) =>
+                            setFormData((p) => ({ ...p, city: e.target.value }))
+                          }
                           className="field text-sm"
                           placeholder="Amersfoort"
                         />
@@ -279,12 +341,16 @@ export default function QuoteModal({
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-[var(--fg)] mb-1">{t("form_email")} *</label>
+                      <label className="block text-xs font-bold text-[var(--fg)] mb-1">
+                        {t("form_email")} *
+                      </label>
                       <input
                         required
                         type="email"
                         value={formData.email}
-                        onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
+                        onChange={(e) =>
+                          setFormData((p) => ({ ...p, email: e.target.value }))
+                        }
                         className="field text-sm"
                         placeholder="info@voorbeeld.nl"
                       />
@@ -292,7 +358,11 @@ export default function QuoteModal({
                   </div>
 
                   <div className="mt-6 flex justify-between">
-                    <button type="button" onClick={handleBack} className="btn btn-white">
+                    <button
+                      type="button"
+                      onClick={handleBack}
+                      className="btn btn-white"
+                    >
                       {t("wizard_back")}
                     </button>
                     <button type="submit" className="btn btn-primary">
@@ -306,5 +376,5 @@ export default function QuoteModal({
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,23 +1,21 @@
-import type { TranslationKey } from "../i18n/translations";
-import type { ServiceName } from "./cities";
+import type { TranslationKey } from "../i18n/translations"
+import type { ServiceName } from "./cities"
 
-export type ServiceIcon =
-  | "renovation" | "finishing" | "painting" | "facade"
-  | "assembly" | "maintenance" | "bathroom" | "general" | "tools";
+export type ServiceIcon = "renovation" | "finishing" | "painting" | "facade" | "assembly" | "maintenance" | "bathroom" | "general" | "tools"
 
 export interface Service {
   /** URL-safe identifier, stable across languages — the basis for Service × City routing. */
-  slug: string;
+  slug: string
   /** Canonical NL name, matching cities.ts SERVICE_NAMES so a service can be paired with a city. */
-  name: ServiceName;
-  icon: ServiceIcon;
-  nameKey: TranslationKey;
-  descKey: TranslationKey;
-  image: string;
+  name: ServiceName
+  icon: ServiceIcon
+  nameKey: TranslationKey
+  descKey: TranslationKey
+  image: string
   /** NL long-form intro. Structured so translations can be layered on later without a rewrite. */
-  intro: string;
+  intro: string
   /** Concrete deliverables — what actually falls under this service. */
-  includes: string[];
+  includes: string[]
 }
 
 export const SERVICES: Service[] = [
@@ -190,8 +188,8 @@ export const SERVICES: Service[] = [
       "Vaste planning met één bouwcoördinator",
     ],
   },
-];
+]
 
 export const SERVICE_BY_SLUG: Record<string, Service> = Object.fromEntries(
   SERVICES.map((s) => [s.slug, s]),
-);
+)

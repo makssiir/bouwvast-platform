@@ -1,12 +1,16 @@
-import type { Page } from "../../App";
-import { useLang } from "../../i18n/LangContext";
-import { SERVICES } from "../../data/services";
+import type { Page } from "../../App"
+import { useLang } from "../../i18n/LangContext"
+import { SERVICES } from "../../data/services"
 
-export default function ServicesSection({ navigate }: { navigate: (p: Page) => void }) {
-  const { t } = useLang();
+export default function ServicesSection({
+  navigate,
+}: {
+  navigate: (p: Page) => void
+}) {
+  const { t } = useLang()
 
   // Show top 6 highlighted services on home
-  const highlightedServices = SERVICES.slice(0, 6);
+  const highlightedServices = SERVICES.slice(0, 6)
 
   const priceMap: Record<string, string> = {
     renovatie: "Projectmatig",
@@ -18,7 +22,7 @@ export default function ServicesSection({ navigate }: { navigate: (p: Page) => v
     montage: "Vanaf €58/uur",
     loodgieter: "Vanaf €65/uur",
     "onderhoud-reparatie": "Vanaf €55/uur",
-  };
+  }
 
   return (
     <section className="section" id="diensten">
@@ -26,20 +30,20 @@ export default function ServicesSection({ navigate }: { navigate: (p: Page) => v
         <div className="center mb-12">
           <span className="eyebrow">{t("services_label")}</span>
           <h2>{t("services_title")}</h2>
-          <p className="lead">
-            {t("services_sub")}
-          </p>
+          <p className="lead">{t("services_sub")}</p>
         </div>
 
         <div className="grid grid-3">
           {highlightedServices.map((service) => {
-            const displayName = t(service.nameKey) || service.name;
-            const displayDesc = t(service.descKey) || service.intro;
+            const displayName = t(service.nameKey) || service.name
+            const displayDesc = t(service.descKey) || service.intro
 
             return (
               <button
                 key={service.slug}
-                onClick={() => navigate({ type: "service", slug: service.slug })}
+                onClick={() =>
+                  navigate({ type: "service", slug: service.slug })
+                }
                 className="card service-card-link text-left cursor-pointer border-0 bg-white"
               >
                 <div className="service-card-media" aria-hidden="true">
@@ -60,13 +64,13 @@ export default function ServicesSection({ navigate }: { navigate: (p: Page) => v
                   <span className="more">{t("more_info")}</span>
                 </div>
               </button>
-            );
+            )
           })}
         </div>
 
         <div className="btn-row centered-actions">
-          <button 
-            className="btn btn-primary" 
+          <button
+            className="btn btn-primary"
             onClick={() => navigate("diensten")}
           >
             {t("services_all")} ({SERVICES.length}) &rarr;
@@ -74,5 +78,5 @@ export default function ServicesSection({ navigate }: { navigate: (p: Page) => v
         </div>
       </div>
     </section>
-  );
+  )
 }

@@ -1,15 +1,15 @@
-import React, { useEffect } from "react";
-import Icon from "./Icon";
+import React, { useEffect } from "react"
+import Icon from "./Icon"
 
 export interface ProjectDetail {
-  title: string;
-  category: string;
-  city: string;
-  image: string;
-  desc: string;
-  duration?: string;
-  materials?: string;
-  serviceSlug: string;
+  title: string
+  category: string
+  city: string
+  image: string
+  desc: string
+  duration?: string
+  materials?: string
+  serviceSlug: string
 }
 
 export default function ProjectModal({
@@ -17,29 +17,34 @@ export default function ProjectModal({
   onClose,
   onRequestQuote,
 }: {
-  project: ProjectDetail | null;
-  onClose: () => void;
-  onRequestQuote: (serviceSlug: string) => void;
+  project: ProjectDetail | null
+  onClose: () => void
+  onRequestQuote: (serviceSlug: string) => void
 }) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
+      if (e.key === "Escape") onClose()
+    }
     if (project) {
-      document.body.style.overflow = "hidden";
-      window.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden"
+      window.addEventListener("keydown", handleKeyDown)
     }
     return () => {
-      document.body.style.overflow = "unset";
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [project, onClose]);
+      document.body.style.overflow = "unset"
+      window.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [project, onClose])
 
-  if (!project) return null;
+  if (!project) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[rgba(15,23,42,0.8)] backdrop-blur-xs animate-[fade-in_0.2s_ease-out]" role="dialog" aria-modal="true" aria-labelledby="project-modal-title">
-      <div 
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[rgba(15,23,42,0.8)] backdrop-blur-xs animate-[fade-in_0.2s_ease-out]"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="project-modal-title"
+    >
+      <div
         className="relative w-full max-w-3xl rounded-2xl bg-white shadow-2xl overflow-hidden border border-[var(--border)] animate-[scale-up_0.25s_ease-out]"
         onClick={(e) => e.stopPropagation()}
       >
@@ -71,33 +76,43 @@ export default function ProjectModal({
 
         {/* Body details */}
         <div className="p-6 md:p-8">
-          <h2 id="project-modal-title" className="text-2xl font-bold mb-3 text-[var(--fg)]">{project.title}</h2>
+          <h2
+            id="project-modal-title"
+            className="text-2xl font-bold mb-3 text-[var(--fg)]"
+          >
+            {project.title}
+          </h2>
           <p className="text-sm text-[var(--muted)] leading-relaxed mb-6">
             {project.desc}
           </p>
 
           <div className="grid sm:grid-cols-2 gap-4 p-4 rounded-xl bg-[var(--muted-bg)] border border-[var(--border)] mb-6 text-xs text-[var(--fg)]">
             <div>
-              <span className="text-[var(--muted)] block mb-0.5">Doorlooptijd:</span>
-              <span className="font-bold">{project.duration || "2 tot 3 weken"}</span>
+              <span className="text-[var(--muted)] block mb-0.5">
+                Doorlooptijd:
+              </span>
+              <span className="font-bold">
+                {project.duration || "2 tot 3 weken"}
+              </span>
             </div>
             <div>
-              <span className="text-[var(--muted)] block mb-0.5">Toegepaste materialen:</span>
-              <span className="font-bold">{project.materials || "A-merk bouwmaterialen & garantie"}</span>
+              <span className="text-[var(--muted)] block mb-0.5">
+                Toegepaste materialen:
+              </span>
+              <span className="font-bold">
+                {project.materials || "A-merk bouwmaterialen & garantie"}
+              </span>
             </div>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-end">
-            <button
-              onClick={onClose}
-              className="btn btn-white"
-            >
+            <button onClick={onClose} className="btn btn-white">
               Sluiten
             </button>
             <button
               onClick={() => {
-                onClose();
-                onRequestQuote(project.serviceSlug);
+                onClose()
+                onRequestQuote(project.serviceSlug)
               }}
               className="btn btn-primary"
             >
@@ -108,5 +123,5 @@ export default function ProjectModal({
         </div>
       </div>
     </div>
-  );
+  )
 }

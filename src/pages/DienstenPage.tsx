@@ -1,11 +1,15 @@
-import type { Page } from "../App";
-import QuoteForm from "../components/QuoteForm";
-import { useLang } from "../i18n/LangContext";
-import { SERVICES } from "../data/services";
-import Icon from "../components/Icon";
+import type { Page } from "../App"
+import QuoteForm from "../components/QuoteForm"
+import { useLang } from "../i18n/LangContext"
+import { SERVICES } from "../data/services"
+import Icon from "../components/Icon"
 
-export default function DienstenPage({ navigate }: { navigate: (p: Page) => void }) {
-  const { t } = useLang();
+export default function DienstenPage({
+  navigate,
+}: {
+  navigate: (p: Page) => void
+}) {
+  const { t } = useLang()
 
   const priceMap: Record<string, string> = {
     renovatie: "Projectmatig",
@@ -22,20 +26,27 @@ export default function DienstenPage({ navigate }: { navigate: (p: Page) => void
     klusjesman: "Vanaf €50/uur",
     klusbedrijf: "Op offerte",
     algemeen: "Vanaf €55/uur",
-  };
+  }
 
   return (
     <main>
       <section className="hero hero--service">
         <div className="container">
           <div className="breadcrumb mb-4 text-[#86efac]">
-            <button onClick={() => navigate("home")} className="bg-transparent border-0 p-0 text-[#86efac] hover:text-white cursor-pointer">Home</button>
+            <button
+              onClick={() => navigate("home")}
+              className="bg-transparent border-0 p-0 text-[#86efac] hover:text-white cursor-pointer"
+            >
+              Home
+            </button>
             <span className="mx-2">›</span>
             <span className="text-white font-semibold">Diensten</span>
           </div>
           <h1>{t("services_title")}</h1>
           <p className="lead-xl max-w-2xl">
-            Van kleine vakkundige klussen en reparaties tot complete woningrenovaties. Altijd met een heldere aanpak, transparante tarieven en één vast aanspreekpunt.
+            Van kleine vakkundige klussen en reparaties tot complete
+            woningrenovaties. Altijd met een heldere aanpak, transparante
+            tarieven en één vast aanspreekpunt.
           </p>
         </div>
       </section>
@@ -84,17 +95,21 @@ export default function DienstenPage({ navigate }: { navigate: (p: Page) => void
               <span className="eyebrow">Direct aanvragen</span>
               <h2>Offerte voor uw werkzaamheden</h2>
               <p className="text-[var(--muted)] text-base mb-6">
-                Vertel ons welke werkzaamheden u wilt laten uitvoeren. We reageren binnen 24 uur met een vrijblijvend voorstel.
+                Vertel ons welke werkzaamheden u wilt laten uitvoeren. We
+                reageren binnen 24 uur met een vrijblijvend voorstel.
               </p>
               <div className="space-y-3 text-sm text-[var(--fg)] font-medium">
                 <div className="flex items-center gap-2.5">
-                  <span className="text-[var(--brand)] font-bold">✓</span> Vaste richtprijzen zonder verrassingen
+                  <span className="text-[var(--brand)] font-bold">✓</span> Vaste
+                  richtprijzen zonder verrassingen
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <span className="text-[var(--brand)] font-bold">✓</span> Vakkundige gecertificeerde vakmensen
+                  <span className="text-[var(--brand)] font-bold">✓</span>{" "}
+                  Vakkundige gecertificeerde vakmensen
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <span className="text-[var(--brand)] font-bold">✓</span> Volledige kwaliteitsgarantie op het werk
+                  <span className="text-[var(--brand)] font-bold">✓</span>{" "}
+                  Volledige kwaliteitsgarantie op het werk
                 </div>
               </div>
             </div>
@@ -105,5 +120,5 @@ export default function DienstenPage({ navigate }: { navigate: (p: Page) => void
         </div>
       </section>
     </main>
-  );
+  )
 }

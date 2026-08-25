@@ -1,16 +1,16 @@
-import React, { useState, useRef } from "react";
-import Icon from "../Icon";
-import { useLang } from "../../i18n/LangContext";
+import React, { useState, useRef } from "react"
+import Icon from "../Icon"
+import { useLang } from "../../i18n/LangContext"
 
 interface ComparisonItem {
-  id: string;
-  titleKey: string;
-  defaultTitle: string;
-  location: string;
-  beforeImg: string;
-  afterImg: string;
-  descKey?: string;
-  defaultDesc: string;
+  id: string
+  titleKey: string
+  defaultTitle: string
+  location: string
+  beforeImg: string
+  afterImg: string
+  descKey?: string
+  defaultDesc: string
 }
 
 const COMPARISONS: ComparisonItem[] = [
@@ -21,7 +21,8 @@ const COMPARISONS: ComparisonItem[] = [
     location: "Amersfoort Vathorst",
     beforeImg: "/images/kitchen-before.jpg",
     afterImg: "/images/kitchen-after.jpg",
-    defaultDesc: "Van gedateerde eikenhouten kasten naar een moderne luxe keuken met mat-antraciet kasten, inductie en visgraatvloer.",
+    defaultDesc:
+      "Van gedateerde eikenhouten kasten naar een moderne luxe keuken met mat-antraciet kasten, inductie en visgraatvloer.",
   },
   {
     id: "renovation",
@@ -30,7 +31,8 @@ const COMPARISONS: ComparisonItem[] = [
     location: "Leusden",
     beforeImg: "/images/living-before.jpg",
     afterImg: "/images/living-after.jpg",
-    defaultDesc: "Complete aanpak van ruwe wanden, strak sausklaar stucwerk en eikenhouten visgraatvloer.",
+    defaultDesc:
+      "Complete aanpak van ruwe wanden, strak sausklaar stucwerk en eikenhouten visgraatvloer.",
   },
   {
     id: "bathroom",
@@ -39,26 +41,27 @@ const COMPARISONS: ComparisonItem[] = [
     location: "Utrecht Oost",
     beforeImg: "/images/bath-before.jpg",
     afterImg: "/images/bath-after.jpg",
-    defaultDesc: "Van gedateerd tegelwerk naar een moderne inloopdouche met grootformaat betonlook tegels en eiken meubel.",
+    defaultDesc:
+      "Van gedateerd tegelwerk naar een moderne inloopdouche met grootformaat betonlook tegels en eiken meubel.",
   },
-];
+]
 
 export default function BeforeAfter() {
-  const { t } = useLang();
-  const [activeIdx, setActiveIdx] = useState(0);
-  const [pos, setPos] = useState(50);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const dragging = useRef(false);
+  const { t } = useLang()
+  const [activeIdx, setActiveIdx] = useState(0)
+  const [pos, setPos] = useState(50)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const dragging = useRef(false)
 
-  const current = COMPARISONS[activeIdx];
+  const current = COMPARISONS[activeIdx]
 
   const setFromClientX = (clientX: number) => {
-    const el = containerRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const pct = ((clientX - rect.left) / rect.width) * 100;
-    setPos(Math.min(100, Math.max(0, pct)));
-  };
+    const el = containerRef.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    const pct = ((clientX - rect.left) / rect.width) * 100
+    setPos(Math.min(100, Math.max(0, pct)))
+  }
 
   return (
     <section className="section" id="voor-na">
@@ -74,10 +77,14 @@ export default function BeforeAfter() {
               <button
                 key={comp.id}
                 onClick={() => {
-                  setActiveIdx(idx);
-                  setPos(50);
+                  setActiveIdx(idx)
+                  setPos(50)
                 }}
-                className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${activeIdx === idx ? 'bg-[var(--brand)] text-white shadow-md' : 'bg-white border border-[var(--border)] text-[var(--muted)] hover:text-[var(--fg)] hover:border-[var(--brand)]'}`}
+                className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                  activeIdx === idx
+                    ? "bg-[var(--brand)] text-white shadow-md"
+                    : "bg-white border border-[var(--border)] text-[var(--muted)] hover:text-[var(--fg)] hover:border-[var(--brand)]"
+                }`}
               >
                 {comp.defaultTitle}
               </button>
@@ -90,15 +97,15 @@ export default function BeforeAfter() {
             ref={containerRef}
             className="relative w-full overflow-hidden rounded-2xl border border-[var(--border)] shadow-2xl select-none touch-none aspect-video md:aspect-[16/9] cursor-ew-resize bg-black"
             onPointerDown={(e) => {
-              dragging.current = true;
-              (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
-              setFromClientX(e.clientX);
+              dragging.current = true
+              ;(e.target as HTMLElement).setPointerCapture?.(e.pointerId)
+              setFromClientX(e.clientX)
             }}
             onPointerMove={(e) => {
-              if (dragging.current) setFromClientX(e.clientX);
+              if (dragging.current) setFromClientX(e.clientX)
             }}
             onPointerUp={() => {
-              dragging.current = false;
+              dragging.current = false
             }}
             role="slider"
             aria-label={t("ba_hint")}
@@ -107,8 +114,8 @@ export default function BeforeAfter() {
             aria-valuemax={100}
             tabIndex={0}
             onKeyDown={(e) => {
-              if (e.key === "ArrowLeft") setPos((p) => Math.max(0, p - 5));
-              if (e.key === "ArrowRight") setPos((p) => Math.min(100, p + 5));
+              if (e.key === "ArrowLeft") setPos((p) => Math.max(0, p - 5))
+              if (e.key === "ArrowRight") setPos((p) => Math.min(100, p + 5))
             }}
           >
             {/* After (Base Layer) */}
@@ -147,7 +154,12 @@ export default function BeforeAfter() {
             >
               <div className="h-full w-1 bg-white shadow-[0_0_12px_rgba(0,0,0,0.6)]" />
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white text-[var(--brand)] flex items-center justify-center shadow-2xl border-2 border-[var(--brand)]">
-                <Icon name="swap" size={20} color="var(--brand)" strokeWidth={2.4} />
+                <Icon
+                  name="swap"
+                  size={20}
+                  color="var(--brand)"
+                  strokeWidth={2.4}
+                />
               </div>
             </div>
 
@@ -158,11 +170,15 @@ export default function BeforeAfter() {
           </div>
 
           <div className="mt-5 text-center">
-            <h3 className="text-lg font-bold text-[var(--fg)] m-0">{current.defaultTitle} — {current.location}</h3>
-            <p className="text-sm text-[var(--muted)] mt-1.5 max-w-xl mx-auto">{current.defaultDesc}</p>
+            <h3 className="text-lg font-bold text-[var(--fg)] m-0">
+              {current.defaultTitle} — {current.location}
+            </h3>
+            <p className="text-sm text-[var(--muted)] mt-1.5 max-w-xl mx-auto">
+              {current.defaultDesc}
+            </p>
           </div>
         </div>
       </div>
     </section>
-  );
+  )
 }

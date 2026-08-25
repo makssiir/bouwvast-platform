@@ -1,13 +1,17 @@
-import React, { useState } from "react";
-import type { Page } from "../App";
-import { ARTICLES, type Article } from "../data/articles";
-import { useLang } from "../i18n/LangContext";
-import Icon from "../components/Icon";
+import React, { useState } from "react"
+import type { Page } from "../App"
+import { ARTICLES, type Article } from "../data/articles"
+import { useLang } from "../i18n/LangContext"
+import Icon from "../components/Icon"
 
-export default function KennisbankPage({ navigate }: { navigate: (p: Page) => void }) {
-  const { t } = useLang();
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [activeArticle, setActiveArticle] = useState<Article | null>(null);
+export default function KennisbankPage({
+  navigate,
+}: {
+  navigate: (p: Page) => void
+}) {
+  const { t } = useLang()
+  const [selectedCategory, setSelectedCategory] = useState("all")
+  const [activeArticle, setActiveArticle] = useState<Article | null>(null)
 
   const categories = [
     { id: "all", label: "Alle artikelen" },
@@ -15,24 +19,33 @@ export default function KennisbankPage({ navigate }: { navigate: (p: Page) => vo
     { id: "Renovatie Gids", label: "Renovatie Gidsen" },
     { id: "Afbouw & Stuc", label: "Afbouw & Stuc" },
     { id: "Regelgeving & Subsidie", label: "Regels & Btw" },
-  ];
+  ]
 
-  const filtered = selectedCategory === "all" 
-    ? ARTICLES 
-    : ARTICLES.filter((a) => a.category === selectedCategory);
+  const filtered =
+    selectedCategory === "all"
+      ? ARTICLES
+      : ARTICLES.filter((a) => a.category === selectedCategory)
 
   return (
     <main>
       <section className="hero hero--service">
         <div className="container">
           <div className="breadcrumb mb-4 text-[#86efac]">
-            <button onClick={() => navigate("home")} className="bg-transparent border-0 p-0 text-[#86efac] hover:text-white cursor-pointer">Home</button>
+            <button
+              onClick={() => navigate("home")}
+              className="bg-transparent border-0 p-0 text-[#86efac] hover:text-white cursor-pointer"
+            >
+              Home
+            </button>
             <span className="mx-2">›</span>
-            <span className="text-white font-semibold">{t("nav_kennisbank")}</span>
+            <span className="text-white font-semibold">
+              {t("nav_kennisbank")}
+            </span>
           </div>
           <h1>{t("nav_kennisbank")}</h1>
           <p className="lead-xl max-w-2xl">
-            Praktische gidsen, actuele richtprijzen en vakkundig advies voor uw verbouwing of renovatie.
+            Praktische gidsen, actuele richtprijzen en vakkundig advies voor uw
+            verbouwing of renovatie.
           </p>
         </div>
       </section>
@@ -45,7 +58,11 @@ export default function KennisbankPage({ navigate }: { navigate: (p: Page) => vo
               <button
                 key={c.id}
                 onClick={() => setSelectedCategory(c.id)}
-                className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${selectedCategory === c.id ? 'bg-[var(--brand)] text-white shadow-xs' : 'bg-[var(--muted-bg)] border border-[var(--border)] text-[var(--muted)] hover:text-[var(--fg)]'}`}
+                className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                  selectedCategory === c.id
+                    ? "bg-[var(--brand)] text-white shadow-xs"
+                    : "bg-[var(--muted-bg)] border border-[var(--border)] text-[var(--muted)] hover:text-[var(--fg)]"
+                }`}
               >
                 {c.label}
               </button>
@@ -76,7 +93,9 @@ export default function KennisbankPage({ navigate }: { navigate: (p: Page) => vo
 
                 <div className="p-6 md:p-8 flex flex-col flex-1 justify-between">
                   <div>
-                    <span className="text-xs text-[var(--muted)] block mb-2">{article.date}</span>
+                    <span className="text-xs text-[var(--muted)] block mb-2">
+                      {article.date}
+                    </span>
                     <h2 className="text-xl font-bold mb-3 group-hover:text-[var(--brand)] transition-colors">
                       {article.title}
                     </h2>
@@ -96,7 +115,7 @@ export default function KennisbankPage({ navigate }: { navigate: (p: Page) => vo
 
       {/* Article Detail Modal */}
       {activeArticle && (
-        <div 
+        <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[rgba(15,23,42,0.8)] backdrop-blur-xs"
           onClick={() => setActiveArticle(null)}
         >
@@ -111,13 +130,19 @@ export default function KennisbankPage({ navigate }: { navigate: (p: Page) => vo
               ✕
             </button>
 
-            <span className="eyebrow">{activeArticle.category} · {activeArticle.readTime}</span>
+            <span className="eyebrow">
+              {activeArticle.category} · {activeArticle.readTime}
+            </span>
             <h1 className="text-2xl md:text-3xl font-extrabold mb-6 mt-2 text-[var(--fg)]">
               {activeArticle.title}
             </h1>
 
             <div className="relative h-64 rounded-xl overflow-hidden mb-8">
-              <img src={activeArticle.image} alt={activeArticle.title} className="w-full h-full object-cover" />
+              <img
+                src={activeArticle.image}
+                alt={activeArticle.title}
+                className="w-full h-full object-cover"
+              />
             </div>
 
             <div className="space-y-4 text-base text-[var(--muted)] leading-relaxed mb-8">
@@ -129,7 +154,8 @@ export default function KennisbankPage({ navigate }: { navigate: (p: Page) => vo
             {activeArticle.tips && activeArticle.tips.length > 0 && (
               <div className="p-6 rounded-xl bg-[var(--brand-subtle)] border border-[var(--brand-tint)] mb-8">
                 <h3 className="text-base font-bold text-[var(--brand-dark)] mb-3 flex items-center gap-2">
-                  <Icon name="check" size={18} color="var(--brand)" /> Tips van de vakman
+                  <Icon name="check" size={18} color="var(--brand)" /> Tips van
+                  de vakman
                 </h3>
                 <ul className="space-y-2 text-sm text-[var(--fg)] pl-5 list-disc">
                   {activeArticle.tips.map((t, idx) => (
@@ -149,9 +175,9 @@ export default function KennisbankPage({ navigate }: { navigate: (p: Page) => vo
               {activeArticle.relatedServiceSlug && (
                 <button
                   onClick={() => {
-                    const slug = activeArticle.relatedServiceSlug;
-                    setActiveArticle(null);
-                    if (slug) navigate({ type: "service", slug });
+                    const slug = activeArticle.relatedServiceSlug
+                    setActiveArticle(null)
+                    if (slug) navigate({ type: "service", slug })
                   }}
                   className="btn btn-primary"
                 >
@@ -163,5 +189,5 @@ export default function KennisbankPage({ navigate }: { navigate: (p: Page) => vo
         </div>
       )}
     </main>
-  );
+  )
 }

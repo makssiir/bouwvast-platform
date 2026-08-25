@@ -1,20 +1,20 @@
-import React, { useRef, useState } from "react";
-import Icon from "./Icon";
-import { useLang } from "../i18n/LangContext";
-import { submitLead } from "../lib/leads";
-import { track } from "../lib/analytics";
-import { SERVICES } from "../data/services";
+import React, { useRef, useState } from "react"
+import Icon from "./Icon"
+import { useLang } from "../i18n/LangContext"
+import { submitLead } from "../lib/leads"
+import { track } from "../lib/analytics"
+import { SERVICES } from "../data/services"
 
 export default function QuoteForm({
   compact,
   sourcePage = "website",
   presetService = "",
 }: {
-  compact?: boolean;
-  sourcePage?: string;
-  presetService?: string;
+  compact?: boolean
+  sourcePage?: string
+  presetService?: string
 }) {
-  const { t, lang } = useLang();
+  const { t, lang } = useLang()
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -25,32 +25,32 @@ export default function QuoteForm({
     preferredDate: "",
     preferredTime: "",
     honeypot: "",
-  });
-  const [photos, setPhotos] = useState<File[]>([]);
-  const [submitted, setSubmitted] = useState(false);
-  const started = useRef(false);
+  })
+  const [photos, setPhotos] = useState<File[]>([])
+  const [submitted, setSubmitted] = useState(false)
+  const started = useRef(false)
 
   const up = (key: keyof typeof form, value: string) => {
     if (!started.current) {
-      started.current = true;
-      track("form_started", { sourcePage });
+      started.current = true
+      track("form_started", { sourcePage })
     }
-    setForm((current) => ({ ...current, [key]: value }));
-  };
+    setForm((current) => ({ ...current, [key]: value }))
+  }
 
   const fields = [
     ["quote-name", t("form_name"), "name", "text", true],
     ["quote-phone", t("form_phone"), "phone", "tel", true],
     ["quote-email", t("form_email"), "email", "email", true],
     ["quote-city", t("form_city"), "city", "text", true],
-  ] as const;
+  ] as const
 
-  const services = SERVICES.map((s) => s.name);
+  const services = SERVICES.map((s) => s.name)
 
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    if (form.honeypot) return;
-    const search = new URLSearchParams(window.location.search);
+    event.preventDefault()
+    if (form.honeypot) return
+    const search = new URLSearchParams(window.location.search)
     await submitLead({
       id: crypto.randomUUID(),
       name: form.name,
@@ -69,10 +69,10 @@ export default function QuoteForm({
       utm_medium: search.get("utm_medium") ?? undefined,
       utm_campaign: search.get("utm_campaign") ?? undefined,
       createdAt: new Date().toISOString(),
-    });
-    track("form_submitted", { sourcePage });
-    setSubmitted(true);
-  };
+    })
+    track("form_submitted", { sourcePage })
+    setSubmitted(true)
+  }
 
   if (submitted) {
     return (
@@ -80,10 +80,14 @@ export default function QuoteForm({
         <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[var(--brand-tint)] text-[var(--brand)]">
           <Icon name="check" size={32} />
         </div>
-        <h3 className="text-2xl font-bold text-[var(--fg)]">{t("form_success_title")}</h3>
-        <p className="mt-2 text-sm text-[var(--muted)]">{t("form_success_sub")}</p>
+        <h3 className="text-2xl font-bold text-[var(--fg)]">
+          {t("form_success_title")}
+        </h3>
+        <p className="mt-2 text-sm text-[var(--muted)]">
+          {t("form_success_sub")}
+        </p>
       </div>
-    );
+    )
   }
 
   return (
@@ -154,7 +158,10 @@ export default function QuoteForm({
         />
       </Field>
 
-      <Field id="quote-photos" label={`${t("form_photos")} — ${t("form_optional")}`}>
+      <Field
+        id="quote-photos"
+        label={`${t("form_photos")} — ${t("form_optional")}`}
+      >
         <div className="rounded-lg border border-dashed border-[var(--border)] p-3.5 bg-[var(--brand-subtle)] hover:border-[var(--brand)] transition-colors">
           <input
             id="quote-photos"
@@ -162,12 +169,14 @@ export default function QuoteForm({
             accept="image/jpeg,image/png,image/webp"
             multiple
             onChange={(e) => {
-              setPhotos(Array.from(e.target.files ?? []).slice(0, 5));
-              up("description", form.description);
+              setPhotos(Array.from(e.target.files ?? []).slice(0, 5))
+              up("description", form.description)
             }}
             className="block w-full text-sm text-[var(--muted)] file:mr-3 file:border-0 file:bg-[var(--brand)] file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white file:rounded-md cursor-pointer"
           />
-          <p className="mt-2 text-xs text-[var(--muted)]">{t("form_photos_hint")}</p>
+          <p className="mt-2 text-xs text-[var(--muted)]">
+            {t("form_photos_hint")}
+          </p>
           {photos.length > 0 && (
             <p className="mt-2 text-xs font-semibold text-[var(--brand)]">
               {t("form_photos_selected").replace("{n}", String(photos.length))}
@@ -197,7 +206,7 @@ export default function QuoteForm({
         {t("form_privacy")}
       </p>
     </form>
-  );
+  )
 }
 
 function Field({
@@ -206,18 +215,21 @@ function Field({
   required,
   children,
 }: {
-  id: string;
-  label: string;
-  required?: boolean;
-  children: React.ReactNode;
+  id: string
+  label: string
+  required?: boolean
+  children: React.ReactNode
 }) {
   return (
     <div>
-      <label htmlFor={id} className="mb-1.5 block text-xs font-bold text-[var(--fg)]">
+      <label
+        htmlFor={id}
+        className="mb-1.5 block text-xs font-bold text-[var(--fg)]"
+      >
         {label}
         {required && <span className="text-[var(--brand)]"> *</span>}
       </label>
       {children}
     </div>
-  );
+  )
 }

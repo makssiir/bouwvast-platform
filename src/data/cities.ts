@@ -1,7 +1,7 @@
 export interface City {
-  name: string;
-  province: string;
-  region: string;
+  name: string
+  province: string
+  region: string
 }
 
 export const CITIES: City[] = [
@@ -43,7 +43,7 @@ export const CITIES: City[] = [
   { name: "Harderwijk", province: "Gelderland", region: "gelderland" },
   { name: "Barneveld", province: "Gelderland", region: "gelderland" },
   { name: "Veenendaal", province: "Utrecht", region: "utrecht" },
-];
+]
 
 export const REGION_LABELS: Record<string, string> = {
   groot: "Grote Steden Nederland",
@@ -51,7 +51,7 @@ export const REGION_LABELS: Record<string, string> = {
   utrecht: "Regio Utrecht",
   gooi: "Gooi & Eemland",
   gelderland: "Gelderland",
-};
+}
 
 export const SERVICES_LIST = [
   "Renovatie",
@@ -68,6 +68,6 @@ export const SERVICES_LIST = [
   "Timmerbedrijf",
   "Klusjesman",
   "Klusbedrijf",
-] as const;
+] as const
 
-export type ServiceName = typeof SERVICES_LIST[number];
+export type ServiceName = typeof SERVICES_LIST[number]

@@ -1,6 +1,6 @@
 export interface CompanyField {
-  value: string;
-  verified: boolean;
+  value: string
+  verified: boolean
 }
 
 export const COMPANY = {
@@ -10,12 +10,15 @@ export const COMPANY = {
   phoneTel: { value: "+31332022102", verified: true },
   email: { value: "info@bouwvast.nl", verified: true },
   address: { value: "Stadsring 100, 3811 HS Amersfoort", verified: true },
-  googleMapsUrl: { value: "https://maps.google.com/?q=Stadsring+100,+3811+HS+Amersfoort", verified: true },
+  googleMapsUrl: {
+    value: "https://maps.google.com/?q=Stadsring+100,+3811+HS+Amersfoort",
+    verified: true,
+  },
   kvk: { value: "84920184", verified: true },
   btw: { value: "NL863492018B01", verified: true },
   hours: { value: "Ma t/m Za · 07:30 — 17:00", verified: true },
-} satisfies Record<string, CompanyField>;
+} satisfies Record<string, CompanyField>
 
 export function verifiedValue(field: CompanyField): string {
-  return field.value;
+  return field.value
 }

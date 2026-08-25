@@ -1,26 +1,30 @@
-import type { Page } from "../../App";
-import Icon from "../Icon";
-import { useLang } from "../../i18n/LangContext";
-import { CONTACT } from "../../data/contact";
+import type { Page } from "../../App"
+import Icon from "../Icon"
+import { useLang } from "../../i18n/LangContext"
+import { CONTACT } from "../../data/contact"
 
-export default function HeroSection({ navigate }: { navigate: (p: Page) => void }) {
-  const { t } = useLang();
+export default function HeroSection({
+  navigate,
+}: {
+  navigate: (p: Page) => void
+}) {
+  const { t } = useLang()
 
   const handleQuoteClick = () => {
-    const quoteEl = document.getElementById("quote");
+    const quoteEl = document.getElementById("quote")
     if (quoteEl) {
-      quoteEl.scrollIntoView({ behavior: "smooth" });
+      quoteEl.scrollIntoView({ behavior: "smooth" })
     } else {
-      navigate("contact");
+      navigate("contact")
     }
-  };
+  }
 
   const handleCalculatorClick = () => {
-    const calcEl = document.getElementById("calculator");
+    const calcEl = document.getElementById("calculator")
     if (calcEl) {
-      calcEl.scrollIntoView({ behavior: "smooth" });
+      calcEl.scrollIntoView({ behavior: "smooth" })
     }
-  };
+  }
 
   return (
     <section className="hero hero--home">
@@ -32,22 +36,23 @@ export default function HeroSection({ navigate }: { navigate: (p: Page) => void 
           </div>
 
           <h1>
-            {t("hero_title")} <span className="text-[#4ade80] block">{t("hero_title_accent")}</span>
+            {t("hero_title")}{" "}
+            <span className="text-[#4ade80] block">
+              {t("hero_title_accent")}
+            </span>
           </h1>
 
-          <p className="lead-xl">
-            {t("hero_sub")}
-          </p>
+          <p className="lead-xl">{t("hero_sub")}</p>
 
           <div className="btn-row hero-actions">
-            <button 
+            <button
               onClick={handleQuoteClick}
               className="btn btn-primary btn-lg"
             >
               <Icon name="check" size={20} />
               {t("hero_cta_primary")}
             </button>
-            <button 
+            <button
               onClick={handleCalculatorClick}
               className="btn btn-outline-white btn-lg"
             >
@@ -58,13 +63,16 @@ export default function HeroSection({ navigate }: { navigate: (p: Page) => void 
 
           <div className="hero-sub" aria-label="Certificeringen en garanties">
             <span>
-              <Icon name="check" size={16} color="#4ade80" /> {t("hero_trust_1")}
+              <Icon name="check" size={16} color="#4ade80" />{" "}
+              {t("hero_trust_1")}
             </span>
             <span>
-              <Icon name="shield" size={16} color="#4ade80" /> {t("hero_trust_2")}
+              <Icon name="shield" size={16} color="#4ade80" />{" "}
+              {t("hero_trust_2")}
             </span>
             <span>
-              <Icon name="check" size={16} color="#4ade80" /> {t("hero_trust_3")}
+              <Icon name="check" size={16} color="#4ade80" />{" "}
+              {t("hero_trust_3")}
             </span>
           </div>
         </div>
@@ -84,5 +92,5 @@ export default function HeroSection({ navigate }: { navigate: (p: Page) => void 
         </figure>
       </div>
     </section>
-  );
+  )
 }

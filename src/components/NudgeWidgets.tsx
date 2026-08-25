@@ -1,54 +1,53 @@
-import React, { useState, useEffect } from "react";
-import { CONTACT } from "../data/contact";
-import { useLang } from "../i18n/LangContext";
-import Icon from "./Icon";
+import React, { useState, useEffect } from "react"
+import { CONTACT } from "../data/contact"
+import { useLang } from "../i18n/LangContext"
+import Icon from "./Icon"
 
 export default function NudgeWidgets({
   onOpenQuoteModal,
 }: {
-  onOpenQuoteModal: () => void;
+  onOpenQuoteModal: () => void
 }) {
-  const { t } = useLang();
-  const [bubbleDismissed, setBubbleDismissed] = useState(false);
-  const [showScrollNudge, setShowScrollNudge] = useState(false);
-  const [bubbleOpen, setBubbleOpen] = useState(false);
+  const { t } = useLang()
+  const [bubbleDismissed, setBubbleDismissed] = useState(false)
+  const [showScrollNudge, setShowScrollNudge] = useState(false)
+  const [bubbleOpen, setBubbleOpen] = useState(false)
 
   useEffect(() => {
     // Show speech bubble after 2.5 seconds on the page
     const timer = setTimeout(() => {
       if (!bubbleDismissed) {
-        setBubbleOpen(true);
+        setBubbleOpen(true)
       }
-    }, 2500);
+    }, 2500)
 
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight;
-      const winHeight = window.innerHeight;
+      const scrollY = window.scrollY
+      const docHeight = document.documentElement.scrollHeight
+      const winHeight = window.innerHeight
 
       // Show scroll bar after 400px of scrolling, hide near bottom form
       if (scrollY > 400 && scrollY + winHeight < docHeight - 600) {
-        setShowScrollNudge(true);
+        setShowScrollNudge(true)
       } else {
-        setShowScrollNudge(false);
+        setShowScrollNudge(false)
       }
-    };
+    }
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => {
-      clearTimeout(timer);
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [bubbleDismissed]);
+      clearTimeout(timer)
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [bubbleDismissed])
 
   return (
     <>
       {/* 1. Floating WhatsApp with Non-Overlapping Speech Bubble */}
       <div className="nudge-container select-none">
-        
         {/* Animated Speech Bubble (Cleanly stacked above button) */}
         {bubbleOpen && !bubbleDismissed && (
-          <div 
+          <div
             className="nudge-bubble animate-[fade-in-up_0.25s_ease-out]"
             role="status"
             aria-live="polite"
@@ -56,11 +55,11 @@ export default function NudgeWidgets({
             {/* Close button */}
             <button
               onClick={() => {
-                setBubbleOpen(false);
-                setBubbleDismissed(true);
+                setBubbleOpen(false)
+                setBubbleDismissed(true)
               }}
               className="absolute top-3 right-3 w-6 h-6 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-800 flex items-center justify-center text-xs border-0 cursor-pointer transition-colors"
-              aria-label="Sluit melding"
+              aria-label={t("nudge_close")}
             >
               ✕
             </button>
@@ -135,7 +134,7 @@ export default function NudgeWidgets({
               <button
                 onClick={() => setShowScrollNudge(false)}
                 className="text-slate-400 hover:text-white text-xs p-1 bg-transparent border-0 cursor-pointer ml-1"
-                aria-label="Sluit balk"
+                aria-label={t("nudge_bar_close")}
               >
                 ✕
               </button>
@@ -144,5 +143,5 @@ export default function NudgeWidgets({
         </div>
       )}
     </>
-  );
+  )
 }
