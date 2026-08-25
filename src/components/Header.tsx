@@ -167,7 +167,7 @@ export default function Header({
       </div>
 
       {menuOpen && (
-        <div id="nav-mobile" className="open container">
+        <div id="nav-mobile" className="open container pb-20">
           <ul>
             {NAV.map((n) => (
               <li key={n.page}>
@@ -187,25 +187,7 @@ export default function Header({
               </li>
             ))}
           </ul>
-          <div className="flex flex-col gap-2 pt-3 border-t border-[var(--border)]">
-            <button
-              onClick={() => {
-                navigate("contact")
-                setMenuOpen(false)
-              }}
-              className="btn btn-primary w-full"
-            >
-              <Icon name="check" size={18} />
-              {t("nav_cta")}
-            </button>
-            <a
-              className="btn btn-outline w-full"
-              href={`tel:${CONTACT.phoneTel}`}
-            >
-              <Icon name="phone" size={18} />
-              Bel direct: {CONTACT.phoneDisplay}
-            </a>
-          </div>
+
         </div>
       )}
     </header>
