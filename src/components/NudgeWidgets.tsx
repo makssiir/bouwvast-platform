@@ -13,8 +13,32 @@ export default function NudgeWidgets({
   const [showScrollNudge, setShowScrollNudge] = useState(false)
   const [bubbleOpen, setBubbleOpen] = useState(false)
 
+  // Don't show the bubble until cookie consent is resolved (avoids overlap)
+  const cookieResolved = () =>
+    !!localStorage.getItem("bouwvast_cookie_consent")
+
+  const [consentGiven, setConsentGiven] = useState(cookieResolved)
+
   useEffect(() => {
-    // Show speech bubble after 2.5 seconds on the page
+    if (consentGiven) return
+    // Re-check every time storage changes (user clicks Accept/Decline)
+    const onStorage = () => {
+      if (cookieResolved()) setConsentGiven(true)
+    }
+    window.addEventListener("storage", onStorage)
+    // Also poll briefly since same-tab localStorage changes don't fire "storage"
+    const poll = setInterval(() => {
+      if (cookieResolved()) { setConsentGiven(true); clearInterval(poll) }
+    }, 500)
+    return () => {
+      window.removeEventListener("storage", onStorage)
+      clearInterval(poll)
+    }
+  }, [consentGiven])
+
+  useEffect(() => {
+    if (!consentGiven) return
+    // Show speech bubble 2.5 s after consent is given
     const timer = setTimeout(() => {
       if (!bubbleDismissed) {
         setBubbleOpen(true)
@@ -39,7 +63,7 @@ export default function NudgeWidgets({
       clearTimeout(timer)
       window.removeEventListener("scroll", handleScroll)
     }
-  }, [bubbleDismissed])
+  }, [bubbleDismissed, consentGiven])
 
   return (
     <>
