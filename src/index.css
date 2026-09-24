@@ -2,17 +2,17 @@
 @import 'tailwindcss';
 
 :root {
-  --brand: #15803d;
-  --brand-dark: #166534;
-  --brand-light: #22c55e;
-  --brand-subtle: #f0fdf4;
-  --brand-tint: #dcfce7;
+  --brand: #1d9b52;
+  --brand-dark: #0f6b3d;
+  --brand-light: #3dd67d;
+  --brand-subtle: #edfdf3;
+  --brand-tint: #d9f9e6;
   
   --bg: #ffffff;
   --fg: #0f172a;
   --muted: #475569;
   --muted-bg: #f8fafc;
-  --border: #cbd5e1;
+  --border: #c9d4db;
   --card: #ffffff;
   
   --color-brand: #15803d;
@@ -114,7 +114,7 @@ body {
   margin: 0;
   font-family: var(--font-body);
   color: var(--fg);
-  background: var(--bg);
+  background: linear-gradient(180deg, #f5faf6 0%, #eef7f1 100%);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
@@ -255,15 +255,15 @@ p {
 }
 
 .btn-primary {
-  background: var(--brand);
+  background: linear-gradient(135deg, var(--brand) 0%, #22b55f 100%);
   color: #fff;
-  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.25);
+  box-shadow: 0 8px 24px rgba(29, 155, 82, 0.28);
 }
 
 .btn-primary:hover {
-  background: var(--brand-dark);
+  background: linear-gradient(135deg, var(--brand-dark) 0%, #12814d 100%);
   color: #fff;
-  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35);
+  box-shadow: 0 12px 26px rgba(29, 155, 82, 0.32);
 }
 
 .btn-green {
@@ -331,14 +331,27 @@ p {
   margin-top: 2rem;
 }
 
+@media (max-width: 640px) {
+  .btn-row {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-row .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 /* Header */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 100;
   background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.02);
   transition: box-shadow 0.25s;
 }
 
@@ -367,6 +380,9 @@ p {
   font-size: 1.25rem;
   color: var(--fg);
   letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  flex-shrink: 0;
 }
 
 .brand:hover {
@@ -497,7 +513,7 @@ p {
 
 .hero--home {
   background-image: 
-    linear-gradient(to right, rgba(12, 45, 24, 0.96) 0%, rgba(16, 68, 36, 0.90) 55%, rgba(15, 23, 42, 0.88) 100%),
+    linear-gradient(to right, rgba(8, 35, 20, 0.97) 0%, rgba(16, 86, 46, 0.92) 52%, rgba(10, 18, 30, 0.86) 100%),
     url('/images/renovation-ladder.webp');
 }
 
@@ -540,8 +556,8 @@ p {
 .hero .container {
   position: relative;
   z-index: 1;
-  padding-top: 64px;
-  padding-bottom: 72px;
+  padding-top: 72px;
+  padding-bottom: 80px;
 }
 
 .hero-grid {
@@ -551,9 +567,14 @@ p {
   align-items: center;
 }
 
+.hero-copy {
+  max-width: 620px;
+}
+
 .hero h1 {
   color: #fff;
   margin-top: 0;
+  text-shadow: 0 10px 24px rgba(15, 23, 42, 0.2);
 }
 
 .hero p {
@@ -585,6 +606,10 @@ p {
   align-items: center;
   gap: 0.4rem;
   font-weight: 500;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .hero-sub svg {
@@ -593,11 +618,12 @@ p {
 
 .hero-photo {
   margin: 0;
-  border-radius: 16px;
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 30px 70px rgba(2, 6, 23, 0.34);
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(15, 23, 42, 0.2);
 }
 
 .hero-photo img {
@@ -611,11 +637,11 @@ p {
   position: absolute;
   bottom: 12px;
   left: 12px;
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(8px);
+  background: rgba(15, 23, 42, 0.82);
+  backdrop-filter: blur(10px);
   color: #fff;
   border-radius: 999px;
-  padding: 6px 14px;
+  padding: 7px 14px;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -633,8 +659,38 @@ p {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
+
+  .hero-copy {
+    max-width: none;
+  }
+
   .hero-photo img {
     height: 280px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero .container {
+    padding-top: 44px;
+    padding-bottom: 52px;
+  }
+
+  .hero-actions {
+    margin-top: 1.4rem;
+  }
+
+  .hero-sub {
+    gap: 0.5rem;
+    font-size: 0.82rem;
+  }
+
+  .hero-sub span {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .hero-photo {
+    border-radius: 20px;
   }
 }
 
@@ -714,8 +770,8 @@ p {
 }
 
 .card {
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.98) 100%);
+  border: 1px solid rgba(148, 163, 184, 0.45);
   border-radius: var(--radius);
   padding: 1.5rem;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s, box-shadow 0.25s;
@@ -723,8 +779,8 @@ p {
 
 .card:hover {
   transform: translateY(-4px);
-  border-color: var(--brand);
-  box-shadow: var(--shadow);
+  border-color: rgba(29, 155, 82, 0.5);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
 }
 
 /* Service Card with Image & Price Tag */
@@ -1298,18 +1354,7 @@ td.price {
 
 @media (max-width: 768px) {
   .nudge-container {
-    /* 56px bar + 12px gap + safe area */
-    bottom: calc(68px + env(safe-area-inset-bottom, 0px));
-    right: 16px;
-    gap: 8px;
-  }
-  .nudge-bubble {
-    width: 290px;
-    padding: 14px;
-  }
-  .wa-float {
-    width: 48px;
-    height: 48px;
+    display: none;
   }
 }
 
@@ -1321,25 +1366,27 @@ td.price {
 @media (max-width: 768px) {
   .mobile-contact-bar {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 56px minmax(0, 1fr) minmax(0, 1.2fr);
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    left: 16px;
+    right: 16px;
+    border-radius: 18px;
+    overflow: hidden;
     z-index: 95;
-    background: #ffffff;
-    border-top: 1px solid var(--border);
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
-    /* account for iOS home indicator */
-    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(148, 163, 184, 0.42);
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.14);
+    backdrop-filter: blur(10px);
   }
   .mobile-contact-bar a,
   .mobile-contact-bar button {
-    min-height: 56px;
+    min-height: 58px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
   }
   body {
-    /* 56px bar + safe area inset */
-    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+    /* 56px bar + 16px gap + 16px gap above + safe area inset */
+    padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -1360,4 +1407,20 @@ td.price {
 .field:focus {
   border-color: var(--brand);
   box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+}
+
+/* Dark-surface text overrides.
+   Tailwind v4 emits its utilities inside a cascade layer, which loses to the
+   unlayered element rules above (h1-h4 and a). Anything sitting on a dark
+   panel therefore needs a rule of its own rather than a utility class. */
+.trust-card-title {
+  color: #ffffff;
+}
+
+.hero-call {
+  color: #e2e8f0;
+}
+
+.hero-call:hover {
+  color: #ffffff;
 }

@@ -24,6 +24,9 @@ const translations = {
     nav_about: "Over ons",
     nav_area: "Werkgebied",
     nav_kennisbank: "Kennisbank",
+    kb_page_title: "Kennisbank",
+    kb_page_sub:
+      "Praktische gidsen, actuele richtprijzen en vakkundig advies voor uw verbouwing of renovatie.",
     nav_contact: "Contact",
     nav_cta: "Offerte aanvragen",
     nav_business: "Zakelijk",
@@ -84,7 +87,7 @@ const translations = {
     est_tier_std: "Standaard",
     est_tier_std_desc: "Degelijke basiskwaliteit",
     est_tier_prem: "Premium",
-    est_tier_prem_desc: "Meest gekozen A-merk",
+    est_tier_prem_desc: "Hoogwaardige A-merken",
     est_tier_lux: "Luxe / Design",
     est_tier_lux_desc: "High-end afwerking",
     est_opt_demo: "Inclusief sloopwerk & afvoer",
@@ -124,6 +127,12 @@ const translations = {
     svc_bathroom: "Badkamer & Keuken",
     svc_bathroom_desc:
       "Complete renovatie, leidingwerk, tegelwerk en luxe sanitairmontage.",
+    svc_carpenter: "Timmerman",
+    svc_carpenter_desc:
+      "Kozijnen, binnen- en buitendeuren, maatwerk inbouwkasten en aftimmerwerk.",
+    svc_plumber: "Loodgieter",
+    svc_plumber_desc:
+      "Leidingwerk, sanitair aansluiten, vloerverwarming en lekkages verhelpen.",
     svc_general: "Algemene Bouwwerkzaamheden",
     svc_general_desc:
       "Multidisciplinaire verbouwingen en projecten van ontwerp tot oplevering.",
@@ -261,6 +270,19 @@ const translations = {
     form_success_title: "Aanvraag succesvol ontvangen!",
     form_success_sub:
       "Bedankt voor uw aanvraag. Een van onze bouwadviseurs neemt binnen 24 uur contact met u op.",
+    form_sending: "Bezig met verzenden…",
+    form_error_title: "Verzenden is niet gelukt",
+    form_error_sub:
+      "Uw aanvraag is niet bij ons aangekomen. Uw gegevens staan nog ingevuld — stuur ze direct via WhatsApp of e-mail, of bel ons.",
+    form_error_queued:
+      "We proberen het automatisch opnieuw zodra uw verbinding er weer is.",
+    form_error_retry: "Opnieuw proberen",
+    form_error_whatsapp: "Via WhatsApp",
+    form_error_email: "Via e-mail",
+    form_error_call: "Bel ons",
+    form_error_subject: "Offerteaanvraag",
+    form_photos_too_big:
+      "De foto's zijn samen te groot om mee te sturen. Uw aanvraag is verstuurd — stuur de foto's gerust na via WhatsApp of e-mail.",
 
     // Wizard Modal steps
     wizard_step_1_title: "1. Waarmee kunnen we u helpen?",
@@ -316,6 +338,117 @@ const translations = {
     whyus_title: "Betrouwbaar en transparant",
     whyus_sub:
       "Jarenlange ervaring en één vast aanspreekpunt voor uw verbouwing.",
+    // Regions
+    region_groot: "Grote Steden Nederland",
+    region_kern: "Kernwerkgebied",
+    region_utrecht: "Regio Utrecht",
+    region_gooi: "Gooi & Eemland",
+    region_gelderland: "Gelderland",
+
+    // Page Specific
+    city_hero_title: "Vakman in {city} — Bouwvast",
+    city_hero_sub: "Betrouwbare bouw-, renovatie- en onderhoudswerkzaamheden in {city} en omstreken.",
+    city_services_eyebrow: "Diensten in {city}",
+    city_services_title: "Werkzaamheden in {city}",
+    city_seo_title: "Waarom kiezen voor Bouwvast in {city}?",
+    city_seo_p1: "Woont u in {city} of heeft u hier een bedrijfspand en zoekt u een betrouwbare vakman voor uw verbouwing, badkamer, schilderwerk of onderhoud? Bouwvast biedt een compleet pakket van vakkundige disciplines onder één dak.",
+    city_seo_p2: "Met één vast aanspreekpunt, duidelijke afspraken en vakmensen met jarenlange ervaring garanderen we dat uw project soepel en naar volle tevredenheid verloopt.",
+    city_faq_title: "Veelgestelde vragen over {city}",
+    city_quote_title: "Offerte in {city}",
+    city_quote_sub: "Vrijblijvende prijsindicatie binnen 24 uur.",
+    city_faq_1_q: "Voert Bouwvast ook werkzaamheden uit in {city}?",
+    city_faq_1_a: "Ja, {city} valt binnen ons vaste werkgebied. We verzorgen hier regelmatig verbouwingen, renovaties, schilderwerk en onderhoud.",
+    city_faq_2_q: "Hoe snel kunnen jullie ter plaatse zijn voor een opname?",
+    city_faq_2_a: "Voor een vrijblijvende opname of spoedklus in de regio kunnen we meestal binnen enkele werkdagen bij u langskomen.",
+    city_faq_3_q: "Zijn de tarieven in alle gemeenten gelijk?",
+    city_faq_3_a: "Ja, wij hanteren transparante tarieven zonder onverwachte voorrijkosten binnen ons kernwerkgebied.",
+    city_faq_4_q: "Krijg ik garantie op de werkzaamheden in mijn woning?",
+    city_faq_4_a: "Zeker, op alle uitgevoerde werkzaamheden en geleverde materialen ontvangt u standaard volledige kwaliteitsgarantie.",
+    
+    service_hero_suffix: " in uw regio",
+    service_includes_eyebrow: "Wat valt hieronder",
+    service_includes_title: "Werkzaamheden die wij verzorgen",
+    service_process_eyebrow: "Aanpak",
+    service_process_title: "Hoe wij te werk gaan",
+    service_area_eyebrow: "Werkgebied",
+    service_area_title: "{service} in uw regio",
+    service_area_desc: "Wij zijn actief in en rondom grote steden. Bekijk wat we in uw woonplaats voor u kunnen verzorgen.",
+    service_quote_title: "Vrijblijvende offerte",
+    service_quote_sub: "Vraag direct een prijsindicatie aan voor {service}.",
+    service_related_eyebrow: "Verder kijken",
+    service_related_title: "Andere diensten van Bouwvast",
+    
+    area_direct_municipality: "Direct naar uw gemeente",
+
+    // Service Intros & Includes
+    svc_renovation_intro: "Van een enkele woonlaag tot een complete turn-key woningrenovatie. We begeleiden uw verbouwing van sloop tot oplevering met één vast aanspreekpunt, heldere planning en vaste prijsafspraken.",
+    svc_renovation_inc_1: "Complete woningrenovatie en herindeling",
+    svc_renovation_inc_2: "Draagmuur doorbraken & stalen balken (berekend)",
+    svc_renovation_inc_3: "Vloerisolatie, dekvloeren & vloerverwarming",
+    svc_renovation_inc_4: "Plafonds, stucwerk en schilderklare afwerking",
+    svc_renovation_inc_5: "Turn-key oplevering inclusief bouwafval afvoer",
+
+    svc_bathroom_intro: "Specialist in complete badkamer- en keukenverbouwingen. Van leidingwerk en waterdichte kimband tot grootformaat tegelwerk en luxe sanitairmontage.",
+    svc_bathroom_inc_1: "Volledige badkamerrenovatie & inloopdouche",
+    svc_bathroom_inc_2: "Leidingen infrezen (water, afvoer, elektra)",
+    svc_bathroom_inc_3: "Grootformaat tegelwerk & precisie leveling",
+    svc_bathroom_inc_4: "Keukens vakkundig plaatsen en aansluiten",
+    svc_bathroom_inc_5: "Schimmelwerend sanitair kitwerk met garantie",
+
+    svc_finishing_intro: "Strak stucwerk en complete afbouw voor renovatie en nieuwbouw. Spiegelglad sausklaar pleisterwerk, scheidingswanden en verlaagde plafonds.",
+    svc_finishing_inc_1: "Sausklaar stucwerk (spiegelglad)",
+    svc_finishing_inc_2: "Behangklaar stucen & renovlies aanbrengen",
+    svc_finishing_inc_3: "Metal-stud scheidingswanden & isolatie",
+    svc_finishing_inc_4: "Gipsplaten plafonds met inbouwspots",
+    svc_finishing_inc_5: "Deuropeningen en kozijnen strak afwerken",
+
+    svc_painting_intro: "Vakkundig binnen- en buitenschilderwerk met professionele verfsystemen. Strakke sauswanden, zijdeglans lakwerk op kozijnen en grondig houtrotherstel.",
+    svc_painting_inc_1: "Airless spuitwerk & handmatig sauswerk",
+    svc_painting_inc_2: "Kozijnen, ramen en binnendeuren lakken",
+    svc_painting_inc_3: "Buitenschilderwerk & gevelbehandeling",
+    svc_painting_inc_4: "Houtrotherstel met 2-componenten epoxy",
+    svc_painting_inc_5: "Profiteer van 9% verlaagd btw-tarief",
+
+    svc_carpenter_intro: "Ervaren timmerlieden voor maatwerk houtconstructies, binnendeuren afhangen, kozijnen vernieuwen en dakkapel aftimmering.",
+    svc_carpenter_inc_1: "Hardhouten & kunststof kozijnen plaatsen",
+    svc_carpenter_inc_2: "Binnendeuren en buitendeuren afhangen",
+    svc_carpenter_inc_3: "Maatwerk inbouwkasten & cinewalls",
+    svc_carpenter_inc_4: "Dakkapel en zolder aftimmering",
+    svc_carpenter_inc_5: "Houten vloeren en plinten monteren",
+
+    svc_facade_intro: "Duurzaam herstel en onderhoud aan de buitenschil van uw woning. Voegwerk, metselreparaties, gevelreiniging en buitengevelisolatie.",
+    svc_facade_inc_1: "Voegwerk uithakken & opnieuw invoegen",
+    svc_facade_inc_2: "Metselwerk herstellen & scheurvorming repareren",
+    svc_facade_inc_3: "Gevelreiniging & hydrofoberen (impregneren)",
+    svc_facade_inc_4: "Boeidelen en dakgoten vernieuwen",
+    svc_facade_inc_5: "Buitengevelisolatie en afwerking",
+
+    svc_assembly_intro: "Nauwkeurig montagewerk voor woningen en bedrijfspanden. Van kasten en schuifwanden tot deuren, verlichting en meubelinstallatie.",
+    svc_assembly_inc_1: "Keukenmontage & apparatuur inbouw",
+    svc_assembly_inc_2: "Deuren, schuifdeursystemen & hang- en sluitwerk",
+    svc_assembly_inc_3: "Wandpanelen, akoestische panelen & cinewalls",
+    svc_assembly_inc_4: "Dakraam (Velux) montage & aftimmering",
+    svc_assembly_inc_5: "Plinten en lijstwerk strak verstek zagen",
+
+    svc_plumber_intro: "Betrouwbare loodgieters voor leidingwerk bij verbouwingen, sanitair aansluiten, vloerverwarming en acute lekkages.",
+    svc_plumber_inc_1: "Water- en afvoerleidingen verleggen",
+    svc_plumber_inc_2: "Inloopdouche drains & inbouwkranen aansluiten",
+    svc_plumber_inc_3: "Vloerverwarming verdelers & leidingen",
+    svc_plumber_inc_4: "Lekkages opsporen en direct verhelpen",
+    svc_plumber_inc_5: "Radiatoren vervangen & CV-aanpassingen",
+
+    svc_maintenance_intro: "Onderhoudswerkzaamheden en herstelklussen aan uw woning of vastgoedcomplex. Preventief, vakkundig en met garantie.",
+    svc_maintenance_inc_1: "Herstel van vochtschade & stucwerk",
+    svc_maintenance_inc_2: "Deursloten en hang- en sluitwerk vernieuwen (SKG***)",
+    svc_maintenance_inc_3: "Vervangen van beschadigde tegels of plinten",
+    svc_maintenance_inc_4: "Onderhoudsbeurten voor woningen en VvE's",
+    svc_maintenance_inc_5: "Snel ter plaatse voor noodreparaties",
+
+    svc_general_intro: "Heeft u een combinatieproject of een specifieke verbouwklus? Wij denken mee vanaf de ontwerpfase tot aan de bezemvaste oplevering.",
+    svc_general_inc_1: "Multidisciplinaire verbouwingen",
+    svc_general_inc_2: "Persoonlijk bouwadvies en opname op locatie",
+    svc_general_inc_3: "Transparante calculatie zonder verborgen kosten",
+    svc_general_inc_4: "Vaste planning met één bouwcoördinator",
   },
 
   en: {
@@ -325,6 +458,9 @@ const translations = {
     nav_about: "About Us",
     nav_area: "Service Area",
     nav_kennisbank: "Knowledge Base",
+    kb_page_title: "Knowledge Base",
+    kb_page_sub:
+      "Practical guides, current price indications and expert advice for your renovation or building project.",
     nav_contact: "Contact",
     nav_cta: "Request a Quote",
     nav_business: "Business",
@@ -383,7 +519,7 @@ const translations = {
     est_tier_std: "Standard",
     est_tier_std_desc: "Solid baseline quality",
     est_tier_prem: "Premium",
-    est_tier_prem_desc: "Most popular A-brand",
+    est_tier_prem_desc: "High-quality A-brands",
     est_tier_lux: "Luxury / Design",
     est_tier_lux_desc: "High-end bespoke finish",
     est_opt_demo: "Include demolition & waste removal",
@@ -423,6 +559,12 @@ const translations = {
     svc_bathroom: "Bathroom & Kitchen",
     svc_bathroom_desc:
       "Complete remodeling, plumbing, tile leveling, and luxury sanitary fitting.",
+    svc_carpenter: "Carpenter",
+    svc_carpenter_desc:
+      "Window and door frames, hanging doors, built-in cabinetry and finish carpentry.",
+    svc_plumber: "Plumber",
+    svc_plumber_desc:
+      "Pipework, sanitary connections, underfloor heating and leak repairs.",
     svc_general: "General Building Works",
     svc_general_desc:
       "Multidisciplinary construction projects coordinated from design to clean handover.",
@@ -559,6 +701,19 @@ const translations = {
     form_success_title: "Inquiry Successfully Received!",
     form_success_sub:
       "Thank you for reaching out. One of our building advisors will contact you within 24 hours.",
+    form_sending: "Sending…",
+    form_error_title: "Your request did not go through",
+    form_error_sub:
+      "We did not receive your request. Your details are still filled in — send them straight through WhatsApp or email, or give us a call.",
+    form_error_queued:
+      "We will try again automatically as soon as your connection is back.",
+    form_error_retry: "Try again",
+    form_error_whatsapp: "Via WhatsApp",
+    form_error_email: "Via email",
+    form_error_call: "Call us",
+    form_error_subject: "Quote request",
+    form_photos_too_big:
+      "Your photos are too large to send along. The request itself went through — feel free to send the photos via WhatsApp or email.",
 
     // Wizard Modal steps
     wizard_step_1_title: "1. How can we help you?",
@@ -614,6 +769,117 @@ const translations = {
     whyus_title: "Reliable and transparent",
     whyus_sub:
       "Years of experience and a single point of contact for your renovation.",
+    // Regions
+    region_groot: "Major Cities Netherlands",
+    region_kern: "Core Service Area",
+    region_utrecht: "Utrecht Region",
+    region_gooi: "Gooi & Eemland",
+    region_gelderland: "Gelderland",
+
+    // Page Specific
+    city_hero_title: "Contractor in {city} — Bouwvast",
+    city_hero_sub: "Reliable construction, renovation, and maintenance services in and around {city}.",
+    city_services_eyebrow: "Services in {city}",
+    city_services_title: "Our Work in {city}",
+    city_seo_title: "Why choose Bouwvast in {city}?",
+    city_seo_p1: "Do you live in {city} or have a commercial property here and are looking for a reliable contractor for your renovation, bathroom, painting or maintenance? Bouwvast offers a complete package of professional disciplines under one roof.",
+    city_seo_p2: "With a single point of contact, clear agreements and craftsmen with years of experience, we guarantee that your project will run smoothly and to your full satisfaction.",
+    city_faq_title: "Frequently Asked Questions about {city}",
+    city_quote_title: "Quote in {city}",
+    city_quote_sub: "Free price indication within 24 hours.",
+    city_faq_1_q: "Does Bouwvast also operate in {city}?",
+    city_faq_1_a: "Yes, {city} falls within our regular service area. We frequently handle renovations, painting, and maintenance projects here.",
+    city_faq_2_q: "How quickly can you be on-site for an inspection?",
+    city_faq_2_a: "For a non-binding inspection or urgent job in the region, we can usually visit you within a few working days.",
+    city_faq_3_q: "Are the rates the same in all municipalities?",
+    city_faq_3_a: "Yes, we apply transparent rates without unexpected call-out fees within our core working area.",
+    city_faq_4_q: "Do I get a warranty on the work in my home?",
+    city_faq_4_a: "Certainly, you receive a standard full quality warranty on all work performed and materials supplied.",
+    
+    service_hero_suffix: " in your region",
+    service_includes_eyebrow: "What's included",
+    service_includes_title: "Work that we provide",
+    service_process_eyebrow: "Approach",
+    service_process_title: "How we work",
+    service_area_eyebrow: "Service Area",
+    service_area_title: "{service} in your region",
+    service_area_desc: "We are active in and around major cities. See what we can do for you in your hometown.",
+    service_quote_title: "Free quote",
+    service_quote_sub: "Request a price indication for {service} now.",
+    service_related_eyebrow: "Explore more",
+    service_related_title: "Other services by Bouwvast",
+    
+    area_direct_municipality: "Directly to your municipality",
+
+    // Service Intros & Includes
+    svc_renovation_intro: "From a single floor to a complete turn-key home renovation. We guide your remodel from demolition to handover with one fixed point of contact, clear scheduling and fixed prices.",
+    svc_renovation_inc_1: "Complete home renovation and remodeling",
+    svc_renovation_inc_2: "Load-bearing wall breakthroughs & steel beams",
+    svc_renovation_inc_3: "Floor insulation, screeds & underfloor heating",
+    svc_renovation_inc_4: "Ceilings, plastering and paint-ready finish",
+    svc_renovation_inc_5: "Turn-key delivery including construction waste removal",
+
+    svc_bathroom_intro: "Specialist in complete bathroom and kitchen renovations. From plumbing and waterproofing to large-format tiling and luxury sanitary installation.",
+    svc_bathroom_inc_1: "Full bathroom renovation & walk-in shower",
+    svc_bathroom_inc_2: "Milling pipes (water, drainage, electrics)",
+    svc_bathroom_inc_3: "Large format tiling & precision leveling",
+    svc_bathroom_inc_4: "Expert kitchen installation and connection",
+    svc_bathroom_inc_5: "Anti-mold sanitary sealing with warranty",
+
+    svc_finishing_intro: "Sleek plastering and complete finishing for renovation and new construction. Mirror-smooth paint-ready plastering, partition walls and suspended ceilings.",
+    svc_finishing_inc_1: "Paint-ready plastering (mirror-smooth)",
+    svc_finishing_inc_2: "Wallpaper-ready plastering & applying renovlies",
+    svc_finishing_inc_3: "Metal-stud partition walls & insulation",
+    svc_finishing_inc_4: "Plasterboard ceilings with recessed spotlights",
+    svc_finishing_inc_5: "Sleek finishing of doorways and window frames",
+
+    svc_painting_intro: "Professional interior and exterior painting with pro paint systems. Sleek walls, satin gloss lacquer on window frames and thorough wood rot repair.",
+    svc_painting_inc_1: "Airless spraying & manual painting",
+    svc_painting_inc_2: "Lacquering window frames, windows and interior doors",
+    svc_painting_inc_3: "Exterior painting & facade treatment",
+    svc_painting_inc_4: "Wood rot repair with 2-component epoxy",
+    svc_painting_inc_5: "Benefit from 9% reduced VAT rate",
+
+    svc_carpenter_intro: "Experienced carpenters for custom wood constructions, hanging interior doors, renewing window frames and dormer finishing.",
+    svc_carpenter_inc_1: "Installing hardwood & plastic window frames",
+    svc_carpenter_inc_2: "Hanging interior and exterior doors",
+    svc_carpenter_inc_3: "Custom built-in wardrobes & cinewalls",
+    svc_carpenter_inc_4: "Dormer and attic finishing",
+    svc_carpenter_inc_5: "Installing wooden floors and skirting boards",
+
+    svc_facade_intro: "Sustainable restoration and maintenance of your home's exterior shell. Pointing, masonry repairs, facade cleaning and exterior wall insulation.",
+    svc_facade_inc_1: "Chipping out & renewing pointing",
+    svc_facade_inc_2: "Restoring masonry & repairing cracks",
+    svc_facade_inc_3: "Facade cleaning & impregnating",
+    svc_facade_inc_4: "Renewing fascia boards and gutters",
+    svc_facade_inc_5: "Exterior wall insulation and finishing",
+
+    svc_assembly_intro: "Precise assembly work for homes and commercial premises. From cabinets and sliding walls to doors, lighting and furniture installation.",
+    svc_assembly_inc_1: "Kitchen assembly & appliance installation",
+    svc_assembly_inc_2: "Doors, sliding door systems & hardware",
+    svc_assembly_inc_3: "Wall panels, acoustic panels & cinewalls",
+    svc_assembly_inc_4: "Skylight (Velux) installation & finishing",
+    svc_assembly_inc_5: "Precision miter cutting of skirting and molding",
+
+    svc_plumber_intro: "Reliable plumbers for pipework during renovations, sanitary connections, underfloor heating and acute leaks.",
+    svc_plumber_inc_1: "Rerouting water and drainage pipes",
+    svc_plumber_inc_2: "Connecting walk-in shower drains & built-in taps",
+    svc_plumber_inc_3: "Underfloor heating distributors & pipes",
+    svc_plumber_inc_4: "Detecting leaks and resolving them immediately",
+    svc_plumber_inc_5: "Replacing radiators & central heating adjustments",
+
+    svc_maintenance_intro: "Maintenance and repair jobs for your home or real estate complex. Preventive, professional and with warranty.",
+    svc_maintenance_inc_1: "Repairing moisture damage & plasterwork",
+    svc_maintenance_inc_2: "Renewing door locks and hardware (SKG***)",
+    svc_maintenance_inc_3: "Replacing damaged tiles or skirting boards",
+    svc_maintenance_inc_4: "Maintenance services for homes and HOAs",
+    svc_maintenance_inc_5: "Quickly on-site for emergency repairs",
+
+    svc_general_intro: "Do you have a combination project or a specific remodeling job? We think along with you from the design phase to a broom-clean handover.",
+    svc_general_inc_1: "Multidisciplinary renovations",
+    svc_general_inc_2: "Personal building advice and on-site inspection",
+    svc_general_inc_3: "Transparent calculation without hidden costs",
+    svc_general_inc_4: "Fixed schedule with one building coordinator",
   },
 
   uk: {
@@ -621,8 +887,11 @@ const translations = {
     nav_services: "Послуги",
     nav_projects: "Проєкти",
     nav_about: "Про нас",
-    nav_area: "Зона робіт",
+    nav_area: "Регіон роботи",
     nav_kennisbank: "База знань",
+    kb_page_title: "База знань",
+    kb_page_sub:
+      "Практичні поради, актуальні орієнтири цін та експертні матеріали про ремонт і будівництво.",
     nav_contact: "Контакти",
     nav_cta: "Замовити розрахунок",
     nav_business: "Для бізнесу",
@@ -637,14 +906,14 @@ const translations = {
     badge_best_value: "Найпопулярніший",
 
     // Hero
-    hero_label: "Майстри та Будівельники в Нідерландах",
+    hero_label: "Професійні майстри та будівельники в Нідерландах",
     hero_title: "Будівництво, ремонт та оздоблення.",
-    hero_title_accent: "Від ідеї до ідеального результату.",
+    hero_title_accent: "Від ідеї до якісного результату.",
     hero_sub:
-      "Професійні будівельні, ремонтні та оздоблювальні роботи для житла та бізнесу. Єдиний контакт, прозорий кошторис та гарантія на здачу об'єкта.",
+      "Професійні будівельні, ремонтні та оздоблювальні роботи для житла та бізнесу. Єдиний контакт, прозорий кошторис і гарантія на виконані роботи.",
     hero_cta_primary: "Отримати кошторис онлайн",
     hero_cta_secondary: "Наші послуги",
-    hero_trust_1: "Швидка відповідь протягом 24г",
+    hero_trust_1: "Швидка відповідь протягом 24 год",
     hero_trust_2: "Фіксована ціна заздалегідь",
     hero_trust_3: "Офіційна гарантія якості",
 
@@ -680,7 +949,7 @@ const translations = {
     est_tier_std: "Стандарт",
     est_tier_std_desc: "Надійна базова якість",
     est_tier_prem: "Преміум",
-    est_tier_prem_desc: "Найпопулярніші європейські бренди",
+    est_tier_prem_desc: "Високоякісні європейські бренди",
     est_tier_lux: "Люкс / Дизайн",
     est_tier_lux_desc: "Ексклюзивне оздоблення",
     est_opt_demo: "Включити демонтаж та вивіз сміття",
@@ -720,6 +989,12 @@ const translations = {
     svc_bathroom: "Ванні Кімнати та Санвузли",
     svc_bathroom_desc:
       "Повна реновація ванних, душові зони, великоформатна плитка та сантехніка.",
+    svc_carpenter: "Тесляр",
+    svc_carpenter_desc:
+      "Віконні та дверні коробки, навішування дверей, вбудовані шафи й оздоблення деревом.",
+    svc_plumber: "Сантехнік",
+    svc_plumber_desc:
+      "Трубопроводи, підключення сантехніки, тепла підлога та усунення протікань.",
     svc_general: "Загальнобудівельні Роботи",
     svc_general_desc:
       "Мультидисциплінарні будівельні проєкти від планування до чистової здачі.",
@@ -856,6 +1131,19 @@ const translations = {
     form_success_title: "Запит успішно надіслано!",
     form_success_sub:
       "Дякуємо! Наш будівельний консультант зв'яжеться з вами протягом 24 годин.",
+    form_sending: "Надсилаємо…",
+    form_error_title: "Заявку не вдалося надіслати",
+    form_error_sub:
+      "Ваша заявка до нас не дійшла. Дані залишилися заповненими — надішліть їх одразу через WhatsApp чи електронною поштою або зателефонуйте нам.",
+    form_error_queued:
+      "Ми спробуємо ще раз автоматично, щойно відновиться зʼєднання.",
+    form_error_retry: "Спробувати ще раз",
+    form_error_whatsapp: "Через WhatsApp",
+    form_error_email: "Електронною поштою",
+    form_error_call: "Зателефонувати",
+    form_error_subject: "Запит на кошторис",
+    form_photos_too_big:
+      "Фотографії разом завеликі, щоб надіслати їх із заявкою. Саму заявку надіслано — надішліть фото через WhatsApp або поштою.",
 
     // Wizard Modal steps
     wizard_step_1_title: "1. Чим ми можемо вам допомогти?",
@@ -910,6 +1198,117 @@ const translations = {
     whyus_label: "Чому Bouwvast?",
     whyus_title: "Надійно та прозоро",
     whyus_sub: "Багаторічний досвід та єдиний контакт для вашого ремонту.",
+    // Regions
+    region_groot: "Великі міста Нідерландів",
+    region_kern: "Основна зона обслуговування",
+    region_utrecht: "Регіон Утрехт",
+    region_gooi: "Гой та Емланд",
+    region_gelderland: "Гелдерланд",
+
+    // Page Specific
+    city_hero_title: "Підрядник у {city} — Bouwvast",
+    city_hero_sub: "Надійні будівельні, ремонтні та сервісні роботи в {city} та околицях.",
+    city_services_eyebrow: "Послуги в {city}",
+    city_services_title: "Наші роботи в {city}",
+    city_seo_title: "Чому обирають Bouwvast у {city}?",
+    city_seo_p1: "Ви живете в {city} або маєте тут комерційну нерухомість і шукаєте надійного підрядника для ремонту, санвузла, малярних робіт чи обслуговування? Bouwvast пропонує повний комплекс професійних послуг під одним дахом.",
+    city_seo_p2: "З єдиним контактним центром, чіткими домовленостями та майстрами з багаторічним досвідом ми гарантуємо, що ваш проєкт пройде гладко та з максимальним результатом.",
+    city_faq_title: "Часті запитання про {city}",
+    city_quote_title: "Кошторис у {city}",
+    city_quote_sub: "Безкоштовна оцінка вартості протягом 24 годин.",
+    city_faq_1_q: "Чи працює Bouwvast також у {city}?",
+    city_faq_1_a: "Так, {city} входить до нашої постійної зони обслуговування. Ми регулярно виконуємо тут ремонти, малярні роботи та обслуговування.",
+    city_faq_2_q: "Як швидко ви можете приїхати для огляду?",
+    city_faq_2_a: "Для безкоштовного огляду або термінового замовлення в регіоні ми зазвичай можемо приїхати до вас протягом кількох робочих днів.",
+    city_faq_3_q: "Чи однакові тарифи в усіх муніципалітетах?",
+    city_faq_3_a: "Так, ми застосовуємо прозорі тарифи без непередбачуваних витрат на виїзд у межах нашої основної зони роботи.",
+    city_faq_4_q: "Чи отримую я гарантію на роботи в моєму будинку?",
+    city_faq_4_a: "Звісно, ви отримуєте стандартну повну гарантію якості на всі виконані роботи та надані матеріали.",
+    
+    service_hero_suffix: " у вашому регіоні",
+    service_includes_eyebrow: "Що сюди входить",
+    service_includes_title: "Роботи, які ми виконуємо",
+    service_process_eyebrow: "Підхід",
+    service_process_title: "Як ми працюємо",
+    service_area_eyebrow: "Зона робіт",
+    service_area_title: "{service} у вашому регіоні",
+    service_area_desc: "Ми працюємо у великих містах та їхніх околицях. Подивіться, що ми можемо зробити для вас у вашому місті.",
+    service_quote_title: "Безкоштовний кошторис",
+    service_quote_sub: "Замовте орієнтовний розрахунок вартості на послугу {service} прямо зараз.",
+    service_related_eyebrow: "Дізнатися більше",
+    service_related_title: "Інші послуги від Bouwvast",
+    
+    area_direct_municipality: "Перейти до вашого муніципалітету",
+
+    // Service Intros & Includes
+    svc_renovation_intro: "Від однієї кімнати до повної реконструкції будинку «під ключ». Ми супроводжуємо ваш ремонт від демонтажу до здачі з єдиним контактом, чітким графіком та фіксованими цінами.",
+    svc_renovation_inc_1: "Комплексний ремонт будинку та перепланування",
+    svc_renovation_inc_2: "Демонтаж несучих стін та сталеві балки",
+    svc_renovation_inc_3: "Ізоляція підлоги, стяжка та тепла підлога",
+    svc_renovation_inc_4: "Стелі, штукатурка та чистове оздоблення",
+    svc_renovation_inc_5: "Здача «під ключ», включаючи вивіз будівельного сміття",
+
+    svc_bathroom_intro: "Спеціаліст з комплексного ремонту ванних кімнат та кухонь. Від прокладання труб та гідроізоляції до укладання великоформатної плитки та монтажу елітної сантехніки.",
+    svc_bathroom_inc_1: "Повний ремонт ванної кімнати та душові кабіни",
+    svc_bathroom_inc_2: "Штроблення труб (вода, каналізація, електрика)",
+    svc_bathroom_inc_3: "Укладання великоформатної плитки та точне вирівнювання",
+    svc_bathroom_inc_4: "Професійний монтаж та підключення кухонь",
+    svc_bathroom_inc_5: "Антигрибкова герметизація сантехніки з гарантією",
+
+    svc_finishing_intro: "Гладка штукатурка та повне оздоблення для ремонту та новобудов. Дзеркально-гладка штукатурка під фарбування, перегородки та підвісні стелі.",
+    svc_finishing_inc_1: "Штукатурка під фарбування (дзеркально гладка)",
+    svc_finishing_inc_2: "Штукатурка під шпалери та поклейка склополотна",
+    svc_finishing_inc_3: "Гіпсокартонні перегородки на металевому профілі та ізоляція",
+    svc_finishing_inc_4: "Гіпсокартонні стелі з вбудованими світильниками",
+    svc_finishing_inc_5: "Чистове оздоблення дверних та віконних отворів",
+
+    svc_painting_intro: "Професійне внутрішнє та зовнішнє фарбування професійними системами. Гладкі стіни, сатиновий лак на віконних рамах та ретельне усунення гниття деревини.",
+    svc_painting_inc_1: "Безповітряне фарбування та ручне фарбування стін",
+    svc_painting_inc_2: "Лакування віконних рам, вікон та міжкімнатних дверей",
+    svc_painting_inc_3: "Зовнішнє фарбування та обробка фасадів",
+    svc_painting_inc_4: "Відновлення гнилої деревини двокомпонентною епоксидною смолою",
+    svc_painting_inc_5: "Скористайтеся зниженою ставкою ПДВ 9%",
+
+    svc_carpenter_intro: "Досвідчені теслярі для виготовлення дерев'яних конструкцій на замовлення, навішування міжкімнатних дверей, заміни віконних рам та оздоблення мансард.",
+    svc_carpenter_inc_1: "Встановлення дерев'яних та пластикових віконних рам",
+    svc_carpenter_inc_2: "Навішування міжкімнатних та вхідних дверей",
+    svc_carpenter_inc_3: "Вбудовані шафи на замовлення та кіностіни",
+    svc_carpenter_inc_4: "Оздоблення мансардних вікон та горищ",
+    svc_carpenter_inc_5: "Монтаж дерев'яних підлог та плінтусів",
+
+    svc_facade_intro: "Екологічне відновлення та обслуговування зовнішньої оболонки вашого будинку. Розшивка швів, ремонт цегляної кладки, очищення фасадів та зовнішнє утеплення.",
+    svc_facade_inc_1: "Вибивання та оновлення швів",
+    svc_facade_inc_2: "Відновлення цегляної кладки та ремонт тріщин",
+    svc_facade_inc_3: "Очищення та просочення фасадів",
+    svc_facade_inc_4: "Оновлення вітрових дощок та водостоків",
+    svc_facade_inc_5: "Зовнішнє утеплення стін та оздоблення",
+
+    svc_assembly_intro: "Точні монтажні роботи для житлових та комерційних приміщень. Від шаф та розсувних стінок до дверей, освітлення та встановлення меблів.",
+    svc_assembly_inc_1: "Монтаж кухонь та встановлення техніки",
+    svc_assembly_inc_2: "Двері, розсувні системи та фурнітура",
+    svc_assembly_inc_3: "Стінові панелі, акустичні панелі та кіностіни",
+    svc_assembly_inc_4: "Монтаж мансардних вікон (Velux) та оздоблення",
+    svc_assembly_inc_5: "Точне різання плінтусів та молдингів під кутом",
+
+    svc_plumber_intro: "Надійні сантехніки для прокладання труб під час ремонту, підключення сантехніки, теплої підлоги та усунення гострих протікань.",
+    svc_plumber_inc_1: "Перенесення водопровідних та каналізаційних труб",
+    svc_plumber_inc_2: "Підключення душових трапів та вбудованих змішувачів",
+    svc_plumber_inc_3: "Розподільники та труби теплої підлоги",
+    svc_plumber_inc_4: "Виявлення протікань та їх негайне усунення",
+    svc_plumber_inc_5: "Заміна радіаторів та налаштування центрального опалення",
+
+    svc_maintenance_intro: "Роботи з технічного обслуговування та ремонту вашого будинку або комплексу нерухомості. Профілактично, професійно та з гарантією.",
+    svc_maintenance_inc_1: "Усунення пошкоджень від вологи та штукатурення",
+    svc_maintenance_inc_2: "Заміна дверних замків та фурнітури (SKG***)",
+    svc_maintenance_inc_3: "Заміна пошкодженої плитки або плінтусів",
+    svc_maintenance_inc_4: "Послуги з обслуговування для будинків та ОСББ",
+    svc_maintenance_inc_5: "Швидкий виїзд на місце для аварійного ремонту",
+
+    svc_general_intro: "У вас комбінований проєкт чи специфічна робота з реконструкції? Ми думаємо разом з вами від етапу проєктування до здачі об'єкта в чистоті.",
+    svc_general_inc_1: "Мультидисциплінарні реконструкції",
+    svc_general_inc_2: "Особисті будівельні консультації та огляд на місці",
+    svc_general_inc_3: "Прозорий розрахунок без прихованих витрат",
+    svc_general_inc_4: "Фіксований графік з одним координатором робіт",
   },
 
   ru: {
@@ -919,6 +1318,9 @@ const translations = {
     nav_about: "О нас",
     nav_area: "Зона работ",
     nav_kennisbank: "База знаний",
+    kb_page_title: "База знаний",
+    kb_page_sub:
+      "Практические руководства, актуальные ориентировочные цены и профессиональные советы по ремонту и строительству.",
     nav_contact: "Контакты",
     nav_cta: "Запросить смету",
     nav_business: "Для бизнеса",
@@ -976,7 +1378,7 @@ const translations = {
     est_tier_std: "Стандарт",
     est_tier_std_desc: "Надежное базовое качество",
     est_tier_prem: "Премиум",
-    est_tier_prem_desc: "Популярные европейские бренды",
+    est_tier_prem_desc: "Высококачественные европейские бренды",
     est_tier_lux: "Люкс / Дизайн",
     est_tier_lux_desc: "Эксклюзивная отделка",
     est_opt_demo: "Включить демонтаж и вывоз мусора",
@@ -1016,6 +1418,12 @@ const translations = {
     svc_bathroom: "Ванные Комнаты и Санузлы",
     svc_bathroom_desc:
       "Полный ремонт ванных, душевые трапы, крупноформатная плитка и монтаж сантехники.",
+    svc_carpenter: "Плотник",
+    svc_carpenter_desc:
+      "Оконные и дверные коробки, навеска дверей, встроенные шкафы и столярная отделка.",
+    svc_plumber: "Сантехник",
+    svc_plumber_desc:
+      "Трубопроводы, подключение сантехники, тёплый пол и устранение протечек.",
     svc_general: "Общестроительные Работы",
     svc_general_desc:
       "Мультидисциплинарные строительные проекты от проектирования до чистовой сдачи.",
@@ -1151,6 +1559,19 @@ const translations = {
     form_success_title: "Заявка успешно принята!",
     form_success_sub:
       "Спасибо! Наш специалист свяжется с вами в течение 24 часов.",
+    form_sending: "Отправляем…",
+    form_error_title: "Заявку не удалось отправить",
+    form_error_sub:
+      "Ваша заявка до нас не дошла. Данные остались заполненными — отправьте их сразу через WhatsApp или по электронной почте либо позвоните нам.",
+    form_error_queued:
+      "Мы попробуем ещё раз автоматически, как только связь восстановится.",
+    form_error_retry: "Попробовать ещё раз",
+    form_error_whatsapp: "Через WhatsApp",
+    form_error_email: "По электронной почте",
+    form_error_call: "Позвонить",
+    form_error_subject: "Запрос сметы",
+    form_photos_too_big:
+      "Фотографии вместе слишком большие, чтобы отправить их с заявкой. Сама заявка отправлена — пришлите фото через WhatsApp или по почте.",
 
     // Wizard Modal steps
     wizard_step_1_title: "1. Чем мы можем вам помочь?",
@@ -1205,6 +1626,117 @@ const translations = {
     whyus_label: "Почему Bouwvast?",
     whyus_title: "Надежно и прозрачно",
     whyus_sub: "Многолетний опыт и единый контакт для вашего ремонта.",
+    // Regions
+    region_groot: "Крупные города Нидерландов",
+    region_kern: "Основная зона обслуживания",
+    region_utrecht: "Регион Утрехт",
+    region_gooi: "Гой и Эмланд",
+    region_gelderland: "Гелдерланд",
+
+    // Page Specific
+    city_hero_title: "Подрядчик в г. {city} — Bouwvast",
+    city_hero_sub: "Надежные строительные, ремонтные и сервисные работы в {city} и окрестностях.",
+    city_services_eyebrow: "Услуги в г. {city}",
+    city_services_title: "Наши работы в г. {city}",
+    city_seo_title: "Почему выбирают Bouwvast в г. {city}?",
+    city_seo_p1: "Вы живете в г. {city} или у вас здесь коммерческая недвижимость, и вы ищете надежного подрядчика для ремонта, санузла, малярных работ или обслуживания? Bouwvast предлагает полный комплекс профессиональных услуг под одной крышей.",
+    city_seo_p2: "С единым контактным лицом, четкими договоренностями и мастерами с многолетним опытом мы гарантируем, что ваш проект пройдет гладко и с максимальным результатом.",
+    city_faq_title: "Частые вопросы о г. {city}",
+    city_quote_title: "Смета в г. {city}",
+    city_quote_sub: "Бесплатная оценка стоимости в течение 24 часов.",
+    city_faq_1_q: "Работает ли Bouwvast также в г. {city}?",
+    city_faq_1_a: "Да, {city} входит в нашу постоянную зону обслуживания. Мы регулярно выполняем здесь ремонты, малярные работы и обслуживание.",
+    city_faq_2_q: "Как быстро вы можете приехать для осмотра?",
+    city_faq_2_a: "Для бесплатного осмотра или срочного заказа в регионе мы обычно можем приехать к вам в течение нескольких рабочих дней.",
+    city_faq_3_q: "Одинаковы ли тарифы во всех муниципалитетах?",
+    city_faq_3_a: "Да, мы применяем прозрачные тарифы без непредвиденных расходов на выезд в пределах нашей основной зоны работы.",
+    city_faq_4_q: "Получаю ли я гарантию на работы в моем доме?",
+    city_faq_4_a: "Конечно, вы получаете стандартную полную гарантию качества на все выполненные работы и предоставленные материалы.",
+    
+    service_hero_suffix: " в вашем регионе",
+    service_includes_eyebrow: "Что сюда входит",
+    service_includes_title: "Работы, которые мы выполняем",
+    service_process_eyebrow: "Подход",
+    service_process_title: "Как мы работаем",
+    service_area_eyebrow: "Зона работ",
+    service_area_title: "{service} в вашем регионе",
+    service_area_desc: "Мы работаем в крупных городах и их окрестностях. Посмотрите, что мы можем сделать для вас в вашем городе.",
+    service_quote_title: "Бесплатная смета",
+    service_quote_sub: "Запросите ориентировочный расчет стоимости на услугу {service} прямо сейчас.",
+    service_related_eyebrow: "Узнать больше",
+    service_related_title: "Другие услуги от Bouwvast",
+    
+    area_direct_municipality: "Перейти к вашему муниципалитету",
+
+    // Service Intros & Includes
+    svc_renovation_intro: "От одной комнаты до полной реконструкции дома «под ключ». Мы сопровождаем ваш ремонт от демонтажа до сдачи с единым контактным лицом, четким графиком и фиксированными ценами.",
+    svc_renovation_inc_1: "Комплексный ремонт дома и перепланировка",
+    svc_renovation_inc_2: "Демонтаж несущих стен и стальные балки",
+    svc_renovation_inc_3: "Изоляция пола, стяжка и теплый пол",
+    svc_renovation_inc_4: "Потолки, штукатурка и чистовая отделка",
+    svc_renovation_inc_5: "Сдача «под ключ», включая вывоз строительного мусора",
+
+    svc_bathroom_intro: "Специалист по комплексному ремонту ванных комнат и кухонь. От прокладки труб и гидроизоляции до укладки крупноформатной плитки и монтажа элитной сантехники.",
+    svc_bathroom_inc_1: "Полный ремонт ванной комнаты и душевые кабины",
+    svc_bathroom_inc_2: "Штробление труб (вода, канализация, электрика)",
+    svc_bathroom_inc_3: "Укладка крупноформатной плитки и точное выравнивание",
+    svc_bathroom_inc_4: "Профессиональный монтаж и подключение кухонь",
+    svc_bathroom_inc_5: "Антигрибковая герметизация сантехники с гарантией",
+
+    svc_finishing_intro: "Гладкая штукатурка и полная отделка для ремонта и новостроек. Зеркально-гладкая штукатурка под покраску, перегородки и подвесные потолки.",
+    svc_finishing_inc_1: "Штукатурка под покраску (зеркально гладкая)",
+    svc_finishing_inc_2: "Штукатурка под обои и поклейка стеклохолста",
+    svc_finishing_inc_3: "Гипсокартонные перегородки на металлическом профиле и изоляция",
+    svc_finishing_inc_4: "Гипсокартонные потолки со встроенными светильниками",
+    svc_finishing_inc_5: "Чистовая отделка дверных и оконных проемов",
+
+    svc_painting_intro: "Профессиональная внутренняя и наружная покраска профессиональными системами. Гладкие стены, сатиновый лак на оконных рамах и тщательное устранение гниения древесины.",
+    svc_painting_inc_1: "Безвоздушная покраска и ручная покраска стен",
+    svc_painting_inc_2: "Лакировка оконных рам, окон и межкомнатных дверей",
+    svc_painting_inc_3: "Наружная покраска и обработка фасадов",
+    svc_painting_inc_4: "Восстановление сгнившей древесины двухкомпонентной эпоксидной смолой",
+    svc_painting_inc_5: "Воспользуйтесь сниженной ставкой НДС 9%",
+
+    svc_carpenter_intro: "Опытные плотники для изготовления деревянных конструкций на заказ, навешивания межкомнатных дверей, замены оконных рам и отделки мансард.",
+    svc_carpenter_inc_1: "Установка деревянных и пластиковых оконных рам",
+    svc_carpenter_inc_2: "Навешивание межкомнатных и входных дверей",
+    svc_carpenter_inc_3: "Встроенные шкафы на заказ и киностены",
+    svc_carpenter_inc_4: "Отделка мансардных окон и чердаков",
+    svc_carpenter_inc_5: "Монтаж деревянных полов и плинтусов",
+
+    svc_facade_intro: "Экологичное восстановление и обслуживание внешней оболочки вашего дома. Расшивка швов, ремонт кирпичной кладки, очистка фасадов и наружное утепление.",
+    svc_facade_inc_1: "Выбивание и обновление швов",
+    svc_facade_inc_2: "Восстановление кирпичной кладки и ремонт трещин",
+    svc_facade_inc_3: "Очистка и пропитка фасадов",
+    svc_facade_inc_4: "Обновление ветровых досок и водостоков",
+    svc_facade_inc_5: "Наружное утепление стен и отделка",
+
+    svc_assembly_intro: "Точные монтажные работы для жилых и коммерческих помещений. От шкафов и раздвижных стенок до дверей, освещения и установки мебели.",
+    svc_assembly_inc_1: "Монтаж кухонь и установка техники",
+    svc_assembly_inc_2: "Двери, раздвижные системы и фурнитура",
+    svc_assembly_inc_3: "Стеновые панели, акустические панели и киностены",
+    svc_assembly_inc_4: "Монтаж мансардных окон (Velux) и отделка",
+    svc_assembly_inc_5: "Точная резка плинтусов и молдингов под углом",
+
+    svc_plumber_intro: "Надежные сантехники для прокладки труб во время ремонта, подключения сантехники, теплого пола и устранения острых протечек.",
+    svc_plumber_inc_1: "Перенос водопроводных и канализационных труб",
+    svc_plumber_inc_2: "Подключение душевых трапов и встроенных смесителей",
+    svc_plumber_inc_3: "Распределители и трубы теплого пола",
+    svc_plumber_inc_4: "Обнаружение протечек и их немедленное устранение",
+    svc_plumber_inc_5: "Замена радиаторов и настройка центрального отопления",
+
+    svc_maintenance_intro: "Работы по техническому обслуживанию и ремонту вашего дома или комплекса недвижимости. Профилактически, профессионально и с гарантией.",
+    svc_maintenance_inc_1: "Устранение повреждений от влаги и оштукатуривание",
+    svc_maintenance_inc_2: "Замена дверных замков и фурнитуры (SKG***)",
+    svc_maintenance_inc_3: "Замена поврежденной плитки или плинтусов",
+    svc_maintenance_inc_4: "Услуги по обслуживанию для домов и ТСЖ",
+    svc_maintenance_inc_5: "Быстрый выезд на место для аварийного ремонта",
+
+    svc_general_intro: "У вас комбинированный проект или специфическая работа по реконструкции? Мы думаем вместе с вами от этапа проектирования до сдачи объекта в чистоте.",
+    svc_general_inc_1: "Мультидисциплинарные реконструкции",
+    svc_general_inc_2: "Личные строительные консультации и осмотр на месте",
+    svc_general_inc_3: "Прозрачный расчет без скрытых расходов",
+    svc_general_inc_4: "Фиксированный график с одним координатором работ",
   },
 } as const
 
