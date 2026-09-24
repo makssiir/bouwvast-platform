@@ -39,7 +39,7 @@ export default function ProjectModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[rgba(15,23,42,0.8)] backdrop-blur-xs animate-[fade-in_0.2s_ease-out]"
+      className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-[rgba(15,23,42,0.8)] backdrop-blur-xs animate-[fade-in_0.2s_ease-out]"
       role="dialog"
       aria-modal="true"
       aria-labelledby="project-modal-title"

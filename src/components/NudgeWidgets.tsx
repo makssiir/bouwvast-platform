@@ -5,45 +5,33 @@ import Icon from "./Icon"
 
 export default function NudgeWidgets({
   onOpenQuoteModal,
+  disabled = false,
 }: {
   onOpenQuoteModal: () => void
+  disabled?: boolean
 }) {
   const { t } = useLang()
   const [bubbleDismissed, setBubbleDismissed] = useState(false)
   const [showScrollNudge, setShowScrollNudge] = useState(false)
   const [bubbleOpen, setBubbleOpen] = useState(false)
 
-  // Don't show the bubble until cookie consent is resolved (avoids overlap)
-  const cookieResolved = () =>
-    !!localStorage.getItem("bouwvast_cookie_consent")
-
-  const [consentGiven, setConsentGiven] = useState(cookieResolved)
+  // This used to wait for the cookie banner to be answered so the two would not
+  // overlap. There is no banner any more, and the old check read localStorage
+  // during render, which a server render cannot do.
 
   useEffect(() => {
-    if (consentGiven) return
-    // Re-check every time storage changes (user clicks Accept/Decline)
-    const onStorage = () => {
-      if (cookieResolved()) setConsentGiven(true)
+    if (disabled) {
+      setBubbleOpen(false)
+      setShowScrollNudge(false)
+      return
     }
-    window.addEventListener("storage", onStorage)
-    // Also poll briefly since same-tab localStorage changes don't fire "storage"
-    const poll = setInterval(() => {
-      if (cookieResolved()) { setConsentGiven(true); clearInterval(poll) }
-    }, 500)
-    return () => {
-      window.removeEventListener("storage", onStorage)
-      clearInterval(poll)
-    }
-  }, [consentGiven])
 
-  useEffect(() => {
-    if (!consentGiven) return
     // Show speech bubble 2.5 s after consent is given
     const timer = setTimeout(() => {
       if (!bubbleDismissed) {
         setBubbleOpen(true)
       }
-    }, 2500)
+    }, 8000)
 
     const handleScroll = () => {
       const scrollY = window.scrollY
@@ -63,12 +51,14 @@ export default function NudgeWidgets({
       clearTimeout(timer)
       window.removeEventListener("scroll", handleScroll)
     }
-  }, [bubbleDismissed, consentGiven])
+  }, [bubbleDismissed, disabled])
+
+  if (disabled) return null
 
   return (
     <>
       {/* 1. Floating WhatsApp with Non-Overlapping Speech Bubble */}
-      <div className="nudge-container select-none">
+      <div className="nudge-container select-none max-md:hidden">
         {/* Animated Speech Bubble (Cleanly stacked above button) */}
         {bubbleOpen && !bubbleDismissed && (
           <div
@@ -134,7 +124,7 @@ export default function NudgeWidgets({
 
       {/* 2. Desktop & Tablet Smart Sticky Nudge Bar */}
       {showScrollNudge && (
-        <div className="hidden md:flex fixed bottom-6 left-1/2 -translate-x-1/2 z-30 animate-[fade-in-up_0.25s_ease-out]">
+        <div className="hidden xl:flex fixed bottom-6 left-1/2 -translate-x-1/2 z-30 animate-[fade-in-up_0.25s_ease-out]">
           <div className="flex items-center gap-4 py-3 px-5 rounded-full bg-[rgba(15,23,42,0.92)] backdrop-blur-md text-white shadow-2xl border border-slate-700">
             <span className="text-xs font-medium text-slate-200">
               💡 {t("nudge_bar_text")}
@@ -144,20 +134,20 @@ export default function NudgeWidgets({
                 href={CONTACT.whatsappTemplate ?? `tel:${CONTACT.phoneTel}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3.5 py-1.5 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold no-underline flex items-center gap-1 shadow-xs transition-colors"
+                className="shrink-0 whitespace-nowrap px-3.5 py-1.5 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold no-underline flex items-center gap-1 shadow-xs transition-colors"
               >
                 <Icon name="whatsapp" size={14} />
                 <span>{t("nudge_bar_wa")}</span>
               </a>
               <button
                 onClick={onOpenQuoteModal}
-                className="px-3.5 py-1.5 rounded-full bg-[var(--brand)] hover:bg-[var(--brand-dark)] text-white text-xs font-bold border-0 cursor-pointer shadow-xs transition-colors flex items-center gap-1"
+                className="shrink-0 whitespace-nowrap px-3.5 py-1.5 rounded-full bg-[var(--brand)] hover:bg-[var(--brand-dark)] text-white text-xs font-bold border-0 cursor-pointer shadow-xs transition-colors flex items-center gap-1"
               >
                 <span>{t("nudge_bar_quote")}</span>
               </button>
               <button
                 onClick={() => setShowScrollNudge(false)}
-                className="text-slate-400 hover:text-white text-xs p-1 bg-transparent border-0 cursor-pointer ml-1"
+                className="shrink-0 text-slate-400 hover:text-white text-xs p-1 bg-transparent border-0 cursor-pointer ml-1"
                 aria-label={t("nudge_bar_close")}
               >
                 ✕

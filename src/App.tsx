@@ -5,34 +5,36 @@ import DienstenPage from "./pages/DienstenPage"
 import ProjectenPage from "./pages/ProjectenPage"
 import WerkgebiedPage from "./pages/WerkgebiedPage"
 import ContactPage from "./pages/ContactPage"
-import OverOnsPage from "./pages/OverOnsPage"
 import BusinessPage from "./pages/BusinessPage"
 import KennisbankPage from "./pages/KennisbankPage"
 import CityPage from "./pages/CityPage"
+import ServiceCityPage from "./pages/ServiceCityPage"
 import ServicePage from "./pages/ServicePage"
 import Footer from "./components/Footer"
 import ScrollProgress from "./components/ScrollProgress"
-import SocialProofToast from "./components/SocialProofToast"
-import CookieConsent from "./components/CookieConsent"
-import QuoteModal from "./components/QuoteModal"
 import NudgeWidgets from "./components/NudgeWidgets"
-import { SERVICE_BY_SLUG } from "./data/services"
+import CookieConsent from "./components/CookieConsent"
 import { useLang } from "./i18n/LangContext"
 import Icon from "./components/Icon"
 import { CONTACT } from "./data/contact"
 import { applyPageMeta } from "./lib/head"
+import { retryPendingLeads } from "./lib/leads"
+import {
+  hrefForPage,
+  isIndexable,
+  metaForPage,
+  pageForPath,
+  pathForPage,
+} from "./lib/routes"
+import type { Page } from "./lib/routes"
 import type { TranslationKey } from "./i18n/translations"
 
-export type Page = "home" | "diensten" | "projecten" | "werkgebied" | "contact" | "over-ons" | "zakelijk" | "kennisbank" | {
-  type: "service"
-  slug: string
-} | { type: "city"; city: string; serviceSlug?: string }
+export type { Page }
 
-export default function App() {
-  const [page, setPage] = useState<Page>("home")
+export default function App({ initialPage }: { initialPage?: Page } = {}) {
+  const [page, navigate] = useRouter(initialPage)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [quoteModalOpen, setQuoteModalOpen] = useState(false)
-  const [modalService, setModalService] = useState("")
+  const [cookieConsentOpen, setCookieConsentOpen] = useState(false)
   const { t, lang } = useLang()
 
   useEffect(() => {
@@ -40,93 +42,28 @@ export default function App() {
     setMenuOpen(false)
   }, [page])
 
-  // Keep <title>, meta description and canonical in sync with active page
+  // A request that failed on an earlier visit gets one more chance, quietly.
   useEffect(() => {
-    const cityName =
-      typeof page === "object" && page.type === "city" ? page.city : ""
-    const meta: Record<string, {
-      titleKey: TranslationKey
-      descKey: TranslationKey
-      path: string
-    }> = {
-      home: { titleKey: "hero_title", descKey: "hero_sub", path: "" },
-      diensten: {
-        titleKey: "nav_services",
-        descKey: "services_title",
-        path: "diensten",
-      },
-      projecten: {
-        titleKey: "nav_projects",
-        descKey: "projects_sub",
-        path: "projecten",
-      },
-      werkgebied: {
-        titleKey: "nav_area",
-        descKey: "area_page_sub",
-        path: "werkgebied",
-      },
-      contact: { titleKey: "nav_contact", descKey: "cta_sub", path: "contact" },
-      "over-ons": {
-        titleKey: "nav_about",
-        descKey: "about_page_sub",
-        path: "over-ons",
-      },
-      zakelijk: {
-        titleKey: "nav_business",
-        descKey: "b2b_page_sub",
-        path: "zakelijk",
-      },
-      kennisbank: {
-        titleKey: "nav_services",
-        descKey: "services_title",
-        path: "kennisbank",
-      },
-    }
+    void retryPendingLeads()
+  }, [])
 
-    if (typeof page === "object" && page.type === "service") {
-      const svc = SERVICE_BY_SLUG[page.slug]
-      if (svc) {
-        applyPageMeta(lang, {
-          title: `${t(svc.nameKey)} in regio Amersfoort`,
-          description: svc.intro,
-          path: `diensten/${svc.slug}`,
-        })
-        return
-      }
-    }
-
-    if (typeof page === "object" && page.type === "city") {
-      const svc = page.serviceSlug
-        ? SERVICE_BY_SLUG[page.serviceSlug]
-        : undefined
-      applyPageMeta(lang, {
-        title: svc
-          ? `${t(svc.nameKey)} in ${cityName}`
-          : `${t("city_page_title")} ${cityName}`,
-        description: `${t("city_page_sub")} ${cityName}`,
-        path: svc
-          ? `diensten/${svc.slug}/${cityName.toLowerCase()}`
-          : `werkgebied/${cityName.toLowerCase()}`,
-      })
-      return
-    }
-
-    const m = meta[(page as string)] ?? meta.home
+  // Title, description, robots and canonical all follow the active URL.
+  useEffect(() => {
+    const { title, description } = metaForPage(page, lang)
     applyPageMeta(lang, {
-      title: t(m.titleKey),
-      description: t(m.descKey),
-      path: m.path,
+      title,
+      description,
+      path: pathForPage(page),
+      indexable: isIndexable(page),
     })
-  }, [page, lang, t])
+  }, [page, lang])
 
-  const navigate = (p: Page) => setPage(p)
-
-  const openQuoteModal = (serviceName?: string) => {
-    setModalService(serviceName || "")
-    setQuoteModalOpen(true)
-  }
-
-  const pageKey = typeof page === "string" ? page : "city"
+  const pageKey =
+    typeof page === "string"
+      ? page
+      : page.type === "service" || page.type === "service_city"
+        ? "diensten"
+        : "werkgebied"
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--fg)] flex flex-col justify-between">
@@ -135,7 +72,6 @@ export default function App() {
         {t("skip_link")}
       </a>
 
-      {/* Scroll Progress Bar & Back to Top */}
       <ScrollProgress />
 
       <div>
@@ -150,7 +86,6 @@ export default function App() {
         {page === "projecten" && <ProjectenPage navigate={navigate} />}
         {page === "werkgebied" && <WerkgebiedPage navigate={navigate} />}
         {page === "contact" && <ContactPage />}
-        {page === "over-ons" && <OverOnsPage navigate={navigate} />}
         {page === "zakelijk" && <BusinessPage navigate={navigate} />}
         {page === "kennisbank" && <KennisbankPage navigate={navigate} />}
         {typeof page === "object" && page.type === "service" && (
@@ -158,6 +93,12 @@ export default function App() {
         )}
         {typeof page === "object" && page.type === "city" && (
           <CityPage
+            city={page.city}
+            navigate={navigate}
+          />
+        )}
+        {typeof page === "object" && page.type === "service_city" && (
+          <ServiceCityPage
             city={page.city}
             serviceSlug={page.serviceSlug}
             navigate={navigate}
@@ -167,55 +108,98 @@ export default function App() {
 
       <Footer navigate={navigate} />
 
-      {/* Conversion Nudges (Floating WhatsApp Bubble & Sticky Quote Bar) */}
-      <NudgeWidgets onOpenQuoteModal={() => openQuoteModal()} />
-
-      {/* Live Social Proof Toast */}
-      <SocialProofToast />
-
-      {/* Cookie Consent Banner */}
-      <CookieConsent />
-
-      {/* Interactive 3-Step Quote Modal */}
-      <QuoteModal
-        isOpen={quoteModalOpen}
-        onClose={() => setQuoteModalOpen(false)}
-        initialService={modalService}
+      {/* Floating WhatsApp bubble and sticky quote bar */}
+      <NudgeWidgets
+        onOpenQuoteModal={() => navigate("contact")}
+        disabled={cookieConsentOpen}
       />
 
-      {/* Mobile Contact Bar */}
+      <CookieConsent onOpenStateChange={setCookieConsentOpen} />
+
       <MobileContactBar
         navigate={navigate}
-        onOpenQuote={() => openQuoteModal()}
         t={t}
+        disabled={cookieConsentOpen}
       />
     </div>
   )
 }
 
+/**
+ * The URL is the source of truth for which page is shown, so a visitor can
+ * link to, bookmark, share and go back to any page on this site.
+ */
+function useRouter(initialPage?: Page): [Page, (next: Page) => void] {
+  const [page, setPage] = useState<Page>(
+    () =>
+      initialPage ??
+      (typeof window === "undefined"
+        ? "home"
+        : (pageForPath(window.location.pathname) ?? "home")),
+  )
+
+  useEffect(() => {
+    // An address we do not serve should not leave a made-up path in the bar.
+    if (pageForPath(window.location.pathname) === null) {
+      window.history.replaceState({}, "", "/")
+    }
+
+    const onPopState = () => {
+      setPage(pageForPath(window.location.pathname) ?? "home")
+    }
+    window.addEventListener("popstate", onPopState)
+    return () => window.removeEventListener("popstate", onPopState)
+  }, [])
+
+  const navigate = (next: Page) => {
+    const href = hrefForPage(next)
+    if (window.location.pathname !== href) {
+      window.history.pushState({}, "", href)
+    }
+    setPage(next)
+  }
+
+  return [page, navigate]
+}
+
 function MobileContactBar({
   navigate,
-  onOpenQuote,
   t,
+  disabled = false,
 }: {
   navigate: (p: Page) => void
-  onOpenQuote: () => void
   t: (key: TranslationKey) => string
+  disabled?: boolean
 }) {
   return (
-    <div className="mobile-contact-bar">
-      <button
-        onClick={onOpenQuote}
-        className="flex items-center justify-center gap-2 py-3.5 text-sm font-bold text-white bg-[var(--brand)] border-0 cursor-pointer"
+    <div
+      className={
+        disabled ? "mobile-contact-bar pointer-events-none opacity-60" : "mobile-contact-bar"
+      }
+    >
+      <a
+        href={CONTACT.whatsappTemplate ?? `tel:${CONTACT.phoneTel}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center justify-center bg-[#25D366] hover:bg-[#20bd5a] transition-colors"
+        aria-label="WhatsApp"
       >
-        <Icon name="check" size={17} /> {t("nav_cta")}
-      </button>
+        <Icon name="whatsapp" size={24} color="#ffffff" />
+      </a>
       <a
         href={`tel:${CONTACT.phoneTel}`}
-        className="flex items-center justify-center gap-2 py-3.5 text-sm font-bold text-[var(--fg)] bg-white border-l border-[var(--border)] no-underline"
+        className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-2 sm:py-3.5 text-[10px] sm:text-sm font-bold text-[var(--fg)] bg-white border-r border-[var(--border)] no-underline text-center leading-[1.1]"
       >
-        <Icon name="phone" size={17} color="var(--brand)" /> {t("nav_call")}
+        <Icon name="phone" size={17} color="var(--brand)" /> 
+        <span>{t("nav_call")}</span>
       </a>
+      <button
+        onClick={() => navigate("contact")}
+        className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-2 sm:py-3.5 text-[10px] sm:text-sm font-bold text-white bg-[var(--brand)] border-0 cursor-pointer text-center leading-[1.1]"
+      >
+        <Icon name="check" size={17} /> 
+        <span>{t("nav_cta")}</span>
+      </button>
     </div>
   )
 }
