@@ -12,8 +12,10 @@ import HeroSection from "../components/home/HeroSection"
 import ServicesSection from "../components/home/ServicesSection"
 import HowItWorksSection from "../components/home/HowItWorksSection"
 import CostEstimator from "../components/home/CostEstimator"
+import PostalCodeChecker from "../components/home/PostalCodeChecker"
 import BeforeAfter from "../components/home/BeforeAfter"
 import ReviewsSection from "../components/home/ReviewsSection"
+import BottomConversionBand from "../components/home/BottomConversionBand"
 import ProjectModal, { type ProjectDetail } from "../components/ProjectModal"
 
 export default function HomePage({
@@ -32,6 +34,7 @@ export default function HomePage({
       <HeroSection navigate={navigate} />
       <StatsBand />
       <CostEstimator />
+      <PostalCodeChecker navigate={navigate} />
       <ServicesSection navigate={navigate} />
       <BeforeAfter />
       <AudienceSection navigate={navigate} />
@@ -46,7 +49,7 @@ export default function HomePage({
       <KennisbankPreviewSection navigate={navigate} />
       <FAQSection />
       <QuoteFormSection />
-      <CTASection navigate={navigate} />
+      <BottomConversionBand navigate={navigate} />
 
       {/* Project Lightbox Modal */}
       <ProjectModal

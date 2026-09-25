@@ -704,6 +704,58 @@ p {
   color: #4ade80;
 }
 
+/* Quick Pillars from Elektoria */
+.quick-pillars {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.65rem;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .quick-pillars {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+}
+
+.pillar-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 12px;
+  padding: 0.65rem 0.8rem;
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  text-align: left;
+}
+
+.pillar-card:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(74, 222, 128, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+
+.pillar-top {
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.pillar-sub {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.2;
+}
+
 @media (max-width: 900px) {
   .hero-grid {
     grid-template-columns: 1fr;
@@ -768,21 +820,15 @@ p {
 .stats-band {
   background: #fff;
   border-bottom: 1px solid var(--border);
-  padding: 32px 0;
+  padding: 24px 0;
 }
 
 .stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
+  gap: 1rem;
   text-align: center;
   margin: 0;
-}
-
-@media (max-width: 768px) {
-  .stats {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 .stat {
@@ -790,10 +836,15 @@ p {
   flex-direction: column;
   align-items: center;
   gap: 0.25rem;
+  padding: 4px 12px;
+}
+
+.stat + .stat {
+  border-left: 1px solid rgba(148, 163, 184, 0.28);
 }
 
 .stat .num {
-  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-size: clamp(1.85rem, 3.2vw, 2.5rem);
   font-weight: 800;
   color: var(--brand);
   line-height: 1;
@@ -805,8 +856,39 @@ p {
 
 .stat .label {
   color: var(--muted);
-  font-size: 0.925rem;
+  font-size: 0.875rem;
   font-weight: 500;
+}
+
+@media (max-width: 640px) {
+  .stats-band {
+    padding: 16px 0;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px 0;
+  }
+
+  .stat {
+    padding: 8px 10px;
+  }
+
+  .stat + .stat {
+    border-left: none;
+  }
+
+  .stat:nth-child(even) {
+    border-left: 1px solid rgba(148, 163, 184, 0.28);
+  }
+
+  .stat .num {
+    font-size: 1.6rem;
+  }
+
+  .stat .label {
+    font-size: 0.78rem;
+  }
 }
 
 /* Grids & Cards */

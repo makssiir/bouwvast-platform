@@ -70,6 +70,40 @@ export default function HeroSection({
             </button>
           </div>
 
+          <div className="quick-pillars" aria-label="Популярні послуги">
+            <div
+              onClick={() => navigate({ type: "service", slug: "renovatie" })}
+              className="pillar-card"
+            >
+              <span className="pillar-top">🔨 {lang === "uk" ? "Комплексний ремонт" : lang === "nl" ? "Woningrenovatie" : lang === "ru" ? "Комплексный ремонт" : "Home Renovation"}</span>
+              <span className="pillar-sub">{lang === "uk" ? "Квартири та будинки під ключ" : lang === "nl" ? "Totaalproject onder 1 dak" : lang === "ru" ? "Квартиры и дома под ключ" : "Full turnkey service"}</span>
+            </div>
+
+            <div
+              onClick={() => navigate({ type: "service", slug: "badkamer-keuken" })}
+              className="pillar-card"
+            >
+              <span className="pillar-top">🚿 {lang === "uk" ? "Ванна та Санвузол" : lang === "nl" ? "Badkamer & Sanitair" : lang === "ru" ? "Ванная и Санузел" : "Bath & Sanitary"}</span>
+              <span className="pillar-sub">{lang === "uk" ? "Плитка, душ та сантехніка" : lang === "nl" ? "Tegels, inloopdouche & leidingen" : lang === "ru" ? "Плитка, душ и сантехника" : "Tiles, walk-in shower & pipes"}</span>
+            </div>
+
+            <div
+              onClick={() => navigate({ type: "service", slug: "afbouw" })}
+              className="pillar-card"
+            >
+              <span className="pillar-top">🧱 {lang === "uk" ? "Штукатурка та Стіни" : lang === "nl" ? "Stuc- & Afbouwwerk" : lang === "ru" ? "Штукатурка и Стены" : "Plaster & Drywall"}</span>
+              <span className="pillar-sub">{lang === "uk" ? "Ідеально під фарбування" : lang === "nl" ? "Strak & schilderklaar" : lang === "ru" ? "Идеально под покраску" : "Smooth & paint-ready"}</span>
+            </div>
+
+            <div
+              onClick={() => navigate({ type: "service", slug: "loodgieter" })}
+              className="pillar-card"
+            >
+              <span className="pillar-top">⚡ {lang === "uk" ? "Сантехніка & Мережі" : lang === "nl" ? "Loodgieter & Elektra" : lang === "ru" ? "Сантехника и Сети" : "Plumbing & Wiring"}</span>
+              <span className="pillar-sub">{lang === "uk" ? "Комунікації та обладнання" : lang === "nl" ? "Vakkundige aansluitingen" : lang === "ru" ? "Коммуникации и монтаж" : "Certified installation"}</span>
+            </div>
+          </div>
+
           <div className="hero-sub" aria-label="Certificeringen en garanties">
             <span>
               <Icon name="check" size={16} color="#4ade80" />{" "}

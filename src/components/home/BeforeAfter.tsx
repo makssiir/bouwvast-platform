@@ -192,8 +192,9 @@ export default function BeforeAfter() {
               className="absolute inset-0 w-full h-full object-cover"
               draggable={false}
             />
-            <span className="absolute top-4 right-4 z-10 px-3.5 py-1 rounded-full text-xs font-bold text-white bg-[var(--brand)] shadow-lg">
-              {t("ba_after")}
+            <span className="absolute top-4 right-4 z-10 px-3.5 py-1.5 rounded-full text-xs font-bold text-white bg-[var(--brand)] shadow-lg inline-flex items-center gap-1.5">
+              <span>🛡️</span>
+              <span>{t("ba_after")} · {lang === "uk" ? "Гарантія 2 роки" : lang === "nl" ? "2 Jaar Garantie" : lang === "ru" ? "Гарантия 2 года" : "2-Yr Warranty"}</span>
             </span>
 
             {/* Before (Clipped Layer) */}
@@ -208,10 +209,11 @@ export default function BeforeAfter() {
               draggable={false}
             />
             <span
-              className="absolute top-4 left-4 z-10 px-3.5 py-1 rounded-full text-xs font-bold text-white bg-[rgba(15,23,42,0.85)] backdrop-blur-xs shadow-lg transition-opacity"
+              className="absolute top-4 left-4 z-10 px-3.5 py-1.5 rounded-full text-xs font-bold text-white bg-[rgba(15,23,42,0.85)] backdrop-blur-xs shadow-lg transition-opacity inline-flex items-center gap-1.5"
               style={{ opacity: pos > 15 ? 1 : 0 }}
             >
-              {t("ba_before")}
+              <span>⚠️</span>
+              <span>{t("ba_before")}</span>
             </span>
 
             {/* Divider Line & Glow Handle */}
@@ -243,6 +245,18 @@ export default function BeforeAfter() {
             <p className="text-sm text-[var(--muted)] mt-1.5 max-w-xl mx-auto">
               {current.desc}
             </p>
+
+            <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">
+                ✓ {lang === "uk" ? "Повний демонтаж та вирівнювання" : lang === "nl" ? "Vakkundige egalisatie" : lang === "ru" ? "Полный демонтаж и выравнивание" : "Precision leveling"}
+              </span>
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">
+                ✓ {lang === "uk" ? "Нові інженерні мережі" : lang === "nl" ? "Nieuwe leidingen & elektra" : lang === "ru" ? "Новые инженерные сети" : "Modern utilities & wiring"}
+              </span>
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">
+                ✓ {lang === "uk" ? "Офіційна письмова гарантія" : lang === "nl" ? "Schriftelijke garantie" : lang === "ru" ? "Официальная гарантия" : "Formal written warranty"}
+              </span>
+            </div>
           </div>
         </div>
       </div>
