@@ -148,7 +148,7 @@ function PricingPreviewSection({ navigate }: { navigate: (p: Page) => void }) {
   const pricesData: Record<string, { label: string; price: string; slug: string }[]> = {
     uk: [
       { label: "Погодинна ставка майстра", price: "€55 / год", slug: "algemeen" },
-      { label: "Комплексний ремонт будинку", price: "Фіксований кошторис", slug: "renovatie" },
+      { label: "Комплексний ремонт будинку", price: "Фіксована ціна", slug: "renovatie" },
       { label: "Ремонт ванної кімнати та санвузла", price: "Фіксована ціна", slug: "badkamer-keuken" },
       { label: "Штукатурка та чистове оздоблення", price: "Від €45 / м²", slug: "afbouw" },
       { label: "Внутрішнє фарбування та стіни", price: "Від €35 / м²", slug: "schilderwerk" },
@@ -159,7 +159,7 @@ function PricingPreviewSection({ navigate }: { navigate: (p: Page) => void }) {
     en: [
       { label: "Craftsman hourly rate", price: "€55 / hr", slug: "algemeen" },
       { label: "Complete house renovation", price: "Fixed quote", slug: "renovatie" },
-      { label: "Bathroom & sanitary remodeling", price: "Fixed project price", slug: "badkamer-keuken" },
+      { label: "Bathroom & sanitary remodeling", price: "Fixed price", slug: "badkamer-keuken" },
       { label: "Plastering & wall finishing", price: "From €45 / m²", slug: "afbouw" },
       { label: "Interior painting & coats", price: "From €35 / m²", slug: "schilderwerk" },
       { label: "Carpentry, frames & doors", price: "From €55 / hr", slug: "timmerman" },
@@ -168,7 +168,7 @@ function PricingPreviewSection({ navigate }: { navigate: (p: Page) => void }) {
     ],
     ru: [
       { label: "Почасовая ставка мастера", price: "€55 / час", slug: "algemeen" },
-      { label: "Комплексный ремонт дома", price: "Фиксированная смета", slug: "renovatie" },
+      { label: "Комплексный ремонт дома", price: "Фиксированная цена", slug: "renovatie" },
       { label: "Ремонт ванной комнаты и санузла", price: "Фиксированная цена", slug: "badkamer-keuken" },
       { label: "Штукатурка и чистовая отделка", price: "От €45 / м²", slug: "afbouw" },
       { label: "Внутренняя покраска и стены", price: "От €35 / м²", slug: "schilderwerk" },
@@ -180,11 +180,11 @@ function PricingPreviewSection({ navigate }: { navigate: (p: Page) => void }) {
       { label: "Uurtarief vakman (arbeid)", price: "€55 / uur", slug: "algemeen" },
       { label: "Complete woningrenovatie", price: "Vaste offerte", slug: "renovatie" },
       { label: "Badkamer- & sanitairrenovatie", price: "Vaste projectprijs", slug: "badkamer-keuken" },
-      { label: "Stucwerk & wandafwerking", price: "Vanaf €45 / m²", slug: "afbouw" },
-      { label: "Binnenschilderwerk & sauswerk", price: "Vanaf €35 / m²", slug: "schilderwerk" },
+      { label: "Stucwerk & wandafwerking", price: "Vanaf €45 / м²", slug: "afbouw" },
+      { label: "Binnenschilderwerk & sauswerk", price: "Vanaf €35 / м²", slug: "schilderwerk" },
       { label: "Timmerwerk, kozijnen & deuren", price: "Vanaf €55 / uur", slug: "timmerman" },
       { label: "Loodgieter & leidingwerk", price: "Vanaf €65 / uur", slug: "loodgieter" },
-      { label: "Gevelrenovatie & voegwerk", price: "Vanaf €48 / m²", slug: "gevel-buitenwerk" },
+      { label: "Gevelrenovatie & voegwerk", price: "Vanaf €48 / м²", slug: "gevel-buitenwerk" },
     ],
   }
 
@@ -207,7 +207,11 @@ function PricingPreviewSection({ navigate }: { navigate: (p: Page) => void }) {
 
         <div className="table-wrap">
           <div className="table-head">{t("services_title")}</div>
-          <table>
+          <table className="price-table">
+            <colgroup>
+              <col className="w-[60%] sm:w-[64%]" />
+              <col className="w-[40%] sm:w-[36%]" />
+            </colgroup>
             <tbody>
               {prices.map((row) => (
                 <tr key={row.label}>
@@ -216,7 +220,7 @@ function PricingPreviewSection({ navigate }: { navigate: (p: Page) => void }) {
                       onClick={() =>
                         navigate({ type: "service", slug: row.slug })
                       }
-                      className="bg-transparent border-0 p-0 text-left font-semibold text-[var(--fg)] hover:text-[var(--brand)] cursor-pointer"
+                      className="bg-transparent border-0 p-0 text-left font-semibold text-[var(--fg)] hover:text-[var(--brand)] cursor-pointer text-sm sm:text-base leading-snug"
                     >
                       {row.label}
                     </button>
