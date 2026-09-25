@@ -1,14 +1,84 @@
 import { useLang } from "../../i18n/LangContext"
 
 export default function WhyUsSection() {
-  const { t } = useLang()
+  const { t, lang } = useLang()
 
-  const reasons = [
-    { title: "Eén vast aanspreekpunt", desc: "Van eerste contact tot oplevering: altijd dezelfde projectcoördinator." },
-    { title: "Vaste prijzen vooraf", desc: "Transparante calculaties zonder verrassingen achteraf." },
-    { title: "Vakkundige garantie", desc: "Op alle werkzaamheden en materialen bieden wij volledige kwaliteitsgarantie." },
-    { title: "25+ jaar ervaring", desc: "Bewezen vakmanschap met meer dan 1.500 succesvol opgeleverde projecten." },
-  ]
+  const reasonsByLang: Record<string, { title: string; desc: string }[]> = {
+    uk: [
+      {
+        title: "Єдиний персональний контакт",
+        desc: "Від першої консультації до фінальної здачі: з вами працює один постійний координатор проєкту.",
+      },
+      {
+        title: "Фіксовані ціни заздалегідь",
+        desc: "Прозорі та деталізовані кошториси без прихованих платежів і несподіваних доплат.",
+      },
+      {
+        title: "Офіційна гарантія якості",
+        desc: "На всі виконані будівельні роботи та використані матеріали надаємо повну гарантію.",
+      },
+      {
+        title: "25+ років практичного досвіду",
+        desc: "Перевірена майстерність та понад 1 500 успішно реалізованих об'єктів по всій країні.",
+      },
+    ],
+    en: [
+      {
+        title: "Single point of contact",
+        desc: "From first inquiry to final handover: always the same dedicated project coordinator.",
+      },
+      {
+        title: "Fixed upfront pricing",
+        desc: "Transparent and itemized calculations without surprise costs afterwards.",
+      },
+      {
+        title: "Workmanship warranty",
+        desc: "Full quality guarantee on all construction work and supplied materials.",
+      },
+      {
+        title: "25+ years experience",
+        desc: "Proven craftsmanship with over 1,500 successfully completed projects.",
+      },
+    ],
+    ru: [
+      {
+        title: "Единый персональный контакт",
+        desc: "От первого контакта до сдачи объекта: с вами всегда один и тот же координатор.",
+      },
+      {
+        title: "Фиксированные цены заранее",
+        desc: "Прозрачные и подробные сметы без скрытых платежей и неприятных сюрпризов.",
+      },
+      {
+        title: "Официальная гарантия качества",
+        desc: "Полная гарантия на все выполненные работы и строительные материалы.",
+      },
+      {
+        title: "25+ лет опыта работы",
+        desc: "Проверенное мастерство и свыше 1 500 успешно сданных объектов.",
+      },
+    ],
+    nl: [
+      {
+        title: "Eén vast aanspreekpunt",
+        desc: "Van eerste contact tot oplevering: altijd dezelfde projectcoördinator.",
+      },
+      {
+        title: "Vaste prijzen vooraf",
+        desc: "Transparante calculaties zonder verrassingen achteraf.",
+      },
+      {
+        title: "Vakkundige garantie",
+        desc: "Op alle werkzaamheden en materialen bieden wij volledige kwaliteitsgarantie.",
+      },
+      {
+        title: "25+ jaar ervaring",
+        desc: "Bewezen vakmanschap met meer dan 1.500 succesvol opgeleverde projecten.",
+      },
+    ],
+  }
+
+  const reasons = reasonsByLang[lang] ?? reasonsByLang.uk
 
   return (
     <section className="bg-card relative section">

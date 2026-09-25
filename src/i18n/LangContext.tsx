@@ -8,20 +8,20 @@ interface LangCtx {
   t: (key: TranslationKey, params?: Record<string, string>) => string
 }
 
-const SUPPORTED: Lang[] = ["nl", "en", "uk", "ru"]
+const SUPPORTED: Lang[] = ["uk", "nl", "en", "ru"]
 const STORAGE_KEY = "bouwvast.lang"
 
 function initialLang(): Lang {
-  if (typeof window === "undefined") return "nl"
+  if (typeof window === "undefined") return "uk"
   const stored = window.localStorage.getItem(STORAGE_KEY) as Lang | null
   if (stored && SUPPORTED.includes(stored)) return stored
   const nav = window.navigator.language.slice(0, 2).toLowerCase()
   const detected = SUPPORTED.find((l) => l === nav)
-  return detected ?? "nl"
+  return detected ?? "uk"
 }
 
 const LangContext = createContext<LangCtx>({
-  lang: "nl",
+  lang: "uk",
   setLang: () => {},
   t: (key) => key,
 })

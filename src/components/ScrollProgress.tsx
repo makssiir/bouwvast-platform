@@ -33,12 +33,12 @@ export default function ScrollProgress() {
         aria-hidden="true"
       />
 
-      {/* Back to top button */}
+      {/* Back to top button (desktop only to prevent mobile overlap) */}
       {showToTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-6 max-md:bottom-[68px] left-6 z-40 w-11 h-11 rounded-full bg-[var(--brand)] text-white flex items-center justify-center shadow-lg hover:bg-[var(--brand-dark)] transition-all hover:scale-110 border-0 cursor-pointer animate-[fade-in_0.3s_ease-out]"
-          aria-label="Naar boven scrollen"
+          className="hidden md:flex fixed bottom-8 right-8 z-40 w-11 h-11 rounded-full bg-[var(--brand)] text-white items-center justify-center shadow-lg hover:bg-[var(--brand-dark)] transition-all hover:scale-110 border-0 cursor-pointer animate-[fade-in_0.3s_ease-out]"
+          aria-label="Вгору"
         >
           <svg
             width="20"

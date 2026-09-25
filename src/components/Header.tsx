@@ -8,7 +8,7 @@ import { CONTACT } from "../data/contact"
 import { track } from "../lib/analytics"
 import PageLink from "./PageLink"
 
-const LANGS: Lang[] = ["nl", "en", "uk", "ru"]
+const LANGS: Lang[] = ["uk", "nl", "en", "ru"]
 
 export default function Header({
   page,
@@ -54,7 +54,7 @@ export default function Header({
   ] as const
 
   return (
-    <header className="site-header">
+    <header className={`site-header ${menuOpen ? "menu-is-open" : ""}`}>
       <div className="container nav">
         <PageLink
           to="home"
@@ -177,7 +177,7 @@ export default function Header({
 
       {menuOpen && (
         <div id="nav-mobile" className="open">
-          <ul>
+          <ul className="nav-mobile-list">
             {NAV.map((n) => (
               <li key={n.page}>
                 <PageLink
@@ -187,17 +187,37 @@ export default function Header({
                     setMenuOpen(false)
                   }}
                   ariaCurrent={page === n.page ? "page" : undefined}
-                  className={`block w-full text-left py-4 no-underline text-base font-semibold ${
-                    page === n.page
-                      ? "text-[var(--brand)] font-bold"
-                      : "text-[var(--fg)]"
+                  className={`nav-mobile-link ${
+                    page === n.page ? "active" : ""
                   }`}
                 >
-                  {n.label}
+                  <span>{n.label}</span>
+                  <span className="nav-mobile-arrow">→</span>
                 </PageLink>
               </li>
             ))}
           </ul>
+
+          <div className="nav-mobile-footer">
+            <button
+              onClick={() => {
+                navigate("contact")
+                setMenuOpen(false)
+              }}
+              className="btn btn-primary w-full justify-center py-3.5 text-base font-bold shadow-md cursor-pointer border-0"
+            >
+              <Icon name="check" size={18} />
+              <span>{t("nav_cta")}</span>
+            </button>
+
+            <a
+              href={`tel:${CONTACT.phoneTel}`}
+              className="btn btn-outline w-full justify-center py-3 text-sm font-bold no-underline text-[var(--fg)]"
+            >
+              <Icon name="phone" size={16} />
+              <span>{t("nav_call")} ({CONTACT.phoneDisplay})</span>
+            </a>
+          </div>
         </div>
       )}
     </header>

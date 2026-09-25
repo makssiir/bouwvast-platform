@@ -76,7 +76,7 @@ export default function CostEstimator({
 }: {
   onSelectCalculation?: (details: string) => void
 }) {
-  const { t } = useLang()
+  const { t, lang } = useLang()
   const [selectedService, setSelectedService] = useState<EstimatorOption>(
     SERVICES_DATA[0],
   )
@@ -139,6 +139,14 @@ export default function CostEstimator({
     }
   }
 
+  const stepLabels: Record<string, string[]> = {
+    uk: ["Тип робіт", "Обсяг", "Якість"],
+    en: ["Type of work", "Scope", "Quality"],
+    ru: ["Тип работ", "Объем", "Качество"],
+    nl: ["Type werk", "Omvang", "Kwaliteit"],
+  }
+  const currentStepLabels = stepLabels[lang] ?? stepLabels.uk
+
   return (
     <section
       className="section bg-[var(--muted-bg)] border-y border-[var(--border)]"
@@ -177,7 +185,7 @@ export default function CostEstimator({
                   <span className={`text-[10px] font-bold uppercase tracking-wider text-center absolute -bottom-5 w-24 ${
                     step >= s ? 'text-[var(--brand)]' : 'text-[var(--muted)]'
                   }`}>
-                    {s === 1 ? (t("est_step_1") as string) || "Type werk" : s === 2 ? (t("est_step_2") as string) || "Omvang" : (t("est_step_3") as string) || "Kwaliteit"}
+                    {currentStepLabels[s - 1]}
                   </span>
                 </div>
               ))}
@@ -418,7 +426,7 @@ export default function CostEstimator({
               className="px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs no-underline flex items-center gap-1.5 shadow-xs transition-colors shrink-0"
             >
               <Icon name="whatsapp" size={16} />
-              <span>WhatsApp Foto's &rarr;</span>
+              <span>{lang === "uk" ? "Фото у WhatsApp →" : lang === "ru" ? "Фото в WhatsApp →" : "WhatsApp Foto's →"}</span>
             </a>
           </div>
         </div>

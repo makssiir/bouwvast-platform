@@ -2,58 +2,125 @@ import React, { useState, useRef } from "react"
 import Icon from "../Icon"
 import { useLang } from "../../i18n/LangContext"
 
-interface ComparisonItem {
-  id: string
-  titleKey: string
-  defaultTitle: string
-  location: string
-  beforeImg: string
-  afterImg: string
-  descKey?: string
-  defaultDesc: string
-}
-
-const COMPARISONS: ComparisonItem[] = [
-  {
-    id: "kitchen",
-    titleKey: "svc_bathroom",
-    defaultTitle: "Complete Keukenrenovatie",
-    location: "Amersfoort Vathorst",
-    beforeImg: "/images/kitchen-before.jpg",
-    afterImg: "/images/kitchen-after.jpg",
-    defaultDesc:
-      "Van gedateerde eikenhouten kasten naar een moderne luxe keuken met mat-antraciet kasten, inductie en visgraatvloer.",
-  },
-  {
-    id: "renovation",
-    titleKey: "svc_renovation",
-    defaultTitle: "Woningrenovatie & Stucwerk",
-    location: "Leusden",
-    beforeImg: "/images/living-before.jpg",
-    afterImg: "/images/living-after.jpg",
-    defaultDesc:
-      "Complete aanpak van ruwe wanden, strak sausklaar stucwerk en eikenhouten visgraatvloer.",
-  },
-  {
-    id: "bathroom",
-    titleKey: "svc_bathroom",
-    defaultTitle: "Badkamer & Sanitair Renovatie",
-    location: "Utrecht Oost",
-    beforeImg: "/images/bath-before.jpg",
-    afterImg: "/images/bath-after.jpg",
-    defaultDesc:
-      "Van gedateerd tegelwerk naar een moderne inloopdouche met grootformaat betonlook tegels en eiken meubel.",
-  },
-]
-
 export default function BeforeAfter() {
-  const { t } = useLang()
+  const { t, lang } = useLang()
   const [activeIdx, setActiveIdx] = useState(0)
   const [pos, setPos] = useState(50)
   const containerRef = useRef<HTMLDivElement>(null)
   const dragging = useRef(false)
 
-  const current = COMPARISONS[activeIdx]
+  const comparisonsByLang: Record<
+    string,
+    { id: string; title: string; location: string; beforeImg: string; afterImg: string; desc: string }[]
+  > = {
+    uk: [
+      {
+        id: "kitchen",
+        title: "Комплексний ремонт кухні",
+        location: "Амерсфорт Ватгорст",
+        beforeImg: "/images/kitchen-before.jpg",
+        afterImg: "/images/kitchen-after.jpg",
+        desc: "Від старих дубових шаф до сучасної преміум-кухні з матовими антрацитовими фасадами, індукцією та паркетом ялинкою.",
+      },
+      {
+        id: "renovation",
+        title: "Ремонт житла та штукатурка",
+        location: "Леусден",
+        beforeImg: "/images/living-before.jpg",
+        afterImg: "/images/living-after.jpg",
+        desc: "Повна переробка необроблених стін, дзеркально-гладка штукатурка під фарбування та дубова паркетна підлога.",
+      },
+      {
+        id: "bathroom",
+        title: "Ремонт ванної кімнати та сантехніки",
+        location: "Утрехт Схід",
+        beforeImg: "/images/bath-before.jpg",
+        afterImg: "/images/bath-after.jpg",
+        desc: "Від старої плитки до сучасної безбар'єрної душової зони з великоформатною керамікою під бетон та меблями з масиву дуба.",
+      },
+    ],
+    en: [
+      {
+        id: "kitchen",
+        title: "Complete Kitchen Remodel",
+        location: "Amersfoort Vathorst",
+        beforeImg: "/images/kitchen-before.jpg",
+        afterImg: "/images/kitchen-after.jpg",
+        desc: "From outdated oak cabinets to a modern luxury kitchen with matte anthracite cabinetry, induction, and herringbone flooring.",
+      },
+      {
+        id: "renovation",
+        title: "Home Renovation & Plastering",
+        location: "Leusden",
+        beforeImg: "/images/living-before.jpg",
+        afterImg: "/images/living-after.jpg",
+        desc: "Complete overhaul of raw walls, mirror-smooth plastering, and oak herringbone flooring throughout.",
+      },
+      {
+        id: "bathroom",
+        title: "Bathroom & Sanitary Renovation",
+        location: "Utrecht East",
+        beforeImg: "/images/bath-before.jpg",
+        afterImg: "/images/bath-after.jpg",
+        desc: "From dated tiling to a modern walk-in shower with large-format concrete-look tiles and an oak vanity.",
+      },
+    ],
+    ru: [
+      {
+        id: "kitchen",
+        title: "Комплексный ремонт кухни",
+        location: "Амерсфорт Ватхорст",
+        beforeImg: "/images/kitchen-before.jpg",
+        afterImg: "/images/kitchen-after.jpg",
+        desc: "От устаревших дубовых шкафов к современной кухне с матовыми антрацитовыми фасадами, индукцией и паркетом елочкой.",
+      },
+      {
+        id: "renovation",
+        title: "Ремонт дома и штукатурка",
+        location: "Леусден",
+        beforeImg: "/images/living-before.jpg",
+        afterImg: "/images/living-after.jpg",
+        desc: "Полная отделка сырых стен, зеркально гладкая штукатурка под покраску и дубовый паркет.",
+      },
+      {
+        id: "bathroom",
+        title: "Ремонт ванной комнаты и сантехники",
+        location: "Утрехт Восток",
+        beforeImg: "/images/bath-before.jpg",
+        afterImg: "/images/bath-after.jpg",
+        desc: "От старой плитки к современной душевой зоне с крупноформатной плиткой под бетон и дубовой мебелью.",
+      },
+    ],
+    nl: [
+      {
+        id: "kitchen",
+        title: "Complete Keukenrenovatie",
+        location: "Amersfoort Vathorst",
+        beforeImg: "/images/kitchen-before.jpg",
+        afterImg: "/images/kitchen-after.jpg",
+        desc: "Van gedateerde eikenhouten kasten naar een moderne luxe keuken met mat-antraciet kasten, inductie en visgraatvloer.",
+      },
+      {
+        id: "renovation",
+        title: "Woningrenovatie & Stucwerk",
+        location: "Leusden",
+        beforeImg: "/images/living-before.jpg",
+        afterImg: "/images/living-after.jpg",
+        desc: "Complete aanpak van ruwe wanden, strak sausklaar stucwerk en eikenhouten visgraatvloer.",
+      },
+      {
+        id: "bathroom",
+        title: "Badkamer & Sanitair Renovatie",
+        location: "Utrecht Oost",
+        beforeImg: "/images/bath-before.jpg",
+        afterImg: "/images/bath-after.jpg",
+        desc: "Van gedateerd tegelwerk naar een moderne inloopdouche met grootformaat betonlook tegels en eiken meubel.",
+      },
+    ],
+  }
+
+  const comparisons = comparisonsByLang[lang] ?? comparisonsByLang.uk
+  const current = comparisons[activeIdx] ?? comparisons[0]
 
   const setFromClientX = (clientX: number) => {
     const el = containerRef.current
@@ -73,7 +140,7 @@ export default function BeforeAfter() {
 
           {/* Selector pills */}
           <div className="flex flex-wrap justify-center gap-2.5 mt-4">
-            {COMPARISONS.map((comp, idx) => (
+            {comparisons.map((comp, idx) => (
               <button
                 key={comp.id}
                 onClick={() => {
@@ -86,7 +153,7 @@ export default function BeforeAfter() {
                     : "bg-white border border-[var(--border)] text-[var(--muted)] hover:text-[var(--fg)] hover:border-[var(--brand)]"
                 }`}
               >
-                {comp.defaultTitle}
+                {comp.title}
               </button>
             ))}
           </div>
@@ -171,10 +238,10 @@ export default function BeforeAfter() {
 
           <div className="mt-5 text-center">
             <h3 className="text-lg font-bold text-[var(--fg)] m-0">
-              {current.defaultTitle} — {current.location}
+              {current.title} — {current.location}
             </h3>
             <p className="text-sm text-[var(--muted)] mt-1.5 max-w-xl mx-auto">
-              {current.defaultDesc}
+              {current.desc}
             </p>
           </div>
         </div>

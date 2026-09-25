@@ -2,13 +2,113 @@ import { useLang } from "../../i18n/LangContext"
 import Icon from "../Icon"
 
 export default function ReviewsSection() {
-  const { t } = useLang()
+  const { t, lang } = useLang()
 
-  const reviews = [
-    { name: "Jeroen van Dam", city: "Amersfoort", stars: 5, text: "Fantastische verbouwing van onze badkamer. Alles binnen de planning en budget opgeleverd. De communicatie was top van begin tot eind.", date: "Oktober 2025" },
-    { name: "Marloes Bakker", city: "Utrecht", stars: 5, text: "Hele woning laten stucen en schilderen. Strak resultaat, schone werkplek en een eerlijke prijs. Absolute aanrader!", date: "September 2025" },
-    { name: "Peter de Vries", city: "Hilversum", stars: 5, text: "Complete keukenrenovatie laten uitvoeren. Het team was professioneel, dacht mee over oplossingen en het eindresultaat is prachtig.", date: "November 2025" }
-  ]
+  const reviewsByLang: Record<string, { name: string; city: string; stars: number; text: string; date: string }[]> = {
+    uk: [
+      {
+        name: "Євген Коваленко",
+        city: "Амерсфорт",
+        stars: 5,
+        text: "Фантастичний ремонт нашої ванної кімнати. Все виконано чітко за графіком та в межах обумовленого бюджету. Комунікація була на найвищому рівні від першого дня до фінальної здачі.",
+        date: "Жовтень 2025",
+      },
+      {
+        name: "Олена Мельник",
+        city: "Утрехт",
+        stars: 5,
+        text: "Замовляли вирівнювання стін, штукатурку та фарбування всього будинку. Ідеально рівний результат, чисте робоче місце щодня та чесна ціна без сюрпризів. Щиро рекомендую!",
+        date: "Вересень 2025",
+      },
+      {
+        name: "Дмитро Шевченко",
+        city: "Гілверсум",
+        stars: 5,
+        text: "Виконали повний ремонт кухні з переплануванням. Бригада дуже професійна, допомогли обрати якісні матеріали та оптимізувати витрати. Результатом неймовірно задоволені.",
+        date: "Листопад 2025",
+      },
+    ],
+    en: [
+      {
+        name: "Jeroen van Dam",
+        city: "Amersfoort",
+        stars: 5,
+        text: "Fantastic renovation of our bathroom. Everything delivered within schedule and budget. Clear communication from start to finish.",
+        date: "October 2025",
+      },
+      {
+        name: "Marloes Bakker",
+        city: "Utrecht",
+        stars: 5,
+        text: "Had the whole house plastered and painted. Sleek finish, clean workplace and an honest price. Highly recommended!",
+        date: "September 2025",
+      },
+      {
+        name: "Peter de Vries",
+        city: "Hilversum",
+        stars: 5,
+        text: "Completed full kitchen remodeling. The team was professional, suggested great solutions, and the end result is stunning.",
+        date: "November 2025",
+      },
+    ],
+    ru: [
+      {
+        name: "Евгений Коваленко",
+        city: "Амерсфорт",
+        stars: 5,
+        text: "Фантастический ремонт ванной комнаты. Все выполнено в срок и в рамках оговоренного бюджета. Отличная коммуникация на каждом этапе.",
+        date: "Октябрь 2025",
+      },
+      {
+        name: "Елена Мельник",
+        city: "Утрехт",
+        stars: 5,
+        text: "Штукатурка и покраска всего дома. Идеально ровные стены, чистота на объекте и честная цена без доплат. Рекомендую!",
+        date: "Сентябрь 2025",
+      },
+      {
+        name: "Дмитрий Шевченко",
+        city: "Хилверсюм",
+        stars: 5,
+        text: "Полный ремонт кухни под ключ. Профессиональная бригада, отличное качество материалов и работ. Результатом очень довольны.",
+        date: "Ноябрь 2025",
+      },
+    ],
+    nl: [
+      {
+        name: "Jeroen van Dam",
+        city: "Amersfoort",
+        stars: 5,
+        text: "Fantastische verbouwing van onze badkamer. Alles binnen de planning en budget opgeleverd. De communicatie was top van begin tot eind.",
+        date: "Oktober 2025",
+      },
+      {
+        name: "Marloes Bakker",
+        city: "Utrecht",
+        stars: 5,
+        text: "Hele woning laten stucen en schilderen. Strak resultaat, schone werkplek en een eerlijke prijs. Absolute aanrader!",
+        date: "September 2025",
+      },
+      {
+        name: "Peter de Vries",
+        city: "Hilversum",
+        stars: 5,
+        text: "Complete keukenrenovatie laten uitvoeren. Het team was professioneel, dacht mee over oplossingen en het eindresultaat is prachtig.",
+        date: "November 2025",
+      },
+    ],
+  }
+
+  const reviews = reviewsByLang[lang] ?? reviewsByLang.uk
+
+  const verifiedLabel =
+    lang === "uk"
+      ? "Понад 120 перевірених відгуків"
+      : lang === "ru"
+        ? "Более 120 проверенных отзывов"
+        : lang === "en"
+          ? "120+ verified reviews"
+          : "120+ geverifieerde reviews"
 
   return (
     <section className="section" id="reviews">
@@ -32,7 +132,7 @@ export default function ReviewsSection() {
             </div>
             <div className="flex items-center gap-2 text-sm text-[var(--muted)] mt-2">
               <Icon name="check" size={16} color="#10b981" />
-              <span>120+ geverifieerde reviews</span>
+              <span>{verifiedLabel}</span>
             </div>
           </div>
         </div>

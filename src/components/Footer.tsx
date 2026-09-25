@@ -34,7 +34,7 @@ const MAJOR_DUTCH_CITIES = [
 ]
 
 export default function Footer({ navigate }: { navigate: (p: Page) => void }) {
-  const { t } = useLang()
+  const { t, lang } = useLang()
   const [isCitiesExpanded, setIsCitiesExpanded] = useState(false)
 
   return (
@@ -170,9 +170,23 @@ export default function Footer({ navigate }: { navigate: (p: Page) => void }) {
             </div>
             <button
               onClick={() => setIsCitiesExpanded(!isCitiesExpanded)}
-              className="text-xs text-[#4ade80] hover:text-white bg-transparent border-0 p-0 mt-3 cursor-pointer transition-colors flex items-center gap-1"
+              className="text-xs text-[#4ade80] hover:text-white bg-transparent border-0 p-0 mt-3 cursor-pointer transition-colors flex items-center gap-1 font-semibold"
             >
-              {isCitiesExpanded ? "Minder steden ↑" : "Alle steden →"}
+              {isCitiesExpanded
+                ? lang === "uk"
+                  ? "Згорнути список ↑"
+                  : lang === "ru"
+                    ? "Свернуть список ↑"
+                    : lang === "en"
+                      ? "Fewer cities ↑"
+                      : "Minder steden ↑"
+                : lang === "uk"
+                  ? "Усі міста →"
+                  : lang === "ru"
+                    ? "Все города →"
+                    : lang === "en"
+                      ? "All cities →"
+                      : "Alle steden →"}
             </button>
           </div>
         </div>

@@ -8,7 +8,7 @@ export default function HeroSection({
 }: {
   navigate: (p: Page) => void
 }) {
-  const { t } = useLang()
+  const { t, lang } = useLang()
 
   const handleQuoteClick = () => {
     const quoteEl = document.getElementById("quote")
@@ -25,6 +25,15 @@ export default function HeroSection({
       calcEl.scrollIntoView({ behavior: "smooth" })
     }
   }
+
+  const badgeCaption =
+    lang === "uk"
+      ? "Bouwvast · Якість та Гарантія"
+      : lang === "ru"
+        ? "Bouwvast · Качество и Гарантия"
+        : lang === "en"
+          ? "Bouwvast · Quality & Warranty"
+          : "Bouwvast · Kwaliteit & Garantie"
 
   return (
     <section className="hero hero--home">
@@ -87,7 +96,7 @@ export default function HeroSection({
           />
           <figcaption className="hero-person-badge">
             <Icon name="check" size={18} color="#4ade80" />
-            <span>Bouwvast · Kwaliteit & Garantie</span>
+            <span>{badgeCaption}</span>
           </figcaption>
         </figure>
       </div>

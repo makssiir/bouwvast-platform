@@ -23,7 +23,7 @@ const origin = String(process.env.SITE_ORIGIN ?? process.env.VITE_SITE_ORIGIN ??
   .trim()
   .replace(/\/+$/, "")
 
-const LANG = "nl"
+const LANG = "uk"
 const SITE_NAME = "Bouwvast"
 
 function escapeHtml(value) {
