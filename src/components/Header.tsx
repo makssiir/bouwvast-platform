@@ -78,8 +78,8 @@ export default function Header({
                   ariaCurrent={page === n.page ? "page" : undefined}
                   className={`no-underline text-sm font-semibold transition-colors ${
                     page === n.page
-                      ? "text-[var(--brand)] font-bold"
-                      : "text-[var(--muted)] hover:text-[var(--fg)]"
+                      ? "text-[#15803d] font-extrabold"
+                      : "text-[#0f172a] hover:text-[#16a34a]"
                   }`}
                 >
                   {n.label}
@@ -95,7 +95,7 @@ export default function Header({
             <button
               type="button"
               onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-[var(--fg)] bg-white hover:bg-gray-50 border border-[var(--border)] rounded-lg shadow-2xs transition-all cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-extrabold text-[#0f172a] bg-white hover:bg-slate-50 border-2 border-slate-300 hover:border-slate-400 rounded-lg shadow-2xs transition-all cursor-pointer"
               aria-expanded={langDropdownOpen}
               aria-haspopup="true"
               aria-label="Taalkeuze menu"
@@ -105,7 +105,7 @@ export default function Header({
               </span>
               <span>{lang.toUpperCase()}</span>
               <span
-                className={`text-[10px] text-gray-500 transition-transform duration-200 ${
+                className={`text-[10px] text-slate-600 transition-transform duration-200 ${
                   langDropdownOpen ? "rotate-180" : ""
                 }`}
                 aria-hidden="true"
@@ -116,7 +116,7 @@ export default function Header({
 
             {langDropdownOpen && (
               <div
-                className="absolute right-0 mt-2 w-40 rounded-xl bg-white border border-[var(--border)] shadow-xl py-1 z-50 animate-[fade-in-up_0.15s_ease-out]"
+                className="absolute right-0 mt-2 w-44 rounded-xl bg-white border-2 border-slate-200 shadow-2xl py-1 z-50 animate-[fade-in-up_0.15s_ease-out]"
                 role="menu"
                 aria-label="Beschikbare talen"
               >
@@ -129,15 +129,15 @@ export default function Header({
                       setLangDropdownOpen(false)
                       track("language_changed", { language: l })
                     }}
-                    className={`w-full text-left px-3.5 py-2 text-xs font-semibold flex items-center justify-between hover:bg-[var(--brand-subtle)] hover:text-[var(--brand-dark)] transition-colors cursor-pointer border-0 bg-transparent ${
+                    className={`w-full text-left px-4 py-2.5 text-xs font-bold flex items-center justify-between hover:bg-[var(--brand-subtle)] hover:text-[var(--brand-dark)] transition-colors cursor-pointer border-0 bg-transparent ${
                       lang === l
-                        ? "text-[var(--brand)] font-bold bg-[var(--brand-subtle)]"
-                        : "text-[var(--fg)]"
+                        ? "text-[var(--brand-dark)] font-extrabold bg-[var(--brand-subtle)]"
+                        : "text-[#0f172a]"
                     }`}
                   >
                     <span>{LANG_NAMES[l]}</span>
                     {lang === l && (
-                      <span className="text-[var(--brand)] font-bold">✓</span>
+                      <span className="text-[var(--brand-dark)] font-extrabold">✓</span>
                     )}
                   </button>
                 ))}

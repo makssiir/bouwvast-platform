@@ -119,19 +119,19 @@ export default function ReviewsSection() {
           <p className="lead">{t("rev_sub")}</p>
           
           <div className="flex flex-col items-center gap-2 mt-6">
-            <div className="flex items-center gap-2 bg-[var(--card)] px-4 py-2 rounded-full border border-[var(--border)] shadow-sm">
-              <span className="font-bold text-lg">4.9</span>
-              <div className="flex gap-1 text-[#fbbf24]">
+            <div className="flex items-center gap-2.5 bg-white px-4 py-2 rounded-full border-2 border-slate-200 shadow-sm">
+              <span className="font-extrabold text-slate-900 text-lg">4.9</span>
+              <div className="flex gap-1 text-[#f59e0b]">
                 {[...Array(5)].map((_, i) => (
-                  <svg key={i} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                  <svg key={i} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 drop-shadow-xs">
                     <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
                   </svg>
                 ))}
               </div>
-              <span className="text-sm font-medium text-[var(--muted)]">/ 5.0</span>
+              <span className="text-sm font-bold text-slate-600">/ 5.0</span>
             </div>
-            <div className="flex items-center gap-2 text-sm text-[var(--muted)] mt-2">
-              <Icon name="check" size={16} color="#10b981" />
+            <div className="flex items-center gap-2 text-sm text-slate-700 font-semibold mt-2">
+              <Icon name="check" size={16} color="#16a34a" />
               <span>{verifiedLabel}</span>
             </div>
           </div>
@@ -141,27 +141,27 @@ export default function ReviewsSection() {
           {reviews.map((rev, idx) => {
             const initials = rev.name.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase()
             return (
-              <div key={idx} className="card rounded-[18px] p-6 hover:-translate-y-1 transition-transform duration-300 flex flex-col">
+              <div key={idx} className="card rounded-[18px] p-6 hover:-translate-y-1 transition-transform duration-300 flex flex-col border border-slate-200/90 shadow-sm bg-white">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-[var(--brand-tint)] text-[var(--brand)] flex items-center justify-center font-bold text-lg">
+                  <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-extrabold text-lg border border-emerald-300">
                     {initials}
                   </div>
                   <div>
-                    <h3 className="text-base m-0 font-bold">{rev.name}</h3>
-                    <p className="text-sm text-[var(--muted)] m-0">{rev.city}</p>
+                    <h3 className="text-base m-0 font-extrabold text-slate-900">{rev.name}</h3>
+                    <p className="text-xs font-semibold text-slate-500 m-0">📍 {rev.city}</p>
                   </div>
                 </div>
-                <div className="flex gap-1 mb-3 text-[#fbbf24]">
+                <div className="flex gap-1 mb-3 text-[#f59e0b]">
                   {[...Array(rev.stars)].map((_, i) => (
                     <svg key={i} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
                       <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
                     </svg>
                   ))}
                 </div>
-                <p className="text-[var(--muted)] text-sm leading-relaxed mb-4 flex-grow">
+                <p className="text-slate-700 text-sm leading-relaxed mb-4 flex-grow font-normal">
                   "{rev.text}"
                 </p>
-                <div className="text-xs text-[var(--muted)] font-medium">
+                <div className="text-xs text-slate-500 font-semibold pt-2 border-t border-slate-100">
                   {rev.date}
                 </div>
               </div>

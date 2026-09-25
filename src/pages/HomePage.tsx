@@ -115,10 +115,14 @@ function AudienceSection({ navigate }: { navigate: (p: Page) => void }) {
             <h3>{t("aud_part_heading")}</h3>
             <p className="text-[var(--muted)] mb-4">{t("aud_part_desc")}</p>
             <button
-              onClick={() => navigate("diensten")}
+              onClick={() => {
+                const el = document.getElementById("quote")
+                if (el) el.scrollIntoView({ behavior: "smooth" })
+                else navigate("contact")
+              }}
               className="more bg-transparent border-0 p-0 cursor-pointer"
             >
-              {t("services_all")} &rarr;
+              {t("cta_btn")} &rarr;
             </button>
           </article>
 
@@ -130,10 +134,10 @@ function AudienceSection({ navigate }: { navigate: (p: Page) => void }) {
             <h3>{t("aud_b2b_heading")}</h3>
             <p className="text-[var(--muted)] mb-4">{t("aud_b2b_desc")}</p>
             <button
-              onClick={() => navigate("zakelijk")}
+              onClick={() => navigate("diensten")}
               className="more text-[#0284c7] bg-transparent border-0 p-0 cursor-pointer"
             >
-              {t("nav_business")} &rarr;
+              {t("services_all")} &rarr;
             </button>
           </article>
         </div>
@@ -247,12 +251,12 @@ function FounderTrustCard() {
 
   const teamCaption =
     lang === "uk"
-      ? "Команда майстрів Bouwvast у Нідерландах"
+      ? "Власник та універсальна бригада Bouwvast"
       : lang === "ru"
-        ? "Команда мастеров Bouwvast в Нидерландах"
+        ? "Владелец и универсальная бригада Bouwvast"
         : lang === "en"
-          ? "Bouwvast Team of Craftsmen Netherlands"
-          : "Vakteam Bouwvast Nederland"
+          ? "Owner & In-House Craftsmen Crew Bouwvast"
+          : "Eigenaar & Allround Vakteam Bouwvast"
 
   return (
     <section className="section">

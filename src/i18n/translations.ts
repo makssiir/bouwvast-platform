@@ -147,18 +147,18 @@ const translations = {
     ba_hint: "Sleep om te vergelijken",
 
     // Audience
-    aud_label: "Voor wie",
-    aud_title: "Voor particulieren én zakelijke partners",
+    aud_label: "Onze Aanpak & Team",
+    aud_title: "Eigenaar direct op de bouw én een allround vakteam",
     aud_sub:
-      "Of u nu een woning verbouwt, een badkamer renoveert of als beheerder vaste capaciteit zoekt: Bouwvast staat klaar.",
-    aud_part_title: "Particulier",
-    aud_part_heading: "Voor uw woning en verbouwing",
+      "Geen anonieme tussenpersonen of bemiddelingskosten. U schakelt direct met de eigenaar en ons hechte team van allround vakmensen die elke klus zelf kunnen.",
+    aud_part_title: "Vast Aanspreekpunt",
+    aud_part_heading: "Eigenaar persoonlijk op uw project",
     aud_part_desc:
-      "Van badkamerrenovatie tot complete woningverbouwing. Eerlijke offertes, duidelijke afspraken en één vast aanspreekpunt.",
-    aud_b2b_title: "Zakelijk",
-    aud_b2b_heading: "Voor aannemers, VvE's en beheerders",
+      "Van opname en calculatie tot het toezicht op de bouw: u heeft één direct aanspreekpunt. Korte lijnen, heldere afspraken en een eerlijke vaste prijs.",
+    aud_b2b_title: "Alles-in-één Team",
+    aud_b2b_heading: "Allround vakmensen voor elke klus",
     aud_b2b_desc:
-      "Flexibele inzet van vakkundige bouwteams. Onderhoud, afbouw, renovatie en projectmatige capaciteit op locatie.",
+      "Ons eigen team pakt alles van A tot Z zelf aan: sloop, leidingwerk, elektra, stucwerk, tegelen, timmerwerk en schilderen. Eén vertrouwd team dat alles kan.",
 
     // How it works
     how_label: "Werkwijze",
@@ -190,13 +190,13 @@ const translations = {
       "Bij Bouwvast hanteren we transparante tarieven zonder verborgen kosten achteraf.",
 
     // Founder Trust Card
-    trust_card_label: "Vakmanschap & Betrouwbaarheid",
-    trust_card_title: '"Bouwen op vertrouwen en heldere afspraken."',
+    trust_card_label: "Eigenaar & Vakteam",
+    trust_card_title: '"Eén hecht team, de eigenaar op de bouw en afspraak is afspraak."',
     trust_card_desc:
-      "Bij Bouwvast geloven we dat een verbouwing soepel en zorgeloos moet verlopen. Wij combineren jarenlange praktijkervaring met één vast aanspreekpunt en transparante prijzen. Geen verrassingen achteraf, maar een resultaat waar u jarenlang van geniet.",
-    trust_badge_1: "VCA Gecertificeerd",
-    trust_badge_2: "Garantie op Uitvoering",
-    trust_badge_3: "Vaste Prijscalculatie",
+      "Bouwvast is geen tussenpersoon of anoniem platform. Wij zijn een ervaren eigenaar met een vast team van allround vaklieden. Wij voeren elke fase van uw verbouwing zelf uit: van sloop en leidingwerk tot tegelwerk en strak stucwerk. U profiteert van korte lijnen, eerlijke vaste prijzen en één duidelijke garantie op het hele project.",
+    trust_badge_1: "Direct met de eigenaar",
+    trust_badge_2: "Eigen allround vakteam",
+    trust_badge_3: "100% Oplevergarantie",
 
     // Area & City Page
     area_page_title: "Werkgebied & Gemeenten",
@@ -300,13 +300,13 @@ const translations = {
 
     // Footer
     footer_desc:
-      "Hét betrouwbare bouw- en renovatieplatform van Nederland. Vakkundige uitvoering, transparante prijzen en heldere communicatie voor elke verbouwing.",
+      "Uw betrouwbare aannemer in Nederland. Eigenaar op de werkvloer, allround vakteam voor alle klussen onder één dak, transparante prijzen en heldere afspraken.",
     footer_info: "Informatie",
     footer_services: "Diensten",
     footer_cities: "Grote Steden",
     footer_privacy: "Privacybeleid",
     footer_terms: "Algemene voorwaarden",
-    footer_partner: "Vakman worden",
+    footer_partner: "Zakelijk & Samenwerking",
     footer_rights: "Alle rechten voorbehouden.",
 
     // Global / UI
@@ -578,18 +578,18 @@ const translations = {
     ba_hint: "Drag to compare",
 
     // Audience
-    aud_label: "Who We Serve",
-    aud_title: "For Homeowners and Business Partners",
+    aud_label: "Our Team & Approach",
+    aud_title: "Hands-on owner supervision & dedicated all-round craftsmen",
     aud_sub:
-      "Whether you are remodeling a residence, updating a bathroom, or seeking contractor capacity: Bouwvast is ready.",
-    aud_part_title: "Homeowners",
-    aud_part_heading: "For your home & living space",
+      "No middlemen, subcontracting markups, or impersonal agencies. You work directly with the owner and our close-knit, versatile team of skilled builders.",
+    aud_part_title: "Direct Accountability",
+    aud_part_heading: "Owner personally manages your project",
     aud_part_desc:
-      "From bathroom renovations to complete home remodeling. Fair quotes, clear agreements, and a dedicated contact person.",
-    aud_b2b_title: "Commercial & Partners",
-    aud_b2b_heading: "For general contractors, HOAs & property managers",
+      "Direct contact with the owner from survey to final inspection. Quick communication, firm price guarantees, and meticulous on-site quality control.",
+    aud_b2b_title: "Turnkey Versatility",
+    aud_b2b_heading: "All-round craftsmen who do it all",
     aud_b2b_desc:
-      "Flexible deployment of skilled building teams. Maintenance, plastering, renovation, and scalable on-site capacity.",
+      "Our in-house crew handles everything: demolition, plumbing, electrical, plastering, tiling, carpentry, and painting. One reliable team for your entire project.",
 
     // How it works
     how_label: "Process",
@@ -621,13 +621,13 @@ const translations = {
       "At Bouwvast, we practice transparent rates without unexpected surprise fees.",
 
     // Founder Trust Card
-    trust_card_label: "Craftsmanship & Reliability",
-    trust_card_title: '"Building on trust and clear agreements."',
+    trust_card_label: "Owner & In-House Team",
+    trust_card_title: '"One dedicated team, the owner on-site, and promises kept."',
     trust_card_desc:
-      "At Bouwvast, we believe renovations should be smooth and worry-free. We combine decades of experience with a single point of contact and transparent pricing.",
-    trust_badge_1: "VCA Certified",
-    trust_badge_2: "Execution Warranty",
-    trust_badge_3: "Fixed Calculation",
+      "Bouwvast is not an agency or broker platform. We are an experienced hands-on owner leading our own versatile team of all-round craftsmen. We handle every phase ourselves — from demolition and piping to fine plastering, tiling, and painting. Transparent fixed quotes, no middlemen, and personal quality assurance.",
+    trust_badge_1: "Direct with the Owner",
+    trust_badge_2: "All-Round Skilled Crew",
+    trust_badge_3: "Full Workmanship Warranty",
 
     // Area & City Page
     area_page_title: "Service Areas & Municipalities",
@@ -731,13 +731,13 @@ const translations = {
 
     // Footer
     footer_desc:
-      "The trusted building and renovation platform in the Netherlands. Skilled craftsmanship, transparent pricing, and clear communication for every project.",
+      "Your reliable building contractor in the Netherlands. Hands-on owner, all-round in-house crew for turnkey projects, transparent pricing, and trusted craftsmanship.",
     footer_info: "Information",
     footer_services: "Services",
     footer_cities: "Major Cities",
     footer_privacy: "Privacy Policy",
     footer_terms: "Terms & Conditions",
-    footer_partner: "Become a Partner",
+    footer_partner: "Commercial & Business",
     footer_rights: "All rights reserved.",
 
     // Global / UI
@@ -1009,18 +1009,18 @@ const translations = {
     ba_hint: "Перетягуйте для порівняння",
 
     // Audience
-    aud_label: "Для кого",
-    aud_title: "Для приватних клієнтів і бізнес-партнерів",
+    aud_label: "Наша команда та підхід",
+    aud_title: "Власник особисто на об'єкті та власна універсальна бригада",
     aud_sub:
-      "Незалежно від того, чи це ремонт квартири, оновлення санвузла чи потреба в надійному генпідряднику — Bouwvast завжди готовий допомогти.",
-    aud_part_title: "Приватні клієнти",
-    aud_part_heading: "Для вашого дому та ремонту",
+      "Жодних посередників, диспетчерів чи переплат. Ви працюєте напряму з власником та його надійною бригадою майстрів, які виконують усі роботи під ключ.",
+    aud_part_title: "Особистий контроль",
+    aud_part_heading: "Власник керує проєктом особисто",
     aud_part_desc:
-      "Від ремонту ванної кімнати до повної реновації будинку. Чесні кошториси та персональний контакт на кожному етапі.",
-    aud_b2b_title: "Бізнес та партнери",
-    aud_b2b_heading: "Для забудовників, ОСББ (VvE) та керуючих компаній",
+      "Руслан особисто оглядає об'єкт, складає прозорий кошторис і щодня контролює якість виконання. Прямий зв'язок безпосередньо з відповідальною особою.",
+    aud_b2b_title: "Майстри на всі руки",
+    aud_b2b_heading: "Робимо все під ключ від А до Я",
     aud_b2b_desc:
-      "Гнучке залучення кваліфікованих будівельних бригад для об'єктів будь-якого масштабу.",
+      "Наша бригада виконує всі види робіт: демонтаж, сантехніка, електрика, штукатурка, плитка, фарбування та столярка. Один підрядник на весь ремонт.",
 
     // How it works
     how_label: "Процес",
@@ -1052,13 +1052,13 @@ const translations = {
       "У Bouwvast діють прозорі ціни без прихованих платежів та непередбачених витрат.",
 
     // Founder Trust Card
-    trust_card_label: "Майстерність і надійність",
-    trust_card_title: '"Будуємо на довірі та чітких домовленостях."',
+    trust_card_label: "Власник та команда",
+    trust_card_title: '"Один надійний підрядник, власник на об\'єкті та слово, яке тримаємо."',
     trust_card_desc:
-      "У Bouwvast ми переконані, що ремонт має бути спокійним і комфортним. Ми поєднуємо багаторічний досвід, персональний контакт і прозорі ціни.",
-    trust_badge_1: "VCA-сертифікація",
-    trust_badge_2: "Гарантія на роботи",
-    trust_badge_3: "Фіксований розрахунок",
+      "Bouwvast — це не посередницька платформа чи біржа. Це досвідчений власник та власна перевірена бригада універсальних майстрів, які роблять абсолютно все самі: від демонтажу та заміни труб до ідеальної штукатурки, плитки та фарбування. Ви отримуєте прозору фіксовану ціну, прямий контакт із власником і повну гарантію на всі виконані роботи.",
+    trust_badge_1: "Прямий контакт із власником",
+    trust_badge_2: "Бригада на всі руки",
+    trust_badge_3: "Гарантія на всі роботи",
 
     // Area & City Page
     area_page_title: "Зона робіт та муніципалітети",
@@ -1161,13 +1161,13 @@ const translations = {
 
     // Footer
     footer_desc:
-      "Надійна будівельно-ремонтна платформа в Нідерландах. Майстерність, прозорі ціни та чітка комунікація для кожного проєкту.",
+      "Ваш надійний генеральний підрядник у Нідерландах. Власник особисто на об'єкті, універсальна бригада майстрів для всіх видів робіт під ключ, прозорі ціни та гарантія якості.",
     footer_info: "Інформація",
     footer_services: "Послуги",
     footer_cities: "Великі міста",
     footer_privacy: "Політика конфіденційності",
     footer_terms: "Умови надання послуг",
-    footer_partner: "Стати партнером",
+    footer_partner: "Співпраця та бізнес",
     footer_rights: "Усі права захищено.",
 
     // Global / UI
@@ -1438,18 +1438,18 @@ const translations = {
     ba_hint: "Тяните для сравнения",
 
     // Audience
-    aud_label: "Для кого",
-    aud_title: "Для частных клиентов и партнеров",
+    aud_label: "Наша команда и подход",
+    aud_title: "Владелец лично на объекте и своя универсальная бригада",
     aud_sub:
-      "Будь то ремонт квартиры, ванной или потребность генподрядчика в надежных бригадах — Bouwvast готов помочь.",
-    aud_part_title: "Частные клиенты",
-    aud_part_heading: "Для вашего дома и ремонта",
+      "Никаких диспетчеров, посредников и переплат. Вы работаете напрямую с владельцем и его проверенной бригадой мастеров на все руки.",
+    aud_part_title: "Личный контроль",
+    aud_part_heading: "Владелец руководит проектом лично",
     aud_part_desc:
-      "От ремонта санузла до полной реновации дома. Честные сметы и персональный менеджер.",
-    aud_b2b_title: "Бизнес и Партнеры",
-    aud_b2b_heading: "Для застройщиков, ТСЖ (VvE) и управляющих компаний",
+      "Руслан лично осматривает объект, рассчитывает смету и контролирует качество каждого этапа. Прямой контакт с человеком, отвечающим за результат.",
+    aud_b2b_title: "Мастера на все руки",
+    aud_b2b_heading: "Делаем всё под ключ от А до Я",
     aud_b2b_desc:
-      "Гибкое предоставление опытных строительных бригад на объекты любого масштаба.",
+      "Наша бригада берет на себя все этапы: демонтаж, сантехнику, электрику, штукатурку, плитку, малярные и столярные работы. Один надежный подрядчик.",
 
     // How it works
     how_label: "Процесс",
@@ -1481,13 +1481,13 @@ const translations = {
       "В Bouwvast действуют прозрачные цены без скрытых платежей и непредвиденных доплат.",
 
     // Founder Trust Card
-    trust_card_label: "Мастерство и Надежность",
-    trust_card_title: '"Строим на доверии и четких договоренностях."',
+    trust_card_label: "Владелец и команда",
+    trust_card_title: '"Один надежный подрядчик, владелец на объекте и честное слово."',
     trust_card_desc:
-      "В Bouwvast мы убеждены, что ремонт должен проходить спокойно и комфортно. Мы объединяем многолетний опыт, единого менеджера и прозрачные расчеты.",
-    trust_badge_1: "VCA Сертификация",
-    trust_badge_2: "Гарантия на Работы",
-    trust_badge_3: "Фиксированный Расчет",
+      "Bouwvast — это не посредническая платформа. Это опытный владелец и собственная проверенная бригада универсальных мастеров, которые делают всё под ключ: от демонтажа и проводки до идеальной штукатурки, плитки и малярки. Прозрачная фиксированная смета, прямой контакт с владельцем и гарантия на всё.",
+    trust_badge_1: "Напрямую с владельцем",
+    trust_badge_2: "Бригада на все руки",
+    trust_badge_3: "Гарантия на все работы",
 
     // Area & City Page
     area_page_title: "Зона обслуживания и Города",
@@ -1589,13 +1589,13 @@ const translations = {
 
     // Footer
     footer_desc:
-      "Надежная строительно-ремонтная платформа Нидерландов. Мастерство, прозрачные цены и четкая коммуникация для каждого проекта.",
+      "Ваш надежный генеральный подрядчик в Нидерландах. Владелец лично на объекте, универсальная бригада мастеров для всех работ под ключ, прозрачные цены и гарантия качества.",
     footer_info: "Информация",
     footer_services: "Услуги",
     footer_cities: "Крупные Города",
     footer_privacy: "Политика конфиденциальности",
     footer_terms: "Условия использования",
-    footer_partner: "Стать партнером",
+    footer_partner: "Сотрудничество и бизнес",
     footer_rights: "Все права защищены.",
 
     // Global / UI
