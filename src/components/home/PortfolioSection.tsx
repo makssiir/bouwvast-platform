@@ -1,6 +1,5 @@
 import type { Page } from "../../App"
 import { useLang } from "../../i18n/LangContext"
-import { SectionLabel, H2 } from "../../pages/HomePage"
 
 const PORTFOLIO = [
   {
@@ -64,11 +63,11 @@ export default function PortfolioSection({
   const { t } = useLang()
 
   return (
-    <section className="bg-canvas border-y border-border/40">
-      <div className="max-w-6xl mx-auto px-6 py-32">
-        <SectionLabel>{t("portfolio_label")}</SectionLabel>
+    <section className="bg-canvas border-y border-border/40 section">
+      <div className="container">
+        <span className="eyebrow">{t("portfolio_label")}</span>
         <div className="flex items-end justify-between mb-16">
-          <H2>{t("portfolio_title")}</H2>
+          <h2>{t("portfolio_title")}</h2>
           <button
             onClick={() => navigate("projecten")}
             className="hidden md:flex items-center gap-2 text-sm font-semibold transition-all hover:opacity-70 text-brand font-body group"
@@ -85,8 +84,7 @@ export default function PortfolioSection({
             <div
               key={p.title}
               onClick={() => navigate("projecten")}
-              className="group rounded-2xl overflow-hidden border cursor-pointer bg-card border-border/60 hover:border-brand/40 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 animate-[fade-in-up_0.6s_ease-out_both]"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="group rounded-2xl overflow-hidden border cursor-pointer bg-card border-border/60 hover:border-brand/40 hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
             >
               <div className="overflow-hidden relative" style={{ height: 260 }}>
                 <img

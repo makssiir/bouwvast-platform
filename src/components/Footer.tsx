@@ -1,5 +1,6 @@
-import React from "react"
+import React, { useState } from "react"
 import type { Page } from "../App"
+import PageLink from "./PageLink"
 import { Logo } from "./Logo"
 import { CONTACT } from "../data/contact"
 import { useLang } from "../i18n/LangContext"
@@ -34,6 +35,7 @@ const MAJOR_DUTCH_CITIES = [
 
 export default function Footer({ navigate }: { navigate: (p: Page) => void }) {
   const { t } = useLang()
+  const [isCitiesExpanded, setIsCitiesExpanded] = useState(false)
 
   return (
     <footer className="site-footer">
@@ -82,39 +84,34 @@ export default function Footer({ navigate }: { navigate: (p: Page) => void }) {
             <h3 className="footer-head">{t("footer_info")}</h3>
             <ul className="footer-links">
               <li>
-                <button onClick={() => navigate("diensten")}>
+                <PageLink to="diensten" navigate={navigate}>
                   {t("nav_services")}
-                </button>
+                </PageLink>
               </li>
               <li>
-                <button onClick={() => navigate("projecten")}>
+                <PageLink to="projecten" navigate={navigate}>
                   {t("nav_projects")}
-                </button>
+                </PageLink>
               </li>
               <li>
-                <button onClick={() => navigate("kennisbank")}>
+                <PageLink to="kennisbank" navigate={navigate}>
                   {t("nav_kennisbank")}
-                </button>
+                </PageLink>
               </li>
               <li>
-                <button onClick={() => navigate("over-ons")}>
-                  {t("nav_about")}
-                </button>
-              </li>
-              <li>
-                <button onClick={() => navigate("werkgebied")}>
+                <PageLink to="werkgebied" navigate={navigate}>
                   {t("nav_area")}
-                </button>
+                </PageLink>
               </li>
               <li>
-                <button onClick={() => navigate("zakelijk")}>
+                <PageLink to="zakelijk" navigate={navigate}>
                   {t("nav_business")}
-                </button>
+                </PageLink>
               </li>
               <li>
-                <button onClick={() => navigate("contact")}>
+                <PageLink to="contact" navigate={navigate}>
                   {t("nav_contact")}
-                </button>
+                </PageLink>
               </li>
             </ul>
           </div>
@@ -124,63 +121,39 @@ export default function Footer({ navigate }: { navigate: (p: Page) => void }) {
             <h3 className="footer-head">{t("footer_services")}</h3>
             <ul className="footer-links">
               <li>
-                <button
-                  onClick={() =>
-                    navigate({ type: "service", slug: "renovatie" })
-                  }
-                >
+                <PageLink to={{ type: "service", slug: "renovatie" }} navigate={navigate}>
                   {t("svc_renovation")}
-                </button>
+                </PageLink>
               </li>
               <li>
-                <button
-                  onClick={() =>
-                    navigate({ type: "service", slug: "badkamer-keuken" })
-                  }
-                >
+                <PageLink to={{ type: "service", slug: "badkamer-keuken" }} navigate={navigate}>
                   {t("svc_bathroom")}
-                </button>
+                </PageLink>
               </li>
               <li>
-                <button
-                  onClick={() => navigate({ type: "service", slug: "afbouw" })}
-                >
+                <PageLink to={{ type: "service", slug: "afbouw" }} navigate={navigate}>
                   {t("svc_finishing")}
-                </button>
+                </PageLink>
               </li>
               <li>
-                <button
-                  onClick={() =>
-                    navigate({ type: "service", slug: "schilderwerk" })
-                  }
-                >
+                <PageLink to={{ type: "service", slug: "schilderwerk" }} navigate={navigate}>
                   {t("svc_painting")}
-                </button>
+                </PageLink>
               </li>
               <li>
-                <button
-                  onClick={() =>
-                    navigate({ type: "service", slug: "gevel-buitenwerk" })
-                  }
-                >
+                <PageLink to={{ type: "service", slug: "gevel-buitenwerk" }} navigate={navigate}>
                   {t("svc_facade")}
-                </button>
+                </PageLink>
               </li>
               <li>
-                <button
-                  onClick={() => navigate({ type: "service", slug: "montage" })}
-                >
+                <PageLink to={{ type: "service", slug: "montage" }} navigate={navigate}>
                   {t("svc_assembly")}
-                </button>
+                </PageLink>
               </li>
               <li>
-                <button
-                  onClick={() =>
-                    navigate({ type: "service", slug: "loodgieter" })
-                  }
-                >
+                <PageLink to={{ type: "service", slug: "loodgieter" }} navigate={navigate}>
                   {t("svc_maintenance")}
-                </button>
+                </PageLink>
               </li>
             </ul>
           </div>
@@ -188,17 +161,19 @@ export default function Footer({ navigate }: { navigate: (p: Page) => void }) {
           {/* Col 4: Grote Steden in Nederland */}
           <div>
             <h3 className="footer-head">{t("footer_cities")}</h3>
-            <div className="grid grid-cols-2 gap-x-3 gap-y-1.5">
-              {MAJOR_DUTCH_CITIES.map((c) => (
-                <button
-                  key={c}
-                  onClick={() => navigate({ type: "city", city: c })}
-                  className="text-left text-xs text-[#94a3b8] hover:text-[#4ade80] bg-transparent border-0 p-0 py-0.5 cursor-pointer truncate transition-colors"
-                >
+            <div className={`grid grid-cols-2 gap-x-3 gap-y-1.5 transition-all duration-300 ${isCitiesExpanded ? 'mb-2' : ''}`}>
+              {(isCitiesExpanded ? MAJOR_DUTCH_CITIES : MAJOR_DUTCH_CITIES.slice(0, 8)).map((c) => (
+                <PageLink key={c} className="text-left text-xs text-[#94a3b8] hover:text-[#4ade80] bg-transparent border-0 p-0 py-0.5 cursor-pointer truncate transition-colors" to={{ type: "city", city: c }} navigate={navigate}>
                   {c}
-                </button>
+                </PageLink>
               ))}
             </div>
+            <button
+              onClick={() => setIsCitiesExpanded(!isCitiesExpanded)}
+              className="text-xs text-[#4ade80] hover:text-white bg-transparent border-0 p-0 mt-3 cursor-pointer transition-colors flex items-center gap-1"
+            >
+              {isCitiesExpanded ? "Minder steden ↑" : "Alle steden →"}
+            </button>
           </div>
         </div>
 
@@ -216,24 +191,15 @@ export default function Footer({ navigate }: { navigate: (p: Page) => void }) {
             >
               📍 Google Maps
             </a>
-            <button
-              onClick={() => navigate("contact")}
-              className="bg-transparent border-0 p-0 text-xs text-[#64748b] hover:text-white cursor-pointer"
-            >
+            <PageLink className="bg-transparent border-0 p-0 text-xs text-[#64748b] hover:text-white cursor-pointer" to="contact" navigate={navigate}>
               {t("footer_privacy")}
-            </button>
-            <button
-              onClick={() => navigate("contact")}
-              className="bg-transparent border-0 p-0 text-xs text-[#64748b] hover:text-white cursor-pointer"
-            >
+            </PageLink>
+            <PageLink className="bg-transparent border-0 p-0 text-xs text-[#64748b] hover:text-white cursor-pointer" to="contact" navigate={navigate}>
               {t("footer_terms")}
-            </button>
-            <button
-              onClick={() => navigate("zakelijk")}
-              className="bg-transparent border-0 p-0 text-xs text-[#64748b] hover:text-white cursor-pointer"
-            >
+            </PageLink>
+            <PageLink className="bg-transparent border-0 p-0 text-xs text-[#64748b] hover:text-white cursor-pointer" to="zakelijk" navigate={navigate}>
               {t("footer_partner")}
-            </button>
+            </PageLink>
           </div>
         </div>
       </div>

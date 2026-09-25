@@ -1,19 +1,22 @@
 import { useState } from "react"
 import type { Page } from "../App"
-import { SERVICES } from "../data/services"
+import { SERVICE_BY_SLUG, SERVICES } from "../data/services"
 import Icon from "../components/Icon"
 import QuoteForm from "../components/QuoteForm"
 import { useLang } from "../i18n/LangContext"
 
-export default function CityPage({
+export default function ServiceCityPage({
   city,
+  serviceSlug,
   navigate,
 }: {
   city: string
+  serviceSlug: string
   navigate: (p: Page) => void
 }) {
   const { t } = useLang()
-  // const [openFaq, setOpenFaq] = useState<number | null>(null) // removed unused state
+  // const [openFaq, setOpenFaq] = useState<number | null>(null) // removed unused
+  const activeService = serviceSlug ? SERVICE_BY_SLUG[serviceSlug] : undefined
 
   const faqItems = [
     {
@@ -33,6 +36,14 @@ export default function CityPage({
       a: t("city_faq_4_a", { city }),
     },
   ]
+
+  const heroTitle = activeService
+    ? `${t(activeService.nameKey)} in ${city}` // Assuming 'in' is acceptable across languages, or they add a key later
+    : t("city_hero_title", { city })
+
+  const heroSub = activeService
+    ? t(activeService.introKey)
+    : t("city_hero_sub", { city })
 
   return (
     <main>
@@ -56,10 +67,8 @@ export default function CityPage({
             <span className="mx-2">›</span>
             <span className="text-white font-semibold">{city}</span>
           </div>
-          <h1>{t("city_hero_title", { city })}</h1>
-          <p className="lead-xl max-w-2xl">
-            {t("city_hero_sub", { city })}
-          </p>
+          <h1>{heroTitle}</h1>
+          <p className="lead-xl max-w-2xl">{heroSub}</p>
         </div>
       </section>
 
@@ -75,13 +84,18 @@ export default function CityPage({
               </h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 {SERVICES.map((s) => {
+                  const isActive = activeService?.slug === s.slug
                   return (
                     <button
                       key={s.slug}
                       onClick={() =>
                         navigate({ type: "service_city", city, serviceSlug: s.slug })
                       }
-                      className="text-left p-4 rounded-xl border transition-all cursor-pointer border-[var(--border)] bg-white hover:border-[var(--brand)] hover:shadow-xs"
+                      className={`text-left p-4 rounded-xl border transition-all cursor-pointer ${
+                        isActive
+                          ? "border-[var(--brand)] bg-[var(--brand-subtle)]"
+                          : "border-[var(--border)] bg-white hover:border-[var(--brand)] hover:shadow-xs"
+                      }`}
                     >
                       <div className="flex items-center gap-2 mb-1.5">
                         <Icon name={s.icon} size={18} color="var(--brand)" />
@@ -137,7 +151,8 @@ export default function CityPage({
               </p>
               <QuoteForm
                 compact
-                sourcePage={`city:${city}`}
+                sourcePage={`service_city:${city}:${serviceSlug}`}
+                presetService={activeService?.name}
               />
             </div>
           </div>

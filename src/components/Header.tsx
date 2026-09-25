@@ -6,6 +6,7 @@ import { LANG_NAMES, type Lang } from "../i18n/translations"
 import Icon from "./Icon"
 import { CONTACT } from "../data/contact"
 import { track } from "../lib/analytics"
+import PageLink from "./PageLink"
 
 const LANGS: Lang[] = ["nl", "en", "uk", "ru"]
 
@@ -49,20 +50,20 @@ export default function Header({
     { label: t("nav_area"), page: "werkgebied" },
     { label: t("nav_kennisbank"), page: "kennisbank" },
     { label: t("nav_business"), page: "zakelijk" },
-    { label: t("nav_about"), page: "over-ons" },
     { label: t("nav_contact"), page: "contact" },
   ] as const
 
   return (
     <header className="site-header">
       <div className="container nav">
-        <button
-          onClick={() => navigate("home")}
-          className="brand bg-transparent border-0 cursor-pointer p-0 text-left"
-          aria-label="Bouwvast Home"
+        <PageLink
+          to="home"
+          navigate={navigate}
+          className="brand no-underline"
+          ariaLabel="Bouwvast Home"
         >
           <Logo />
-        </button>
+        </PageLink>
 
         <nav
           aria-label="Hoofdnavigatie"
@@ -71,17 +72,18 @@ export default function Header({
           <ul className="nav-links">
             {NAV.map((n) => (
               <li key={n.page}>
-                <button
-                  onClick={() => navigate(n.page as Page)}
-                  aria-current={page === n.page ? "page" : undefined}
-                  className={`bg-transparent border-0 cursor-pointer p-0 text-sm font-semibold transition-colors ${
+                <PageLink
+                  to={n.page as Page}
+                  navigate={navigate}
+                  ariaCurrent={page === n.page ? "page" : undefined}
+                  className={`no-underline text-sm font-semibold transition-colors ${
                     page === n.page
                       ? "text-[var(--brand)] font-bold"
                       : "text-[var(--muted)] hover:text-[var(--fg)]"
                   }`}
                 >
                   {n.label}
-                </button>
+                </PageLink>
               </li>
             ))}
           </ul>
@@ -143,13 +145,14 @@ export default function Header({
             )}
           </div>
 
-          <button
-            onClick={() => navigate("contact")}
-            className="btn btn-primary btn-sm btn-hide-mobile hidden sm:inline-flex"
+          <PageLink
+            to="contact"
+            navigate={navigate}
+            className="btn btn-primary btn-sm btn-hide-mobile hidden sm:inline-flex no-underline"
           >
             <Icon name="check" size={16} />
             {t("nav_cta")}
-          </button>
+          </PageLink>
 
           <a
             href={`tel:${CONTACT.phoneTel}`}
@@ -173,23 +176,25 @@ export default function Header({
       </div>
 
       {menuOpen && (
-        <div id="nav-mobile">
+        <div id="nav-mobile" className="open">
           <ul>
             {NAV.map((n) => (
               <li key={n.page}>
-                <button
-                  onClick={() => {
-                    navigate(n.page as Page)
+                <PageLink
+                  to={n.page as Page}
+                  navigate={(next) => {
+                    navigate(next)
                     setMenuOpen(false)
                   }}
-                  className={`w-full text-left py-4 bg-transparent border-0 cursor-pointer text-base font-semibold ${
+                  ariaCurrent={page === n.page ? "page" : undefined}
+                  className={`block w-full text-left py-4 no-underline text-base font-semibold ${
                     page === n.page
                       ? "text-[var(--brand)] font-bold"
                       : "text-[var(--fg)]"
                   }`}
                 >
                   {n.label}
-                </button>
+                </PageLink>
               </li>
             ))}
           </ul>

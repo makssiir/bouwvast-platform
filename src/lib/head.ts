@@ -1,7 +1,6 @@
 import type { Lang } from "../i18n/translations"
 
 const SITE_NAME = "Bouwvast"
-const ORIGIN = typeof window !== "undefined" ? window.location.origin : ""
 
 /** Map our internal lang codes to valid BCP-47 attribute values. */
 const HTML_LANG: Record<Lang, string> = {
@@ -9,6 +8,28 @@ const HTML_LANG: Record<Lang, string> = {
   en: "en",
   uk: "uk",
   ru: "ru",
+}
+
+/**
+ * Canonicals must point at the production host, not at whichever preview or
+ * staging domain happens to serve the page. Falls back to the current origin
+ * until VITE_SITE_ORIGIN is configured.
+ */
+export function siteOrigin(): string {
+  let configured = ""
+  try {
+    configured = String(import.meta.env.VITE_SITE_ORIGIN ?? "").trim()
+  } catch {
+    configured = ""
+  }
+  if (configured) return configured.replace(/\/+$/, "")
+  return typeof window === "undefined" ? "" : window.location.origin
+}
+
+export function canonicalUrl(path: string): string {
+  const clean = path.replace(/^\/+|\/+$/g, "")
+  const origin = siteOrigin()
+  return clean ? `${origin}/${clean}` : origin || "/"
 }
 
 function upsertMeta(
@@ -39,20 +60,34 @@ function upsertLink(rel: string, href: string) {
 export interface PageMeta {
   title: string
   description: string
-  /** Path fragment used for canonical URL, e.g. "diensten" or "stad/amersfoort". */
+  /** Path fragment used for the canonical URL, e.g. "diensten/renovatie". */
   path: string
+  /** False for pages that exist but should not be offered to search engines. */
+  indexable?: boolean
 }
 
-/** Sync <title>, meta description and canonical/lang for the active page. */
+export function pageTitle(title: string): string {
+  return title ? `${title} · ${SITE_NAME}` : SITE_NAME
+}
+
+/** Sync <title>, meta description, robots and canonical for the active page. */
 export function applyPageMeta(
   lang: Lang,
-  { title, description, path }: PageMeta,
+  { title, description, path, indexable = true }: PageMeta,
 ) {
-  const fullTitle = title ? `${title} · ${SITE_NAME}` : SITE_NAME
+  const fullTitle = pageTitle(title)
   document.title = fullTitle
   document.documentElement.lang = HTML_LANG[lang]
 
+  const canonical = canonicalUrl(path)
+
   upsertMeta('meta[name="description"]', "name", "description", description)
+  upsertMeta(
+    'meta[name="robots"]',
+    "name",
+    "robots",
+    indexable ? "index, follow" : "noindex, follow",
+  )
   upsertMeta('meta[property="og:title"]', "property", "og:title", fullTitle)
   upsertMeta(
     'meta[property="og:description"]',
@@ -61,6 +96,7 @@ export function applyPageMeta(
     description,
   )
   upsertMeta('meta[property="og:type"]', "property", "og:type", "website")
+  upsertMeta('meta[property="og:url"]', "property", "og:url", canonical)
   upsertMeta(
     'meta[property="og:locale"]',
     "property",
@@ -68,6 +104,5 @@ export function applyPageMeta(
     HTML_LANG[lang],
   )
 
-  const canonical = `${ORIGIN}/${path}`.replace(/\/+$/, "") || ORIGIN
   upsertLink("canonical", canonical)
 }

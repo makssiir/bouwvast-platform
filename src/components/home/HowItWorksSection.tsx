@@ -1,38 +1,48 @@
 import type { Page } from "../../App"
+import { useLang } from "../../i18n/LangContext"
 
 export default function HowItWorksSection({
   navigate,
 }: {
   navigate: (p: Page) => void
 }) {
+  const { t } = useLang()
+
   const steps = [
     {
       no: 1,
-      title: "1. Stuur uw situatie & wensen",
-      text: "Deel uw woonplaats, een korte omschrijving van uw klus of verbouwing en eventueel een paar duidelijke foto's.",
+      title: t("how_1_title"),
+      text: t("how_1_desc"),
     },
     {
       no: 2,
-      title: "2. Ontvang een helder voorstel",
-      text: "Bouwvast beoordeelt uw aanvraag en stuurt u binnen 24 uur een transparant overzicht van aanpak, richtprijs en planning.",
+      title: t("how_2_title"),
+      text: t("how_2_desc"),
     },
     {
       no: 3,
-      title: "3. Vakkundige oplevering",
-      text: "Na akkoord voeren onze ervaren vakmensen het werk netjes en volgens afspraak uit, inclusief garantie en nazorg.",
+      title: t("how_3_title"),
+      text: t("how_3_desc"),
+    },
+    {
+      no: 4,
+      title: t("how_4_title"),
+      text: t("how_4_desc"),
     },
   ]
 
   return (
     <section className="section section--muted" id="hoe-het-werkt">
       <div className="container">
-        <h2 className="center">Zo werkt het</h2>
-        <p className="lead center">
-          Eén vertrouwd aanspreekpunt voor intake en planning, met vakkundige
-          uitvoering op locatie.
-        </p>
+        <div className="center mb-12">
+          <span className="eyebrow">{t("how_label")}</span>
+          <h2>{t("how_title")}</h2>
+          <p className="lead">
+            {t("hero_sub")}
+          </p>
+        </div>
 
-        <ol className="grid grid-3 list-none p-0 m-0">
+        <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 list-none p-0 m-0">
           {steps.map((step) => (
             <li className="card step-item" key={step.no}>
               <span className="step-no" aria-hidden="true">
@@ -44,7 +54,7 @@ export default function HowItWorksSection({
           ))}
         </ol>
 
-        <div className="btn-row centered-actions">
+        <div className="btn-row centered-actions mt-10">
           <button
             className="btn btn-primary"
             onClick={() => {
@@ -53,7 +63,7 @@ export default function HowItWorksSection({
               else navigate("contact")
             }}
           >
-            Start uw aanvraag
+            {t("how_cta")}
           </button>
         </div>
       </div>

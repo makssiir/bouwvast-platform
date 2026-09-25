@@ -5,12 +5,15 @@ import Icon from "../components/Icon"
 import { CONTACT } from "../data/contact"
 import { ARTICLES } from "../data/articles"
 import { useLang } from "../i18n/LangContext"
+import JsonLd from "../components/JsonLd"
+import { faqEntries } from "../data/faq"
 
 import HeroSection from "../components/home/HeroSection"
 import ServicesSection from "../components/home/ServicesSection"
 import HowItWorksSection from "../components/home/HowItWorksSection"
 import CostEstimator from "../components/home/CostEstimator"
 import BeforeAfter from "../components/home/BeforeAfter"
+import ReviewsSection from "../components/home/ReviewsSection"
 import ProjectModal, { type ProjectDetail } from "../components/ProjectModal"
 
 export default function HomePage({
@@ -33,9 +36,9 @@ export default function HomePage({
       <BeforeAfter />
       <AudienceSection navigate={navigate} />
       <HowItWorksSection navigate={navigate} />
-      <GoogleReviews />
       <PricingPreviewSection navigate={navigate} />
-      <FounderTrustCard navigate={navigate} />
+      <FounderTrustCard />
+      <ReviewsSection />
       <ProjectGallery
         onOpenProject={(p) => setActiveProject(p)}
         navigate={navigate}
@@ -137,68 +140,6 @@ function AudienceSection({ navigate }: { navigate: (p: Page) => void }) {
 }
 
 /* ==========================================================================
-   3. GOOGLE REVIEWS
-   ========================================================================== */
-function GoogleReviews() {
-  const { t } = useLang()
-  const reviews = [
-    {
-      name: "Mark van Dijk",
-      city: "Amersfoort",
-      time: "2 weken geleden",
-      text: "Onze badkamer en toilet compleet laten renoveren door Bouwvast. Erg tevreden over de strakke afwerking, duidelijke communicatie en het meedenken tijdens de werkzaamheden!",
-    },
-    {
-      name: "Sanne & Pieter",
-      city: "Leusden",
-      time: "1 maand geleden",
-      text: "Volledige benedenverdieping gestukt en geschilderd. Ze werkten ontzettend netjes, hielden zich exact aan de offerte en planning. Een absolute aanrader.",
-    },
-    {
-      name: "Robbert Jansen",
-      city: "Soest",
-      time: "2 maanden geleden",
-      text: "Snel geholpen met een acute lekkage en herstel van leidingwerk. Duidelijke prijsafspraak vooraf en binnen no-time vakkundig opgelost.",
-    },
-  ]
-
-  return (
-    <section className="section">
-      <div className="container">
-        <div className="center mb-10">
-          <span className="eyebrow">{t("rev_label")}</span>
-          <h2>{t("rev_title")}</h2>
-          <div className="rating-banner mt-3">
-            <span className="stars text-xl">★★★★★</span>
-            <span className="font-bold text-lg">5.0</span>
-            <span className="text-[var(--muted)] text-sm">{t("rev_sub")}</span>
-          </div>
-        </div>
-
-        <div className="reviews-scroll">
-          {reviews.map((r, i) => (
-            <div className="card" key={i}>
-              <div className="review-head">
-                <div className="avatar">{r.name[0]}</div>
-                <div>
-                  <h3 className="text-base m-0 font-bold">{r.name}</h3>
-                  <span className="text-xs text-[var(--muted)]">
-                    📍 {r.city} · {r.time}
-                  </span>
-                </div>
-              </div>
-              <p className="text-[var(--muted)] text-sm leading-relaxed m-0">
-                "{r.text}"
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-/* ==========================================================================
    4. TRANSPARANTE TARIEVEN
    ========================================================================== */
 function PricingPreviewSection({ navigate }: { navigate: (p: Page) => void }) {
@@ -291,7 +232,7 @@ function PricingPreviewSection({ navigate }: { navigate: (p: Page) => void }) {
 /* ==========================================================================
    5. FOUNDER TRUST CARD
    ========================================================================== */
-function FounderTrustCard({ navigate }: { navigate: (p: Page) => void }) {
+function FounderTrustCard() {
   const { t } = useLang()
 
   return (
@@ -303,7 +244,7 @@ function FounderTrustCard({ navigate }: { navigate: (p: Page) => void }) {
               <span className="text-xs uppercase tracking-widest text-[#4ade80] font-bold block mb-2">
                 {t("trust_card_label")}
               </span>
-              <h2 className="text-2xl md:text-3xl font-extrabold text-white mb-4 leading-tight">
+              <h2 className="trust-card-title text-2xl md:text-3xl font-extrabold mb-4 leading-tight">
                 {t("trust_card_title")}
               </h2>
               <p className="text-slate-300 text-sm leading-relaxed mb-6">
@@ -322,14 +263,6 @@ function FounderTrustCard({ navigate }: { navigate: (p: Page) => void }) {
                 </span>
               </div>
 
-              <div className="flex gap-4">
-                <button
-                  onClick={() => navigate("over-ons")}
-                  className="btn btn-white btn-sm"
-                >
-                  {t("nav_about")} &rarr;
-                </button>
-              </div>
             </div>
 
             <div className="relative rounded-2xl overflow-hidden shadow-xl aspect-4/3 border-2 border-slate-700">
@@ -529,14 +462,7 @@ function KennisbankPreviewSection({
    ========================================================================== */
 function FAQSection() {
   const { t } = useLang()
-  const faqs = [
-    { q: t("faq_1_q"), a: t("faq_1_a") },
-    { q: t("faq_2_q"), a: t("faq_2_a") },
-    { q: t("faq_1b_q"), a: t("faq_1b_a") },
-    { q: t("faq_2b_q"), a: t("faq_2b_a") },
-    { q: t("faq_3_q"), a: t("faq_3_a") },
-    { q: t("faq_4_q"), a: t("faq_4_a") },
-  ]
+  const faqs = faqEntries(t)
 
   return (
     <section className="section section--muted" id="faq">
@@ -545,6 +471,18 @@ function FAQSection() {
           <span className="eyebrow">{t("faq_label")}</span>
           <h2>{t("faq_title")}</h2>
         </div>
+
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqs.map((item) => ({
+              "@type": "Question",
+              name: item.q,
+              acceptedAnswer: { "@type": "Answer", text: item.a },
+            })),
+          }}
+        />
 
         <div className="faq">
           {faqs.map((item, idx) => (

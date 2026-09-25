@@ -1,6 +1,5 @@
 import type { Page } from "../../App"
 import { useLang } from "../../i18n/LangContext"
-import { SectionLabel, H2 } from "../../pages/HomePage"
 
 export default function ProjectTypesSection({
   navigate,
@@ -41,22 +40,22 @@ export default function ProjectTypesSection({
   ]
 
   return (
-    <section className="bg-dark py-32 relative overflow-hidden">
+    <section className="bg-dark relative overflow-hidden section">
       {/* Decorative background element */}
       <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-dark-2 to-transparent opacity-50" />
 
-      <div className="max-w-6xl mx-auto px-6 relative z-10">
-        <SectionLabel white>{t("types_label")}</SectionLabel>
-        <H2 white className="mb-16">
+      <div className="container relative z-10">
+        <span className="eyebrow text-white/70">{t("types_label")}</span>
+        <h2 className="mb-16 text-white">
           {t("types_title")}
-        </H2>
+        </h2>
 
         <div className="grid md:grid-cols-3 gap-6 mb-16">
           {types.map((tp, index) => (
             <div
               key={tp.titleKey}
-              className="rounded-2xl overflow-hidden relative group cursor-pointer shadow-2xl animate-[fade-in-up_0.6s_ease-out_both]"
-              style={{ minHeight: 400, animationDelay: `${index * 150}ms` }}
+              className="rounded-2xl overflow-hidden relative group cursor-pointer shadow-2xl"
+              style={{ minHeight: 400 }}
               onClick={() => navigate("contact")}
             >
               <img

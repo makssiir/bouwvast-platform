@@ -20,3 +20,5 @@ elektoria-improved/
 # Platform-managed agentplat state
 /.plugins/
 /.opencode-skills/
+.ssr-build/
+_to_delete/

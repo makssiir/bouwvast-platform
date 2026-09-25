@@ -38,22 +38,22 @@ export default function ServicePage({
               onClick={() => navigate("home")}
               className="bg-transparent border-0 p-0 text-[#86efac] hover:text-white cursor-pointer"
             >
-              Home
+              {t("nav_home")}
             </button>
             <span className="mx-2">›</span>
             <button
               onClick={() => navigate("diensten")}
               className="bg-transparent border-0 p-0 text-[#86efac] hover:text-white cursor-pointer"
             >
-              Diensten
+              {t("nav_services")}
             </button>
             <span className="mx-2">›</span>
             <span className="text-white font-semibold">
               {t(service.nameKey)}
             </span>
           </div>
-          <h1>{t(service.nameKey)} in regio Amersfoort</h1>
-          <p className="lead-xl max-w-2xl">{service.intro}</p>
+          <h1>{t(service.nameKey) + t("service_hero_suffix")}</h1>
+          <p className="lead-xl max-w-2xl">{t(service.introKey)}</p>
         </div>
       </section>
 
@@ -63,21 +63,21 @@ export default function ServicePage({
           <div className="space-y-12">
             {/* What's included */}
             <section className="card p-6 md:p-8">
-              <span className="eyebrow">Wat valt hieronder</span>
+              <span className="eyebrow">{t("service_includes_eyebrow")}</span>
               <h2 className="text-2xl font-bold mb-6">
-                Werkzaamheden die wij verzorgen
+                {t("service_includes_title")}
               </h2>
               <div className="grid sm:grid-cols-2 gap-3">
-                {service.includes.map((item) => (
+                {service.includesKeys.map((itemKey) => (
                   <div
-                    key={item}
+                    key={itemKey}
                     className="flex items-start gap-3 p-3.5 rounded-lg bg-[var(--muted-bg)] border border-[var(--border)]"
                   >
                     <span className="shrink-0 mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--brand-tint)] text-[var(--brand)] font-bold text-xs">
                       ✓
                     </span>
                     <span className="text-sm font-medium text-[var(--fg)]">
-                      {item}
+                      {t(itemKey)}
                     </span>
                   </div>
                 ))}
@@ -86,8 +86,8 @@ export default function ServicePage({
 
             {/* Process */}
             <section className="card p-6 md:p-8">
-              <span className="eyebrow">Aanpak</span>
-              <h2 className="text-2xl font-bold mb-6">Hoe wij te werk gaan</h2>
+              <span className="eyebrow">{t("service_process_eyebrow")}</span>
+              <h2 className="text-2xl font-bold mb-6">{t("service_process_title")}</h2>
               <div className="grid gap-6">
                 {steps.map((s, i) => (
                   <div key={s.num} className="flex gap-4 items-start">
@@ -105,13 +105,12 @@ export default function ServicePage({
 
             {/* Service × City — internal linking */}
             <section className="card p-6 md:p-8">
-              <span className="eyebrow">Werkgebied</span>
+              <span className="eyebrow">{t("service_area_eyebrow")}</span>
               <h2 className="text-2xl font-bold mb-3">
-                {t(service.nameKey)} in uw regio
+                {t("service_area_title", { service: t(service.nameKey) })}
               </h2>
               <p className="text-sm text-[var(--muted)] mb-6">
-                Wij zijn actief in Amersfoort en omliggende plaatsen. Bekijk wat
-                we in uw woonplaats voor u kunnen verzorgen.
+                {t("service_area_desc")}
               </p>
               <div className="flex flex-wrap gap-2">
                 {coreCities.map((c) => (
@@ -139,11 +138,10 @@ export default function ServicePage({
             <div className="sticky top-24 card p-6 md:p-7 shadow-lg border-2 border-[var(--brand)]">
               <div className="flex items-center gap-2 mb-2">
                 <Icon name="check" size={18} color="var(--brand)" />
-                <h3 className="text-lg font-bold m-0">Vrijblijvende offerte</h3>
+                <h3 className="text-lg font-bold m-0">{t("service_quote_title")}</h3>
               </div>
               <p className="text-xs text-[var(--muted)] mb-5">
-                Vraag direct een prijsindicatie aan voor{" "}
-                {t(service.nameKey).toLowerCase()}.
+                {t("service_quote_sub", { service: t(service.nameKey).toLowerCase() })}
               </p>
               <QuoteForm
                 compact
@@ -158,8 +156,8 @@ export default function ServicePage({
       {/* Related services */}
       <section className="section section--muted">
         <div className="container">
-          <span className="eyebrow">Verder kijken</span>
-          <h2>Andere diensten van Bouwvast</h2>
+          <span className="eyebrow">{t("service_related_eyebrow")}</span>
+          <h2>{t("service_related_title")}</h2>
           <div className="grid sm:grid-cols-3 gap-6 mt-6">
             {related.map((s) => (
               <button
@@ -178,7 +176,7 @@ export default function ServicePage({
                 </div>
                 <div className="p-4">
                   <h3 className="font-bold text-base mb-1">{t(s.nameKey)}</h3>
-                  <span className="more text-xs">Meer informatie &rarr;</span>
+                  <span className="more text-xs">{t("link_more")} &rarr;</span>
                 </div>
               </button>
             ))}

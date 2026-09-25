@@ -152,15 +152,35 @@ export default function CostEstimator({
         </div>
 
         <div className="max-w-4xl mx-auto card p-6 md:p-10 shadow-lg border-2 border-[var(--brand)] bg-white">
-          {/* Progress Bar */}
-          <div className="flex justify-between items-center mb-6 border-b border-[var(--border)] pb-4">
-            <div className="text-xs font-bold text-[var(--muted)]">
-              {step === 1 ? t("step_1_of_3") : step === 2 ? t("step_2_of_3") : t("step_3_of_3")}
-            </div>
-            <div className="flex gap-1.5">
-              <div className={`h-1.5 w-8 rounded-full ${step >= 1 ? 'bg-[var(--brand)]' : 'bg-gray-200'}`}></div>
-              <div className={`h-1.5 w-8 rounded-full ${step >= 2 ? 'bg-[var(--brand)]' : 'bg-gray-200'}`}></div>
-              <div className={`h-1.5 w-8 rounded-full ${step >= 3 ? 'bg-[var(--brand)]' : 'bg-gray-200'}`}></div>
+          {/* Progress Indicator */}
+          <div className="mb-10 relative">
+            <div className="flex justify-between items-center max-w-sm mx-auto relative z-10">
+              {/* Connecting lines */}
+              <div className="absolute top-4 left-[10%] right-[10%] h-[2px] flex z-[-1]">
+                <div className={`h-full w-1/2 transition-colors duration-300 ${step >= 2 ? 'bg-[var(--brand)]' : 'bg-gray-200'}`}></div>
+                <div className={`h-full w-1/2 transition-colors duration-300 ${step >= 3 ? 'bg-[var(--brand)]' : 'bg-gray-200'}`}></div>
+              </div>
+              
+              {[1, 2, 3].map((s) => (
+                <div key={s} className="flex flex-col items-center gap-2">
+                  <div 
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
+                      step > s 
+                        ? 'bg-[var(--brand)] text-white' 
+                        : step === s 
+                          ? 'bg-[var(--brand)] text-white ring-4 ring-[var(--brand-subtle)]' 
+                          : 'bg-white text-[var(--muted)] border-2 border-gray-200'
+                    }`}
+                  >
+                    {step > s ? '✓' : s}
+                  </div>
+                  <span className={`text-[10px] font-bold uppercase tracking-wider text-center absolute -bottom-5 w-24 ${
+                    step >= s ? 'text-[var(--brand)]' : 'text-[var(--muted)]'
+                  }`}>
+                    {s === 1 ? (t("est_step_1") as string) || "Type werk" : s === 2 ? (t("est_step_2") as string) || "Omvang" : (t("est_step_3") as string) || "Kwaliteit"}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -299,46 +319,52 @@ export default function CostEstimator({
                       id: "standard",
                       name: t("est_tier_std"),
                       desc: t("est_tier_std_desc"),
+                      symbol: "€",
                     },
                     {
                       id: "premium",
                       name: t("est_tier_prem"),
                       desc: t("est_tier_prem_desc"),
+                      symbol: "€€",
                     },
                     {
                       id: "luxury",
                       name: t("est_tier_lux"),
                       desc: t("est_tier_lux_desc"),
+                      symbol: "€€€",
                     },
                   ].map((item) => (
                     <button
                       key={item.id}
                       onClick={() => setTier(item.id as any)}
                       aria-pressed={tier === item.id}
-                      className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all ${
+                      className={`relative p-4 rounded-xl border text-left cursor-pointer transition-all ${
                         tier === item.id
-                          ? "border-[var(--brand)] bg-[var(--brand-subtle)] ring-1 ring-[var(--brand)]"
-                          : "border-[var(--border)] bg-white hover:bg-gray-50"
+                          ? "border-[var(--brand)] bg-[var(--brand-subtle)] ring-2 ring-[var(--brand)] shadow-sm"
+                          : "border-[var(--border)] bg-white hover:border-[var(--brand)] hover:shadow-sm"
                       }`}
                     >
-                      <div className="flex items-center justify-between mb-1">
+                      {item.id === "premium" && (
+                        <div className="absolute -top-2.5 right-3 bg-[var(--brand)] text-white text-[9px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded-full shadow-sm">
+                          {t("badge_best_value") || "Meest gekozen"}
+                        </div>
+                      )}
+                      <div className="flex items-center justify-between mb-1.5">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-xs text-[var(--fg)]">
+                          <span className="font-bold text-sm text-[var(--fg)]">
                             {item.name}
                           </span>
-                          {item.id === "premium" && (
-                            <span className="inline-block px-1.5 py-0.5 bg-amber-100 text-amber-700 text-[9px] uppercase tracking-wider font-extrabold rounded">
-                              {t("badge_best_value")}
-                            </span>
-                          )}
+                          <span className="text-[10px] text-[var(--muted)] font-normal tracking-widest">
+                            {item.symbol}
+                          </span>
                         </div>
                         {tier === item.id && (
-                          <span className="text-[var(--brand)] text-xs font-bold">
-                            ✓
+                          <span className="text-[var(--brand)]">
+                            <Icon name="check" size={16} />
                           </span>
                         )}
                       </div>
-                      <span className="text-[11px] text-[var(--muted)] block leading-tight">
+                      <span className="text-xs text-[var(--muted)] block leading-relaxed">
                         {item.desc}
                       </span>
                     </button>

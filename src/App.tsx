@@ -174,30 +174,32 @@ function MobileContactBar({
   return (
     <div
       className={
-        disabled ? "mobile-contact-bar pointer-events-none opacity-60" : "mobile-contact-bar"
+        disabled
+          ? "mobile-contact-bar pointer-events-none opacity-60"
+          : "mobile-contact-bar"
       }
     >
       <a
         href={CONTACT.whatsappTemplate ?? `tel:${CONTACT.phoneTel}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center justify-center bg-[#25D366] hover:bg-[#20bd5a] transition-colors"
+        className="flex items-center justify-center bg-[#25D366] hover:bg-[#20bd5a] transition-all duration-200 active:scale-[0.98]"
         aria-label="WhatsApp"
       >
         <Icon name="whatsapp" size={24} color="#ffffff" />
       </a>
       <a
         href={`tel:${CONTACT.phoneTel}`}
-        className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-2 sm:py-3.5 text-[10px] sm:text-sm font-bold text-[var(--fg)] bg-white border-r border-[var(--border)] no-underline text-center leading-[1.1]"
+        className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-2.5 text-[10px] sm:text-sm font-bold text-[var(--fg)] bg-white border-r border-[var(--border)] no-underline text-center leading-[1.08] transition-colors hover:bg-slate-50"
       >
-        <Icon name="phone" size={17} color="var(--brand)" /> 
+        <Icon name="phone" size={17} color="var(--brand)" />
         <span>{t("nav_call")}</span>
       </a>
       <button
         onClick={() => navigate("contact")}
-        className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-2 sm:py-3.5 text-[10px] sm:text-sm font-bold text-white bg-[var(--brand)] border-0 cursor-pointer text-center leading-[1.1]"
+        className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-2.5 text-[10px] sm:text-sm font-bold text-white bg-[var(--brand)] border-0 cursor-pointer text-center leading-[1.08] transition-all duration-200 hover:bg-[var(--brand-dark)] active:scale-[0.99]"
       >
-        <Icon name="check" size={17} /> 
+        <Icon name="check" size={17} />
         <span>{t("nav_cta")}</span>
       </button>
     </div>

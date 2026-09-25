@@ -1,3 +1,5 @@
+import type { TranslationKey } from "../i18n/translations"
+
 export interface City {
   name: string
   province: string
@@ -45,12 +47,12 @@ export const CITIES: City[] = [
   { name: "Veenendaal", province: "Utrecht", region: "utrecht" },
 ]
 
-export const REGION_LABELS: Record<string, string> = {
-  groot: "Grote Steden Nederland",
-  kern: "Kernwerkgebied",
-  utrecht: "Regio Utrecht",
-  gooi: "Gooi & Eemland",
-  gelderland: "Gelderland",
+export const REGION_LABELS: Record<string, TranslationKey> = {
+  groot: "region_groot",
+  kern: "region_kern",
+  utrecht: "region_utrecht",
+  gooi: "region_gooi",
+  gelderland: "region_gelderland",
 }
 
 export const SERVICES_LIST = [

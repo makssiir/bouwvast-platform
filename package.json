@@ -5,9 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "vite build",
+    "build": "node scripts/prerender.mjs",
     "preview": "vite preview",
-    "format": "oxfmt"
+    "format": "oxfmt",
+    "verify:leads": "node scripts/verify-leads.ts",
+    "typecheck": "tsc --noEmit",
+    "build:client": "vite build",
+    "verify:routes": "node scripts/verify-routes.mjs",
+    "verify:browser": "node scripts/verify-browser.mjs"
   },
   "dependencies": {
     "react": "^19.0.0",

@@ -5,7 +5,7 @@ import { t as translate, type TranslationKey } from "./translations"
 interface LangCtx {
   lang: Lang
   setLang: (l: Lang) => void
-  t: (key: TranslationKey) => string
+  t: (key: TranslationKey, params?: Record<string, string>) => string
 }
 
 const SUPPORTED: Lang[] = ["nl", "en", "uk", "ru"]
@@ -36,7 +36,15 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
       /* storage may be unavailable (private mode); language still updates in-session */
     }
   }
-  const t = (key: TranslationKey) => translate(lang, key)
+  const t = (key: TranslationKey, params?: Record<string, string>) => {
+    let str = translate(lang, key)
+    if (params) {
+      for (const [k, v] of Object.entries(params)) {
+        str = str.replace(new RegExp(`\\{${k}\\}`, "g"), v)
+      }
+    }
+    return str
+  }
   return (
     <LangContext.Provider value={{ lang, setLang, t }}>
       {children}

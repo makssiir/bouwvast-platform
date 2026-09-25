@@ -23,7 +23,7 @@ export default function WerkgebiedPage({
               onClick={() => navigate("home")}
               className="bg-transparent border-0 p-0 text-[#86efac] hover:text-white cursor-pointer"
             >
-              Home
+              {t("nav_home")}
             </button>
             <span className="mx-2">›</span>
             <span className="text-white font-semibold">{t("nav_area")}</span>
@@ -37,7 +37,7 @@ export default function WerkgebiedPage({
         <div className="container">
           {/* Quick Coverage Chips */}
           <div className="card p-6 mb-12 bg-white">
-            <span className="eyebrow">Direct naar uw gemeente</span>
+            <span className="eyebrow">{t("area_direct_municipality")}</span>
             <div className="flex flex-wrap gap-2 mt-3">
               {CITIES.map((c) => (
                 <button
@@ -58,7 +58,7 @@ export default function WerkgebiedPage({
               <div key={region} className="mb-12">
                 <div className="flex items-center gap-3 mb-6">
                   <h2 className="text-xl font-bold m-0">
-                    {REGION_LABELS[region]}
+                    {t(REGION_LABELS[region])}
                   </h2>
                   <div className="flex-1 h-px bg-[var(--border)]" />
                   <span className="text-xs font-semibold text-[var(--muted)]">
