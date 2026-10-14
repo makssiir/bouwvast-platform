@@ -1,5 +1,6 @@
-import { useState } from "react"
-import type { Page } from "../App"
+import type { Page } from "../lib/routes"
+import Breadcrumb from "../components/Breadcrumb"
+import PageLink from "../components/PageLink"
 import { SERVICES } from "../data/services"
 import Icon from "../components/Icon"
 import QuoteForm from "../components/QuoteForm"
@@ -13,7 +14,6 @@ export default function CityPage({
   navigate: (p: Page) => void
 }) {
   const { t } = useLang()
-  // const [openFaq, setOpenFaq] = useState<number | null>(null) // removed unused state
 
   const faqItems = [
     {
@@ -35,27 +35,14 @@ export default function CityPage({
   ]
 
   return (
-    <main>
+    <>
       {/* Page hero */}
       <section className="hero hero--service">
         <div className="container">
-          <div className="breadcrumb mb-4 text-[#86efac]">
-            <button
-              onClick={() => navigate("home")}
-              className="bg-transparent border-0 p-0 text-[#86efac] hover:text-white cursor-pointer"
-            >
-              {t("nav_home")}
-            </button>
-            <span className="mx-2">›</span>
-            <button
-              onClick={() => navigate("werkgebied")}
-              className="bg-transparent border-0 p-0 text-[#86efac] hover:text-white cursor-pointer"
-            >
-              {t("nav_areas")}
-            </button>
-            <span className="mx-2">›</span>
-            <span className="text-white font-semibold">{city}</span>
-          </div>
+          <Breadcrumb
+            navigate={navigate}
+            items={[{ label: t("nav_area"), to: "werkgebied" }, { label: city }]}
+          />
           <h1>{t("city_hero_title", { city })}</h1>
           <p className="lead-xl max-w-2xl">
             {t("city_hero_sub", { city })}
@@ -76,12 +63,11 @@ export default function CityPage({
               <div className="grid sm:grid-cols-2 gap-4">
                 {SERVICES.map((s) => {
                   return (
-                    <button
+                    <PageLink
                       key={s.slug}
-                      onClick={() =>
-                        navigate({ type: "service_city", city, serviceSlug: s.slug })
-                      }
-                      className="text-left p-4 rounded-xl border transition-all cursor-pointer border-[var(--border)] bg-white hover:border-[var(--brand)] hover:shadow-xs"
+                      to={{ type: "service", slug: s.slug }}
+                      navigate={navigate}
+                      className="block text-left p-4 rounded-xl border transition-all no-underline border-[var(--border)] bg-white hover:border-[var(--brand)] hover:shadow-xs"
                     >
                       <div className="flex items-center gap-2 mb-1.5">
                         <Icon name={s.icon} size={18} color="var(--brand)" />
@@ -92,7 +78,7 @@ export default function CityPage({
                       <p className="text-xs text-[var(--muted)] m-0 line-clamp-2">
                         {t(s.introKey)}
                       </p>
-                    </button>
+                    </PageLink>
                   )
                 })}
               </div>
@@ -127,22 +113,19 @@ export default function CityPage({
 
           {/* Right: sticky quote form */}
           <div>
-            <div className="sticky top-24 card p-6 md:p-7 shadow-lg border-2 border-[var(--brand)]">
+            <div id="quote" className="sticky top-24 card p-6 md:p-7 shadow-lg border-2 border-[var(--brand)]">
               <div className="flex items-center gap-2 mb-2">
                 <Icon name="check" size={18} color="var(--brand)" />
-                <h3 className="text-lg font-bold m-0">{t("city_quote_title", { city })}</h3>
+                <h2 className="text-lg font-bold m-0">{t("city_quote_title", { city })}</h2>
               </div>
               <p className="text-xs text-[var(--muted)] mb-5">
                 {t("city_quote_sub", { city })}
               </p>
-              <QuoteForm
-                compact
-                sourcePage={`city:${city}`}
-              />
+              <QuoteForm compact sourcePage={`city:${city}`} presetCity={city} />
             </div>
           </div>
         </div>
       </div>
-    </main>
+    </>
   )
 }

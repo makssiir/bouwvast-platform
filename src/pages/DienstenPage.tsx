@@ -1,90 +1,52 @@
-import type { Page } from "../App"
+import type { Page } from "../lib/routes"
 import QuoteForm from "../components/QuoteForm"
+import Breadcrumb from "../components/Breadcrumb"
+import PageLink from "../components/PageLink"
+import Icon from "../components/Icon"
 import { useLang } from "../i18n/LangContext"
 import { SERVICES } from "../data/services"
-import Icon from "../components/Icon"
+import { imageSize } from "../data/images"
 
-export default function DienstenPage({
-  navigate,
-}: {
-  navigate: (p: Page) => void
-}) {
+export default function DienstenPage({ navigate }: { navigate: (p: Page) => void }) {
   const { t } = useLang()
 
-  const priceMap: Record<string, string> = {
-    renovatie: "Projectmatig",
-    afbouw: "Vanaf €45/m²",
-    schilderwerk: "Vanaf €35/m²",
-    "gevel-buitenwerk": "Vanaf €55/uur",
-    montage: "Vanaf €58/uur",
-    "onderhoud-reparatie": "Vanaf €55/uur",
-    "badkamer-keuken": "Maatwerk",
-    loodgieter: "Vanaf €65/uur",
-    elektricien: "Vanaf €65/uur",
-    timmerman: "Vanaf €58/uur",
-    timmerbedrijf: "Op offerte",
-    klusjesman: "Vanaf €50/uur",
-    klusbedrijf: "Op offerte",
-    algemeen: "Vanaf €55/uur",
-  }
-
   return (
-    <main>
+    <>
       <section className="hero hero--service">
         <div className="container">
-          <div className="breadcrumb mb-4 text-[#86efac]">
-            <button
-              onClick={() => navigate("home")}
-              className="bg-transparent border-0 p-0 text-[#86efac] hover:text-white cursor-pointer"
-            >
-              Home
-            </button>
-            <span className="mx-2">›</span>
-            <span className="text-white font-semibold">Diensten</span>
-          </div>
+          <Breadcrumb navigate={navigate} items={[{ label: t("nav_services") }]} />
           <h1>{t("services_title")}</h1>
-          <p className="lead-xl max-w-2xl">
-            Van kleine vakkundige klussen en reparaties tot complete
-            woningrenovaties. Altijd met een heldere aanpak, transparante
-            tarieven en één vast aanspreekpunt.
-          </p>
+          <p className="lead-xl max-w-2xl">{t("services_sub")}</p>
         </div>
       </section>
 
       <section className="section">
         <div className="container">
-          <div className="grid grid-3">
+          <ul className="grid grid-3 list-none p-0">
             {SERVICES.map((s) => (
-              <button
-                key={s.slug}
-                onClick={() => navigate({ type: "service", slug: s.slug })}
-                className="card service-card-link text-left cursor-pointer border-0 bg-white"
-              >
-                <div className="service-card-media" aria-hidden="true">
-                  <img
-                    src={s.image}
-                    alt={t(s.nameKey)}
-                    width={600}
-                    height={400}
-                    loading="lazy"
-                  />
-                  <span className="service-card-price">
-                    {priceMap[s.slug] || "Vanaf €55/uur"}
-                  </span>
-                </div>
-                <div className="service-card-body">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Icon name={s.icon} size={18} color="var(--brand)" />
-                    <h3 className="m-0 text-lg font-bold">{t(s.nameKey)}</h3>
+              <li key={s.slug}>
+                <PageLink
+                  to={{ type: "service", slug: s.slug }}
+                  navigate={navigate}
+                  className="card service-card-link text-left no-underline bg-white h-full"
+                >
+                  <div className="service-card-media">
+                    <img src={s.image} alt="" {...imageSize(s.image)} loading="lazy" decoding="async" />
                   </div>
-                  <p className="text-sm text-[var(--muted)] line-clamp-3 mb-4 mt-2">
-                    {s.intro}
-                  </p>
-                  <span className="more">Bekijk dienst & details &rarr;</span>
-                </div>
-              </button>
+                  <div className="service-card-body">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Icon name={s.icon} size={18} color="var(--brand)" />
+                      <h2 className="m-0 text-lg font-bold">{t(s.nameKey)}</h2>
+                    </div>
+                    <p className="text-sm text-[var(--muted)] line-clamp-3 mb-4 mt-2">{t(s.introKey)}</p>
+                    <span className="more" aria-hidden="true">
+                      {t("link_more")} &rarr;
+                    </span>
+                  </div>
+                </PageLink>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
@@ -92,26 +54,16 @@ export default function DienstenPage({
         <div className="container">
           <div className="grid md:grid-cols-[1fr_1.4fr] gap-12 items-start">
             <div>
-              <span className="eyebrow">Direct aanvragen</span>
-              <h2>Offerte voor uw werkzaamheden</h2>
-              <p className="text-[var(--muted)] text-base mb-6">
-                Vertel ons welke werkzaamheden u wilt laten uitvoeren. We
-                reageren binnen 24 uur met een vrijblijvend voorstel.
-              </p>
-              <div className="space-y-3 text-sm text-[var(--fg)] font-medium">
-                <div className="flex items-center gap-2.5">
-                  <span className="text-[var(--brand)] font-bold">✓</span> Vaste
-                  richtprijzen zonder verrassingen
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <span className="text-[var(--brand)] font-bold">✓</span>{" "}
-                  Vakkundige gecertificeerde vakmensen
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <span className="text-[var(--brand)] font-bold">✓</span>{" "}
-                  Volledige kwaliteitsgarantie op het werk
-                </div>
-              </div>
+              <h2>{t("form_title")}</h2>
+              <p className="text-[var(--muted)] text-base mb-6">{t("form_sub")}</p>
+              <ul className="space-y-3 text-sm text-[var(--fg)] font-medium list-none p-0">
+                {(["hero_trust_1", "hero_trust_2", "hero_trust_3"] as const).map((key) => (
+                  <li key={key} className="flex items-center gap-2.5">
+                    <span className="text-[var(--brand)] font-bold" aria-hidden="true">✓</span>
+                    {t(key)}
+                  </li>
+                ))}
+              </ul>
             </div>
             <div className="card p-6 md:p-8 shadow-md">
               <QuoteForm sourcePage="diensten" />
@@ -119,6 +71,6 @@ export default function DienstenPage({
           </div>
         </div>
       </section>
-    </main>
+    </>
   )
 }

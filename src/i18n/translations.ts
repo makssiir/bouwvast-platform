@@ -21,12 +21,11 @@ const translations = {
     // Navigation
     nav_services: "Diensten",
     nav_projects: "Projecten",
-    nav_about: "Over ons",
     nav_area: "Werkgebied",
     nav_kennisbank: "Kennisbank",
     kb_page_title: "Kennisbank",
     kb_page_sub:
-      "Praktische gidsen, actuele richtprijzen en vakkundig advies voor uw verbouwing of renovatie.",
+      "Praktische gidsen en algemene informatie voor uw verbouwing of renovatie.",
     nav_contact: "Contact",
     nav_cta: "Offerte aanvragen",
     nav_business: "Zakelijk",
@@ -36,45 +35,25 @@ const translations = {
     hero_title: "Bouwen, renoveren en afwerken.",
     hero_title_accent: "Van idee tot strak resultaat.",
     hero_sub:
-      "Professionele bouw-, renovatie- en afbouwwerkzaamheden voor woningen en bedrijven. Eén aanspreekpunt, transparante calculaties en garantie op oplevering.",
+      "Bouw-, renovatie- en afbouwwerkzaamheden voor woningen en bedrijven. Beschrijf uw plannen en ontvang een duidelijke, gespecificeerde offerte.",
     hero_cta_primary: "Direct offerte aanvragen",
-    hero_cta_secondary: "Bekijk onze diensten",
-    hero_trust_1: "Snelle reactie binnen 24u",
-    hero_trust_2: "Vaste prijsafspraak vooraf",
-    hero_trust_3: "Vakkundige garantie",
+    hero_trust_1: "Vrijblijvende aanvraag",
+    hero_trust_2: "Gespecificeerde offerte vooraf",
+    hero_trust_3: "Persoonlijk contact",
 
     // Nudges & Conversion triggers
-    nudge_wa_online: "Nu online · reactie < 15 min",
     nudge_wa_bubble:
-      "Vragen over uw verbouwing of richtprijs? App ons gerust met foto's voor direct advies 💬",
+      "Vragen over uw verbouwing? Stuur ons gerust een bericht met foto's.",
     nudge_wa_btn: "Start WhatsApp chat",
-    nudge_bar_text:
-      "Plannen voor een verbouwing? Ontvang binnen 24u een gratis richtprijs.",
-    nudge_bar_wa: "App uw foto's 💬",
-    nudge_bar_quote: "Offerte aanvragen ⚡",
     nudge_estimator_tip:
-      "Tip: Stuur een foto van uw ruimte via WhatsApp voor een exacte prijsindicatie binnen 2 uur!",
+      "Tip: voeg foto's van de ruimte toe aan uw aanvraag, dan kunnen we gerichter reageren.",
 
     // Stats
-    stat_1_val: "25+",
-    stat_1_lbl: "jaar ervaring",
-    stat_2_val: "1.500+",
-    stat_2_lbl: "projecten afgerond",
-    stat_3_val: "VCA",
-    stat_3_lbl: "gecertificeerd",
-    stat_4_val: "€55",
-    stat_4_lbl: "vanaf tarief p/u incl. btw",
 
     // Multi-step & CRO
     btn_next: "Volgende stap",
     btn_back: "Terug",
     btn_submit_request: "Verstuur Aanvraag",
-    step_1_of_3: "Stap 1 van 3",
-    step_2_of_3: "Stap 2 van 3",
-    step_3_of_3: "Stap 3 van 3",
-    step_1_of_2: "Stap 1 van 2",
-    step_2_of_2: "Stap 2 van 2",
-    badge_best_value: "Meest gekozen",
 
     // Estimator
     est_eyebrow: "Direct inzicht",
@@ -95,13 +74,13 @@ const translations = {
     est_est_price: "Geschatte richtprijs:",
     est_apply_btn: "Offerte aanvragen voor deze berekening",
     est_disclaimer:
-      "* Indicatieve berekening incl. btw. Definitieve prijs volgt na vrijblijvende opname op locatie.",
+      "* Indicatieve berekening incl. btw, geen offerte. De definitieve prijs volgt na een opname op locatie.",
 
     // Services section & pages
     services_label: "Onze Vakgebieden",
     services_title: "Waarmee kan Bouwvast u helpen?",
     services_sub:
-      "Bekijk per discipline wat we voor u kunnen betekenen, wat erbij hoort en welke richtprijzen gelden.",
+      "Bekijk per discipline wat we voor u kunnen betekenen en wat erbij hoort.",
     services_all: "Bekijk alle diensten",
     more_info: "Bekijk dienst →",
 
@@ -147,87 +126,54 @@ const translations = {
     ba_hint: "Sleep om te vergelijken",
 
     // Audience
-    aud_label: "Onze Aanpak & Team",
-    aud_title: "Eigenaar direct op de bouw én een allround vakteam",
-    aud_sub:
-      "Geen anonieme tussenpersonen of bemiddelingskosten. U schakelt direct met de eigenaar en ons hechte team van allround vakmensen die elke klus zelf kunnen.",
-    aud_part_title: "Vast Aanspreekpunt",
-    aud_part_heading: "Eigenaar persoonlijk op uw project",
-    aud_part_desc:
-      "Van opname en calculatie tot het toezicht op de bouw: u heeft één direct aanspreekpunt. Korte lijnen, heldere afspraken en een eerlijke vaste prijs.",
-    aud_b2b_title: "Alles-in-één Team",
-    aud_b2b_heading: "Allround vakmensen voor elke klus",
-    aud_b2b_desc:
-      "Ons eigen team pakt alles van A tot Z zelf aan: sloop, leidingwerk, elektra, stucwerk, tegelen, timmerwerk en schilderen. Eén vertrouwd team dat alles kan.",
 
     // How it works
     how_label: "Werkwijze",
     how_title: "In 4 stappen naar een geslaagde verbouwing",
     how_cta: "Vraag direct een offerte aan",
-    how_1_title: "1. Vrijblijvende Aanvraag",
+    how_1_title: "Vrijblijvende aanvraag",
     how_1_desc:
       "Beschrijf uw project via het online aanvraagformulier of bereken vooraf uw richtprijs.",
-    how_2_title: "2. Opname & Advies",
+    how_2_title: "Opname & Advies",
     how_2_desc:
-      "We bespreken uw wensen en plannen eventueel een vrijblijvende inspectie op locatie in.",
-    how_3_title: "3. Transparante Offerte",
+      "We bespreken uw wensen en plannen zo nodig een opname op locatie in.",
+    how_3_title: "Transparante Offerte",
     how_3_desc:
       "U ontvangt een gespecificeerde offerte met duidelijke planning en vaste prijsafspraken.",
-    how_4_title: "4. Vakkundige Oplevering",
+    how_4_title: "Vakkundige Oplevering",
     how_4_desc:
-      "Onze vaklieden voeren het werk strak uit. Oplevering pas als u 100% tevreden bent.",
+      "Het werk wordt uitgevoerd volgens de afspraken in de offerte en samen met u opgeleverd.",
 
     // Reviews
-    rev_label: "Klanttevredenheid",
-    rev_title: "Beoordeeld met een 4.9 / 5.0",
-    rev_sub:
-      "Gebaseerd op meer dan 120 geverifieerde reviews van huiseigenaren en zakelijke opdrachtgevers.",
 
     // Pricing
-    price_label: "Tarieven",
-    price_title: "Duidelijke prijzen vooraf",
-    price_sub:
-      "Bij Bouwvast hanteren we transparante tarieven zonder verborgen kosten achteraf.",
 
     // Founder Trust Card
-    trust_card_label: "Eigenaar & Vakteam",
-    trust_card_title: '"Eén hecht team, de eigenaar op de bouw en afspraak is afspraak."',
-    trust_card_desc:
-      "Bouwvast is geen tussenpersoon of anoniem platform. Wij zijn een ervaren eigenaar met een vast team van allround vaklieden. Wij voeren elke fase van uw verbouwing zelf uit: van sloop en leidingwerk tot tegelwerk en strak stucwerk. U profiteert van korte lijnen, eerlijke vaste prijzen en één duidelijke garantie op het hele project.",
-    trust_badge_1: "Direct met de eigenaar",
-    trust_badge_2: "Eigen allround vakteam",
-    trust_badge_3: "100% Oplevergarantie",
 
     // Area & City Page
     area_page_title: "Werkgebied & Gemeenten",
     area_page_sub:
-      "Bouwvast is actief in heel Midden-Nederland en alle grote steden. Bekijk alle gemeenten en plaatsen binnen ons werkgebied.",
+      "Ons werkgebied ligt rond Amersfoort. Staat uw woonplaats er niet bij? Vraag het ons gerust.",
     area_places: "plaatsen",
     city_page_title: "Aannemer & Verbouwing in",
-    city_page_sub:
-      "Vakkundige woningrenovatie, badkamers, stucwerk en schilderwerk in",
 
     // Projects Page
-    projects_label: "Ons Portfolio",
-    projects_title: "Recent opgeleverde projecten",
+    projects_title: "Projecten",
     projects_sub:
-      "Een greep uit onze recente verbouwingen en renovaties in Nederland.",
+      "Hier tonen we eigen projecten, gepubliceerd met toestemming van onze opdrachtgevers.",
 
     // About Page
-    about_page_title: "Over Bouwvast Nederland",
-    about_page_sub:
-      "Betrouwbaar vakmanschap, één vast aanspreekpunt en garantie op elke verbouwing.",
 
     // Business Page
     b2b_page_title: "Zakelijke Samenwerking & Partners",
     b2b_page_sub:
-      "Uw betrouwbare uitvoerende bouwpartner voor aannemers, keukenzaken, VvE's en vastgoedbeheerders.",
+      "Uitvoerende bouwpartner voor aannemers, keukenzaken, VvE's en vastgoedbeheerders.",
 
     // FAQ
     faq_label: "FAQ",
     faq_title: "Veelgestelde vragen over verbouwen",
-    faq_1_q: "Zijn de getoonde prijzen inclusief BTW?",
-    faq_1_a: "Onze calculator toont richtprijzen exclusief BTW, aangezien veel particuliere woningen (ouder dan 2 jaar) in aanmerking komen voor het lage 9% BTW-tarief op specifieke werkzaamheden. In een formele offerte splitsen we dit exact voor u uit.",
+    faq_1_q: "Zijn prijzen inclusief btw?",
+    faq_1_a: "In de offerte staat altijd duidelijk welk btw-tarief van toepassing is. Voor bepaalde arbeid aan woningen ouder dan 2 jaar (zoals schilder- en stucwerk) kan het verlaagde tarief van 9% gelden.",
     faq_1b_q: "Welke werkzaamheden voeren jullie uit?",
     faq_1b_a:
       "Wij voeren complete woningrenovaties, badkamers, stucwerk, schilderwerk, timmerwerk, loodgieterswerk, gevelwerk en onderhoud uit.",
@@ -235,47 +181,32 @@ const translations = {
     faq_2_a: "Transparantie staat voorop. Mochten we onvoorziene zaken (zoals houtrot of leidinglekkages) tegenkomen, dan bespreken we dit direct met u. We bieden een oplossing en prijs aan vóórdat we verdere kosten maken. Geen verrassingen achteraf.",
     faq_2b_q: "Werken jullie ook voor zakelijke opdrachtgevers?",
     faq_2b_a:
-      "Ja, wij werken dagelijks voor particulieren, aannemers, VvE's en vastgoedbeheerders.",
+      "Ja, u kunt ons benaderen als particulier, aannemer, VvE of vastgoedbeheerder.",
     faq_3_q: "In welke regio zijn jullie actief?",
     faq_3_a:
-      "Wij zijn actief in heel Nederland, met focus op grote steden zoals Amersfoort, Utrecht, Amsterdam, Hilversum en omstreken.",
+      "Ons werkgebied ligt rond Amersfoort. Vermeld uw woonplaats in de aanvraag; we laten u weten of we uw project kunnen aannemen.",
     faq_4_q: "Kan ik eerst een vrijblijvende offerte aanvragen?",
     faq_4_a:
-      "Ja, al onze offertes en berekeningen zijn 100% gratis en geheel vrijblijvend.",
+      "Ja. Een aanvraag via deze website is vrijblijvend: u zit nergens aan vast totdat u een offerte ondertekent.",
 
     // Form & Modals
-    form_title: "Vraag direct een offerte aan",
-    form_sub: "Binnen 24 uur een heldere reactie en prijsopgave.",
+    form_title: "Vraag een offerte aan",
+    form_sub: "Beschrijf uw project. We nemen contact met u op om de mogelijkheden te bespreken.",
     form_name: "Uw naam",
     form_phone: "Telefoonnummer",
     form_email: "E-mailadres",
     form_city: "Woonplaats / Postcode",
-    form_type: "Type werkzaamheden",
     form_desc: "Beschrijf uw wensen en bijzonderheden...",
-    form_time: "Gewenste startperiode",
-    form_choose_time: "Selecteer gewenste startperiode...",
-    form_time_morning: "Zo snel mogelijk / met spoed",
-    form_time_afternoon: "Binnen 1 maand",
-    form_time_all_day: "Binnen 1 tot 3 maanden",
-    form_time_consultation: "Nog aan het oriënteren",
     form_photos: "Foto's toevoegen",
     form_optional: "optioneel",
-    form_photos_hint:
-      "Upload maximaal 5 foto's (JPG, PNG, WebP) voor een snellere offerte.",
     form_photos_selected: "{n} foto('s) geselecteerd",
-    form_required: "Selecteer type werk...",
-    form_submit: "Verstuur aanvraag →",
     form_privacy:
-      "Uw gegevens worden vertrouwelijk behandeld en uitsluitend voor deze offerte gebruikt.",
-    form_success_title: "Aanvraag succesvol ontvangen!",
+      "We gebruiken uw gegevens alleen om op deze aanvraag te reageren.",
+    form_success_title: "Aanvraag ontvangen",
     form_success_sub:
-      "Bedankt voor uw aanvraag. Een van onze bouwadviseurs neemt binnen 24 uur contact met u op.",
+      "Bedankt voor uw aanvraag. We nemen zo snel mogelijk contact met u op.",
     form_sending: "Bezig met verzenden…",
     form_error_title: "Verzenden is niet gelukt",
-    form_error_sub:
-      "Uw aanvraag is niet bij ons aangekomen. Uw gegevens staan nog ingevuld — stuur ze direct via WhatsApp of e-mail, of bel ons.",
-    form_error_queued:
-      "We proberen het automatisch opnieuw zodra uw verbinding er weer is.",
     form_error_retry: "Opnieuw proberen",
     form_error_whatsapp: "Via WhatsApp",
     form_error_email: "Via e-mail",
@@ -285,25 +216,18 @@ const translations = {
       "De foto's zijn samen te groot om mee te sturen. Uw aanvraag is verstuurd — stuur de foto's gerust na via WhatsApp of e-mail.",
 
     // Wizard Modal steps
-    wizard_step_1_title: "1. Waarmee kunnen we u helpen?",
-    wizard_step_2_title: "2. Omschrijf uw klus of verbouwing",
-    wizard_step_3_title: "3. Contactgegevens voor offerte",
-    wizard_next: "Volgende stap →",
-    wizard_back: "← Vorige",
-    wizard_modal_title: "Offerte Aanvragen",
 
     // CTA
-    cta_title: "Klaar om uw verbouwing te starten?",
     cta_sub:
-      "Vraag vandaag nog een vrijblijvende offerte aan of bel direct met een van onze adviseurs.",
+      "Vraag vrijblijvend een offerte aan en beschrijf kort uw plannen.",
     cta_btn: "Offerte aanvragen",
 
     // Footer
     footer_desc:
-      "Uw betrouwbare aannemer in Nederland. Eigenaar op de werkvloer, allround vakteam voor alle klussen onder één dak, transparante prijzen en heldere afspraken.",
+      "Bouw-, renovatie- en afbouwwerkzaamheden in de regio Amersfoort, met duidelijke afspraken vooraf.",
     footer_info: "Informatie",
     footer_services: "Diensten",
-    footer_cities: "Grote Steden",
+    footer_cities: "Werkgebied",
     footer_privacy: "Privacybeleid",
     footer_terms: "Algemene voorwaarden",
     footer_partner: "Zakelijk & Samenwerking",
@@ -313,33 +237,9 @@ const translations = {
     skip_link: "Direct naar hoofdinhoud",
     nav_call: "Bellen",
     close: "Sluiten",
-    cookie_title: "Cookies & Privacy",
-    cookie_desc:
-      "Wij gebruiken functionele en analytische cookies om onze website te optimaliseren en u een soepele gebruikservaring te bieden.",
-    cookie_decline: "Weigeren",
-    cookie_accept: "Accepteren",
-    toast_new: "Nieuwe",
-    toast_ago: "geleden",
-    toast_minutes: "minuten",
-    toast_hour: "uur",
-    toast_request: "aanvraag",
-    toast_quote: "offerte",
-    nudge_close: "Sluit melding",
-    nudge_bar_close: "Sluit balk",
 
     // Home Sections
-    portfolio_label: "Ons Portfolio",
-    portfolio_title: "Recent opgeleverde projecten",
-    portfolio_all: "Bekijk alle projecten",
-    types_label: "Soorten Projecten",
-    types_title: "Wat voor projecten doen we?",
-    types_discuss: "Project bespreken",
-    whyus_label: "Waarom Bouwvast?",
-    whyus_title: "Betrouwbaar en transparant",
-    whyus_sub:
-      "Jarenlange ervaring en één vast aanspreekpunt voor uw verbouwing.",
     // Regions
-    region_groot: "Grote Steden Nederland",
     region_kern: "Kernwerkgebied",
     region_utrecht: "Regio Utrecht",
     region_gooi: "Gooi & Eemland",
@@ -347,23 +247,23 @@ const translations = {
 
     // Page Specific
     city_hero_title: "Vakman in {city} — Bouwvast",
-    city_hero_sub: "Betrouwbare bouw-, renovatie- en onderhoudswerkzaamheden in {city} en omstreken.",
+    city_hero_sub: "Bouw-, renovatie- en onderhoudswerkzaamheden in {city} en omgeving. Vraag vrijblijvend een offerte aan.",
     city_services_eyebrow: "Diensten in {city}",
     city_services_title: "Werkzaamheden in {city}",
     city_seo_title: "Waarom kiezen voor Bouwvast in {city}?",
     city_seo_p1: "Woont u in {city} of heeft u hier een bedrijfspand en zoekt u een betrouwbare vakman voor uw verbouwing, badkamer, schilderwerk of onderhoud? Bouwvast biedt een compleet pakket van vakkundige disciplines onder één dak.",
-    city_seo_p2: "Met één vast aanspreekpunt, duidelijke afspraken en vakmensen met jarenlange ervaring garanderen we dat uw project soepel en naar volle tevredenheid verloopt.",
+    city_seo_p2: "U krijgt vooraf een gespecificeerde offerte met duidelijke afspraken over planning en prijs.",
     city_faq_title: "Veelgestelde vragen over {city}",
     city_quote_title: "Offerte in {city}",
-    city_quote_sub: "Vrijblijvende prijsindicatie binnen 24 uur.",
+    city_quote_sub: "Vrijblijvend · beschrijf kort uw project.",
     city_faq_1_q: "Voert Bouwvast ook werkzaamheden uit in {city}?",
-    city_faq_1_a: "Ja, {city} valt binnen ons vaste werkgebied. We verzorgen hier regelmatig verbouwingen, renovaties, schilderwerk en onderhoud.",
+    city_faq_1_a: "Vermeld in uw aanvraag dat het om {city} gaat; we laten u weten of we uw project daar kunnen uitvoeren.",
     city_faq_2_q: "Hoe snel kunnen jullie ter plaatse zijn voor een opname?",
-    city_faq_2_a: "Voor een vrijblijvende opname of spoedklus in de regio kunnen we meestal binnen enkele werkdagen bij u langskomen.",
+    city_faq_2_a: "Dat hangt af van de planning en het soort klus. Na uw aanvraag stemmen we een moment voor een opname met u af.",
     city_faq_3_q: "Zijn de tarieven in alle gemeenten gelijk?",
-    city_faq_3_a: "Ja, wij hanteren transparante tarieven zonder onverwachte voorrijkosten binnen ons kernwerkgebied.",
+    city_faq_3_a: "Eventuele reis- of voorrijkosten staan altijd vooraf in de offerte.",
     city_faq_4_q: "Krijg ik garantie op de werkzaamheden in mijn woning?",
-    city_faq_4_a: "Zeker, op alle uitgevoerde werkzaamheden en geleverde materialen ontvangt u standaard volledige kwaliteitsgarantie.",
+    city_faq_4_a: "De garantievoorwaarden staan in de offerte. Daarnaast heeft u altijd de wettelijke rechten bij gebreken.",
     
     service_hero_suffix: " in uw regio",
     service_includes_eyebrow: "Wat valt hieronder",
@@ -372,13 +272,12 @@ const translations = {
     service_process_title: "Hoe wij te werk gaan",
     service_area_eyebrow: "Werkgebied",
     service_area_title: "{service} in uw regio",
-    service_area_desc: "Wij zijn actief in en rondom grote steden. Bekijk wat we in uw woonplaats voor u kunnen verzorgen.",
+    service_area_desc: "Bekijk de plaatsen in ons werkgebied of vermeld uw woonplaats in de aanvraag.",
     service_quote_title: "Vrijblijvende offerte",
     service_quote_sub: "Vraag direct een prijsindicatie aan voor {service}.",
     service_related_eyebrow: "Verder kijken",
     service_related_title: "Andere diensten van Bouwvast",
     
-    area_direct_municipality: "Direct naar uw gemeente",
 
     // Service Intros & Includes
     svc_renovation_intro: "Van een enkele woonlaag tot een complete turn-key woningrenovatie. We begeleiden uw verbouwing van sloop tot oplevering met één vast aanspreekpunt, heldere planning en vaste prijsafspraken.",
@@ -393,7 +292,7 @@ const translations = {
     svc_bathroom_inc_2: "Leidingen infrezen (water, afvoer, elektra)",
     svc_bathroom_inc_3: "Grootformaat tegelwerk & precisie leveling",
     svc_bathroom_inc_4: "Keukens vakkundig plaatsen en aansluiten",
-    svc_bathroom_inc_5: "Schimmelwerend sanitair kitwerk met garantie",
+    svc_bathroom_inc_5: "Schimmelwerend sanitair kitwerk",
 
     svc_finishing_intro: "Strak stucwerk en complete afbouw voor renovatie en nieuwbouw. Spiegelglad sausklaar pleisterwerk, scheidingswanden en verlaagde plafonds.",
     svc_finishing_inc_1: "Sausklaar stucwerk (spiegelglad)",
@@ -437,76 +336,67 @@ const translations = {
     svc_plumber_inc_4: "Lekkages opsporen en direct verhelpen",
     svc_plumber_inc_5: "Radiatoren vervangen & CV-aanpassingen",
 
-    svc_maintenance_intro: "Onderhoudswerkzaamheden en herstelklussen aan uw woning of vastgoedcomplex. Preventief, vakkundig en met garantie.",
+    svc_maintenance_intro: "Onderhoudswerkzaamheden en herstelklussen aan uw woning of vastgoedcomplex, preventief en vakkundig.",
     svc_maintenance_inc_1: "Herstel van vochtschade & stucwerk",
     svc_maintenance_inc_2: "Deursloten en hang- en sluitwerk vernieuwen (SKG***)",
     svc_maintenance_inc_3: "Vervangen van beschadigde tegels of plinten",
     svc_maintenance_inc_4: "Onderhoudsbeurten voor woningen en VvE's",
-    svc_maintenance_inc_5: "Snel ter plaatse voor noodreparaties",
+    svc_maintenance_inc_5: "Herstel van acute schade in overleg",
 
     svc_general_intro: "Heeft u een combinatieproject of een specifieke verbouwklus? Wij denken mee vanaf de ontwerpfase tot aan de bezemvaste oplevering.",
     svc_general_inc_1: "Multidisciplinaire verbouwingen",
     svc_general_inc_2: "Persoonlijk bouwadvies en opname op locatie",
     svc_general_inc_3: "Transparante calculatie zonder verborgen kosten",
     svc_general_inc_4: "Vaste planning met één bouwcoördinator",
+    nav_home: "Home",
+    link_more: "Meer informatie",
+    privacy_meta_desc: "Hoe Bouwvast omgaat met de gegevens die u via het offerteformulier verstuurt.",
+    terms_meta_desc: "Welke voorwaarden gelden voor offertes en opdrachten van Bouwvast.",
+    notfound_title: "Pagina niet gevonden",
+    notfound_sub: "Deze pagina bestaat niet (meer). Kies hieronder waar u verder wilt gaan.",
+    kb_dutch_only: "",
+    kb_read_article: "Lees artikel",
+    kb_tips_title: "Tips",
+    kb_disclaimer: "Dit artikel geeft algemene informatie. Genoemde bedragen en regels zijn indicatief en kunnen veranderen; ze zijn geen offerte. Controleer fiscale regels bij de Belastingdienst.",
+    kb_more_articles: "Meer artikelen",
+    legal_dutch_only: "",
   },
 
   en: {
     // Navigation
     nav_services: "Services",
     nav_projects: "Projects",
-    nav_about: "About Us",
     nav_area: "Service Area",
     nav_kennisbank: "Knowledge Base",
     kb_page_title: "Knowledge Base",
     kb_page_sub:
-      "Practical guides, current price indications and expert advice for your renovation or building project.",
+      "Practical guides and general information for your renovation.",
     nav_contact: "Contact",
     nav_cta: "Request a Quote",
     nav_business: "Business",
     btn_next: "Next step",
     btn_back: "Back",
     btn_submit_request: "Submit Request",
-    step_1_of_3: "Step 1 of 3",
-    step_2_of_3: "Step 2 of 3",
-    step_3_of_3: "Step 3 of 3",
-    step_1_of_2: "Step 1 of 2",
-    step_2_of_2: "Step 2 of 2",
-    badge_best_value: "Most popular",
 
     // Hero
     hero_label: "Professional Contractors & Builders in the Netherlands",
     hero_title: "Building, renovating and finishing.",
     hero_title_accent: "From concept to premium result.",
     hero_sub:
-      "Professional construction, renovation, and finishing services for homes and businesses. Single point of contact, transparent calculations, and guaranteed quality.",
+      "Construction, renovation and finishing work for homes and businesses. Describe your plans and receive a clear, itemised quote.",
     hero_cta_primary: "Request a Quote Now",
-    hero_cta_secondary: "View Our Services",
-    hero_trust_1: "Quick response within 24h",
-    hero_trust_2: "Fixed price agreement upfront",
-    hero_trust_3: "Workmanship warranty",
+    hero_trust_1: "No-obligation request",
+    hero_trust_2: "Itemised quote up front",
+    hero_trust_3: "Personal contact",
 
     // Nudges & Conversion triggers
-    nudge_wa_online: "Now online · reply < 15 min",
     nudge_wa_bubble:
-      "Questions about your renovation or estimate? Chat with us on WhatsApp for fast advice 💬",
+      "Questions about your renovation? Feel free to send us a message with photos.",
     nudge_wa_btn: "Start WhatsApp chat",
-    nudge_bar_text:
-      "Planning a renovation? Get a free estimate within 24 hours.",
-    nudge_bar_wa: "Chat on WhatsApp 💬",
-    nudge_bar_quote: "Request Quote ⚡",
     nudge_estimator_tip:
-      "Tip: Send a photo of your space via WhatsApp for an exact price estimate within 2 hours!",
+      "Tip: add photos of the space to your request so we can respond more specifically.",
 
     // Stats
-    stat_1_val: "25+",
-    stat_1_lbl: "years experience",
-    stat_2_val: "1,500+",
-    stat_2_lbl: "completed projects",
-    stat_3_val: "VCA",
-    stat_3_lbl: "certified",
-    stat_4_val: "€55",
-    stat_4_lbl: "starting rate p/h incl. VAT",
 
     // Estimator
     est_eyebrow: "Instant Estimate",
@@ -527,13 +417,13 @@ const translations = {
     est_est_price: "Estimated price range:",
     est_apply_btn: "Request quote for this calculation",
     est_disclaimer:
-      "* Indicative calculation incl. VAT. Final price confirmed after non-binding on-site inspection.",
+      "* Indicative calculation incl. VAT, not a quote. The final price follows after an on-site assessment.",
 
     // Services section & pages
     services_label: "Our Disciplines",
     services_title: "How can Bouwvast assist your build?",
     services_sub:
-      "Explore each discipline, what deliverables are included, and transparent pricing benchmarks.",
+      "See per discipline what we can do for you and what is included.",
     services_all: "View all services",
     more_info: "View service →",
 
@@ -578,87 +468,54 @@ const translations = {
     ba_hint: "Drag to compare",
 
     // Audience
-    aud_label: "Our Team & Approach",
-    aud_title: "Hands-on owner supervision & dedicated all-round craftsmen",
-    aud_sub:
-      "No middlemen, subcontracting markups, or impersonal agencies. You work directly with the owner and our close-knit, versatile team of skilled builders.",
-    aud_part_title: "Direct Accountability",
-    aud_part_heading: "Owner personally manages your project",
-    aud_part_desc:
-      "Direct contact with the owner from survey to final inspection. Quick communication, firm price guarantees, and meticulous on-site quality control.",
-    aud_b2b_title: "Turnkey Versatility",
-    aud_b2b_heading: "All-round craftsmen who do it all",
-    aud_b2b_desc:
-      "Our in-house crew handles everything: demolition, plumbing, electrical, plastering, tiling, carpentry, and painting. One reliable team for your entire project.",
 
     // How it works
     how_label: "Process",
     how_title: "4 Steps to a Smooth Renovation",
-    how_cta: "Request a free quote",
-    how_1_title: "1. Free Inquiry",
+    how_cta: "Request a quote",
+    how_1_title: "No-obligation request",
     how_1_desc:
       "Tell us about your project via our form or calculate an online estimate in seconds.",
-    how_2_title: "2. Survey & Advice",
+    how_2_title: "Survey & Advice",
     how_2_desc:
-      "We review your requirements and schedule a complimentary on-site inspection if needed.",
-    how_3_title: "3. Transparent Quote",
+      "We discuss your wishes and, if needed, schedule an on-site assessment.",
+    how_3_title: "Transparent Quote",
     how_3_desc:
       "You receive an itemized proposal with clear schedules, scope, and fixed pricing terms.",
-    how_4_title: "4. Professional Delivery",
+    how_4_title: "Professional Delivery",
     how_4_desc:
-      "Our craftsmen execute the work neatly. Handover occurs only when you are 100% satisfied.",
+      "The work is carried out as agreed in the quote and handed over together with you.",
 
     // Reviews
-    rev_label: "Customer Rating",
-    rev_title: "Rated 4.9 / 5.0 by Clients",
-    rev_sub:
-      "Based on over 120 verified reviews from homeowners and business clients across the Netherlands.",
 
     // Pricing
-    price_label: "Pricing",
-    price_title: "Transparent Rates Upfront",
-    price_sub:
-      "At Bouwvast, we practice transparent rates without unexpected surprise fees.",
 
     // Founder Trust Card
-    trust_card_label: "Owner & In-House Team",
-    trust_card_title: '"One dedicated team, the owner on-site, and promises kept."',
-    trust_card_desc:
-      "Bouwvast is not an agency or broker platform. We are an experienced hands-on owner leading our own versatile team of all-round craftsmen. We handle every phase ourselves — from demolition and piping to fine plastering, tiling, and painting. Transparent fixed quotes, no middlemen, and personal quality assurance.",
-    trust_badge_1: "Direct with the Owner",
-    trust_badge_2: "All-Round Skilled Crew",
-    trust_badge_3: "Full Workmanship Warranty",
 
     // Area & City Page
     area_page_title: "Service Areas & Municipalities",
     area_page_sub:
-      "Bouwvast is active throughout Central Netherlands and all major metropolitan cities.",
+      "We work in the area around Amersfoort. Your town not listed? Just ask us.",
     area_places: "locations",
     city_page_title: "Contractor & Renovations in",
-    city_page_sub:
-      "Professional home renovation, bathroom remodeling, plastering, and painting in",
 
     // Projects Page
-    projects_label: "Our Portfolio",
-    projects_title: "Recently completed projects",
+    projects_title: "Projects",
     projects_sub:
-      "A selection of our recent renovations and builds across the Netherlands.",
+      "Here we show our own projects, published with our clients' permission.",
 
     // About Page
-    about_page_title: "About Bouwvast Netherlands",
-    about_page_sub:
-      "Reliable craftsmanship, dedicated contact person, and full warranty on every build.",
 
     // Business Page
     b2b_page_title: "Business Partnerships & B2B",
     b2b_page_sub:
-      "Your trusted executing construction partner for general contractors, showrooms, and HOAs.",
+      "Execution partner for contractors, kitchen retailers, owners' associations and property managers.",
 
     // FAQ
     faq_label: "FAQ",
     faq_title: "Frequently Asked Questions",
-    faq_1_q: "Are the prices shown inclusive of VAT?",
-    faq_1_a: "Our calculator shows estimates excluding VAT, as many private homes (older than 2 years) qualify for the reduced 9% VAT rate on specific works. In a formal quote, we detail this exactly for you.",
+    faq_1_q: "Are prices including VAT?",
+    faq_1_a: "The quote always states clearly which VAT rate applies. For certain labour on homes older than 2 years (such as painting and plastering) the reduced 9% rate may apply.",
     faq_1b_q: "What types of construction work do you handle?",
     faq_1b_a:
       "We manage complete home renovations, bathrooms, plastering, painting, carpentry, plumbing, masonry, and ongoing maintenance.",
@@ -666,47 +523,32 @@ const translations = {
     faq_2_a: "Transparency is our priority. Should we encounter unforeseen issues (like wood rot or pipe leaks), we discuss this directly with you. We offer a solution and price before incurring any further costs. No surprises afterwards.",
     faq_2b_q: "Do you work with commercial clients?",
     faq_2b_a:
-      "Yes, we partner daily with private homeowners, general contractors, HOAs (VvE), and property managers.",
+      "Yes, you can contact us as a homeowner, contractor, owners' association or property manager.",
     faq_3_q: "In which areas do you operate?",
     faq_3_a:
-      "We operate nationwide across the Netherlands, with strong focus on major metropolitan hubs.",
+      "We work in the area around Amersfoort. Mention your town in the request and we will let you know whether we can take on your project.",
     faq_4_q: "Is requesting a quote free of obligation?",
     faq_4_a:
-      "Yes, all our estimates and online calculations are 100% free and carry zero commitment.",
+      "Yes. A request through this website is without obligation: nothing is binding until you sign a quote.",
 
     // Form & Modals
-    form_title: "Request your free quote",
-    form_sub: "Clear response and price estimate within 24 hours.",
+    form_title: "Request a quote",
+    form_sub: "Describe your project. We will contact you to discuss the options.",
     form_name: "Full Name",
     form_phone: "Phone Number",
     form_email: "Email Address",
     form_city: "City / Postal Code",
-    form_type: "Service Category",
     form_desc: "Describe your project requirements...",
-    form_time: "Preferred Start Period",
-    form_choose_time: "Select preferred start period...",
-    form_time_morning: "As soon as possible / Urgent",
-    form_time_afternoon: "Within 1 month",
-    form_time_all_day: "Within 1 to 3 months",
-    form_time_consultation: "Still orienting / Planning",
     form_photos: "Attach Photos",
     form_optional: "optional",
-    form_photos_hint:
-      "Upload up to 5 photos (JPG, PNG, WebP) for faster and more precise pricing.",
     form_photos_selected: "{n} photo(s) selected",
-    form_required: "Select service...",
-    form_submit: "Submit Quote Request →",
     form_privacy:
-      "Your details are treated confidentially and used solely for this quotation.",
-    form_success_title: "Inquiry Successfully Received!",
+      "We only use your details to respond to this request.",
+    form_success_title: "Request received",
     form_success_sub:
-      "Thank you for reaching out. One of our building advisors will contact you within 24 hours.",
+      "Thank you for your request. We will contact you as soon as possible.",
     form_sending: "Sending…",
     form_error_title: "Your request did not go through",
-    form_error_sub:
-      "We did not receive your request. Your details are still filled in — send them straight through WhatsApp or email, or give us a call.",
-    form_error_queued:
-      "We will try again automatically as soon as your connection is back.",
     form_error_retry: "Try again",
     form_error_whatsapp: "Via WhatsApp",
     form_error_email: "Via email",
@@ -716,25 +558,18 @@ const translations = {
       "Your photos are too large to send along. The request itself went through — feel free to send the photos via WhatsApp or email.",
 
     // Wizard Modal steps
-    wizard_step_1_title: "1. How can we help you?",
-    wizard_step_2_title: "2. Describe your renovation or project",
-    wizard_step_3_title: "3. Contact details for your quote",
-    wizard_next: "Next Step →",
-    wizard_back: "← Back",
-    wizard_modal_title: "Request a Quote",
 
     // CTA
-    cta_title: "Ready to start your building project?",
     cta_sub:
-      "Request a free non-binding quote today or call our advisors directly.",
+      "Request a no-obligation quote and briefly describe your plans.",
     cta_btn: "Request a Quote",
 
     // Footer
     footer_desc:
-      "Your reliable building contractor in the Netherlands. Hands-on owner, all-round in-house crew for turnkey projects, transparent pricing, and trusted craftsmanship.",
+      "Construction, renovation and finishing work in the Amersfoort region, with clear agreements up front.",
     footer_info: "Information",
     footer_services: "Services",
-    footer_cities: "Major Cities",
+    footer_cities: "Service area",
     footer_privacy: "Privacy Policy",
     footer_terms: "Terms & Conditions",
     footer_partner: "Commercial & Business",
@@ -744,33 +579,9 @@ const translations = {
     skip_link: "Skip to main content",
     nav_call: "Call Us",
     close: "Close",
-    cookie_title: "Cookies & Privacy",
-    cookie_desc:
-      "We use functional and analytical cookies to optimize our website and provide you with a smooth user experience.",
-    cookie_decline: "Decline",
-    cookie_accept: "Accept",
-    toast_new: "New",
-    toast_ago: "ago",
-    toast_minutes: "minutes",
-    toast_hour: "hour",
-    toast_request: "request",
-    toast_quote: "quote",
-    nudge_close: "Close notification",
-    nudge_bar_close: "Close bar",
 
     // Home Sections
-    portfolio_label: "Our Portfolio",
-    portfolio_title: "Recently completed projects",
-    portfolio_all: "View all projects",
-    types_label: "Project Types",
-    types_title: "What kind of projects do we do?",
-    types_discuss: "Discuss project",
-    whyus_label: "Why Bouwvast?",
-    whyus_title: "Reliable and transparent",
-    whyus_sub:
-      "Years of experience and a single point of contact for your renovation.",
     // Regions
-    region_groot: "Major Cities Netherlands",
     region_kern: "Core Service Area",
     region_utrecht: "Utrecht Region",
     region_gooi: "Gooi & Eemland",
@@ -778,23 +589,23 @@ const translations = {
 
     // Page Specific
     city_hero_title: "Contractor in {city} — Bouwvast",
-    city_hero_sub: "Reliable construction, renovation, and maintenance services in and around {city}.",
+    city_hero_sub: "Construction, renovation and maintenance work in {city} and the surrounding area. Request a no-obligation quote.",
     city_services_eyebrow: "Services in {city}",
     city_services_title: "Our Work in {city}",
     city_seo_title: "Why choose Bouwvast in {city}?",
     city_seo_p1: "Do you live in {city} or have a commercial property here and are looking for a reliable contractor for your renovation, bathroom, painting or maintenance? Bouwvast offers a complete package of professional disciplines under one roof.",
-    city_seo_p2: "With a single point of contact, clear agreements and craftsmen with years of experience, we guarantee that your project will run smoothly and to your full satisfaction.",
+    city_seo_p2: "You receive an itemised quote in advance with clear agreements on schedule and price.",
     city_faq_title: "Frequently Asked Questions about {city}",
     city_quote_title: "Quote in {city}",
-    city_quote_sub: "Free price indication within 24 hours.",
+    city_quote_sub: "No obligation · briefly describe your project.",
     city_faq_1_q: "Does Bouwvast also operate in {city}?",
-    city_faq_1_a: "Yes, {city} falls within our regular service area. We frequently handle renovations, painting, and maintenance projects here.",
+    city_faq_1_a: "Mention {city} in your request and we will let you know whether we can carry out your project there.",
     city_faq_2_q: "How quickly can you be on-site for an inspection?",
-    city_faq_2_a: "For a non-binding inspection or urgent job in the region, we can usually visit you within a few working days.",
+    city_faq_2_a: "That depends on the schedule and the type of job. After your request we agree on a time for a site visit with you.",
     city_faq_3_q: "Are the rates the same in all municipalities?",
-    city_faq_3_a: "Yes, we apply transparent rates without unexpected call-out fees within our core working area.",
+    city_faq_3_a: "Any travel or call-out costs are always stated in the quote in advance.",
     city_faq_4_q: "Do I get a warranty on the work in my home?",
-    city_faq_4_a: "Certainly, you receive a standard full quality warranty on all work performed and materials supplied.",
+    city_faq_4_a: "The warranty terms are set out in the quote. You also always have your statutory rights in case of defects.",
     
     service_hero_suffix: " in your region",
     service_includes_eyebrow: "What's included",
@@ -803,13 +614,12 @@ const translations = {
     service_process_title: "How we work",
     service_area_eyebrow: "Service Area",
     service_area_title: "{service} in your region",
-    service_area_desc: "We are active in and around major cities. See what we can do for you in your hometown.",
+    service_area_desc: "See the places in our service area or mention your town in the request.",
     service_quote_title: "Free quote",
     service_quote_sub: "Request a price indication for {service} now.",
     service_related_eyebrow: "Explore more",
     service_related_title: "Other services by Bouwvast",
     
-    area_direct_municipality: "Directly to your municipality",
 
     // Service Intros & Includes
     svc_renovation_intro: "From a single floor to a complete turn-key home renovation. We guide your remodel from demolition to handover with one fixed point of contact, clear scheduling and fixed prices.",
@@ -824,7 +634,7 @@ const translations = {
     svc_bathroom_inc_2: "Milling pipes (water, drainage, electrics)",
     svc_bathroom_inc_3: "Large format tiling & precision leveling",
     svc_bathroom_inc_4: "Expert kitchen installation and connection",
-    svc_bathroom_inc_5: "Anti-mold sanitary sealing with warranty",
+    svc_bathroom_inc_5: "Mould-resistant sanitary sealing",
 
     svc_finishing_intro: "Sleek plastering and complete finishing for renovation and new construction. Mirror-smooth paint-ready plastering, partition walls and suspended ceilings.",
     svc_finishing_inc_1: "Paint-ready plastering (mirror-smooth)",
@@ -868,76 +678,67 @@ const translations = {
     svc_plumber_inc_4: "Detecting leaks and resolving them immediately",
     svc_plumber_inc_5: "Replacing radiators & central heating adjustments",
 
-    svc_maintenance_intro: "Maintenance and repair jobs for your home or real estate complex. Preventive, professional and with warranty.",
+    svc_maintenance_intro: "Maintenance and repair work on your home or property complex, preventive and professional.",
     svc_maintenance_inc_1: "Repairing moisture damage & plasterwork",
     svc_maintenance_inc_2: "Renewing door locks and hardware (SKG***)",
     svc_maintenance_inc_3: "Replacing damaged tiles or skirting boards",
     svc_maintenance_inc_4: "Maintenance services for homes and HOAs",
-    svc_maintenance_inc_5: "Quickly on-site for emergency repairs",
+    svc_maintenance_inc_5: "Repair of urgent damage by arrangement",
 
     svc_general_intro: "Do you have a combination project or a specific remodeling job? We think along with you from the design phase to a broom-clean handover.",
     svc_general_inc_1: "Multidisciplinary renovations",
     svc_general_inc_2: "Personal building advice and on-site inspection",
     svc_general_inc_3: "Transparent calculation without hidden costs",
     svc_general_inc_4: "Fixed schedule with one building coordinator",
+    nav_home: "Home",
+    link_more: "More information",
+    privacy_meta_desc: "How Bouwvast handles the data you send through the quote form.",
+    terms_meta_desc: "Which terms apply to Bouwvast quotes and assignments.",
+    notfound_title: "Page not found",
+    notfound_sub: "This page does not exist (any more). Choose where you would like to go next.",
+    kb_dutch_only: "Our articles are only available in Dutch for now.",
+    kb_read_article: "Read article",
+    kb_tips_title: "Tips",
+    kb_disclaimer: "This article provides general information. Amounts and rules mentioned are indicative and may change; they are not a quote. Check tax rules with the Dutch Tax Administration.",
+    kb_more_articles: "More articles",
+    legal_dutch_only: "This text is available in Dutch only; the Dutch version applies.",
   },
 
   uk: {
     // Navigation
     nav_services: "Послуги",
     nav_projects: "Проєкти",
-    nav_about: "Про нас",
     nav_area: "Регіон робіт",
     nav_kennisbank: "База знань",
     kb_page_title: "База знань",
     kb_page_sub:
-      "Практичні поради, актуальні орієнтири цін та експертні матеріали про ремонт і будівництво.",
+      "Практичні посібники та загальна інформація для вашого ремонту.",
     nav_contact: "Контакти",
     nav_cta: "Замовити розрахунок",
     nav_business: "Для бізнесу",
     btn_next: "Наступний крок",
     btn_back: "Назад",
     btn_submit_request: "Надіслати запит",
-    step_1_of_3: "Крок 1 з 3",
-    step_2_of_3: "Крок 2 з 3",
-    step_3_of_3: "Крок 3 з 3",
-    step_1_of_2: "Крок 1 з 2",
-    step_2_of_2: "Крок 2 з 2",
-    badge_best_value: "Найпопулярніший",
 
     // Hero
     hero_label: "Професійні майстри та будівельники в Нідерландах",
     hero_title: "Будівництво, ремонт і оздоблення.",
     hero_title_accent: "Від ідеї до якісного результату.",
     hero_sub:
-      "Професійні будівельні, ремонтні та оздоблювальні послуги для житла та бізнесу. Єдиний контакт, прозорий кошторис та гарантія на виконані роботи.",
+      "Будівельні, ремонтні та оздоблювальні роботи для житла й бізнесу. Опишіть свої плани та отримайте зрозумілу, детальну пропозицію.",
     hero_cta_primary: "Отримати кошторис онлайн",
-    hero_cta_secondary: "Наші послуги",
-    hero_trust_1: "Швидка відповідь протягом 24 год",
-    hero_trust_2: "Фіксована ціна заздалегідь",
-    hero_trust_3: "Офіційна гарантія якості",
+    hero_trust_1: "Запит без зобов'язань",
+    hero_trust_2: "Детальний кошторис заздалегідь",
+    hero_trust_3: "Особистий контакт",
 
     // Nudges & Conversion triggers
-    nudge_wa_online: "Зараз онлайн · відповідь менше 15 хв",
     nudge_wa_bubble:
-      "Є питання щодо ремонту чи вартості? Напишіть нам у WhatsApp із фото для швидкої оцінки 💬",
+      "Маєте питання щодо ремонту? Надішліть нам повідомлення з фото.",
     nudge_wa_btn: "Написати в WhatsApp",
-    nudge_bar_text:
-      "Плануєте ремонт? Отримайте безкоштовний кошторис протягом 24 годин.",
-    nudge_bar_wa: "Фото в WhatsApp 💬",
-    nudge_bar_quote: "Замовити кошторис ⚡",
     nudge_estimator_tip:
-      "Порада: надішліть фото приміщення в WhatsApp для точнішої оцінки вже за 2 години.",
+      "Порада: додайте до запиту фото приміщення — так ми зможемо відповісти точніше.",
 
     // Stats
-    stat_1_val: "25+",
-    stat_1_lbl: "років досвіду",
-    stat_2_val: "1.500+",
-    stat_2_lbl: "завершених об'єктів",
-    stat_3_val: "VCA",
-    stat_3_lbl: "сертифікація",
-    stat_4_val: "€55",
-    stat_4_lbl: "ставка від €55/год з ПДВ",
 
     // Estimator
     est_eyebrow: "Швидкий розрахунок",
@@ -957,13 +758,13 @@ const translations = {
     est_est_price: "Орієнтовна вартість:",
     est_apply_btn: "Замовити розрахунок за цією калькуляцією",
     est_disclaimer:
-      "* Орієнтовний розрахунок з ПДВ. Точна вартість визначається після безкоштовного огляду на об'єкті.",
+      "* Орієнтовний розрахунок з ПДВ, не є пропозицією. Остаточна ціна — після огляду на об'єкті.",
 
     // Services section & pages
     services_label: "Наші напрями",
     services_title: "Чим Bouwvast може вам допомогти?",
     services_sub:
-      "Дізнайтеся більше про кожен напрямок, перелік робіт та прозорі цінові орієнтири.",
+      "Перегляньте за напрямами, що ми можемо для вас зробити і що входить у роботи.",
     services_all: "Усі послуги",
     more_info: "Детальніше про послугу →",
 
@@ -1009,86 +810,53 @@ const translations = {
     ba_hint: "Перетягуйте для порівняння",
 
     // Audience
-    aud_label: "Наша команда та підхід",
-    aud_title: "Власник особисто на об'єкті та власна універсальна бригада",
-    aud_sub:
-      "Жодних посередників, диспетчерів чи переплат. Ви працюєте напряму з власником та його надійною бригадою майстрів, які виконують усі роботи під ключ.",
-    aud_part_title: "Особистий контроль",
-    aud_part_heading: "Власник керує проєктом особисто",
-    aud_part_desc:
-      "Руслан особисто оглядає об'єкт, складає прозорий кошторис і щодня контролює якість виконання. Прямий зв'язок безпосередньо з відповідальною особою.",
-    aud_b2b_title: "Майстри на всі руки",
-    aud_b2b_heading: "Робимо все під ключ від А до Я",
-    aud_b2b_desc:
-      "Наша бригада виконує всі види робіт: демонтаж, сантехніка, електрика, штукатурка, плитка, фарбування та столярка. Один підрядник на весь ремонт.",
 
     // How it works
     how_label: "Процес",
     how_title: "4 кроки до якісного ремонту",
-    how_cta: "Замовити безкоштовний кошторис",
-    how_1_title: "1. Онлайн-заявка",
+    how_cta: "Замовити пропозицію",
+    how_1_title: "Запит без зобов'язань",
     how_1_desc:
       "Опишіть завдання через форму або миттєво розрахуйте орієнтовну вартість у калькуляторі.",
-    how_2_title: "2. Огляд і консультація",
+    how_2_title: "Огляд і консультація",
     how_2_desc:
-      "Узгоджуємо деталі і, за потреби, проводимо безкоштовний огляд об'єкта.",
-    how_3_title: "3. Прозорий кошторис",
+      "Обговорюємо ваші побажання і, за потреби, плануємо огляд на об'єкті.",
+    how_3_title: "Прозорий кошторис",
     how_3_desc:
       "Ви отримуєте деталізовану комерційну пропозицію з фіксованими термінами та ціною.",
-    how_4_title: "4. Якісне виконання",
+    how_4_title: "Якісне виконання",
     how_4_desc:
-      "Наші майстри виконують роботи за високими стандартами. Здача об'єкта відбувається лише після вашого повного схвалення.",
+      "Роботи виконуються згідно з домовленостями в пропозиції та здаються разом із вами.",
 
     // Reviews
-    rev_label: "Відгуки клієнтів",
-    rev_title: "Оцінка 4.9/5.0",
-    rev_sub:
-      "На основі понад 120 перевірених відгуків власників житла та бізнес-клієнтів по всій країні.",
 
     // Pricing
-    price_label: "Тарифи",
-    price_title: "Прозорі розцінки заздалегідь",
-    price_sub:
-      "У Bouwvast діють прозорі ціни без прихованих платежів та непередбачених витрат.",
 
     // Founder Trust Card
-    trust_card_label: "Власник та команда",
-    trust_card_title: '"Один надійний підрядник, власник на об\'єкті та слово, яке тримаємо."',
-    trust_card_desc:
-      "Bouwvast — це не посередницька платформа чи біржа. Це досвідчений власник та власна перевірена бригада універсальних майстрів, які роблять абсолютно все самі: від демонтажу та заміни труб до ідеальної штукатурки, плитки та фарбування. Ви отримуєте прозору фіксовану ціну, прямий контакт із власником і повну гарантію на всі виконані роботи.",
-    trust_badge_1: "Прямий контакт із власником",
-    trust_badge_2: "Бригада на всі руки",
-    trust_badge_3: "Гарантія на всі роботи",
 
     // Area & City Page
     area_page_title: "Зона робіт та муніципалітети",
     area_page_sub:
-      "Bouwvast працює по всьому центральному регіону та в великих містах Нідерландів.",
+      "Ми працюємо в регіоні навколо Амерсфорта. Вашого міста немає в списку? Просто запитайте нас.",
     area_places: "локацій",
     city_page_title: "Підрядник та ремонт у м.",
-    city_page_sub:
-      "Професійний ремонт житла, санвузлів, штукатурка та малярні роботи в",
 
     // Projects Page
-    projects_label: "Наше портфоліо",
-    projects_title: "Нещодавно виконані об'єкти",
-    projects_sub: "Добірка реалізованих проєктів та ремонтів у Нідерландах.",
+    projects_title: "Проєкти",
+    projects_sub: "Тут ми показуємо власні проєкти, опубліковані за згодою наших замовників.",
 
     // About Page
-    about_page_title: "Про компанію Bouwvast в Нідерландах",
-    about_page_sub:
-      "Надійна майстерність, персональний контакт та офіційна гарантія на кожен проєкт.",
 
     // Business Page
     b2b_page_title: "Для бізнесу та партнерів",
     b2b_page_sub:
-      "Ваш надійний генеральний підрядник для будівельних компаній, ОСББ (VvE) та керуючих організацій.",
+      "Партнер із виконання робіт для підрядників, кухонних салонів, об'єднань власників і керуючих нерухомістю.",
 
     // FAQ
     faq_label: "FAQ",
     faq_title: "Часті запитання про ремонт",
     faq_1_q: "Чи включають ціни ПДВ?",
-    faq_1_a: "Наш калькулятор показує орієнтовні ціни без ПДВ, оскільки багато приватних будинків (старше 2 років) мають право на знижену ставку ПДВ 9% для окремих видів робіт. У офіційній пропозиції ми детально це роз'яснимо.",
+    faq_1_a: "У пропозиції завжди чітко зазначено, яка ставка ПДВ застосовується. Для деяких робіт у житлі, старшому за 2 роки (наприклад, фарбування та штукатурка), може діяти знижена ставка 9%.",
     faq_1b_q: "Які саме роботи ви виконуєте?",
     faq_1b_a:
       "Ми виконуємо повний комплекс будівельних робіт: ремонт житла, санвузлів, штукатурку, фарбування, столярні роботи, сантехніку, фасадні роботи та технічне обслуговування.",
@@ -1096,47 +864,32 @@ const translations = {
     faq_2_a: "Прозорість — наш пріоритет. Якщо ми виявимо непередбачувані проблеми, наприклад гниття деревини або протікання труб, ми негайно обговоримо це з вами. Ми запропонуємо рішення та ціну до того, як візьмемося за додаткові роботи. Ніяких сюрпризів.",
     faq_2b_q: "Чи працюєте ви з юридичними особами?",
     faq_2b_a:
-      "Так, ми співпрацюємо з приватними замовниками, будівельними компаніями, ОСББ (VvE) та управляючими організаціями.",
+      "Так, до нас можуть звертатися приватні особи, підрядники, об'єднання власників (VvE) та керуючі нерухомістю.",
     faq_3_q: "У яких регіонах ви працюєте?",
     faq_3_a:
-      "Ми працюємо по всій території Нідерландів, з акцентом на великих містах.",
+      "Ми працюємо в регіоні навколо Амерсфорта. Вкажіть своє місто в запиті, і ми повідомимо, чи можемо взятися за ваш проєкт.",
     faq_4_q: "Чи зобов'язує мене до чогось запит кошторису?",
     faq_4_a:
-      "Ні, розрахунок вартості та консультація абсолютно безкоштовні і ні до чого вас не зобов'язують.",
+      "Так. Запит через сайт ні до чого не зобов'язує, доки ви не підпишете пропозицію.",
 
     // Form & Modals
-    form_title: "Замовте безкоштовний розрахунок",
-    form_sub: "Чітка відповідь і кошторис протягом 24 годин.",
+    form_title: "Замовте пропозицію",
+    form_sub: "Опишіть свій проєкт. Ми зв'яжемося з вами, щоб обговорити можливості.",
     form_name: "Ваше ім'я",
     form_phone: "Номер телефону",
     form_email: "Електронна пошта",
     form_city: "Місто / поштовий індекс",
-    form_type: "Категорія робіт",
     form_desc: "Опишіть свій проєкт та особливості...",
-    form_time: "Бажаний період початку",
-    form_choose_time: "Оберіть період початку...",
-    form_time_morning: "Якомога швидше / терміново",
-    form_time_afternoon: "Протягом 1 місяця",
-    form_time_all_day: "Протягом 1–3 місяців",
-    form_time_consultation: "Планування / консультація",
     form_photos: "Додати фотографії",
     form_optional: "необов'язково",
-    form_photos_hint:
-      "Завантажте до 5 фото (JPG, PNG, WebP) для швидкої та точнішої оцінки.",
     form_photos_selected: "Обрано {n} фото",
-    form_required: "Оберіть послугу...",
-    form_submit: "Надіслати запит →",
     form_privacy:
-      "Ваші дані конфіденційні та використовуються виключно для складання пропозиції.",
-    form_success_title: "Запит успішно надіслано!",
+      "Ми використовуємо ваші дані лише для відповіді на цей запит.",
+    form_success_title: "Запит отримано",
     form_success_sub:
-      "Дякуємо! Наш будівельний консультант зв'яжеться з вами протягом 24 годин.",
+      "Дякуємо за запит. Ми зв'яжемося з вами якнайшвидше.",
     form_sending: "Надсилаємо…",
     form_error_title: "Заявку не вдалося надіслати",
-    form_error_sub:
-      "Ваша заявка до нас не надійшла. Дані залишилися заповненими — надішліть їх через WhatsApp, електронною поштою або зателефонуйте нам.",
-    form_error_queued:
-      "Ми спробуємо надіслати ще раз автоматично, щойно з'єднання відновиться.",
     form_error_retry: "Спробувати ще раз",
     form_error_whatsapp: "Через WhatsApp",
     form_error_email: "Електронною поштою",
@@ -1146,25 +899,18 @@ const translations = {
       "Фотографії разом занадто великі, щоб надіслати їх із заявкою. Саму заявку ми вже отримали — надішліть фото через WhatsApp або поштою.",
 
     // Wizard Modal steps
-    wizard_step_1_title: "1. Чим ми можемо вам допомогти?",
-    wizard_step_2_title: "2. Опишіть завдання або ремонт",
-    wizard_step_3_title: "3. Контактні дані для кошторису",
-    wizard_next: "Наступний крок →",
-    wizard_back: "← Назад",
-    wizard_modal_title: "Замовити кошторис",
 
     // CTA
-    cta_title: "Готові розпочати ремонт?",
     cta_sub:
-      "Замовте розрахунок вартості вже сьогодні або зателефонуйте нашим спеціалістам.",
+      "Замовте пропозицію без зобов'язань і коротко опишіть свої плани.",
     cta_btn: "Отримати пропозицію",
 
     // Footer
     footer_desc:
-      "Ваш надійний генеральний підрядник у Нідерландах. Власник особисто на об'єкті, універсальна бригада майстрів для всіх видів робіт під ключ, прозорі ціни та гарантія якості.",
+      "Будівельні, ремонтні та оздоблювальні роботи в регіоні Амерсфорт із чіткими домовленостями заздалегідь.",
     footer_info: "Інформація",
     footer_services: "Послуги",
-    footer_cities: "Великі міста",
+    footer_cities: "Регіон роботи",
     footer_privacy: "Політика конфіденційності",
     footer_terms: "Умови надання послуг",
     footer_partner: "Співпраця та бізнес",
@@ -1174,32 +920,9 @@ const translations = {
     skip_link: "Перейти до основного контенту",
     nav_call: "Зателефонувати",
     close: "Закрити",
-    cookie_title: "Файли cookie та конфіденційність",
-    cookie_desc:
-      "Ми використовуємо файли cookie для оптимізації роботи сайту та забезпечення зручності користування.",
-    cookie_decline: "Відхилити",
-    cookie_accept: "Прийняти",
-    toast_new: "Новий",
-    toast_ago: "тому",
-    toast_minutes: "хвилин",
-    toast_hour: "година",
-    toast_request: "запит",
-    toast_quote: "кошторис",
-    nudge_close: "Закрити сповіщення",
-    nudge_bar_close: "Закрити панель",
 
     // Home Sections
-    portfolio_label: "Наше портфоліо",
-    portfolio_title: "Нещодавно виконані об'єкти",
-    portfolio_all: "Усі проєкти",
-    types_label: "Типи проєктів",
-    types_title: "Які проєкти ми виконуємо?",
-    types_discuss: "Обговорити проєкт",
-    whyus_label: "Чому Bouwvast?",
-    whyus_title: "Надійно та прозоро",
-    whyus_sub: "Багаторічний досвід та єдиний контакт для вашого ремонту.",
     // Regions
-    region_groot: "Великі міста Нідерландів",
     region_kern: "Основна зона обслуговування",
     region_utrecht: "Регіон Утрехт",
     region_gooi: "Гой-Вестфалія та Емланд",
@@ -1207,23 +930,23 @@ const translations = {
 
     // Page Specific
     city_hero_title: "Підрядник у {city} — Bouwvast",
-    city_hero_sub: "Надійні будівельні, ремонтні та сервісні роботи в {city} та околицях.",
+    city_hero_sub: "Будівельні, ремонтні роботи та обслуговування в {city} та околицях. Замовте пропозицію без зобов'язань.",
     city_services_eyebrow: "Послуги в {city}",
     city_services_title: "Наші роботи в {city}",
     city_seo_title: "Чому обирають Bouwvast у {city}?",
     city_seo_p1: "Ви живете в {city} або маєте тут комерційну нерухомість і шукаєте надійного підрядника для ремонту, санвузла, малярних робіт чи обслуговування? Bouwvast пропонує повний комплекс професійних послуг під одним дахом.",
-    city_seo_p2: "З єдиним контактним центром, чіткими домовленостями та майстрами з багаторічним досвідом ми гарантуємо, що ваш проєкт пройде гладко і з найкращим результатом.",
+    city_seo_p2: "Ви заздалегідь отримуєте детальну пропозицію з чіткими домовленостями щодо графіка та ціни.",
     city_faq_title: "Часті запитання про {city}",
     city_quote_title: "Кошторис у {city}",
-    city_quote_sub: "Безкоштовна оцінка вартості протягом 24 годин.",
+    city_quote_sub: "Без зобов'язань · коротко опишіть проєкт.",
     city_faq_1_q: "Чи працює Bouwvast також у {city}?",
-    city_faq_1_a: "Так, {city} входить до нашої постійної зони обслуговування. Ми регулярно виконуємо тут ремонти, малярні роботи та технічне обслуговування.",
+    city_faq_1_a: "Вкажіть у запиті, що йдеться про {city}, і ми повідомимо, чи можемо виконати там ваш проєкт.",
     city_faq_2_q: "Як швидко ви можете приїхати для огляду?",
-    city_faq_2_a: "Для безкоштовного огляду або термінового замовлення в регіоні ми зазвичай можемо приїхати до вас протягом кількох робочих днів.",
+    city_faq_2_a: "Це залежить від графіка та типу робіт. Після запиту ми узгодимо з вами час огляду.",
     city_faq_3_q: "Чи однакові тарифи в усіх муніципалітетах?",
-    city_faq_3_a: "Так, ми застосовуємо прозорі тарифи без непередбачуваних витрат на виїзд у межах нашої основної зони роботи.",
+    city_faq_3_a: "Можливі витрати на виїзд завжди заздалегідь зазначаються в пропозиції.",
     city_faq_4_q: "Чи отримую я гарантію на роботи в моєму будинку?",
-    city_faq_4_a: "Звісно. Ви отримуєте стандартну повну гарантію якості на всі виконані роботи та надані матеріали.",
+    city_faq_4_a: "Гарантійні умови зазначені в пропозиції. Крім того, у вас завжди є передбачені законом права щодо дефектів.",
 
     service_hero_suffix: " у вашому регіоні",
     service_includes_eyebrow: "Що входить",
@@ -1232,13 +955,12 @@ const translations = {
     service_process_title: "Як ми працюємо",
     service_area_eyebrow: "Зона робіт",
     service_area_title: "{service} у вашому регіоні",
-    service_area_desc: "Ми працюємо у великих містах та їхніх околицях. Подивіться, що ми можемо зробити для вас у вашому місті.",
+    service_area_desc: "Перегляньте населені пункти в нашій зоні роботи або вкажіть своє місто в запиті.",
     service_quote_title: "Безкоштовний кошторис",
     service_quote_sub: "Замовте орієнтовний розрахунок вартості для послуги {service} прямо зараз.",
     service_related_eyebrow: "Дізнатися більше",
     service_related_title: "Інші послуги від Bouwvast",
 
-    area_direct_municipality: "Перейти до вашого муніципалітету",
 
     // Service Intros & Includes
     svc_renovation_intro: "Від однієї кімнати до повної реконструкції будинку під ключ. Ми супроводжуємо ваш ремонт від демонтажу до здачі, з єдиним контактом, чітким графіком і фіксованими цінами.",
@@ -1253,7 +975,7 @@ const translations = {
     svc_bathroom_inc_2: "Штроблення труб (вода, каналізація, електрика)",
     svc_bathroom_inc_3: "Укладання великоформатної плитки та точне вирівнювання",
     svc_bathroom_inc_4: "Професійний монтаж та підключення кухонь",
-    svc_bathroom_inc_5: "Антигрибкова герметизація сантехніки з гарантією",
+    svc_bathroom_inc_5: "Санітарне герметизування, стійке до плісняви",
 
     svc_finishing_intro: "Гладка штукатурка та повне оздоблення для ремонту та новобудов. Дзеркально-гладка штукатурка під фарбування, перегородки та підвісні стелі.",
     svc_finishing_inc_1: "Штукатурка під фарбування (дзеркально-гладка)",
@@ -1297,75 +1019,67 @@ const translations = {
     svc_plumber_inc_4: "Виявлення протікань та їхнє негайне усунення",
     svc_plumber_inc_5: "Заміна радіаторів та налаштування центрального опалення",
 
-    svc_maintenance_intro: "Роботи з технічного обслуговування та ремонту вашого будинку або комплексу нерухомості. Професійно, регулярно та з гарантією.",
+    svc_maintenance_intro: "Роботи з обслуговування та ремонту вашого житла чи комплексу нерухомості — профілактично та професійно.",
     svc_maintenance_inc_1: "Усунення пошкоджень від вологи та штукатурення",
     svc_maintenance_inc_2: "Заміна дверних замків та фурнітури (SKG***)",
     svc_maintenance_inc_3: "Заміна пошкодженої плитки або плінтусів",
     svc_maintenance_inc_4: "Послуги з обслуговування для будинків та ОСББ",
-    svc_maintenance_inc_5: "Швидкий виїзд на місце для аварійного ремонту",
+    svc_maintenance_inc_5: "Усунення термінових пошкоджень за домовленістю",
 
     svc_general_intro: "У вас комбінований проєкт або специфічна робота з реконструкції? Ми працюємо разом з вами від етапу планування до здачі об'єкта в чистоті.",
     svc_general_inc_1: "Мультидисциплінарні реконструкції",
     svc_general_inc_2: "Особисті будівельні консультації та огляд на місці",
     svc_general_inc_3: "Прозорий розрахунок без прихованих витрат",
     svc_general_inc_4: "Фіксований графік з одним координатором робіт",
+    nav_home: "Головна",
+    link_more: "Детальніше",
+    privacy_meta_desc: "Як Bouwvast обробляє дані, які ви надсилаєте через форму запиту.",
+    terms_meta_desc: "Які умови застосовуються до пропозицій і замовлень Bouwvast.",
+    notfound_title: "Сторінку не знайдено",
+    notfound_sub: "Цієї сторінки не існує (більше). Оберіть, куди перейти далі.",
+    kb_dutch_only: "Наразі наші статті доступні лише нідерландською мовою.",
+    kb_read_article: "Читати статтю",
+    kb_tips_title: "Поради",
+    kb_disclaimer: "Ця стаття містить загальну інформацію. Наведені суми та правила орієнтовні й можуть змінюватися; це не пропозиція. Податкові правила перевіряйте в Belastingdienst.",
+    kb_more_articles: "Більше статей",
+    legal_dutch_only: "Цей текст доступний лише нідерландською мовою; чинною є нідерландська версія.",
   },
 
   ru: {
     // Navigation
     nav_services: "Услуги",
     nav_projects: "Проекты",
-    nav_about: "О нас",
     nav_area: "Зона работ",
     nav_kennisbank: "База знаний",
     kb_page_title: "База знаний",
     kb_page_sub:
-      "Практические руководства, актуальные ориентировочные цены и профессиональные советы по ремонту и строительству.",
+      "Практические руководства и общая информация для вашего ремонта.",
     nav_contact: "Контакты",
     nav_cta: "Запросить смету",
     nav_business: "Для бизнеса",
     btn_next: "Следующий шаг",
     btn_back: "Назад",
     btn_submit_request: "Отправить заявку",
-    step_1_of_3: "Шаг 1 из 3",
-    step_2_of_3: "Шаг 2 из 3",
-    step_3_of_3: "Шаг 3 из 3",
-    step_1_of_2: "Шаг 1 из 2",
-    step_2_of_2: "Шаг 2 из 2",
-    badge_best_value: "Наиболее популярный",
 
     // Hero
     hero_label: "Мастера и Подрядчики в Нидерландах",
     hero_title: "Строительство, ремонт и отделка.",
     hero_title_accent: "От идеи к безупречному результату.",
     hero_sub:
-      "Профессиональные строительные, ремонтные и отделочные работы для дома и бизнеса. Единый контакт, прозрачные расчеты и гарантия качества.",
+      "Строительные, ремонтные и отделочные работы для жилья и бизнеса. Опишите свои планы и получите понятное, детальное предложение.",
     hero_cta_primary: "Рассчитать смету онлайн",
-    hero_cta_secondary: "Посмотреть услуги",
-    hero_trust_1: "Быстрый ответ в течение 24ч",
-    hero_trust_2: "Фиксированная цена заранее",
-    hero_trust_3: "Официальная гарантия",
+    hero_trust_1: "Запрос без обязательств",
+    hero_trust_2: "Детальная смета заранее",
+    hero_trust_3: "Личный контакт",
 
     // Nudges & Conversion triggers
-    nudge_wa_online: "Сейчас онлайн · ответ < 15 мин",
     nudge_wa_bubble:
-      "Есть вопросы по ремонту или смете? Напишите нам в WhatsApp с фото для быстрой оценки 💬",
+      "Есть вопросы по ремонту? Отправьте нам сообщение с фото.",
     nudge_wa_btn: "Написать в WhatsApp",
-    nudge_bar_text: "Планируете ремонт? Получите бесплатную смету за 24 часа.",
-    nudge_bar_wa: "Фото в WhatsApp 💬",
-    nudge_bar_quote: "Запросить смету ⚡",
     nudge_estimator_tip:
-      "Совет: Отправьте фото вашего помещения в WhatsApp для точной оценки за 2 часа!",
+      "Совет: добавьте к запросу фото помещения — так мы сможем ответить точнее.",
 
     // Stats
-    stat_1_val: "25+",
-    stat_1_lbl: "лет опыта",
-    stat_2_val: "1.500+",
-    stat_2_lbl: "завершенных проектов",
-    stat_3_val: "VCA",
-    stat_3_lbl: "сертификация",
-    stat_4_val: "€55",
-    stat_4_lbl: "ставка от €55/час с НДС",
 
     // Estimator
     est_eyebrow: "Быстрый расчет",
@@ -1386,13 +1100,13 @@ const translations = {
     est_est_price: "Ориентировочная стоимость:",
     est_apply_btn: "Запросить смету по этому расчету",
     est_disclaimer:
-      "* Ориентировочный расчет с НДС. Точная стоимость определяется после бесплатного выезда на объект.",
+      "* Ориентировочный расчёт с НДС, не является предложением. Окончательная цена — после осмотра на объекте.",
 
     // Services section & pages
     services_label: "Наши Направления",
     services_title: "Чем Bouwvast может вам помочь?",
     services_sub:
-      "Узнайте больше о каждом направлении, перечне работ и прозрачных ценах.",
+      "Посмотрите по направлениям, что мы можем для вас сделать и что входит в работы.",
     services_all: "Все услуги",
     more_info: "Подробнее об услуге →",
 
@@ -1438,86 +1152,53 @@ const translations = {
     ba_hint: "Тяните для сравнения",
 
     // Audience
-    aud_label: "Наша команда и подход",
-    aud_title: "Владелец лично на объекте и своя универсальная бригада",
-    aud_sub:
-      "Никаких диспетчеров, посредников и переплат. Вы работаете напрямую с владельцем и его проверенной бригадой мастеров на все руки.",
-    aud_part_title: "Личный контроль",
-    aud_part_heading: "Владелец руководит проектом лично",
-    aud_part_desc:
-      "Руслан лично осматривает объект, рассчитывает смету и контролирует качество каждого этапа. Прямой контакт с человеком, отвечающим за результат.",
-    aud_b2b_title: "Мастера на все руки",
-    aud_b2b_heading: "Делаем всё под ключ от А до Я",
-    aud_b2b_desc:
-      "Наша бригада берет на себя все этапы: демонтаж, сантехнику, электрику, штукатурку, плитку, малярные и столярные работы. Один надежный подрядчик.",
 
     // How it works
     how_label: "Процесс",
     how_title: "4 шага к качественному ремонту",
-    how_cta: "Запросить бесплатную смету",
-    how_1_title: "1. Онлайн-заявка",
+    how_cta: "Запросить предложение",
+    how_1_title: "Запрос без обязательств",
     how_1_desc:
       "Опишите задачу через форму или мгновенно рассчитайте примерную стоимость в калькуляторе.",
-    how_2_title: "2. Осмотр и Консультация",
+    how_2_title: "Осмотр и Консультация",
     how_2_desc:
-      "Обсуждаем детали и при необходимости проводим бесплатный осмотр на объекте.",
-    how_3_title: "3. Прозрачная Смета",
+      "Обсуждаем ваши пожелания и при необходимости планируем осмотр на объекте.",
+    how_3_title: "Прозрачная Смета",
     how_3_desc:
       "Вы получаете детализированное предложение с фиксированными сроками и стоимостью.",
-    how_4_title: "4. Качественная Сдача",
+    how_4_title: "Качественная Сдача",
     how_4_desc:
-      "Наши мастера аккуратно выполняют работу. Сдача объекта происходит после вашего полного одобрения.",
+      "Работы выполняются согласно договорённостям в предложении и сдаются вместе с вами.",
 
     // Reviews
-    rev_label: "Отзывы клиентов",
-    rev_title: "Рейтинг 4.9 / 5.0",
-    rev_sub:
-      "На основе более 120 проверенных отзывов владельцев жилья и бизнес-клиентов по всей стране.",
 
     // Pricing
-    price_label: "Тарифы",
-    price_title: "Прозрачные расценки заранее",
-    price_sub:
-      "В Bouwvast действуют прозрачные цены без скрытых платежей и непредвиденных доплат.",
 
     // Founder Trust Card
-    trust_card_label: "Владелец и команда",
-    trust_card_title: '"Один надежный подрядчик, владелец на объекте и честное слово."',
-    trust_card_desc:
-      "Bouwvast — это не посредническая платформа. Это опытный владелец и собственная проверенная бригада универсальных мастеров, которые делают всё под ключ: от демонтажа и проводки до идеальной штукатурки, плитки и малярки. Прозрачная фиксированная смета, прямой контакт с владельцем и гарантия на всё.",
-    trust_badge_1: "Напрямую с владельцем",
-    trust_badge_2: "Бригада на все руки",
-    trust_badge_3: "Гарантия на все работы",
 
     // Area & City Page
     area_page_title: "Зона обслуживания и Города",
     area_page_sub:
-      "Bouwvast работает по всем Нидерландам и во всех крупных городах.",
+      "Мы работаем в регионе вокруг Амерсфорта. Вашего города нет в списке? Просто спросите нас.",
     area_places: "городов",
     city_page_title: "Подрядчик и Ремонт в г.",
-    city_page_sub:
-      "Профессиональный ремонт квартир, санузлы, штукатурка и покраска в",
 
     // Projects Page
-    projects_label: "Наше Портфолио",
-    projects_title: "Недавно сданные объекты",
-    projects_sub: "Подборка реализованных проектов и ремонтов в Нидерландах.",
+    projects_title: "Проекты",
+    projects_sub: "Здесь мы показываем собственные проекты, опубликованные с согласия наших заказчиков.",
 
     // About Page
-    about_page_title: "О компании Bouwvast Нидерланды",
-    about_page_sub:
-      "Надежное мастерство, единый менеджер и гарантия на каждый проект.",
 
     // Business Page
     b2b_page_title: "Для Бизнеса и Партнеров",
     b2b_page_sub:
-      "Ваш надежный генеральный подрядчик для строителей, шоурумов и ТСЖ (VvE).",
+      "Партнёр по выполнению работ для подрядчиков, кухонных салонов, объединений собственников и управляющих недвижимостью.",
 
     // FAQ
     faq_label: "FAQ",
     faq_title: "Частые вопросы о ремонте",
-    faq_1_q: "Включен ли НДС в цены?",
-    faq_1_a: "Наш калькулятор показывает ориентировочные цены без НДС, так как многие частные дома (старше 2 лет) имеют право на сниженную ставку НДС 9% на определенные работы. В официальном предложении мы детально это распишем.",
+    faq_1_q: "Включают ли цены НДС?",
+    faq_1_a: "В предложении всегда чётко указано, какая ставка НДС применяется. Для некоторых работ в жилье старше 2 лет (например, покраска и штукатурка) может действовать сниженная ставка 9%.",
     faq_1b_q: "Какие виды работ вы выполняете?",
     faq_1b_a:
       "Мы выполняем полный комплекс: ремонт жилья, санузлы, штукатурку, покраску, столярные работы, сантехнику, фасады и обслуживание.",
@@ -1525,46 +1206,31 @@ const translations = {
     faq_2_a: "Прозрачность - наш приоритет. Если мы обнаружим непредвиденные проблемы (например, гниение древесины или протечки труб), мы немедленно обсудим это с вами. Мы предложим решение и цену до того, как понесем дополнительные расходы. Никаких сюрпризов.",
     faq_2b_q: "Работаете ли вы с компаниями?",
     faq_2b_a:
-      "Да, мы ежедневно сотрудничаем с частными клиентами, генподрядчиками, ТСЖ (VvE) и управляющими компаниями.",
+      "Да, к нам могут обращаться частные лица, подрядчики, объединения собственников (VvE) и управляющие недвижимостью.",
     faq_3_q: "В каких регионах вы работаете?",
-    faq_3_a: "Работаем по всем Нидерландам с фокусом на крупных городах.",
+    faq_3_a: "Мы работаем в регионе вокруг Амерсфорта. Укажите свой город в запросе, и мы сообщим, можем ли взяться за ваш проект.",
     faq_4_q: "Обязывает ли меня к чему-то расчет сметы?",
     faq_4_a:
-      "Нет, расчет стоимости и консультация абсолютно бесплатны и ни к чему не обязывают.",
+      "Да. Запрос через сайт ни к чему не обязывает, пока вы не подпишете предложение.",
 
     // Form & Modals
-    form_title: "Запросите бесплатную смету",
-    form_sub: "Четкий ответ и расчет стоимости в течение 24 часов.",
+    form_title: "Запросите предложение",
+    form_sub: "Опишите свой проект. Мы свяжемся с вами, чтобы обсудить возможности.",
     form_name: "Ваше имя",
     form_phone: "Номер телефона",
     form_email: "Электронная почта",
     form_city: "Город / Индекс",
-    form_type: "Категория работ",
     form_desc: "Опишите ваш проект и пожелания...",
-    form_time: "Желаемый период начала",
-    form_choose_time: "Выберите период начала...",
-    form_time_morning: "Как можно скорее / Срочно",
-    form_time_afternoon: "В течение 1 месяца",
-    form_time_all_day: "В течение 1-3 месяцев",
-    form_time_consultation: "Планирование / Консультация",
     form_photos: "Добавить фото",
     form_optional: "опционально",
-    form_photos_hint:
-      "Загрузите до 5 фото (JPG, PNG, WebP) для быстрого и точного расчета сметы.",
     form_photos_selected: "Выбрано {n} фото",
-    form_required: "Выберите услугу...",
-    form_submit: "Отправить заявку →",
     form_privacy:
-      "Ваши данные строго конфиденциальны и используются только для составления сметы.",
-    form_success_title: "Заявка успешно принята!",
+      "Мы используем ваши данные только для ответа на этот запрос.",
+    form_success_title: "Запрос получен",
     form_success_sub:
-      "Спасибо! Наш специалист свяжется с вами в течение 24 часов.",
+      "Спасибо за запрос. Мы свяжемся с вами как можно скорее.",
     form_sending: "Отправляем…",
     form_error_title: "Заявку не удалось отправить",
-    form_error_sub:
-      "Ваша заявка до нас не дошла. Данные остались заполненными — отправьте их сразу через WhatsApp или по электронной почте либо позвоните нам.",
-    form_error_queued:
-      "Мы попробуем ещё раз автоматически, как только связь восстановится.",
     form_error_retry: "Попробовать ещё раз",
     form_error_whatsapp: "Через WhatsApp",
     form_error_email: "По электронной почте",
@@ -1574,25 +1240,18 @@ const translations = {
       "Фотографии вместе слишком большие, чтобы отправить их с заявкой. Сама заявка отправлена — пришлите фото через WhatsApp или по почте.",
 
     // Wizard Modal steps
-    wizard_step_1_title: "1. Чем мы можем вам помочь?",
-    wizard_step_2_title: "2. Опишите проект или ремонт",
-    wizard_step_3_title: "3. Контактные данные для сметы",
-    wizard_next: "Следующий шаг →",
-    wizard_back: "← Назад",
-    wizard_modal_title: "Запросить Смету",
 
     // CTA
-    cta_title: "Готовы начать ремонт?",
     cta_sub:
-      "Запросите бесплатную смету прямо сейчас или позвоните нашим специалистам.",
+      "Запросите предложение без обязательств и кратко опишите свои планы.",
     cta_btn: "Получить смету",
 
     // Footer
     footer_desc:
-      "Ваш надежный генеральный подрядчик в Нидерландах. Владелец лично на объекте, универсальная бригада мастеров для всех работ под ключ, прозрачные цены и гарантия качества.",
+      "Строительные, ремонтные и отделочные работы в регионе Амерсфорт с чёткими договорённостями заранее.",
     footer_info: "Информация",
     footer_services: "Услуги",
-    footer_cities: "Крупные Города",
+    footer_cities: "Регион работы",
     footer_privacy: "Политика конфиденциальности",
     footer_terms: "Условия использования",
     footer_partner: "Сотрудничество и бизнес",
@@ -1602,32 +1261,9 @@ const translations = {
     skip_link: "Перейти к основному контенту",
     nav_call: "Позвонить",
     close: "Закрыть",
-    cookie_title: "Файлы cookie и конфиденциальность",
-    cookie_desc:
-      "Мы используем файлы cookie для оптимизации работы сайта и обеспечения удобства использования.",
-    cookie_decline: "Отклонить",
-    cookie_accept: "Принять",
-    toast_new: "Новый",
-    toast_ago: "назад",
-    toast_minutes: "минут",
-    toast_hour: "час",
-    toast_request: "запрос",
-    toast_quote: "смета",
-    nudge_close: "Закрыть уведомление",
-    nudge_bar_close: "Закрыть панель",
 
     // Home Sections
-    portfolio_label: "Наше Портфолио",
-    portfolio_title: "Недавно завершенные проекты",
-    portfolio_all: "Все проекты",
-    types_label: "Типы проектов",
-    types_title: "Какие проекты мы выполняем?",
-    types_discuss: "Обсудить проект",
-    whyus_label: "Почему Bouwvast?",
-    whyus_title: "Надежно и прозрачно",
-    whyus_sub: "Многолетний опыт и единый контакт для вашего ремонта.",
     // Regions
-    region_groot: "Крупные города Нидерландов",
     region_kern: "Основная зона обслуживания",
     region_utrecht: "Регион Утрехт",
     region_gooi: "Гой и Эмланд",
@@ -1635,23 +1271,23 @@ const translations = {
 
     // Page Specific
     city_hero_title: "Подрядчик в г. {city} — Bouwvast",
-    city_hero_sub: "Надежные строительные, ремонтные и сервисные работы в {city} и окрестностях.",
+    city_hero_sub: "Строительные, ремонтные работы и обслуживание в {city} и окрестностях. Запросите предложение без обязательств.",
     city_services_eyebrow: "Услуги в г. {city}",
     city_services_title: "Наши работы в г. {city}",
     city_seo_title: "Почему выбирают Bouwvast в г. {city}?",
     city_seo_p1: "Вы живете в г. {city} или у вас здесь коммерческая недвижимость, и вы ищете надежного подрядчика для ремонта, санузла, малярных работ или обслуживания? Bouwvast предлагает полный комплекс профессиональных услуг под одной крышей.",
-    city_seo_p2: "С единым контактным лицом, четкими договоренностями и мастерами с многолетним опытом мы гарантируем, что ваш проект пройдет гладко и с максимальным результатом.",
+    city_seo_p2: "Вы заранее получаете детальное предложение с чёткими договорённостями о графике и цене.",
     city_faq_title: "Частые вопросы о г. {city}",
     city_quote_title: "Смета в г. {city}",
-    city_quote_sub: "Бесплатная оценка стоимости в течение 24 часов.",
+    city_quote_sub: "Без обязательств · кратко опишите проект.",
     city_faq_1_q: "Работает ли Bouwvast также в г. {city}?",
-    city_faq_1_a: "Да, {city} входит в нашу постоянную зону обслуживания. Мы регулярно выполняем здесь ремонты, малярные работы и обслуживание.",
+    city_faq_1_a: "Укажите в запросе, что речь идёт о {city}, и мы сообщим, можем ли выполнить там ваш проект.",
     city_faq_2_q: "Как быстро вы можете приехать для осмотра?",
-    city_faq_2_a: "Для бесплатного осмотра или срочного заказа в регионе мы обычно можем приехать к вам в течение нескольких рабочих дней.",
+    city_faq_2_a: "Это зависит от графика и типа работ. После запроса мы согласуем с вами время осмотра.",
     city_faq_3_q: "Одинаковы ли тарифы во всех муниципалитетах?",
-    city_faq_3_a: "Да, мы применяем прозрачные тарифы без непредвиденных расходов на выезд в пределах нашей основной зоны работы.",
+    city_faq_3_a: "Возможные расходы на выезд всегда заранее указываются в предложении.",
     city_faq_4_q: "Получаю ли я гарантию на работы в моем доме?",
-    city_faq_4_a: "Конечно, вы получаете стандартную полную гарантию качества на все выполненные работы и предоставленные материалы.",
+    city_faq_4_a: "Гарантийные условия указаны в предложении. Кроме того, у вас всегда есть предусмотренные законом права в случае дефектов.",
     
     service_hero_suffix: " в вашем регионе",
     service_includes_eyebrow: "Что сюда входит",
@@ -1660,13 +1296,12 @@ const translations = {
     service_process_title: "Как мы работаем",
     service_area_eyebrow: "Зона работ",
     service_area_title: "{service} в вашем регионе",
-    service_area_desc: "Мы работаем в крупных городах и их окрестностях. Посмотрите, что мы можем сделать для вас в вашем городе.",
+    service_area_desc: "Посмотрите населённые пункты в нашей зоне работы или укажите свой город в запросе.",
     service_quote_title: "Бесплатная смета",
     service_quote_sub: "Запросите ориентировочный расчет стоимости на услугу {service} прямо сейчас.",
     service_related_eyebrow: "Узнать больше",
     service_related_title: "Другие услуги от Bouwvast",
     
-    area_direct_municipality: "Перейти к вашему муниципалитету",
 
     // Service Intros & Includes
     svc_renovation_intro: "От одной комнаты до полной реконструкции дома «под ключ». Мы сопровождаем ваш ремонт от демонтажа до сдачи с единым контактным лицом, четким графиком и фиксированными ценами.",
@@ -1681,7 +1316,7 @@ const translations = {
     svc_bathroom_inc_2: "Штробление труб (вода, канализация, электрика)",
     svc_bathroom_inc_3: "Укладка крупноформатной плитки и точное выравнивание",
     svc_bathroom_inc_4: "Профессиональный монтаж и подключение кухонь",
-    svc_bathroom_inc_5: "Антигрибковая герметизация сантехники с гарантией",
+    svc_bathroom_inc_5: "Санитарная герметизация, устойчивая к плесени",
 
     svc_finishing_intro: "Гладкая штукатурка и полная отделка для ремонта и новостроек. Зеркально-гладкая штукатурка под покраску, перегородки и подвесные потолки.",
     svc_finishing_inc_1: "Штукатурка под покраску (зеркально гладкая)",
@@ -1725,18 +1360,30 @@ const translations = {
     svc_plumber_inc_4: "Обнаружение протечек и их немедленное устранение",
     svc_plumber_inc_5: "Замена радиаторов и настройка центрального отопления",
 
-    svc_maintenance_intro: "Работы по техническому обслуживанию и ремонту вашего дома или комплекса недвижимости. Профилактически, профессионально и с гарантией.",
+    svc_maintenance_intro: "Работы по обслуживанию и ремонту вашего жилья или комплекса недвижимости — профилактически и профессионально.",
     svc_maintenance_inc_1: "Устранение повреждений от влаги и оштукатуривание",
     svc_maintenance_inc_2: "Замена дверных замков и фурнитуры (SKG***)",
     svc_maintenance_inc_3: "Замена поврежденной плитки или плинтусов",
     svc_maintenance_inc_4: "Услуги по обслуживанию для домов и ТСЖ",
-    svc_maintenance_inc_5: "Быстрый выезд на место для аварийного ремонта",
+    svc_maintenance_inc_5: "Устранение срочных повреждений по договорённости",
 
     svc_general_intro: "У вас комбинированный проект или специфическая работа по реконструкции? Мы думаем вместе с вами от этапа проектирования до сдачи объекта в чистоте.",
     svc_general_inc_1: "Мультидисциплинарные реконструкции",
     svc_general_inc_2: "Личные строительные консультации и осмотр на месте",
     svc_general_inc_3: "Прозрачный расчет без скрытых расходов",
     svc_general_inc_4: "Фиксированный график с одним координатором работ",
+    nav_home: "Главная",
+    link_more: "Подробнее",
+    privacy_meta_desc: "Как Bouwvast обрабатывает данные, которые вы отправляете через форму запроса.",
+    terms_meta_desc: "Какие условия применяются к предложениям и заказам Bouwvast.",
+    notfound_title: "Страница не найдена",
+    notfound_sub: "Этой страницы не существует (больше). Выберите, куда перейти дальше.",
+    kb_dutch_only: "Пока наши статьи доступны только на нидерландском языке.",
+    kb_read_article: "Читать статью",
+    kb_tips_title: "Советы",
+    kb_disclaimer: "Эта статья содержит общую информацию. Указанные суммы и правила ориентировочные и могут меняться; это не предложение. Налоговые правила проверяйте в Belastingdienst.",
+    kb_more_articles: "Больше статей",
+    legal_dutch_only: "Этот текст доступен только на нидерландском языке; действует нидерландская версия.",
   },
 } as const
 

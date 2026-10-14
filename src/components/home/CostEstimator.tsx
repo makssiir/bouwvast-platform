@@ -1,10 +1,13 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import Icon from "../Icon"
 import { useLang } from "../../i18n/LangContext"
+import type { TranslationKey } from "../../i18n/translations"
+import { useQuoteDraft, scrollToQuote } from "../../lib/quoteDraft"
+import { whatsappHref } from "../../data/contact"
 
 interface EstimatorOption {
   id: string
-  nameKey: string
+  nameKey: TranslationKey
   defaultName: string
   unit: string
   defaultQty: number
@@ -71,12 +74,19 @@ const SERVICES_DATA: EstimatorOption[] = [
   },
 ]
 
+/**
+ * Price ranges here are business claims: the section is only rendered when
+ * CLAIMS.pricing is enabled (see HomePage) with owner-approved rates.
+ */
 export default function CostEstimator({
-  onSelectCalculation,
+  onApplied,
 }: {
-  onSelectCalculation?: (details: string) => void
+  /** Called when there is no on-page form to scroll to. */
+  onApplied?: () => void
 }) {
-  const { t, lang } = useLang()
+  const { t, lang, pick } = useLang()
+  const waHref = whatsappHref("Hallo Bouwvast, ik heb de kostenindicatie gebruikt en stuur graag foto's.")
+  const { setEstimate } = useQuoteDraft()
   const [selectedService, setSelectedService] = useState<EstimatorOption>(
     SERVICES_DATA[0],
   )
@@ -104,7 +114,7 @@ export default function CostEstimator({
       qty *
       tierMultiplier *
       demoMultiplier *
-      (includeMaterials ? 1.15 : 1.0),
+      materialsMultiplier,
   )
   const rawMax = Math.round(
     selectedService.baseRateMax *
@@ -119,24 +129,28 @@ export default function CostEstimator({
   const totalMax = Math.round(rawMax / 50) * 50
 
   const handleApply = () => {
-    const serviceName =
-      t(selectedService.nameKey as any) || selectedService.defaultName
-    const calculationSummary = `${serviceName} (${qty} ${selectedService.unit}) - ${tier.toUpperCase()}: €${totalMin.toLocaleString()} - €${totalMax.toLocaleString()}`
+    const serviceName = t(selectedService.nameKey) || selectedService.defaultName
+    const tierName =
+      tier === "standard" ? t("est_tier_std") : tier === "premium" ? t("est_tier_prem") : t("est_tier_lux")
+    const euro = (n: number) => `€${n.toLocaleString("nl-NL")}`
+    const extras = [includeDemo ? t("est_opt_demo") : "", includeMaterials ? t("est_opt_mat") : ""]
+      .filter(Boolean)
+      .join(", ")
+    const summary = `${serviceName}, ${qty} ${selectedService.unit}, ${tierName}${extras ? ` (${extras})` : ""}: ${euro(totalMin)} – ${euro(totalMax)}`
 
-    if (onSelectCalculation) {
-      onSelectCalculation(calculationSummary)
-    }
+    setEstimate({
+      service: selectedService.id,
+      quantity: qty,
+      unit: selectedService.unit,
+      tier,
+      includeDemolition: includeDemo,
+      includeMaterials,
+      priceMin: totalMin,
+      priceMax: totalMax,
+      summary,
+    })
 
-    const quoteEl = document.getElementById("quote")
-    if (quoteEl) {
-      quoteEl.scrollIntoView({ behavior: "smooth" })
-      const descInput = document.getElementById(
-        "quote-description",
-      ) as HTMLTextAreaElement
-      if (descInput) {
-        descInput.value = `${t("est_title")}:\n${calculationSummary}`
-      }
-    }
+    if (!scrollToQuote()) onApplied?.()
   }
 
   const stepLabels: Record<string, string[]> = {
@@ -145,7 +159,7 @@ export default function CostEstimator({
     ru: ["Тип работ", "Объем", "Качество"],
     nl: ["Type werk", "Omvang", "Kwaliteit"],
   }
-  const currentStepLabels = stepLabels[lang] ?? stepLabels.uk
+  const currentStepLabels = stepLabels[lang] ?? stepLabels.nl
 
   return (
     <section
@@ -196,16 +210,18 @@ export default function CostEstimator({
             <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
               {/* Step 1: Select Service */}
               <div className="mb-8">
-                <label className="block text-xs font-bold uppercase tracking-wider text-[var(--muted)] mb-3">
+                <p id="est-step-1" className="block text-xs font-bold uppercase tracking-wider text-[var(--muted)] mb-3">
                   {t("est_step_1")}
-                </label>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3" role="group" aria-labelledby="est-step-1">
                   {SERVICES_DATA.map((s) => {
                     const isActive = selectedService.id === s.id
-                    const displayName = t(s.nameKey as any) || s.defaultName
+                    const displayName = t(s.nameKey) || s.defaultName
                     return (
                       <button
+                        type="button"
                         key={s.id}
+                        aria-pressed={isActive}
                         onClick={() => handleServiceChange(s)}
                         className={`p-3.5 rounded-xl border text-center transition-all cursor-pointer flex flex-col items-center gap-2 ${
                           isActive
@@ -228,7 +244,7 @@ export default function CostEstimator({
               </div>
               
               <div className="flex justify-end mt-6">
-                <button onClick={handleNext} className="btn btn-primary px-8">
+                <button type="button" onClick={handleNext} className="btn btn-primary px-8">
                   {t("btn_next")} &rarr;
                 </button>
               </div>
@@ -240,7 +256,7 @@ export default function CostEstimator({
               {/* Step 2: Sliders & Quantity */}
               <div className="mb-8 bg-[var(--muted-bg)] p-5 rounded-xl border border-[var(--border)]">
                 <div className="flex justify-between items-center mb-3">
-                  <label className="text-sm font-bold text-[var(--fg)]">
+                  <label htmlFor="est-qty" className="text-sm font-bold text-[var(--fg)]">
                     {t("est_step_2")} ({selectedService.unit})
                   </label>
                   <span className="text-xl font-extrabold text-[var(--brand)] bg-white px-3 py-1 rounded-lg border border-[var(--border)]">
@@ -248,13 +264,14 @@ export default function CostEstimator({
                   </span>
                 </div>
                 <input
+                  id="est-qty"
                   type="range"
                   min={selectedService.minQty}
                   max={selectedService.maxQty}
                   step={selectedService.step}
                   value={qty}
                   onChange={(e) => setQty(Number(e.target.value))}
-                  aria-label={t("est_step_2")}
+                  aria-valuetext={`${qty} ${selectedService.unit}`}
                   aria-valuemin={selectedService.minQty}
                   aria-valuemax={selectedService.maxQty}
                   aria-valuenow={qty}
@@ -304,10 +321,10 @@ export default function CostEstimator({
               </div>
               
               <div className="flex justify-between mt-8">
-                <button onClick={handleBack} className="btn btn-outline">
+                <button type="button" onClick={handleBack} className="btn btn-outline">
                   &larr; {t("btn_back")}
                 </button>
-                <button onClick={handleNext} className="btn btn-primary px-8">
+                <button type="button" onClick={handleNext} className="btn btn-primary px-8">
                   {t("btn_next")} &rarr;
                 </button>
               </div>
@@ -318,10 +335,10 @@ export default function CostEstimator({
             <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
               {/* Step 3: Material Quality Tier */}
               <div className="mb-8">
-                <label className="block text-xs font-bold uppercase tracking-wider text-[var(--muted)] mb-3">
+                <p id="est-step-3" className="block text-xs font-bold uppercase tracking-wider text-[var(--muted)] mb-3">
                   {t("est_step_3")}
-                </label>
-                <div className="grid sm:grid-cols-3 gap-3">
+                </p>
+                <div className="grid sm:grid-cols-3 gap-3" role="group" aria-labelledby="est-step-3">
                   {[
                     {
                       id: "standard",
@@ -343,8 +360,9 @@ export default function CostEstimator({
                     },
                   ].map((item) => (
                     <button
+                      type="button"
                       key={item.id}
-                      onClick={() => setTier(item.id as any)}
+                      onClick={() => setTier(item.id as typeof tier)}
                       aria-pressed={tier === item.id}
                       className={`relative p-4 rounded-xl border text-left cursor-pointer transition-all ${
                         tier === item.id
@@ -352,11 +370,6 @@ export default function CostEstimator({
                           : "border-[var(--border)] bg-white hover:border-[var(--brand)] hover:shadow-sm"
                       }`}
                     >
-                      {item.id === "premium" && (
-                        <div className="absolute -top-2.5 right-3 bg-[var(--brand)] text-white text-[9px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded-full shadow-sm">
-                          {t("badge_best_value") || "Meest gekozen"}
-                        </div>
-                      )}
                       <div className="flex items-center justify-between mb-1.5">
                         <div className="flex items-center gap-2">
                           <span className="font-bold text-sm text-[var(--fg)]">
@@ -397,6 +410,7 @@ export default function CostEstimator({
                 </div>
 
                 <button
+                  type="button"
                   onClick={handleApply}
                   className="w-full md:w-auto px-6 py-3.5 rounded-xl font-bold text-sm bg-[var(--brand)] hover:bg-[var(--brand-dark)] text-white shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 border-0"
                 >
@@ -406,28 +420,30 @@ export default function CostEstimator({
               </div>
               
               <div className="flex justify-start mt-6">
-                <button onClick={handleBack} className="btn btn-outline">
+                <button type="button" onClick={handleBack} className="btn btn-outline">
                   &larr; {t("btn_back")}
                 </button>
               </div>
             </div>
           )}
 
-          {/* Quick WhatsApp Photo Nudge */}
+          {/* Photo tip; the WhatsApp shortcut appears only with a confirmed number. */}
           <div className="mt-5 p-4 rounded-xl bg-emerald-50/90 border border-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
             <div className="flex items-center gap-2.5 text-emerald-950 font-semibold text-center sm:text-left">
-              <span className="text-lg">💬</span>
+              <span className="text-lg" aria-hidden="true">💬</span>
               <span>{t("nudge_estimator_tip")}</span>
             </div>
-            <a
-              href="https://wa.me/31612345678?text=Hallo%20Bouwvast,%20ik%20heb%20de%20calculator%20gebruikt%20en%20stuur%20graag%20foto's%20voor%20een%20prijsindicatie"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs no-underline flex items-center gap-1.5 shadow-xs transition-colors shrink-0"
-            >
-              <Icon name="whatsapp" size={16} />
-              <span>{lang === "uk" ? "Фото у WhatsApp →" : lang === "ru" ? "Фото в WhatsApp →" : "WhatsApp Foto's →"}</span>
-            </a>
+            {waHref && (
+              <a
+                href={waHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs no-underline flex items-center gap-1.5 shadow-xs transition-colors shrink-0"
+              >
+                <Icon name="whatsapp" size={16} />
+                <span>{pick({ nl: "Foto's via WhatsApp", en: "Photos via WhatsApp", uk: "Фото у WhatsApp", ru: "Фото в WhatsApp" })}</span>
+              </a>
+            )}
           </div>
         </div>
       </div>

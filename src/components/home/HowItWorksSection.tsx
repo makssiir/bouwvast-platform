@@ -1,4 +1,5 @@
-import type { Page } from "../../App"
+import type { Page } from "../../lib/routes"
+import { scrollToQuote } from "../../lib/quoteDraft"
 import { useLang } from "../../i18n/LangContext"
 
 export default function HowItWorksSection({
@@ -37,9 +38,7 @@ export default function HowItWorksSection({
         <div className="center mb-12">
           <span className="eyebrow">{t("how_label")}</span>
           <h2>{t("how_title")}</h2>
-          <p className="lead">
-            {t("hero_sub")}
-          </p>
+
         </div>
 
         <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 list-none p-0 m-0">
@@ -57,10 +56,9 @@ export default function HowItWorksSection({
         <div className="btn-row centered-actions mt-10">
           <button
             className="btn btn-primary"
+            type="button"
             onClick={() => {
-              const quoteEl = document.getElementById("quote")
-              if (quoteEl) quoteEl.scrollIntoView({ behavior: "smooth" })
-              else navigate("contact")
+              if (!scrollToQuote()) navigate("contact")
             }}
           >
             {t("how_cta")}

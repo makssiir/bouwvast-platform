@@ -1,173 +1,127 @@
-import type { Page } from "../App"
+import type { Page } from "../lib/routes"
 import QuoteForm from "../components/QuoteForm"
-import { useLang } from "../i18n/LangContext"
+import Breadcrumb from "../components/Breadcrumb"
 import Icon from "../components/Icon"
+import { useLang } from "../i18n/LangContext"
+import { scrollToQuote } from "../lib/quoteDraft"
 
-export default function BusinessPage({
-  navigate,
-}: {
-  navigate: (page: Page) => void
-}) {
-  const { t } = useLang()
+export default function BusinessPage({ navigate }: { navigate: (page: Page) => void }) {
+  const { t, pick } = useLang()
 
   const audiences = [
     {
-      num: "01",
       icon: "tools",
-      title: "Voor Aannemers & Bouwbedrijven",
-      text: "Vaste partner voor afbouw, stucwerk, schilderwerk en specialistische montagewerkzaamheden.",
+      title: pick({ nl: "Aannemers & bouwbedrijven", en: "Contractors & builders", uk: "Підрядники та будівельні компанії", ru: "Подрядчики и строительные компании" }),
+      text: pick({
+        nl: "Ondersteuning bij afbouw, stucwerk, schilderwerk en montagewerk binnen uw projecten.",
+        en: "Support with finishing, plastering, painting and assembly work within your projects.",
+        uk: "Допомога з оздобленням, штукатуркою, фарбуванням і монтажем у ваших проєктах.",
+        ru: "Помощь с отделкой, штукатуркой, покраской и монтажом в ваших проектах.",
+      }),
     },
     {
-      num: "02",
       icon: "bathroom",
-      title: "Voor Keukenzaken & Showrooms",
-      text: "Vakkundige demontage, leidingwerk, elektra, tegelwerk en montage bij uw klanten op locatie.",
+      title: pick({ nl: "Keukenzaken & showrooms", en: "Kitchen & bathroom showrooms", uk: "Кухонні салони та шоуруми", ru: "Кухонные салоны и шоурумы" }),
+      text: pick({
+        nl: "Demontage, leidingwerk, tegelwerk en montage bij uw klanten op locatie.",
+        en: "Removal, pipework, tiling and installation at your customers' homes.",
+        uk: "Демонтаж, сантехнічні роботи, плитка та монтаж у ваших клієнтів.",
+        ru: "Демонтаж, сантехнические работы, плитка и монтаж у ваших клиентов.",
+      }),
     },
     {
-      num: "03",
       icon: "shield",
-      title: "Voor VvE's & Vastgoedbeheerders",
-      text: "Periodiek onderhoud, spoedreparaties, schilderwerk en verduurzaming van wooncomplexen.",
+      title: pick({ nl: "VvE's & vastgoedbeheerders", en: "Owners' associations & property managers", uk: "Об'єднання власників і керуючі нерухомістю", ru: "Объединения собственников и управляющие недвижимостью" }),
+      text: pick({
+        nl: "Onderhoud, reparaties en schilderwerk aan woongebouwen, in overleg ingepland.",
+        en: "Maintenance, repairs and painting of residential buildings, scheduled in consultation.",
+        uk: "Обслуговування, ремонт і фарбування житлових будівель за погодженим графіком.",
+        ru: "Обслуживание, ремонт и покраска жилых зданий по согласованному графику.",
+      }),
     },
   ]
 
   const steps = [
-    "Intake & kennismaking: we bespreken uw capaciteitsbehoefte en projecten.",
-    "Heldere raamovereenkomst of projectofferte met vaste uurtarieven.",
-    "Betrouwbare planning en vakkundige uitvoering volgens VCA en NEN-normen.",
+    pick({
+      nl: "Kennismaking: we bespreken uw projecten en wat u nodig heeft.",
+      en: "Introduction: we discuss your projects and what you need.",
+      uk: "Знайомство: обговорюємо ваші проєкти та потреби.",
+      ru: "Знакомство: обсуждаем ваши проекты и потребности.",
+    }),
+    pick({
+      nl: "Een projectofferte of raamafspraak met heldere tarieven en voorwaarden.",
+      en: "A project quote or framework agreement with clear rates and terms.",
+      uk: "Проєктна пропозиція або рамкова домовленість із чіткими тарифами та умовами.",
+      ru: "Проектное предложение или рамочное соглашение с понятными тарифами и условиями.",
+    }),
+    pick({
+      nl: "Uitvoering volgens de gemaakte afspraken over planning en kwaliteit.",
+      en: "Execution according to the agreements on schedule and quality.",
+      uk: "Виконання згідно з домовленостями щодо графіка та якості.",
+      ru: "Выполнение согласно договорённостям по срокам и качеству.",
+    }),
   ]
 
   return (
-    <main>
+    <>
       <section className="hero hero--business">
         <div className="container">
-          <div className="breadcrumb mb-4 text-[#86efac]">
-            <button
-              onClick={() => navigate("home")}
-              className="bg-transparent border-0 p-0 text-[#86efac] hover:text-white cursor-pointer"
-            >
-              Home
-            </button>
-            <span className="mx-2">›</span>
-            <span className="text-white font-semibold">
-              {t("nav_business")}
-            </span>
-          </div>
+          <Breadcrumb navigate={navigate} items={[{ label: t("nav_business") }]} />
           <h1>{t("b2b_page_title")}</h1>
           <p className="lead-xl max-w-2xl">{t("b2b_page_sub")}</p>
         </div>
       </section>
 
-      {/* Stats Band */}
-      <section className="stats-band">
-        <div className="container">
-          <div className="stats">
-            <div className="stat">
-              <span className="num">100%</span>
-              <span className="label">VCA gecertificeerd</span>
-            </div>
-            <div className="stat">
-              <span className="num">24u</span>
-              <span className="label">Reactietijd bij spoed</span>
-            </div>
-            <div className="stat">
-              <span className="num">Vast</span>
-              <span className="label">Aanspreekpunt</span>
-            </div>
-            <div className="stat">
-              <span className="num">Flexibel</span>
-              <span className="label">Inzetbare capaciteit</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Audience */}
       <section className="section">
         <div className="container">
           <div className="center mb-12">
-            <span className="eyebrow">Doelgroepen</span>
-            <h2>Met wie werken wij samen?</h2>
-            <p className="lead">
-              Wij ontzorgen zakelijke opdrachtgevers met vakkundige arbeid,
-              duidelijke planning en representatieve communicatie.
-            </p>
+            <h2>{pick({ nl: "Met wie werken wij samen?", en: "Who do we work with?", uk: "З ким ми співпрацюємо?", ru: "С кем мы сотрудничаем?" })}</h2>
           </div>
-
-          <div className="grid grid-3">
+          <ul className="grid grid-3 list-none p-0">
             {audiences.map((item) => (
-              <div key={item.num} className="card">
+              <li key={item.title} className="card">
                 <div className="business-card-icon">
                   <Icon name={item.icon} size={22} color="var(--brand)" />
                 </div>
                 <h3 className="text-lg font-bold mb-2">{item.title}</h3>
-                <p className="text-sm text-[var(--muted)] m-0 leading-relaxed">
-                  {item.text}
-                </p>
-              </div>
+                <p className="text-sm text-[var(--muted)] m-0 leading-relaxed">{item.text}</p>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
-      {/* Process */}
       <section className="section section--muted">
         <div className="container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <span className="eyebrow">Aanpak</span>
-              <h2>Hoe verloopt een zakelijke samenwerking?</h2>
-              <p className="text-[var(--muted)] mb-6">
-                Van een eenmalige opdracht tot een langdurig partnership: we
-                maken heldere afspraken over tarieven, planning en
-                kwaliteitsnormen.
-              </p>
-              <button
-                onClick={() => {
-                  const q = document.getElementById("quote")
-                  if (q) q.scrollIntoView({ behavior: "smooth" })
-                }}
-                className="btn btn-primary"
-              >
-                Start een samenwerking &rarr;
+              <h2>
+                {pick({ nl: "Hoe verloopt een samenwerking?", en: "How does working together go?", uk: "Як відбувається співпраця?", ru: "Как проходит сотрудничество?" })}
+              </h2>
+              <button type="button" onClick={() => scrollToQuote()} className="btn btn-primary mt-4">
+                {pick({ nl: "Bespreek uw project", en: "Discuss your project", uk: "Обговорити проєкт", ru: "Обсудить проект" })} &rarr;
               </button>
             </div>
-
-            <div className="space-y-4">
+            <ol className="space-y-4 list-none p-0 m-0">
               {steps.map((step, idx) => (
-                <div key={idx} className="card flex items-start gap-4 p-5">
-                  <span
-                    className="step-no shrink-0 text-sm"
-                    style={{ width: 36, height: 36 }}
-                  >
+                <li key={idx} className="card flex items-start gap-4 p-5">
+                  <span className="step-no shrink-0 text-sm" style={{ width: 36, height: 36 }} aria-hidden="true">
                     {idx + 1}
                   </span>
-                  <p className="text-sm font-medium text-[var(--fg)] m-0 pt-1.5">
-                    {step}
-                  </p>
-                </div>
+                  <p className="text-sm font-medium text-[var(--fg)] m-0 pt-1.5">{step}</p>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
         </div>
       </section>
 
-      {/* Quote Form */}
       <section id="quote" className="section">
         <div className="container">
           <div className="grid md:grid-cols-[1fr_1.4fr] gap-12 items-start">
             <div>
-              <span className="eyebrow">Aanvraag</span>
-              <h2>Bespreek uw zakelijke project</h2>
-              <p className="text-[var(--muted)] text-base mb-6">
-                Laat uw contactgegevens en wensen achter. Wij nemen binnen 1
-                werkdag contact met u op voor een persoonlijk gesprek.
-              </p>
-              <div className="space-y-2 text-sm text-[var(--fg)]">
-                <p>✓ Directe lijn met projectcoördinatie</p>
-                <p>✓ Vaste staffeltarieven mogelijk</p>
-                <p>✓ Facturatie op maat</p>
-              </div>
+              <h2>{pick({ nl: "Bespreek uw zakelijke project", en: "Discuss your business project", uk: "Обговоріть ваш бізнес-проєкт", ru: "Обсудите ваш бизнес-проект" })}</h2>
+              <p className="text-[var(--muted)] text-base mb-6">{t("form_sub")}</p>
             </div>
             <div className="card p-6 md:p-8 shadow-md">
               <QuoteForm sourcePage="business" />
@@ -175,6 +129,6 @@ export default function BusinessPage({
           </div>
         </div>
       </section>
-    </main>
+    </>
   )
 }

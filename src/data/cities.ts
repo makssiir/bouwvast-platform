@@ -6,49 +6,32 @@ export interface City {
   region: string
 }
 
+/**
+ * Places with their own page under /werkgebied/. Restricted to the region the
+ * site already names (Amersfoort and surroundings). The prototype also listed
+ * Amsterdam, Rotterdam, Maastricht, Groningen and other cities far outside
+ * that region, which would advertise a service area that has not been
+ * confirmed. The owner should confirm this list before launch.
+ */
 export const CITIES: City[] = [
-  // Grote steden van Nederland (Top Metropolen & Regio's)
-  { name: "Amsterdam", province: "Noord-Holland", region: "groot" },
-  { name: "Rotterdam", province: "Zuid-Holland", region: "groot" },
-  { name: "Den Haag", province: "Zuid-Holland", region: "groot" },
-  { name: "Utrecht", province: "Utrecht", region: "groot" },
-  { name: "Eindhoven", province: "Noord-Brabant", region: "groot" },
-  { name: "Groningen", province: "Groningen", region: "groot" },
-  { name: "Tilburg", province: "Noord-Brabant", region: "groot" },
-  { name: "Almere", province: "Flevoland", region: "groot" },
-  { name: "Breda", province: "Noord-Brabant", region: "groot" },
-  { name: "Nijmegen", province: "Gelderland", region: "groot" },
-  { name: "Apeldoorn", province: "Gelderland", region: "groot" },
-  { name: "Arnhem", province: "Gelderland", region: "groot" },
-  { name: "Haarlem", province: "Noord-Holland", region: "groot" },
-  { name: "Enschede", province: "Overijssel", region: "groot" },
-  { name: "Amersfoort", province: "Utrecht", region: "groot" },
-  { name: "Zaanstad", province: "Noord-Holland", region: "groot" },
-  { name: "'s-Hertogenbosch", province: "Noord-Brabant", region: "groot" },
-  { name: "Zwolle", province: "Overijssel", region: "groot" },
-  { name: "Leiden", province: "Zuid-Holland", region: "groot" },
-  { name: "Leeuwarden", province: "Friesland", region: "groot" },
-  { name: "Maastricht", province: "Limburg", region: "groot" },
-  { name: "Dordrecht", province: "Zuid-Holland", region: "groot" },
-  { name: "Ede", province: "Gelderland", region: "groot" },
-  { name: "Hilversum", province: "Noord-Holland", region: "groot" },
-
-  // Kern & Midden-Nederland
+  { name: "Amersfoort", province: "Utrecht", region: "kern" },
   { name: "Soest", province: "Utrecht", region: "kern" },
   { name: "Leusden", province: "Utrecht", region: "kern" },
-  { name: "Zeist", province: "Utrecht", region: "kern" },
   { name: "Baarn", province: "Utrecht", region: "kern" },
   { name: "Hoevelaken", province: "Gelderland", region: "kern" },
   { name: "Nijkerk", province: "Gelderland", region: "kern" },
+  { name: "Utrecht", province: "Utrecht", region: "utrecht" },
+  { name: "Zeist", province: "Utrecht", region: "utrecht" },
+  { name: "Veenendaal", province: "Utrecht", region: "utrecht" },
+  { name: "Hilversum", province: "Noord-Holland", region: "gooi" },
   { name: "Bussum", province: "Noord-Holland", region: "gooi" },
   { name: "Naarden", province: "Noord-Holland", region: "gooi" },
   { name: "Harderwijk", province: "Gelderland", region: "gelderland" },
   { name: "Barneveld", province: "Gelderland", region: "gelderland" },
-  { name: "Veenendaal", province: "Utrecht", region: "utrecht" },
+  { name: "Ede", province: "Gelderland", region: "gelderland" },
 ]
 
 export const REGION_LABELS: Record<string, TranslationKey> = {
-  groot: "region_groot",
   kern: "region_kern",
   utrecht: "region_utrecht",
   gooi: "region_gooi",

@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
+import { useLang } from "../i18n/LangContext"
 
 export default function ScrollProgress() {
   const [scrollProgress, setScrollProgress] = useState(0)
   const [showToTop, setShowToTop] = useState(false)
+  const { pick } = useLang()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,7 +23,9 @@ export default function ScrollProgress() {
   }, [])
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" })
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+    window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" })
+    document.getElementById("main")?.focus({ preventScroll: true })
   }
 
   return (
@@ -37,8 +41,8 @@ export default function ScrollProgress() {
       {showToTop && (
         <button
           onClick={scrollToTop}
-          className="hidden md:flex fixed bottom-8 right-8 z-40 w-11 h-11 rounded-full bg-[var(--brand)] text-white items-center justify-center shadow-lg hover:bg-[var(--brand-dark)] transition-all hover:scale-110 border-0 cursor-pointer animate-[fade-in_0.3s_ease-out]"
-          aria-label="Вгору"
+          className="hidden md:flex fixed bottom-8 left-8 z-40 w-11 h-11 rounded-full bg-[var(--brand)] text-white items-center justify-center shadow-lg hover:bg-[var(--brand-dark)] transition-all hover:scale-110 border-0 cursor-pointer animate-[fade-in_0.3s_ease-out]"
+          aria-label={pick({ nl: "Terug naar boven", en: "Back to top", uk: "Вгору", ru: "Наверх" })}
         >
           <svg
             width="20"
@@ -49,6 +53,7 @@ export default function ScrollProgress() {
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
+            aria-hidden="true"
           >
             <polyline points="18 15 12 9 6 15" />
           </svg>

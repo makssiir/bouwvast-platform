@@ -1,18 +1,29 @@
 /**
- * Behavioural proof for the lead delivery chain.
+ * Behavioural proof for the whole lead chain: browser transport → server
+ * handler → disk → notification.
  *
  *   node scripts/verify-leads.ts
  *
- * No test runner and no network: fetch and localStorage are stubbed so every
- * outcome a visitor can hit is exercised deterministically.
+ * No test runner and no network. The browser side's fetch is wired straight
+ * into the real server app, so the client and server are tested against
+ * each other rather than against assumptions.
  */
-import {
-  deliverLead,
-  flushQueue,
-  readQueue,
-  QUEUE_KEY,
-} from "../src/lib/leads.ts"
-import type { Lead, LeadTransport, StorageLike } from "../src/lib/leads.ts"
+import { mkdtemp, rm, readdir } from "node:fs/promises"
+import { tmpdir } from "node:os"
+import { join } from "node:path"
+import { deliverLead, acceptablePhotos, newLeadId } from "../src/lib/leads.ts"
+import type { Lead, LeadTransport } from "../src/lib/leads.ts"
+import { validateLead, isPlausiblePhone } from "../src/lib/leadSchema.ts"
+// @ts-ignore: plain ESM modules without type declarations
+import { loadConfig } from "../server/config.mjs"
+// @ts-ignore
+import { createStore } from "../server/store.mjs"
+// @ts-ignore
+import { createNotifier } from "../server/notify.mjs"
+// @ts-ignore
+import { createApp } from "../server/app.mjs"
+// @ts-ignore
+import { retryPending, sniffImage, truncateIp } from "../server/leads.mjs"
 
 let passed = 0
 let failed = 0
@@ -27,203 +38,248 @@ function check(label: string, condition: boolean, detail = ""): void {
   }
 }
 
-function memoryStorage(initial: Record<string, string> = {}): StorageLike {
-  const map = new Map(Object.entries(initial))
-  return {
-    getItem: (key) => map.get(key) ?? null,
-    setItem: (key, value) => void map.set(key, value),
-    removeItem: (key) => void map.delete(key),
-  }
-}
-
 function makeLead(overrides: Partial<Lead> = {}): Lead {
   return {
-    id: "lead-1",
+    id: newLeadId(),
     name: "Jan de Vries",
-    phone: "0612345678",
+    phone: "06 12345678",
     email: "jan@voorbeeld.nl",
     city: "Amersfoort",
-    postcode: "",
-    service: "Badkamer renovatie",
-    description: "Badkamer volledig vernieuwen, 6 m2.",
-    photos: "",
-    preferredDate: null,
-    preferredTime: "all-day",
+    service: "Badkamer & Keuken",
+    description: "Badkamer volledig vernieuwen, ongeveer 6 m2.",
+    estimate: "",
     language: "nl",
     sourcePage: "test",
-    createdAt: "2026-08-28T10:00:00.000Z",
+    createdAt: new Date().toISOString(),
+    hp: "",
     ...overrides,
   }
 }
 
-interface Captured {
-  url: string
-  init: RequestInit
+const JPEG = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0, 0x10, 0x4a, 0x46, 0x49, 0x46, 0, 1])
+const jpegFile = (name = "badkamer.jpg") => new File([JPEG], name, { type: "image/jpeg" })
+
+async function harness(env: Record<string, string> = {}) {
+  const dataDir = await mkdtemp(join(tmpdir(), "bouwvast-leads-"))
+  const config = loadConfig({ DIST_DIR: "dist", DATA_DIR: dataDir, LEAD_RATE_LIMIT_MAX: "50", ...env })
+  const store = createStore(config.dataDir)
+  await store.init()
+  const sent: unknown[] = []
+  let notifyFails = false
+  const notifier = createNotifier(config, {
+    fetchImpl: async (_url: string, init: RequestInit) => {
+      sent.push(JSON.parse(String(init.body)))
+      return new Response(null, { status: notifyFails ? 503 : 200 })
+    },
+    readPhoto: (id: string, name: string) => store.readPhoto(id, name),
+  })
+  const quiet = { info() {}, warn() {}, error() {} }
+  const app = createApp({ config, store, notifier, log: quiet })
+  let calls = 0
+  const transport: LeadTransport = {
+    endpoint: "http://localhost/api/leads",
+    timeoutMs: 5000,
+    fetchImpl: (async (input: RequestInfo | URL, init?: RequestInit) => {
+      calls += 1
+      return app(new Request(String(input), init), { clientIp: "203.0.113.7" })
+    }) as typeof fetch,
+  }
+  return {
+    config,
+    store,
+    notifier,
+    app,
+    transport,
+    sent,
+    get calls() {
+      return calls
+    },
+    setNotifyFails(value: boolean) {
+      notifyFails = value
+    },
+    cleanup: () => rm(dataDir, { recursive: true, force: true }),
+  }
 }
 
-function stubFetch(
-  respond: (call: number) => Response | Promise<Response> | never,
-): { fetchImpl: typeof fetch; calls: Captured[] } {
-  const calls: Captured[] = []
-  const fetchImpl = (async (input: RequestInfo | URL, init?: RequestInit) => {
-    calls.push({ url: String(input), init: init ?? {} })
-    return respond(calls.length)
-  }) as typeof fetch
-  return { fetchImpl, calls }
-}
+const settle = () => new Promise((resolve) => setTimeout(resolve, 20))
 
-function transport(
-  fetchImpl: typeof fetch,
-  storage: StorageLike | null,
-  endpoint = "https://example.test/leads",
-): LeadTransport {
-  return { endpoint, fetchImpl, storage, timeoutMs: 1000 }
-}
+async function main() {
+  console.log("Schema")
+  check("Dutch mobile is plausible", isPlausiblePhone("06-12 34 56 78"))
+  check("international number is plausible", isPlausiblePhone("+31 (0)6 1234 5678"))
+  check("letters are not a phone number", !isPlausiblePhone("bel me"))
+  check("too-short number is rejected", !isPlausiblePhone("0612"))
+  const bad = validateLead({ id: "nope", name: "J", phone: "", city: "", description: "" })
+  check("validation reports stable codes", bad.errors.name === "too_short" && bad.errors.phone === "required" && bad.errors.id === "invalid")
+  check("email is optional", validateLead({ ...makeLead(), email: "" }).ok)
+  check("malformed email is rejected", validateLead({ ...makeLead(), email: "jan@" }).errors.email === "invalid")
 
-async function run(): Promise<void> {
-  // 1 — a confirmed delivery is reported as delivered, and nothing is queued.
+  console.log("Client without endpoint")
   {
-    const storage = memoryStorage()
-    const { fetchImpl, calls } = stubFetch(() => new Response("ok", { status: 200 }))
-    const result = await deliverLead(makeLead(), [], transport(fetchImpl, storage))
-
-    console.log("\n1. Endpoint accepts the request")
-    check("delivered", result.delivered === true)
-    check("not queued", result.queued === false)
-    check("one POST sent", calls.length === 1 && calls[0].init.method === "POST")
-    check("JSON body carries the lead", String(calls[0].init.body).includes("Badkamer renovatie"))
-    check("queue stays empty", readQueue(storage).length === 0)
+    const result = await deliverLead(makeLead(), [], { endpoint: "", timeoutMs: 1000, fetchImpl: fetch })
+    check("no endpoint → unconfigured, never 'sent'", !result.delivered && result.failure === "unconfigured")
   }
 
-  // 2 — a server error must never read as success, and the lead is kept.
+  console.log("Photos")
   {
-    const storage = memoryStorage()
-    const { fetchImpl } = stubFetch(() => new Response("boom", { status: 500 }))
-    const result = await deliverLead(makeLead(), [], transport(fetchImpl, storage))
-
-    console.log("\n2. Endpoint answers 500")
-    check("not delivered", result.delivered === false)
-    check("failure is server", result.failure === "server", String(result.failure))
-    check("status kept", result.status === 500)
-    check("queued for retry", result.queued === true)
-    check("lead is in storage", readQueue(storage).length === 1)
+    const big = new File([new Uint8Array(9 * 1024 * 1024)], "big.jpg", { type: "image/jpeg" })
+    const pdf = new File([new Uint8Array(10)], "plan.pdf", { type: "application/pdf" })
+    const { files, skipped } = acceptablePhotos([jpegFile(), big, pdf])
+    check("oversized and non-image files are dropped client-side", files.length === 1 && skipped)
+    check("JPEG magic bytes are recognised", sniffImage(JPEG)?.type === "image/jpeg")
+    check("text pretending to be JPEG is not", sniffImage(new TextEncoder().encode("hello")) === null)
+    check("IPv4 is stored truncated", truncateIp("203.0.113.7") === "203.0.113.0")
   }
 
-  // 3 — an offline visitor: fetch rejects.
+  console.log("Client ↔ server")
   {
-    const storage = memoryStorage()
-    const fetchImpl = (async () => {
-      throw new TypeError("Failed to fetch")
-    }) as typeof fetch
-    const result = await deliverLead(makeLead(), [], transport(fetchImpl, storage))
+    const h = await harness({ LEAD_WEBHOOK_URL: "https://hooks.example/lead" })
+    const lead = makeLead()
+    const result = await deliverLead(lead, [], h.transport)
+    check("valid lead is delivered with a receipt", result.delivered && /^BV-\d{6}-[0-9A-F]{5}$/.test(result.reference ?? ""), JSON.stringify(result))
+    const stored = await h.store.get(lead.id)
+    check("lead is on disk before the receipt", stored?.lead.name === "Jan de Vries")
+    check("stored IP is truncated", stored?.ipPrefix === "203.0.113.0")
+    await settle()
+    check("owner is notified once", h.sent.length === 1)
+    check("notification is recorded", (await h.store.get(lead.id))?.notified === true)
 
-    console.log("\n3. Network is down")
-    check("not delivered", result.delivered === false)
-    check("failure is network", result.failure === "network", String(result.failure))
-    check("queued for retry", result.queued === true)
-  }
+    const again = await deliverLead(lead, [], h.transport)
+    check("retrying the same lead returns the original reference", again.delivered && again.reference === result.reference)
+    const dirs = await readdir(h.store.root)
+    check("retry does not create a duplicate", dirs.length === 1)
+    await settle()
+    check("retry does not notify twice", h.sent.length === 1)
 
-  // 4 — no endpoint configured: fail loudly, and do not queue what can never send.
-  {
-    const storage = memoryStorage()
-    const { fetchImpl, calls } = stubFetch(() => new Response("ok", { status: 200 }))
-    const result = await deliverLead(makeLead(), [], transport(fetchImpl, storage, ""))
+    const withPhoto = makeLead()
+    const photoResult = await deliverLead(withPhoto, [jpegFile()], h.transport)
+    const photoRecord = await h.store.get(withPhoto.id)
+    check("multipart lead with a photo is delivered", photoResult.delivered && photoRecord?.photos.length === 1)
 
-    console.log("\n4. VITE_LEAD_ENDPOINT is not set")
-    check("not delivered", result.delivered === false)
-    check("failure is unconfigured", result.failure === "unconfigured", String(result.failure))
-    check("nothing queued", result.queued === false && readQueue(storage).length === 0)
-    check("no request attempted", calls.length === 0)
-  }
+    const fake = makeLead()
+    const fakeResult = await deliverLead(fake, [new File([new TextEncoder().encode("not an image")], "x.jpg", { type: "image/jpeg" })], h.transport)
+    check("a non-image disguised as JPEG is rejected (415 → invalid)", !fakeResult.delivered && fakeResult.failure === "invalid" && fakeResult.status === 415)
+    check("…and nothing was stored for it", (await h.store.get(fake.id)) === null)
 
-  // 5 — the queue drains on a later visit.
-  {
-    const queued = [makeLead({ id: "a" }), makeLead({ id: "b" })]
-    const storage = memoryStorage({ [QUEUE_KEY]: JSON.stringify(queued) })
-    const { fetchImpl } = stubFetch(() => new Response("ok", { status: 200 }))
-    const delivered = await flushQueue(transport(fetchImpl, storage))
+    const spam = makeLead({ hp: "http://spam.example" })
+    const spamResult = await deliverLead(spam, [], h.transport)
+    check("honeypot submission looks accepted to the bot", spamResult.delivered)
+    check("…but is not stored", (await h.store.get(spam.id)) === null)
 
-    console.log("\n5. Queued leads are retried on the next visit")
-    check("both delivered", delivered === 2, String(delivered))
-    check("queue emptied", readQueue(storage).length === 0)
-  }
-
-  // 6 — a partial drain keeps what still has not landed.
-  {
-    const queued = [makeLead({ id: "a" }), makeLead({ id: "b" })]
-    const storage = memoryStorage({ [QUEUE_KEY]: JSON.stringify(queued) })
-    const { fetchImpl } = stubFetch((call) =>
-      new Response("", { status: call === 1 ? 200 : 503 }),
+    const invalidRaw = await h.app(
+      new Request("http://localhost/api/leads", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ ...makeLead(), phone: "abc" }),
+      }),
+      { clientIp: "203.0.113.8" },
     )
-    const delivered = await flushQueue(transport(fetchImpl, storage))
+    const invalidBody = await invalidRaw.json()
+    check("server rejects invalid fields with 422 + codes", invalidRaw.status === 422 && invalidBody.errors?.phone === "invalid")
 
-    console.log("\n6. Retry only partly succeeds")
-    check("one delivered", delivered === 1, String(delivered))
-    const left = readQueue(storage)
-    check("one still queued", left.length === 1 && left[0].id === "b")
-  }
-
-  // 7 — retrying the same request must not create a second lead.
-  {
-    const storage = memoryStorage()
-    const { fetchImpl } = stubFetch(() => new Response("", { status: 500 }))
-    const lead = makeLead({ id: "same-id" })
-    await deliverLead(lead, [], transport(fetchImpl, storage))
-    await deliverLead(lead, [], transport(fetchImpl, storage))
-
-    console.log("\n7. Retrying the same request")
-    check("stored once, not twice", readQueue(storage).length === 1)
-  }
-
-  // 8 — photos within budget travel with the request as multipart.
-  {
-    const storage = memoryStorage()
-    const { fetchImpl, calls } = stubFetch(() => new Response("", { status: 200 }))
-    const small = new File([new Uint8Array(1024)], "badkamer.jpg", { type: "image/jpeg" })
-    const result = await deliverLead(makeLead(), [small], transport(fetchImpl, storage))
-
-    console.log("\n8. Visitor attaches a photo")
-    check("delivered", result.delivered === true)
-    check("photos not skipped", result.photosSkipped === false)
-    const body = calls[0].init.body
-    check("body is multipart", body instanceof FormData)
-    check(
-      "photo is attached",
-      body instanceof FormData && body.get("photo_1") instanceof File,
+    const cross = await h.app(
+      new Request("http://localhost/api/leads", {
+        method: "POST",
+        headers: { "content-type": "application/json", origin: "https://evil.example" },
+        body: JSON.stringify(makeLead()),
+      }),
+      { clientIp: "203.0.113.9" },
     )
-    check(
-      "lead fields ride along",
-      body instanceof FormData && body.get("service") === "Badkamer renovatie",
+    check("cross-site POST is refused", cross.status === 403)
+
+    const textPlain = await h.app(
+      new Request("http://localhost/api/leads", { method: "POST", headers: { "content-type": "text/plain" }, body: "hi" }),
+      { clientIp: "203.0.113.10" },
     )
+    check("unsupported content type → 415", textPlain.status === 415)
+
+    const get = await h.app(new Request("http://localhost/api/leads"), {})
+    check("GET on the endpoint → 405", get.status === 405)
+    check("API responses carry security headers", get.headers.get("x-content-type-options") === "nosniff")
+    await h.cleanup()
   }
 
-  // 9 — oversized photos must not take the whole request down with them.
+  console.log("Server answers that are not success")
   {
-    const storage = memoryStorage()
-    const { fetchImpl, calls } = stubFetch(() => new Response("", { status: 200 }))
-    const huge = new File([new Uint8Array(5 * 1024 * 1024)], "dsc_0001.jpg", {
-      type: "image/jpeg",
-    })
-    const result = await deliverLead(makeLead(), [huge], transport(fetchImpl, storage))
+    const lead = makeLead()
+    const fakeOk: LeadTransport = {
+      endpoint: "http://localhost/api/leads",
+      timeoutMs: 1000,
+      fetchImpl: (async () => new Response("<html>ok</html>", { status: 200 })) as typeof fetch,
+    }
+    const r1 = await deliverLead(lead, [], fakeOk)
+    check("200 without a matching receipt is NOT treated as sent", !r1.delivered && r1.failure === "server")
 
-    console.log("\n9. Photos exceed the size budget")
-    check("request still delivered", result.delivered === true)
-    check("photos reported as skipped", result.photosSkipped === true)
-    check("body fell back to JSON", typeof calls[0].init.body === "string")
+    const wrongId: LeadTransport = {
+      ...fakeOk,
+      fetchImpl: (async () => Response.json({ ok: true, id: "someone-else" })) as typeof fetch,
+    }
+    check("receipt for another id is NOT treated as sent", !(await deliverLead(lead, [], wrongId)).delivered)
+
+    const offline: LeadTransport = {
+      ...fakeOk,
+      fetchImpl: (async () => {
+        throw new TypeError("Failed to fetch")
+      }) as typeof fetch,
+    }
+    const r3 = await deliverLead(lead, [], offline)
+    check("network failure → 'network', not sent", !r3.delivered && r3.failure === "network")
+
+    const slow: LeadTransport = {
+      endpoint: "http://localhost/api/leads",
+      timeoutMs: 30,
+      fetchImpl: ((_input: RequestInfo | URL, init?: RequestInit) =>
+        new Promise((_resolve, reject) => {
+          init?.signal?.addEventListener("abort", () => reject(new DOMException("aborted", "AbortError")))
+        })) as typeof fetch,
+    }
+    const r4 = await deliverLead(lead, [], slow)
+    check("timeout → 'network', not sent", !r4.delivered && r4.failure === "network")
   }
 
-  // 10 — storage being unavailable must not break the form.
+  console.log("Rate limiting")
   {
-    const { fetchImpl } = stubFetch(() => new Response("", { status: 500 }))
-    const result = await deliverLead(makeLead(), [], transport(fetchImpl, null))
+    const h = await harness({ LEAD_RATE_LIMIT_MAX: "2" })
+    await deliverLead(makeLead(), [], h.transport)
+    await deliverLead(makeLead(), [], h.transport)
+    const third = await deliverLead(makeLead(), [], h.transport)
+    check("third request in the window → rate_limited", !third.delivered && third.failure === "rate_limited")
+    await h.cleanup()
+  }
 
-    console.log("\n10. Browser storage is blocked")
-    check("still reports the failure", result.delivered === false)
-    check("honest that nothing was queued", result.queued === false)
+  console.log("Notification outage")
+  {
+    const h = await harness({ LEAD_WEBHOOK_URL: "https://hooks.example/lead" })
+    h.setNotifyFails(true)
+    const lead = makeLead()
+    const result = await deliverLead(lead, [], h.transport)
+    check("visitor still gets a receipt when notification is down", result.delivered)
+    await settle()
+    const pending = await h.store.get(lead.id)
+    check("lead is marked as not yet notified", pending?.notified === false && pending?.notifyAttempts === 1)
+    h.setNotifyFails(false)
+    await retryPending(h.store, h.notifier, { info() {}, warn() {}, error() {} })
+    check("background retry delivers it later", (await h.store.get(lead.id))?.notified === true)
+    await h.cleanup()
+  }
+
+  console.log("Retention")
+  {
+    const h = await harness()
+    const lead = makeLead()
+    await deliverLead(lead, [], h.transport)
+    const removedNow = await h.store.purgeOlderThan(365)
+    const removedLater = await h.store.purgeOlderThan(365, Date.now() + 366 * 24 * 3600 * 1000)
+    check("fresh leads are kept", removedNow === 0)
+    check("leads past the retention period are deleted", removedLater === 1 && (await h.store.get(lead.id)) === null)
+    await h.cleanup()
   }
 
   console.log(`\n${passed} passed, ${failed} failed`)
   if (failed > 0) process.exit(1)
 }
 
-void run()
+main().catch((error) => {
+  console.error(error)
+  process.exit(1)
+})

@@ -1,4 +1,8 @@
-import type { Page } from "../App"
+import type { Page } from "../lib/routes"
+import Breadcrumb from "../components/Breadcrumb"
+import PageLink from "../components/PageLink"
+import NotFoundPage from "./NotFoundPage"
+import { imageSize } from "../data/images"
 import { SERVICE_BY_SLUG, SERVICES } from "../data/services"
 import { CITIES } from "../data/cities"
 import Icon from "../components/Icon"
@@ -15,10 +19,7 @@ export default function ServicePage({
   const { t } = useLang()
   const service = SERVICE_BY_SLUG[slug]
 
-  if (!service) {
-    navigate("diensten")
-    return null
-  }
+  if (!service) return <NotFoundPage navigate={navigate} />
 
   const steps = [
     { num: "01", title: t("how_1_title"), desc: t("how_1_desc") },
@@ -29,29 +30,14 @@ export default function ServicePage({
   const related = SERVICES.filter((s) => s.slug !== service.slug).slice(0, 3)
 
   return (
-    <main>
+    <>
       {/* Service Hero */}
       <section className="hero hero--service">
         <div className="container">
-          <div className="breadcrumb mb-4 text-[#86efac]">
-            <button
-              onClick={() => navigate("home")}
-              className="bg-transparent border-0 p-0 text-[#86efac] hover:text-white cursor-pointer"
-            >
-              {t("nav_home")}
-            </button>
-            <span className="mx-2">›</span>
-            <button
-              onClick={() => navigate("diensten")}
-              className="bg-transparent border-0 p-0 text-[#86efac] hover:text-white cursor-pointer"
-            >
-              {t("nav_services")}
-            </button>
-            <span className="mx-2">›</span>
-            <span className="text-white font-semibold">
-              {t(service.nameKey)}
-            </span>
-          </div>
+          <Breadcrumb
+            navigate={navigate}
+            items={[{ label: t("nav_services"), to: "diensten" }, { label: t(service.nameKey) }]}
+          />
           <h1>{t(service.nameKey) + t("service_hero_suffix")}</h1>
           <p className="lead-xl max-w-2xl">{t(service.introKey)}</p>
         </div>
@@ -114,20 +100,15 @@ export default function ServicePage({
               </p>
               <div className="flex flex-wrap gap-2">
                 {coreCities.map((c) => (
-                  <button
+                  <PageLink
                     key={c.name}
-                    onClick={() =>
-                      navigate({
-                        type: "city",
-                        city: c.name,
-                        serviceSlug: service.slug,
-                      })
-                    }
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-[var(--border)] bg-white text-xs font-semibold text-[var(--fg)] hover:border-[var(--brand)] hover:text-[var(--brand)] transition-all cursor-pointer"
+                    to={{ type: "city", city: c.name }}
+                    navigate={navigate}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-[var(--border)] bg-white text-xs font-semibold text-[var(--fg)] hover:border-[var(--brand)] hover:text-[var(--brand)] transition-all no-underline"
                   >
                     <Icon name="pin" size={13} color="var(--brand)" />
-                    {t(service.nameKey)} in {c.name}
-                  </button>
+                    {c.name}
+                  </PageLink>
                 ))}
               </div>
             </section>
@@ -135,10 +116,10 @@ export default function ServicePage({
 
           {/* Sticky quote form */}
           <div>
-            <div className="sticky top-24 card p-6 md:p-7 shadow-lg border-2 border-[var(--brand)]">
+            <div id="quote" className="sticky top-24 card p-6 md:p-7 shadow-lg border-2 border-[var(--brand)]">
               <div className="flex items-center gap-2 mb-2">
                 <Icon name="check" size={18} color="var(--brand)" />
-                <h3 className="text-lg font-bold m-0">{t("service_quote_title")}</h3>
+                <h2 className="text-lg font-bold m-0">{t("service_quote_title")}</h2>
               </div>
               <p className="text-xs text-[var(--muted)] mb-5">
                 {t("service_quote_sub", { service: t(service.nameKey).toLowerCase() })}
@@ -160,29 +141,24 @@ export default function ServicePage({
           <h2>{t("service_related_title")}</h2>
           <div className="grid sm:grid-cols-3 gap-6 mt-6">
             {related.map((s) => (
-              <button
+              <PageLink
                 key={s.slug}
-                onClick={() => navigate({ type: "service", slug: s.slug })}
-                className="card service-card-link text-left cursor-pointer border-0 bg-white"
+                to={{ type: "service", slug: s.slug }}
+                navigate={navigate}
+                className="card service-card-link text-left no-underline bg-white"
               >
                 <div className="service-card-media" style={{ height: 140 }}>
-                  <img
-                    src={s.image}
-                    alt={t(s.nameKey)}
-                    width={400}
-                    height={250}
-                    loading="lazy"
-                  />
+                  <img src={s.image} alt="" {...imageSize(s.image)} loading="lazy" decoding="async" />
                 </div>
                 <div className="p-4">
                   <h3 className="font-bold text-base mb-1">{t(s.nameKey)}</h3>
-                  <span className="more text-xs">{t("link_more")} &rarr;</span>
+                  <span className="more text-xs" aria-hidden="true">{t("link_more")} &rarr;</span>
                 </div>
-              </button>
+              </PageLink>
             ))}
           </div>
         </div>
       </section>
-    </main>
+    </>
   )
 }

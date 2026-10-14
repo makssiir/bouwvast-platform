@@ -1,39 +1,47 @@
-import type { Page } from "../../App"
+import type { Page } from "../../lib/routes"
 import Icon from "../Icon"
+import PageLink from "../PageLink"
 import { useLang } from "../../i18n/LangContext"
-import { CONTACT } from "../../data/contact"
+import { claim } from "../../data/claims"
+import { scrollToQuote } from "../../lib/quoteDraft"
 
-export default function HeroSection({
-  navigate,
-}: {
-  navigate: (p: Page) => void
-}) {
-  const { t, lang } = useLang()
+export default function HeroSection({ navigate }: { navigate: (p: Page) => void }) {
+  const { t, pick } = useLang()
 
   const handleQuoteClick = () => {
-    const quoteEl = document.getElementById("quote")
-    if (quoteEl) {
-      quoteEl.scrollIntoView({ behavior: "smooth" })
-    } else {
-      navigate("contact")
-    }
+    if (!scrollToQuote()) navigate("contact")
   }
 
   const handleCalculatorClick = () => {
-    const calcEl = document.getElementById("calculator")
-    if (calcEl) {
-      calcEl.scrollIntoView({ behavior: "smooth" })
-    }
+    document.getElementById("calculator")?.scrollIntoView({ behavior: "smooth" })
   }
 
-  const badgeCaption =
-    lang === "uk"
-      ? "Bouwvast · Якість та Гарантія"
-      : lang === "ru"
-        ? "Bouwvast · Качество и Гарантия"
-        : lang === "en"
-          ? "Bouwvast · Quality & Warranty"
-          : "Bouwvast · Kwaliteit & Garantie"
+  const pillars: { slug: string; icon: string; title: string; sub: string }[] = [
+    {
+      slug: "renovatie",
+      icon: "🔨",
+      title: pick({ nl: "Woningrenovatie", en: "Home renovation", uk: "Комплексний ремонт", ru: "Комплексный ремонт" }),
+      sub: pick({ nl: "Totaalproject onder één dak", en: "One point of contact for the whole job", uk: "Квартири та будинки під ключ", ru: "Квартиры и дома под ключ" }),
+    },
+    {
+      slug: "badkamer-keuken",
+      icon: "🚿",
+      title: pick({ nl: "Badkamer & keuken", en: "Bathroom & kitchen", uk: "Ванна та кухня", ru: "Ванная и кухня" }),
+      sub: pick({ nl: "Tegels, inloopdouche & leidingen", en: "Tiles, walk-in shower & pipes", uk: "Плитка, душ та сантехніка", ru: "Плитка, душ и сантехника" }),
+    },
+    {
+      slug: "afbouw",
+      icon: "🧱",
+      title: pick({ nl: "Stuc- & afbouwwerk", en: "Plaster & drywall", uk: "Штукатурка та стіни", ru: "Штукатурка и стены" }),
+      sub: pick({ nl: "Strak & schilderklaar", en: "Smooth & paint-ready", uk: "Ідеально під фарбування", ru: "Идеально под покраску" }),
+    },
+    {
+      slug: "loodgieter",
+      icon: "🔧",
+      title: pick({ nl: "Loodgieterswerk", en: "Plumbing", uk: "Сантехніка", ru: "Сантехника" }),
+      sub: pick({ nl: "Leidingen, afvoer & sanitair", en: "Pipes, drainage & fixtures", uk: "Труби, каналізація та сантехніка", ru: "Трубы, канализация и сантехника" }),
+    },
+  ]
 
   return (
     <section className="hero hero--home">
@@ -55,62 +63,51 @@ export default function HeroSection({
 
           <div className="btn-row hero-actions">
             <button
+              type="button"
               onClick={handleQuoteClick}
               className="btn btn-primary btn-lg"
             >
               <Icon name="check" size={20} />
               {t("hero_cta_primary")}
             </button>
-            <button
-              onClick={handleCalculatorClick}
-              className="btn btn-outline-white btn-lg"
-            >
-              <Icon name="tools" size={20} />
-              {t("est_eyebrow")}
-            </button>
+            {claim("pricing") && (
+              <button
+                type="button"
+                onClick={handleCalculatorClick}
+                className="btn btn-outline-white btn-lg"
+              >
+                <Icon name="tools" size={20} />
+                {t("est_eyebrow")}
+              </button>
+            )}
           </div>
 
-          <div className="quick-pillars" aria-label="Популярні послуги">
-            <div
-              onClick={() => navigate({ type: "service", slug: "renovatie" })}
-              className="pillar-card"
-            >
-              <span className="pillar-top">🔨 {lang === "uk" ? "Комплексний ремонт" : lang === "nl" ? "Woningrenovatie" : lang === "ru" ? "Комплексный ремонт" : "Home Renovation"}</span>
-              <span className="pillar-sub">{lang === "uk" ? "Квартири та будинки під ключ" : lang === "nl" ? "Totaalproject onder 1 dak" : lang === "ru" ? "Квартиры и дома под ключ" : "Full turnkey service"}</span>
-            </div>
+          <nav
+            className="quick-pillars"
+            aria-label={pick({ nl: "Populaire diensten", en: "Popular services", uk: "Популярні послуги", ru: "Популярные услуги" })}
+          >
+            {pillars.map((pillar) => (
+              <PageLink
+                key={pillar.slug}
+                to={{ type: "service", slug: pillar.slug }}
+                navigate={navigate}
+                className="pillar-card no-underline"
+              >
+                <span className="pillar-top">
+                  <span aria-hidden="true">{pillar.icon}</span> {pillar.title}
+                </span>
+                <span className="pillar-sub">{pillar.sub}</span>
+              </PageLink>
+            ))}
+          </nav>
 
-            <div
-              onClick={() => navigate({ type: "service", slug: "badkamer-keuken" })}
-              className="pillar-card"
-            >
-              <span className="pillar-top">🚿 {lang === "uk" ? "Ванна та Санвузол" : lang === "nl" ? "Badkamer & Sanitair" : lang === "ru" ? "Ванная и Санузел" : "Bath & Sanitary"}</span>
-              <span className="pillar-sub">{lang === "uk" ? "Плитка, душ та сантехніка" : lang === "nl" ? "Tegels, inloopdouche & leidingen" : lang === "ru" ? "Плитка, душ и сантехника" : "Tiles, walk-in shower & pipes"}</span>
-            </div>
-
-            <div
-              onClick={() => navigate({ type: "service", slug: "afbouw" })}
-              className="pillar-card"
-            >
-              <span className="pillar-top">🧱 {lang === "uk" ? "Штукатурка та Стіни" : lang === "nl" ? "Stuc- & Afbouwwerk" : lang === "ru" ? "Штукатурка и Стены" : "Plaster & Drywall"}</span>
-              <span className="pillar-sub">{lang === "uk" ? "Ідеально під фарбування" : lang === "nl" ? "Strak & schilderklaar" : lang === "ru" ? "Идеально под покраску" : "Smooth & paint-ready"}</span>
-            </div>
-
-            <div
-              onClick={() => navigate({ type: "service", slug: "loodgieter" })}
-              className="pillar-card"
-            >
-              <span className="pillar-top">⚡ {lang === "uk" ? "Сантехніка & Мережі" : lang === "nl" ? "Loodgieter & Elektra" : lang === "ru" ? "Сантехника и Сети" : "Plumbing & Wiring"}</span>
-              <span className="pillar-sub">{lang === "uk" ? "Комунікації та обладнання" : lang === "nl" ? "Vakkundige aansluitingen" : lang === "ru" ? "Коммуникации и монтаж" : "Certified installation"}</span>
-            </div>
-          </div>
-
-          <div className="hero-sub" aria-label="Certificeringen en garanties">
+          <div className="hero-sub">
             <span>
               <Icon name="check" size={16} color="#4ade80" />{" "}
               {t("hero_trust_1")}
             </span>
             <span>
-              <Icon name="shield" size={16} color="#4ade80" />{" "}
+              <Icon name="check" size={16} color="#4ade80" />{" "}
               {t("hero_trust_2")}
             </span>
             <span>
@@ -123,14 +120,15 @@ export default function HeroSection({
         <figure className="hero-photo">
           <img
             src="/images/renovation-ladder.webp"
-            alt="Bouwvast project"
-            width={1100}
-            height={730}
+            alt={pick({ nl: "Vakman op een ladder tijdens renovatiewerk", en: "Tradesman on a ladder during renovation work", uk: "Майстер на драбині під час ремонту", ru: "Мастер на лестнице во время ремонта" })}
+            width={1400}
+            height={932}
+            decoding="async"
             fetchPriority="high"
           />
           <figcaption className="hero-person-badge">
             <Icon name="check" size={18} color="#4ade80" />
-            <span>{badgeCaption}</span>
+            <span>{pick({ nl: "Bouw, renovatie & afbouw", en: "Construction, renovation & finishing", uk: "Будівництво, ремонт та оздоблення", ru: "Строительство, ремонт и отделка" })}</span>
           </figcaption>
         </figure>
       </div>

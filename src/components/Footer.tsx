@@ -1,47 +1,37 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import type { Page } from "../App"
 import PageLink from "./PageLink"
 import { Logo } from "./Logo"
-import { CONTACT } from "../data/contact"
+import { CONTACT, emailHref, googleMapsHref, phoneHref } from "../data/contact"
+import { CITIES } from "../data/cities"
 import { useLang } from "../i18n/LangContext"
 import Icon from "./Icon"
+import type { TranslationKey } from "../i18n/translations"
 
-const MAJOR_DUTCH_CITIES = [
-  "Amsterdam",
-  "Rotterdam",
-  "Den Haag",
-  "Utrecht",
-  "Eindhoven",
-  "Groningen",
-  "Tilburg",
-  "Almere",
-  "Breda",
-  "Nijmegen",
-  "Apeldoorn",
-  "Arnhem",
-  "Haarlem",
-  "Enschede",
-  "Amersfoort",
-  "Zaanstad",
-  "'s-Hertogenbosch",
-  "Zwolle",
-  "Leiden",
-  "Leeuwarden",
-  "Maastricht",
-  "Dordrecht",
-  "Ede",
-  "Hilversum",
+const FOOTER_SERVICES: { slug: string; key: TranslationKey }[] = [
+  { slug: "renovatie", key: "svc_renovation" },
+  { slug: "badkamer-keuken", key: "svc_bathroom" },
+  { slug: "afbouw", key: "svc_finishing" },
+  { slug: "schilderwerk", key: "svc_painting" },
+  { slug: "gevel-buitenwerk", key: "svc_facade" },
+  { slug: "montage", key: "svc_assembly" },
+  { slug: "loodgieter", key: "svc_plumber" },
+  { slug: "onderhoud-reparatie", key: "svc_maintenance" },
 ]
 
 export default function Footer({ navigate }: { navigate: (p: Page) => void }) {
-  const { t, lang } = useLang()
+  const { t, pick } = useLang()
   const [isCitiesExpanded, setIsCitiesExpanded] = useState(false)
+  const tel = phoneHref()
+  const mail = emailHref()
+  const maps = googleMapsHref()
+  const cities = CITIES.map((c) => c.name)
+  const visibleCities = isCitiesExpanded ? cities : cities.slice(0, 8)
 
   return (
     <footer className="site-footer">
       <div className="container">
         <div className="footer-grid">
-          {/* Col 1: Brand & Contact Info */}
           <div>
             <div className="mb-4">
               <Logo white />
@@ -50,171 +40,139 @@ export default function Footer({ navigate }: { navigate: (p: Page) => void }) {
               {t("footer_desc")}
             </p>
             <div className="space-y-3 text-sm text-[#cbd5e1]">
-              <a
-                href={CONTACT.googleMapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2.5 text-[#cbd5e1] hover:text-[#4ade80] transition-colors no-underline"
-                title="Bekijk onze locatie op Google Maps"
-              >
-                <Icon name="pin" size={18} color="#4ade80" />
-                <span className="font-medium">{CONTACT.address}</span>
-              </a>
-
-              <a
-                href={`tel:${CONTACT.phoneTel}`}
-                className="flex items-center gap-2.5 text-[#cbd5e1] hover:text-[#4ade80] transition-colors no-underline"
-              >
-                <Icon name="phone" size={18} color="#4ade80" />
-                <span className="font-bold">{CONTACT.phoneDisplay}</span>
-              </a>
-
-              <a
-                href={`mailto:${CONTACT.email}`}
-                className="flex items-center gap-2.5 text-[#cbd5e1] hover:text-[#4ade80] transition-colors no-underline"
-              >
-                <Icon name="mail" size={18} color="#4ade80" />
-                <span>{CONTACT.email}</span>
-              </a>
+              {CONTACT.address && (
+                <a
+                  href={maps}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2.5 text-[#cbd5e1] hover:text-[#4ade80] transition-colors no-underline"
+                >
+                  <Icon name="pin" size={18} color="#4ade80" />
+                  <span className="font-medium">{CONTACT.address}</span>
+                </a>
+              )}
+              {tel && (
+                <a
+                  href={tel}
+                  className="flex items-center gap-2.5 text-[#cbd5e1] hover:text-[#4ade80] transition-colors no-underline"
+                >
+                  <Icon name="phone" size={18} color="#4ade80" />
+                  <span className="font-bold">{CONTACT.phoneDisplay}</span>
+                </a>
+              )}
+              {mail && (
+                <a
+                  href={mail}
+                  className="flex items-center gap-2.5 text-[#cbd5e1] hover:text-[#4ade80] transition-colors no-underline"
+                >
+                  <Icon name="mail" size={18} color="#4ade80" />
+                  <span>{CONTACT.email}</span>
+                </a>
+              )}
+              {!tel && !mail && (
+                <PageLink
+                  to="contact"
+                  navigate={navigate}
+                  className="flex items-center gap-2.5 text-[#cbd5e1] hover:text-[#4ade80] transition-colors no-underline"
+                >
+                  <Icon name="mail" size={18} color="#4ade80" />
+                  <span>{t("nav_cta")}</span>
+                </PageLink>
+              )}
             </div>
           </div>
 
-          {/* Col 2: Navigation & Information */}
           <div>
-            <h3 className="footer-head">{t("footer_info")}</h3>
+            <h2 className="footer-head">{t("footer_info")}</h2>
             <ul className="footer-links">
-              <li>
-                <PageLink to="diensten" navigate={navigate}>
-                  {t("nav_services")}
-                </PageLink>
-              </li>
-              <li>
-                <PageLink to="projecten" navigate={navigate}>
-                  {t("nav_projects")}
-                </PageLink>
-              </li>
-              <li>
-                <PageLink to="kennisbank" navigate={navigate}>
-                  {t("nav_kennisbank")}
-                </PageLink>
-              </li>
-              <li>
-                <PageLink to="werkgebied" navigate={navigate}>
-                  {t("nav_area")}
-                </PageLink>
-              </li>
-              <li>
-                <PageLink to="zakelijk" navigate={navigate}>
-                  {t("nav_business")}
-                </PageLink>
-              </li>
-              <li>
-                <PageLink to="contact" navigate={navigate}>
-                  {t("nav_contact")}
-                </PageLink>
-              </li>
-            </ul>
-          </div>
-
-          {/* Col 3: Services */}
-          <div>
-            <h3 className="footer-head">{t("footer_services")}</h3>
-            <ul className="footer-links">
-              <li>
-                <PageLink to={{ type: "service", slug: "renovatie" }} navigate={navigate}>
-                  {t("svc_renovation")}
-                </PageLink>
-              </li>
-              <li>
-                <PageLink to={{ type: "service", slug: "badkamer-keuken" }} navigate={navigate}>
-                  {t("svc_bathroom")}
-                </PageLink>
-              </li>
-              <li>
-                <PageLink to={{ type: "service", slug: "afbouw" }} navigate={navigate}>
-                  {t("svc_finishing")}
-                </PageLink>
-              </li>
-              <li>
-                <PageLink to={{ type: "service", slug: "schilderwerk" }} navigate={navigate}>
-                  {t("svc_painting")}
-                </PageLink>
-              </li>
-              <li>
-                <PageLink to={{ type: "service", slug: "gevel-buitenwerk" }} navigate={navigate}>
-                  {t("svc_facade")}
-                </PageLink>
-              </li>
-              <li>
-                <PageLink to={{ type: "service", slug: "montage" }} navigate={navigate}>
-                  {t("svc_assembly")}
-                </PageLink>
-              </li>
-              <li>
-                <PageLink to={{ type: "service", slug: "loodgieter" }} navigate={navigate}>
-                  {t("svc_maintenance")}
-                </PageLink>
-              </li>
-            </ul>
-          </div>
-
-          {/* Col 4: Grote Steden in Nederland */}
-          <div>
-            <h3 className="footer-head">{t("footer_cities")}</h3>
-            <div className={`grid grid-cols-2 gap-x-3 gap-y-1.5 transition-all duration-300 ${isCitiesExpanded ? 'mb-2' : ''}`}>
-              {(isCitiesExpanded ? MAJOR_DUTCH_CITIES : MAJOR_DUTCH_CITIES.slice(0, 8)).map((c) => (
-                <PageLink key={c} className="text-left text-xs text-[#94a3b8] hover:text-[#4ade80] bg-transparent border-0 p-0 py-0.5 cursor-pointer truncate transition-colors" to={{ type: "city", city: c }} navigate={navigate}>
-                  {c}
-                </PageLink>
+              {(
+                [
+                  ["diensten", "nav_services"],
+                  ["projecten", "nav_projects"],
+                  ["kennisbank", "nav_kennisbank"],
+                  ["werkgebied", "nav_area"],
+                  ["zakelijk", "nav_business"],
+                  ["contact", "nav_contact"],
+                ] as const
+              ).map(([to, key]) => (
+                <li key={to}>
+                  <PageLink to={to} navigate={navigate}>
+                    {t(key)}
+                  </PageLink>
+                </li>
               ))}
-            </div>
+            </ul>
+          </div>
+
+          <div>
+            <h2 className="footer-head">{t("footer_services")}</h2>
+            <ul className="footer-links">
+              {FOOTER_SERVICES.map((s) => (
+                <li key={s.slug}>
+                  <PageLink to={{ type: "service", slug: s.slug }} navigate={navigate}>
+                    {t(s.key)}
+                  </PageLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h2 className="footer-head">{t("footer_cities")}</h2>
+            <ul
+              id="footer-cities"
+              className="grid grid-cols-2 gap-x-3 gap-y-1.5 list-none m-0 p-0"
+            >
+              {visibleCities.map((c) => (
+                <li key={c} className="min-w-0">
+                  <PageLink
+                    className="block text-left text-xs text-[#94a3b8] hover:text-[#4ade80] py-0.5 truncate transition-colors"
+                    to={{ type: "city", city: c }}
+                    navigate={navigate}
+                  >
+                    {c}
+                  </PageLink>
+                </li>
+              ))}
+            </ul>
             <button
+              type="button"
+              aria-expanded={isCitiesExpanded}
+              aria-controls="footer-cities"
               onClick={() => setIsCitiesExpanded(!isCitiesExpanded)}
               className="text-xs text-[#4ade80] hover:text-white bg-transparent border-0 p-0 mt-3 cursor-pointer transition-colors flex items-center gap-1 font-semibold"
             >
               {isCitiesExpanded
-                ? lang === "uk"
-                  ? "Згорнути список ↑"
-                  : lang === "ru"
-                    ? "Свернуть список ↑"
-                    : lang === "en"
-                      ? "Fewer cities ↑"
-                      : "Minder steden ↑"
-                : lang === "uk"
-                  ? "Усі міста →"
-                  : lang === "ru"
-                    ? "Все города →"
-                    : lang === "en"
-                      ? "All cities →"
-                      : "Alle steden →"}
+                ? pick({ nl: "Minder plaatsen ↑", en: "Fewer places ↑", uk: "Згорнути список ↑", ru: "Свернуть список ↑" })
+                : pick({ nl: "Alle plaatsen →", en: "All places →", uk: "Усі міста →", ru: "Все города →" })}
             </button>
           </div>
         </div>
 
-        {/* Bottom Bar */}
         <div className="footer-bottom">
           <p className="m-0">
-            © {new Date().getFullYear()} Bouwvast. {t("footer_rights")}
+            © {new Date().getFullYear()} {CONTACT.legalName ?? "Bouwvast"}.{" "}
+            {t("footer_rights")}
+            {CONTACT.kvk && <> · KvK {CONTACT.kvk}</>}
+            {CONTACT.btw && <> · btw {CONTACT.btw}</>}
           </p>
-          <div className="flex gap-6">
-            <a
-              href={CONTACT.googleMapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-[#64748b] hover:text-[#4ade80] transition-colors"
-            >
-              📍 Google Maps
-            </a>
-            <PageLink className="bg-transparent border-0 p-0 text-xs text-[#64748b] hover:text-white cursor-pointer" to="contact" navigate={navigate}>
-              {t("footer_privacy")}
-            </PageLink>
-            <PageLink className="bg-transparent border-0 p-0 text-xs text-[#64748b] hover:text-white cursor-pointer" to="contact" navigate={navigate}>
-              {t("footer_terms")}
-            </PageLink>
-            <PageLink className="bg-transparent border-0 p-0 text-xs text-[#64748b] hover:text-white cursor-pointer" to="zakelijk" navigate={navigate}>
-              {t("footer_partner")}
-            </PageLink>
-          </div>
+          <ul className="flex flex-wrap gap-6 list-none m-0 p-0">
+            <li>
+              <PageLink className="text-xs text-[#94a3b8] hover:text-white" to="privacy" navigate={navigate}>
+                {t("footer_privacy")}
+              </PageLink>
+            </li>
+            <li>
+              <PageLink className="text-xs text-[#94a3b8] hover:text-white" to="voorwaarden" navigate={navigate}>
+                {t("footer_terms")}
+              </PageLink>
+            </li>
+            <li>
+              <PageLink className="text-xs text-[#94a3b8] hover:text-white" to="zakelijk" navigate={navigate}>
+                {t("footer_partner")}
+              </PageLink>
+            </li>
+          </ul>
         </div>
       </div>
     </footer>

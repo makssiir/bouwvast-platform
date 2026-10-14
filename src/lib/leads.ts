@@ -1,72 +1,63 @@
-import type { Lang } from "../i18n/translations"
+import { LEAD_LIMITS, PHOTO_TYPES, validateLead } from "./leadSchema.ts"
+import type { LeadField, LeadInput } from "./leadSchema.ts"
 
-export interface Lead {
-  id: string
-  name: string
-  phone: string
-  email: string
-  city: string
-  postcode: string
-  service: string
-  description: string
-  photos: string
-  preferredDate: string | null
-  preferredTime: string
-  language: Lang
-  sourcePage: string
-  utm_source?: string
-  utm_medium?: string
-  utm_campaign?: string
-  createdAt: string
-}
+export type Lead = LeadInput
 
 /**
- * Why an attempt failed. The distinction drives what the visitor is told:
- * "unconfigured" can never succeed on a retry, "network" usually can.
+ * Why an attempt failed. The distinction drives what the visitor is told and
+ * whether retrying can help:
+ * - "unconfigured": no endpoint in this build — retrying never helps
+ * - "invalid": the server rejected the content — the visitor must edit
+ * - "rate_limited": too many attempts — wait, then retry
+ * - "network" / "server": transient — retrying may help
  */
-export type LeadFailure = "unconfigured" | "network" | "server"
+export type LeadFailure = "unconfigured" | "invalid" | "rate_limited" | "network" | "server"
 
 export interface LeadResult {
-  /** True only when the endpoint confirmed receipt with a 2xx response. */
+  /** True only when the endpoint returned a receipt for this exact lead id. */
   delivered: boolean
   failure?: LeadFailure
   status?: number
-  /** True when the lead was stored locally for a later automatic retry. */
-  queued: boolean
-  /** True when photos were left out because they exceeded the size budget. */
+  /** Field-level problems reported by the server (stable codes). */
+  fieldErrors?: Partial<Record<LeadField, string>>
+  /** Server reference shown to the visitor on success. */
+  reference?: string
+  /** Photos were left out because they were not acceptable. */
   photosSkipped: boolean
-}
-
-export interface StorageLike {
-  getItem(key: string): string | null
-  setItem(key: string, value: string): void
-  removeItem(key: string): void
 }
 
 export interface LeadTransport {
   /** Empty string means no lead endpoint was configured at build time. */
   endpoint: string
   fetchImpl: typeof fetch
-  storage: StorageLike | null
   timeoutMs: number
 }
 
-export const QUEUE_KEY = "bouwvast.leads.pending"
+const DEFAULT_TIMEOUT_MS = 30000
 
-/** Free form backends reject large bodies; stay well under their limits. */
-export const PHOTO_BUDGET_BYTES = 4 * 1024 * 1024
+/** Keeps only files the endpoint will accept; reports whether any were dropped. */
+export function acceptablePhotos(files: File[]): { files: File[]; skipped: boolean } {
+  const limits = LEAD_LIMITS.photos
+  const kept: File[] = []
+  let total = 0
+  for (const file of files.slice(0, limits.maxFiles)) {
+    const typeOk = (PHOTO_TYPES as readonly string[]).includes(file.type)
+    if (!typeOk || file.size > limits.maxFileBytes) continue
+    if (total + file.size > limits.maxTotalBytes) continue
+    kept.push(file)
+    total += file.size
+  }
+  return { files: kept, skipped: kept.length !== files.length }
+}
 
-const MAX_QUEUED_LEADS = 20
-const DEFAULT_TIMEOUT_MS = 15000
-
+/** Kept for callers that only need a yes/no before submitting. */
 export function photosFitBudget(files: File[]): boolean {
-  const total = files.reduce((sum, file) => sum + file.size, 0)
-  return total <= PHOTO_BUDGET_BYTES
+  return !acceptablePhotos(files).skipped
 }
 
 /**
- * Photos force multipart; without them JSON keeps the payload readable for
- * whichever backend is wired up. Field names are identical in both shapes.
+ * Photos force multipart; without them JSON keeps the payload readable.
+ * Field names are identical in both shapes.
  */
 function buildRequest(
   lead: Lead,
@@ -75,7 +66,7 @@ function buildRequest(
   if (files.length === 0) {
     return {
       body: JSON.stringify(lead),
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
     }
   }
 
@@ -83,137 +74,91 @@ function buildRequest(
   for (const [key, value] of Object.entries(lead)) {
     if (value !== undefined && value !== null) form.append(key, String(value))
   }
-  files.forEach((file, index) => form.append(`photo_${index + 1}`, file, file.name))
-
+  files.forEach((file, index) => form.append("photos", file, file.name || `photo-${index + 1}`))
   // No Content-Type header: the browser must set the multipart boundary.
-  return { body: form, headers: {} }
+  return { body: form, headers: { Accept: "application/json" } }
 }
 
-type PostOutcome =
-  | { ok: true }
-  | { ok: false; failure: LeadFailure; status?: number }
+interface Receipt {
+  ok?: boolean
+  id?: string
+  reference?: string
+  errors?: Partial<Record<LeadField, string>>
+}
 
-async function post(
-  lead: Lead,
-  files: File[],
-  transport: LeadTransport,
-): Promise<PostOutcome> {
-  const controller = new AbortController()
-  const timer = setTimeout(() => controller.abort(), transport.timeoutMs)
-
+async function readJson(response: Response): Promise<Receipt | null> {
   try {
-    const { body, headers } = buildRequest(lead, files)
-    const response = await transport.fetchImpl(transport.endpoint, {
-      method: "POST",
-      headers,
-      body,
-      signal: controller.signal,
-    })
-    if (!response.ok) {
-      return { ok: false, failure: "server", status: response.status }
-    }
-    return { ok: true }
-  } catch {
-    // Offline, DNS failure, CORS rejection or our own abort timeout.
-    return { ok: false, failure: "network" }
-  } finally {
-    clearTimeout(timer)
-  }
-}
-
-export function readQueue(storage: StorageLike | null): Lead[] {
-  if (!storage) return []
-  try {
-    const raw = storage.getItem(QUEUE_KEY)
-    const parsed: unknown = raw ? JSON.parse(raw) : []
-    return Array.isArray(parsed) ? (parsed as Lead[]) : []
-  } catch {
-    return []
-  }
-}
-
-function writeQueue(storage: StorageLike | null, leads: Lead[]): boolean {
-  if (!storage) return false
-  try {
-    if (leads.length === 0) storage.removeItem(QUEUE_KEY)
-    else storage.setItem(QUEUE_KEY, JSON.stringify(leads.slice(-MAX_QUEUED_LEADS)))
-    return true
-  } catch {
-    // A full or disabled storage must never break the form.
-    return false
-  }
-}
-
-function enqueue(storage: StorageLike | null, lead: Lead): boolean {
-  const queue = readQueue(storage).filter((queued) => queued.id !== lead.id)
-  queue.push(lead)
-  return writeQueue(storage, queue)
-}
-
-/**
- * Sends one lead. Resolves with what actually happened — it never throws and
- * never reports success it did not observe.
- */
-export async function deliverLead(
-  lead: Lead,
-  files: File[],
-  transport: LeadTransport,
-): Promise<LeadResult> {
-  const attachments = photosFitBudget(files) ? files : []
-  const photosSkipped = files.length > 0 && attachments.length === 0
-
-  if (!transport.endpoint) {
-    // Nothing can deliver this, now or later, so do not queue it forever.
-    return { delivered: false, failure: "unconfigured", queued: false, photosSkipped }
-  }
-
-  const outcome = await post(lead, attachments, transport)
-  if (outcome.ok) return { delivered: true, queued: false, photosSkipped }
-
-  // File objects do not survive a reload, so the retry copy is text-only.
-  const queued = enqueue(transport.storage, lead)
-  return {
-    delivered: false,
-    failure: outcome.failure,
-    status: outcome.status,
-    queued,
-    photosSkipped,
-  }
-}
-
-/** Retries leads stored by an earlier failed attempt. Returns how many landed. */
-export async function flushQueue(transport: LeadTransport): Promise<number> {
-  if (!transport.endpoint) return 0
-
-  const queue = readQueue(transport.storage)
-  if (queue.length === 0) return 0
-
-  const remaining: Lead[] = []
-  let delivered = 0
-
-  for (const lead of queue) {
-    const outcome = await post(lead, [], transport)
-    if (outcome.ok) delivered += 1
-    else remaining.push(lead)
-  }
-
-  writeQueue(transport.storage, remaining)
-  return delivered
-}
-
-function browserStorage(): StorageLike | null {
-  try {
-    // Safari private mode and blocked cookies throw on first access.
-    return typeof localStorage === "undefined" ? null : localStorage
+    return (await response.json()) as Receipt
   } catch {
     return null
   }
 }
 
 /**
+ * Sends one lead. Resolves with what actually happened — it never throws and
+ * never reports success it did not observe. Re-sending the same lead (same
+ * id) is safe: the endpoint answers with the original receipt instead of
+ * creating a second record.
+ */
+export async function deliverLead(
+  lead: Lead,
+  files: File[],
+  transport: LeadTransport,
+): Promise<LeadResult> {
+  const { files: attachments, skipped: photosSkipped } = acceptablePhotos(files)
+
+  if (!transport.endpoint) {
+    return { delivered: false, failure: "unconfigured", photosSkipped }
+  }
+
+  const check = validateLead(lead as unknown as Record<string, unknown>)
+  if (!check.ok) {
+    const { id: _id, ...fieldErrors } = check.errors
+    return { delivered: false, failure: "invalid", fieldErrors, photosSkipped }
+  }
+
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), transport.timeoutMs)
+
+  try {
+    const { body, headers } = buildRequest(check.lead, attachments)
+    const response = await transport.fetchImpl(transport.endpoint, {
+      method: "POST",
+      headers,
+      body,
+      signal: controller.signal,
+      credentials: "omit",
+    })
+    const receipt = await readJson(response)
+
+    if (response.ok && receipt?.ok === true && receipt.id === lead.id) {
+      return { delivered: true, reference: receipt.reference, photosSkipped }
+    }
+    if (response.status === 429) {
+      return { delivered: false, failure: "rate_limited", status: 429, photosSkipped }
+    }
+    if ([400, 413, 415, 422].includes(response.status)) {
+      return {
+        delivered: false,
+        failure: "invalid",
+        status: response.status,
+        fieldErrors: receipt?.errors,
+        photosSkipped,
+      }
+    }
+    // Includes a 2xx without a matching receipt: not proof of delivery.
+    return { delivered: false, failure: "server", status: response.status, photosSkipped }
+  } catch {
+    // Offline, DNS failure, CORS rejection or our own abort timeout.
+    return { delivered: false, failure: "network", photosSkipped }
+  } finally {
+    clearTimeout(timer)
+  }
+}
+
+/**
  * Read as a static `import.meta.env.VITE_*` path so Vite inlines the value at
- * build time. Outside a bundler `import.meta.env` does not exist and throws,
- * which is what the catch is for.
+ * build time. Outside a bundler `import.meta.env` does not exist and throws.
  */
 function configuredEndpoint(): string {
   try {
@@ -227,7 +172,6 @@ export function browserTransport(): LeadTransport {
   return {
     endpoint: configuredEndpoint(),
     fetchImpl: (input: RequestInfo | URL, init?: RequestInit) => fetch(input, init),
-    storage: browserStorage(),
     timeoutMs: DEFAULT_TIMEOUT_MS,
   }
 }
@@ -236,6 +180,15 @@ export function submitLead(lead: Lead, files: File[] = []): Promise<LeadResult> 
   return deliverLead(lead, files, browserTransport())
 }
 
-export function retryPendingLeads(): Promise<number> {
-  return flushQueue(browserTransport())
+/** Builds a fresh lead id. Falls back for browsers without randomUUID. */
+export function newLeadId(): string {
+  const c = globalThis.crypto
+  if (c?.randomUUID) return c.randomUUID()
+  const bytes = new Uint8Array(16)
+  if (c?.getRandomValues) c.getRandomValues(bytes)
+  else for (let i = 0; i < 16; i++) bytes[i] = Math.floor(Math.random() * 256)
+  bytes[6] = (bytes[6] & 0x0f) | 0x40
+  bytes[8] = (bytes[8] & 0x3f) | 0x80
+  const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("")
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`
 }

@@ -3,6 +3,8 @@ import type { Lang } from "../i18n/translations"
 const SITE_NAME = "Bouwvast"
 
 /** Map our internal lang codes to valid BCP-47 attribute values. */
+const OG_LOCALE: Record<Lang, string> = { nl: "nl_NL", en: "en_GB", uk: "uk_UA", ru: "ru_RU" }
+
 const HTML_LANG: Record<Lang, string> = {
   nl: "nl",
   en: "en",
@@ -11,25 +13,44 @@ const HTML_LANG: Record<Lang, string> = {
 }
 
 /**
- * Canonicals must point at the production host, not at whichever preview or
- * staging domain happens to serve the page. Falls back to the current origin
- * until VITE_SITE_ORIGIN is configured.
+ * Canonicals must point at the production host, never at whichever preview or
+ * staging domain happens to serve the page. The build injects the same value
+ * the prerenderer uses (SITE_ORIGIN → VITE_SITE_ORIGIN); without it no
+ * canonical is written at all.
  */
 export function siteOrigin(): string {
-  let configured = ""
   try {
-    configured = String(import.meta.env.VITE_SITE_ORIGIN ?? "").trim()
+    return String(import.meta.env.VITE_SITE_ORIGIN ?? "").trim().replace(/\/+$/, "")
   } catch {
-    configured = ""
+    return ""
   }
-  if (configured) return configured.replace(/\/+$/, "")
-  return typeof window === "undefined" ? "" : window.location.origin
+}
+
+/** Staging and preview builds set SITE_INDEXING=false to keep out of search. */
+export function siteIndexable(): boolean {
+  try {
+    return String(import.meta.env.VITE_SITE_INDEXING ?? "true") !== "false"
+  } catch {
+    return true
+  }
 }
 
 export function canonicalUrl(path: string): string {
   const clean = path.replace(/^\/+|\/+$/g, "")
   const origin = siteOrigin()
-  return clean ? `${origin}/${clean}` : origin || "/"
+  return clean ? `${origin}/${clean}/` : `${origin}/`
+}
+
+/**
+ * Absolute URL for structured data, or "" when no origin is configured.
+ * Page paths get a trailing slash; file paths (with an extension) do not.
+ */
+export function siteUrl(path: string): string {
+  const origin = siteOrigin()
+  if (!origin) return ""
+  const clean = path.replace(/^\/+|\/+$/g, "")
+  if (!clean) return `${origin}/`
+  return /\.[a-z0-9]+$/i.test(clean) ? `${origin}/${clean}` : `${origin}/${clean}/`
 }
 
 function upsertMeta(
@@ -64,6 +85,8 @@ export interface PageMeta {
   path: string
   /** False for pages that exist but should not be offered to search engines. */
   indexable?: boolean
+  /** False for pages that must not declare a canonical (the 404 page). */
+  canonical?: boolean
 }
 
 export function pageTitle(title: string): string {
@@ -73,20 +96,21 @@ export function pageTitle(title: string): string {
 /** Sync <title>, meta description, robots and canonical for the active page. */
 export function applyPageMeta(
   lang: Lang,
-  { title, description, path, indexable = true }: PageMeta,
+  { title, description, path, indexable = true, canonical: withCanonical = true }: PageMeta,
 ) {
   const fullTitle = pageTitle(title)
   document.title = fullTitle
   document.documentElement.lang = HTML_LANG[lang]
 
   const canonical = canonicalUrl(path)
+  const origin = siteOrigin()
 
   upsertMeta('meta[name="description"]', "name", "description", description)
   upsertMeta(
     'meta[name="robots"]',
     "name",
     "robots",
-    indexable ? "index, follow" : "noindex, follow",
+    indexable && siteIndexable() ? "index, follow" : "noindex, follow",
   )
   upsertMeta('meta[property="og:title"]', "property", "og:title", fullTitle)
   upsertMeta(
@@ -96,13 +120,17 @@ export function applyPageMeta(
     description,
   )
   upsertMeta('meta[property="og:type"]', "property", "og:type", "website")
-  upsertMeta('meta[property="og:url"]', "property", "og:url", canonical)
+  if (withCanonical && origin) {
+    upsertMeta('meta[property="og:url"]', "property", "og:url", canonical)
+  }
   upsertMeta(
     'meta[property="og:locale"]',
     "property",
     "og:locale",
-    HTML_LANG[lang],
+    OG_LOCALE[lang],
   )
 
-  upsertLink("canonical", canonical)
+  const existing = document.head.querySelector('link[rel="canonical"]')
+  if (withCanonical && origin) upsertLink("canonical", canonical)
+  else existing?.remove()
 }

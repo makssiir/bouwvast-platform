@@ -8,7 +8,7 @@ export function Logo({ white }: { white?: boolean }) {
           background: "linear-gradient(135deg, #16a34a 0%, #15803d 100%)",
         }}
       >
-        <svg
+        <svg aria-hidden="true" focusable="false"
           width="22"
           height="22"
           viewBox="0 0 24 24"

@@ -19,7 +19,9 @@ This is the canonical project structure. Start with task-relevant files below. O
 - `index.html` - Vite HTML shell containing the `#root` element and loading `src/main.tsx`
 - `package.json` - Project dependencies and the Vite build, development, preview, and formatting scripts
 - `vite.config.ts` - Vite configuration with React, Tailwind CSS v4, and Figma Make plugins plus the `@` alias for `src`
-- `.mise.toml` - Toolchain versions for Node.js and pnpm
+- `.mise.toml` / `.nvmrc` - Node.js version (22.18+, npm)
+- `server/` - Production server (static files, security headers, `POST /api/leads`)
+- `src/data/` - Owner-supplied facts; unverified values are never rendered
 
 ## Dependencies
 
@@ -39,3 +41,9 @@ This project uses **Tailwind CSS v4** through the `@tailwindcss/vite` plugin con
 - Use double quotes for strings containing apostrophes (`"We're here to help"`), or escape them in single-quoted strings. An unescaped apostrophe in a single-quoted string breaks the build.
 - Ensure JSX tags are closed and braces are balanced.
 - Export components as default exports.
+
+## Content rules
+
+- Never add business facts, prices, reviews, project photos, certifications or promises that are not in `src/data/` with `verified: true` / an enabled claim with a source. See `LAUNCH-CHECKLIST.md`.
+- New pages go in the route table (`src/lib/routes.ts`) so they are prerendered and checked.
+- Before finishing a change run `npm run release:check`.

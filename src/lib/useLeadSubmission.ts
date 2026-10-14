@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { submitLead } from "./leads"
 import type { Lead, LeadFailure, LeadResult } from "./leads"
+import type { LeadField } from "./leadSchema.ts"
 import { track } from "./analytics"
 
 export type LeadStatus = "idle" | "sending" | "sent" | "failed"
@@ -8,49 +9,60 @@ export type LeadStatus = "idle" | "sending" | "sent" | "failed"
 export interface LeadSubmission {
   status: LeadStatus
   failure?: LeadFailure
-  /** The lead was stored locally and will be retried on a later visit. */
-  queued: boolean
-  /** Photos were left out of the request because they were too large. */
+  fieldErrors: Partial<Record<LeadField, string>>
   photosSkipped: boolean
-  send: (lead: Lead, files?: File[]) => Promise<LeadResult>
-  reset: () => void
+  reference?: string
+  send: (lead: Lead, files?: File[]) => Promise<LeadResult | null>
+  /** Back to the (still filled-in) form. */
+  edit: () => void
 }
 
 /**
  * One submit path for every quote form on the site. Success is reported only
- * after the endpoint confirms receipt, so the visitor is never shown a thank
- * you page for a request that went nowhere.
+ * after the endpoint confirms receipt of this exact lead, so the visitor is
+ * never shown a thank-you for a request that went nowhere. Concurrent sends
+ * (double clicks, Enter + click) are ignored.
  */
 export function useLeadSubmission(sourcePage: string): LeadSubmission {
   const [status, setStatus] = useState<LeadStatus>("idle")
   const [failure, setFailure] = useState<LeadFailure | undefined>(undefined)
-  const [queued, setQueued] = useState(false)
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<LeadField, string>>>({})
   const [photosSkipped, setPhotosSkipped] = useState(false)
+  const [reference, setReference] = useState<string | undefined>(undefined)
+  const inFlight = useRef(false)
 
-  const send = async (lead: Lead, files: File[] = []): Promise<LeadResult> => {
+  const send = async (lead: Lead, files: File[] = []): Promise<LeadResult | null> => {
+    if (inFlight.current) return null
+    inFlight.current = true
     setStatus("sending")
-    const result = await submitLead(lead, files)
+    try {
+      const result = await submitLead(lead, files)
+      setPhotosSkipped(result.photosSkipped)
+      setFieldErrors(result.fieldErrors ?? {})
 
-    setQueued(result.queued)
-    setPhotosSkipped(result.photosSkipped)
-
-    if (result.delivered) {
-      // Only a confirmed delivery counts as a conversion.
-      track("form_submitted", { sourcePage })
-      setFailure(undefined)
-      setStatus("sent")
-    } else {
-      setFailure(result.failure)
-      setStatus("failed")
+      if (result.delivered) {
+        track("form_submitted", { sourcePage })
+        setFailure(undefined)
+        setReference(result.reference)
+        setStatus("sent")
+      } else if (result.failure === "invalid") {
+        // Content problem: back to the form with the fields highlighted.
+        setFailure("invalid")
+        setStatus("idle")
+      } else {
+        setFailure(result.failure)
+        setStatus("failed")
+      }
+      return result
+    } finally {
+      inFlight.current = false
     }
-
-    return result
   }
 
-  const reset = () => {
+  const edit = () => {
     setStatus("idle")
     setFailure(undefined)
   }
 
-  return { status, failure, queued, photosSkipped, send, reset }
+  return { status, failure, fieldErrors, photosSkipped, reference, send, edit }
 }

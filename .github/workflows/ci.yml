@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run verify:leads
+      # Local build (no canonicals/sitemap) and a production-shaped build.
+      - run: npm run build && npm run verify:routes
+      - run: npm run build && npm run verify:routes
+        env:
+          SITE_ORIGIN: https://www.example.nl
+      - name: Browser checks
+        run: npm i --no-save playwright && npx playwright install --with-deps chromium && npm run verify:browser
+
+  # Informational: lists what the owner still has to supply. Does not block CI.
+  launch-readiness:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - run: npm run check:launch

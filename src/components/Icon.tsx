@@ -59,6 +59,8 @@ export default function Icon({
       strokeWidth={strokeWidth}
       strokeLinecap="round"
       strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
     >
       {iconPath.split(" M").map((segment, i) => (
         <path key={i} d={i === 0 ? segment : "M" + segment} />

@@ -18,24 +18,24 @@ export default function BeforeAfter() {
         id: "kitchen",
         title: "Комплексний ремонт кухні",
         location: "Амерсфорт Ватгорст",
-        beforeImg: "/images/kitchen-before.jpg",
-        afterImg: "/images/kitchen-after.jpg",
+        beforeImg: "/images/kitchen-before.webp",
+        afterImg: "/images/kitchen-after.webp",
         desc: "Від старих дубових шаф до сучасної преміум-кухні з матовими антрацитовими фасадами, індукцією та паркетом ялинкою.",
       },
       {
         id: "renovation",
         title: "Ремонт житла та штукатурка",
         location: "Леусден",
-        beforeImg: "/images/living-before.jpg",
-        afterImg: "/images/living-after.jpg",
+        beforeImg: "/images/living-before.webp",
+        afterImg: "/images/living-after.webp",
         desc: "Повна переробка необроблених стін, дзеркально-гладка штукатурка під фарбування та дубова паркетна підлога.",
       },
       {
         id: "bathroom",
         title: "Ремонт ванної кімнати та сантехніки",
         location: "Утрехт Схід",
-        beforeImg: "/images/bath-before.jpg",
-        afterImg: "/images/bath-after.jpg",
+        beforeImg: "/images/bath-before.webp",
+        afterImg: "/images/bath-after.webp",
         desc: "Від старої плитки до сучасної безбар'єрної душової зони з великоформатною керамікою під бетон та меблями з масиву дуба.",
       },
     ],
@@ -44,24 +44,24 @@ export default function BeforeAfter() {
         id: "kitchen",
         title: "Complete Kitchen Remodel",
         location: "Amersfoort Vathorst",
-        beforeImg: "/images/kitchen-before.jpg",
-        afterImg: "/images/kitchen-after.jpg",
+        beforeImg: "/images/kitchen-before.webp",
+        afterImg: "/images/kitchen-after.webp",
         desc: "From outdated oak cabinets to a modern luxury kitchen with matte anthracite cabinetry, induction, and herringbone flooring.",
       },
       {
         id: "renovation",
         title: "Home Renovation & Plastering",
         location: "Leusden",
-        beforeImg: "/images/living-before.jpg",
-        afterImg: "/images/living-after.jpg",
+        beforeImg: "/images/living-before.webp",
+        afterImg: "/images/living-after.webp",
         desc: "Complete overhaul of raw walls, mirror-smooth plastering, and oak herringbone flooring throughout.",
       },
       {
         id: "bathroom",
         title: "Bathroom & Sanitary Renovation",
         location: "Utrecht East",
-        beforeImg: "/images/bath-before.jpg",
-        afterImg: "/images/bath-after.jpg",
+        beforeImg: "/images/bath-before.webp",
+        afterImg: "/images/bath-after.webp",
         desc: "From dated tiling to a modern walk-in shower with large-format concrete-look tiles and an oak vanity.",
       },
     ],
@@ -70,24 +70,24 @@ export default function BeforeAfter() {
         id: "kitchen",
         title: "Комплексный ремонт кухни",
         location: "Амерсфорт Ватхорст",
-        beforeImg: "/images/kitchen-before.jpg",
-        afterImg: "/images/kitchen-after.jpg",
+        beforeImg: "/images/kitchen-before.webp",
+        afterImg: "/images/kitchen-after.webp",
         desc: "От устаревших дубовых шкафов к современной кухне с матовыми антрацитовыми фасадами, индукцией и паркетом елочкой.",
       },
       {
         id: "renovation",
         title: "Ремонт дома и штукатурка",
         location: "Леусден",
-        beforeImg: "/images/living-before.jpg",
-        afterImg: "/images/living-after.jpg",
+        beforeImg: "/images/living-before.webp",
+        afterImg: "/images/living-after.webp",
         desc: "Полная отделка сырых стен, зеркально гладкая штукатурка под покраску и дубовый паркет.",
       },
       {
         id: "bathroom",
         title: "Ремонт ванной комнаты и сантехники",
         location: "Утрехт Восток",
-        beforeImg: "/images/bath-before.jpg",
-        afterImg: "/images/bath-after.jpg",
+        beforeImg: "/images/bath-before.webp",
+        afterImg: "/images/bath-after.webp",
         desc: "От старой плитки к современной душевой зоне с крупноформатной плиткой под бетон и дубовой мебелью.",
       },
     ],
@@ -96,30 +96,30 @@ export default function BeforeAfter() {
         id: "kitchen",
         title: "Complete Keukenrenovatie",
         location: "Amersfoort Vathorst",
-        beforeImg: "/images/kitchen-before.jpg",
-        afterImg: "/images/kitchen-after.jpg",
+        beforeImg: "/images/kitchen-before.webp",
+        afterImg: "/images/kitchen-after.webp",
         desc: "Van gedateerde eikenhouten kasten naar een moderne luxe keuken met mat-antraciet kasten, inductie en visgraatvloer.",
       },
       {
         id: "renovation",
         title: "Woningrenovatie & Stucwerk",
         location: "Leusden",
-        beforeImg: "/images/living-before.jpg",
-        afterImg: "/images/living-after.jpg",
+        beforeImg: "/images/living-before.webp",
+        afterImg: "/images/living-after.webp",
         desc: "Complete aanpak van ruwe wanden, strak sausklaar stucwerk en eikenhouten visgraatvloer.",
       },
       {
         id: "bathroom",
         title: "Badkamer & Sanitair Renovatie",
         location: "Utrecht Oost",
-        beforeImg: "/images/bath-before.jpg",
-        afterImg: "/images/bath-after.jpg",
+        beforeImg: "/images/bath-before.webp",
+        afterImg: "/images/bath-after.webp",
         desc: "Van gedateerd tegelwerk naar een moderne inloopdouche met grootformaat betonlook tegels en eiken meubel.",
       },
     ],
   }
 
-  const comparisons = comparisonsByLang[lang] ?? comparisonsByLang.uk
+  const comparisons = comparisonsByLang[lang] ?? comparisonsByLang.nl
   const current = comparisons[activeIdx] ?? comparisons[0]
 
   const setFromClientX = (clientX: number) => {
@@ -142,7 +142,9 @@ export default function BeforeAfter() {
           <div className="flex flex-wrap justify-center gap-2.5 mt-4">
             {comparisons.map((comp, idx) => (
               <button
+                type="button"
                 key={comp.id}
+                aria-pressed={activeIdx === idx}
                 onClick={() => {
                   setActiveIdx(idx)
                   setPos(50)
@@ -177,29 +179,39 @@ export default function BeforeAfter() {
             role="slider"
             aria-label={t("ba_hint")}
             aria-valuenow={Math.round(pos)}
+            aria-valuetext={`${Math.round(pos)}%`}
             aria-valuemin={0}
             aria-valuemax={100}
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === "ArrowLeft") setPos((p) => Math.max(0, p - 5))
               if (e.key === "ArrowRight") setPos((p) => Math.min(100, p + 5))
+              if (e.key === "Home") setPos(0)
+              if (e.key === "End") setPos(100)
             }}
           >
             {/* After (Base Layer) */}
             <img
               src={current.afterImg}
+              loading="lazy"
+              width={1376}
+              height={768}
+              decoding="async"
               alt={t("ba_after")}
               className="absolute inset-0 w-full h-full object-cover"
               draggable={false}
             />
             <span className="absolute top-4 right-4 z-10 px-3.5 py-1.5 rounded-full text-xs font-bold text-white bg-[var(--brand)] shadow-lg inline-flex items-center gap-1.5">
-              <span>🛡️</span>
-              <span>{t("ba_after")} · {lang === "uk" ? "Гарантія 2 роки" : lang === "nl" ? "2 Jaar Garantie" : lang === "ru" ? "Гарантия 2 года" : "2-Yr Warranty"}</span>
+              <span>{t("ba_after")}</span>
             </span>
 
             {/* Before (Clipped Layer) */}
             <img
               src={current.beforeImg}
+              loading="lazy"
+              width={1376}
+              height={768}
+              decoding="async"
               alt={t("ba_before")}
               className="absolute inset-0 w-full h-full object-cover"
               style={{
@@ -212,7 +224,6 @@ export default function BeforeAfter() {
               className="absolute top-4 left-4 z-10 px-3.5 py-1.5 rounded-full text-xs font-bold text-white bg-[rgba(15,23,42,0.85)] backdrop-blur-xs shadow-lg transition-opacity inline-flex items-center gap-1.5"
               style={{ opacity: pos > 15 ? 1 : 0 }}
             >
-              <span>⚠️</span>
               <span>{t("ba_before")}</span>
             </span>
 
@@ -252,9 +263,6 @@ export default function BeforeAfter() {
               </span>
               <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">
                 ✓ {lang === "uk" ? "Нові інженерні мережі" : lang === "nl" ? "Nieuwe leidingen & elektra" : lang === "ru" ? "Новые инженерные сети" : "Modern utilities & wiring"}
-              </span>
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">
-                ✓ {lang === "uk" ? "Офіційна письмова гарантія" : lang === "nl" ? "Schriftelijke garantie" : lang === "ru" ? "Официальная гарантия" : "Formal written warranty"}
               </span>
             </div>
           </div>
