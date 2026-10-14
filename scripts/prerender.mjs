@@ -221,7 +221,7 @@ async function main() {
   })
 
   const serverEntry = pathToFileURL(join(root, ssrOutDir, "entry-server.js")).href
-  const { render, allRoutes, indexableRoutes, isIndexable, metaForPage, pageForPath } =
+  const { render, allRoutes, indexableRoutes, isIndexable, metaForPage, pageForPath, ESTIMATOR, CONTACT } =
     await import(serverEntry)
 
   const template = await readFile(join(distDir, "index.html"), "utf8")
@@ -286,6 +286,16 @@ async function main() {
     )
   }
   if (!indexing) console.warn("! SITE_INDEXING=false: every page is noindex and robots.txt disallows crawling.")
+  if (!ESTIMATOR.ratesChecked)
+    console.warn(
+      "! Calculator rates are still the unchecked ones from the original site.\n" +
+        "  Check them in src/data/pricing.ts (ESTIMATOR), then set ratesChecked: true.",
+    )
+  if (!CONTACT.hasWhatsApp)
+    console.warn(
+      "! No confirmed WhatsApp number: WhatsApp buttons stay hidden and the pop-up points to the quote form.\n" +
+        "  Add it in src/data/company.ts (whatsapp) with verified: true.",
+    )
 
   // The server bundle stays: scripts/verify-routes.mjs reads the route table
   // from it, so the audit checks the output against the same source of truth.

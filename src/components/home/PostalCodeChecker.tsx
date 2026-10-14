@@ -1,245 +1,215 @@
-import React, { useState } from "react"
+import { useId, useState } from "react"
 import Icon from "../Icon"
+import PageLink from "../PageLink"
 import { useLang } from "../../i18n/LangContext"
 import { whatsappHref } from "../../data/contact"
 import { claim } from "../../data/claims"
-import { scrollToQuote } from "../../lib/quoteDraft"
-import type { Page } from "../../App"
+import { CITIES, REGION_LABELS, findServiceArea } from "../../data/cities"
+import type { AreaMatch } from "../../data/cities"
+import { scrollToQuote, useQuoteDraft } from "../../lib/quoteDraft"
+import { track } from "../../lib/analytics"
+import type { Page } from "../../lib/routes"
 
-/**
- * The postcode ranges below are the owner's service area and must be
- * confirmed (CLAIMS.serviceArea) before the checker is shown. Anything that
- * does not match is reported as "unknown" — never as covered.
- */
-export interface AreaResult {
-  serviceRadius: "core" | "extended" | "unknown"
-  cityName?: string
-}
-
-const POPULAR_QUICK_SEARCHES = [
-  { label: "Amersfoort (3811)", query: "3811 Amersfoort", city: "Amersfoort" },
-  { label: "Utrecht (3511)", query: "3511 Utrecht", city: "Utrecht" },
-  { label: "Hilversum (1211)", query: "1211 Hilversum", city: "Hilversum" },
-  { label: "Zeist (3701)", query: "3701 Zeist", city: "Zeist" },
-  { label: "Leusden (3831)", query: "3831 Leusden", city: "Leusden" },
-  { label: "Soest (3762)", query: "3762 Soest", city: "Soest" },
-  { label: "Almere (1315)", query: "1315 Almere", city: "Almere" },
-  { label: "Amsterdam (1012)", query: "1012 Amsterdam", city: "Amsterdam" },
+/** Quick picks: the main towns of each region, with a typical postcode. */
+const QUICK = [
+  { city: "Amersfoort", code: "3811" },
+  { city: "Utrecht", code: "3511" },
+  { city: "Hilversum", code: "1211" },
+  { city: "Zeist", code: "3701" },
+  { city: "Leusden", code: "3831" },
+  { city: "Soest", code: "3762" },
 ]
 
-export function determineServiceArea(locationInput: string): AreaResult {
-  if (!locationInput || typeof locationInput !== "string") {
-    return { serviceRadius: "unknown" }
-  }
+const REGIONS = Object.keys(REGION_LABELS)
 
-  const normalized = locationInput.toLowerCase().trim()
-
-  // 1. Check 4-digit Dutch postal code
-  const postalMatch = normalized.match(/\b(\d{4})\b/)
-  if (postalMatch) {
-    const code = parseInt(postalMatch[1], 10)
-
-    // Core postcodes (Amersfoort, Utrecht, Leusden, Soest, Zeist, Baarn, Hilversum)
-    if (code >= 3800 && code <= 3839) return { serviceRadius: "core", cityName: "Amersfoort / Leusden" }
-    if (code >= 3760 && code <= 3769) return { serviceRadius: "core", cityName: "Soest" }
-    if (code >= 3740 && code <= 3749) return { serviceRadius: "core", cityName: "Baarn" }
-    if (code >= 3700 && code <= 3709) return { serviceRadius: "core", cityName: "Zeist" }
-    if (code >= 3500 && code <= 3589) return { serviceRadius: "core", cityName: "Utrecht" }
-    if (code >= 1200 && code <= 1229) return { serviceRadius: "core", cityName: "Hilversum" }
-    if (code >= 1400 && code <= 1419) return { serviceRadius: "core", cityName: "Bussum / Naarden" }
-
-    // Extended postcodes (Amsterdam, Almere, Nijkerk, Barneveld, Ede, Veenendaal)
-    if (code >= 1000 && code <= 1109) return { serviceRadius: "extended", cityName: "Amsterdam" }
-    if (code >= 1300 && code <= 1379) return { serviceRadius: "extended", cityName: "Almere" }
-    if (code >= 3860 && code <= 3869) return { serviceRadius: "core", cityName: "Nijkerk" }
-    if (code >= 3770 && code <= 3779) return { serviceRadius: "core", cityName: "Barneveld" }
-    if (code >= 3900 && code <= 3909) return { serviceRadius: "extended", cityName: "Veenendaal" }
-    if (code >= 6710 && code <= 6719) return { serviceRadius: "extended", cityName: "Ede" }
-  }
-
-  // 2. Check city name
-  if (normalized.includes("amersfoort") || normalized.includes("leusden")) return { serviceRadius: "core", cityName: "Amersfoort" }
-  if (normalized.includes("soest") || normalized.includes("baarn")) return { serviceRadius: "core", cityName: "Soest" }
-  if (normalized.includes("zeist") || normalized.includes("driebergen")) return { serviceRadius: "core", cityName: "Zeist" }
-  if (normalized.includes("utrecht") || normalized.includes("nieuwegein") || normalized.includes("maarssen")) return { serviceRadius: "core", cityName: "Utrecht" }
-  if (normalized.includes("hilversum") || normalized.includes("bussum") || normalized.includes("naarden")) return { serviceRadius: "core", cityName: "Hilversum" }
-  if (normalized.includes("amsterdam") || normalized.includes("almere")) return { serviceRadius: "extended", cityName: "Amsterdam / Almere" }
-  if (normalized.includes("nijkerk") || normalized.includes("barneveld") || normalized.includes("harderwijk")) return { serviceRadius: "core", cityName: "Nijkerk / Barneveld" }
-
-  return { serviceRadius: "unknown", cityName: locationInput.trim() }
-}
-
+/**
+ * "Werkgebied & beschikbaarheid". Answers from the same list of places as
+ * /werkgebied/ (data/cities.ts), so the checker can never promise more than
+ * the site does elsewhere. Anything not on the list is "we check personally",
+ * never "no". Deliberately not a <form>: the quote form is the page's only one.
+ */
 export default function PostalCodeChecker({
   navigate,
+  showRegions = true,
 }: {
-  navigate?: (p: Page) => void
+  navigate: (p: Page) => void
+  /** Off on /werkgebied/, which lists the regions right below. */
+  showRegions?: boolean
 }) {
-  const { pick } = useLang()
+  const { t, pick } = useLang()
+  const uid = useId().replace(/:/g, "")
+  const { suggest } = useQuoteDraft()
   const [query, setQuery] = useState("")
-  const [checkedLocation, setCheckedLocation] = useState("")
-  const [result, setResult] = useState<AreaResult | null>(null)
+  const [result, setResult] = useState<AreaMatch | null>(null)
 
-  if (!claim("serviceArea")) return null
-
-  const copy = pick({
-    nl: {
-      eyebrow: "Werkgebied",
-      title: "Valt uw woonplaats binnen ons werkgebied?",
-      desc: "Vul uw postcode of plaats in voor een eerste indicatie. We bevestigen altijd persoonlijk of we uw project kunnen aannemen.",
-      label: "Postcode of plaats",
-      placeholder: "Bijv. 3811 of Amersfoort",
-      btnCheck: "Controleer",
-      quickLabel: "Snel bekijken:",
-      coreTitle: "Uw locatie valt binnen ons kernwerkgebied.",
-      extendedTitle: "Uw locatie valt binnen ons bredere werkgebied.",
-      unknownTitle: "Dit kunnen we niet automatisch bevestigen.",
-      knownDesc: "Stuur een vrijblijvende aanvraag; we bevestigen de mogelijkheden persoonlijk.",
-      unknownDesc: "Vermeld uw woonplaats in de aanvraag, dan laten we u weten of we uw project kunnen uitvoeren.",
-      btnQuote: "Vrijblijvende aanvraag",
-      btnWhatsApp: "Vraag het via WhatsApp",
-      whatsappMsg: (loc: string) => `Hallo Bouwvast, ik woon in ${loc}. Kunnen jullie daar een project voor mij uitvoeren?`,
-    },
-    en: {
-      eyebrow: "Service area",
-      title: "Is your town within our service area?",
-      desc: "Enter your postcode or town for a first indication. We always confirm personally whether we can take on your project.",
-      label: "Postcode or town",
-      placeholder: "E.g. 3811 or Amersfoort",
-      btnCheck: "Check",
-      quickLabel: "Quick check:",
-      coreTitle: "Your location is within our core service area.",
-      extendedTitle: "Your location is within our wider service area.",
-      unknownTitle: "We cannot confirm this automatically.",
-      knownDesc: "Send a no-obligation request; we will confirm the options personally.",
-      unknownDesc: "Mention your town in the request and we will let you know whether we can carry out your project.",
-      btnQuote: "No-obligation request",
-      btnWhatsApp: "Ask via WhatsApp",
-      whatsappMsg: (loc: string) => `Hello Bouwvast, I live in ${loc}. Could you carry out a project for me there?`,
-    },
-    uk: {
-      eyebrow: "Зона роботи",
-      title: "Чи входить ваше місто в нашу зону роботи?",
-      desc: "Введіть поштовий індекс або місто для попередньої перевірки. Ми завжди особисто підтверджуємо, чи можемо взятися за проєкт.",
-      label: "Поштовий індекс або місто",
-      placeholder: "Напр. 3811 або Amersfoort",
-      btnCheck: "Перевірити",
-      quickLabel: "Швидка перевірка:",
-      coreTitle: "Ваша адреса в нашій основній зоні роботи.",
-      extendedTitle: "Ваша адреса в нашій розширеній зоні роботи.",
-      unknownTitle: "Ми не можемо підтвердити це автоматично.",
-      knownDesc: "Надішліть запит без зобов'язань — ми особисто підтвердимо можливості.",
-      unknownDesc: "Вкажіть своє місто в запиті, і ми повідомимо, чи можемо виконати ваш проєкт.",
-      btnQuote: "Запит без зобов'язань",
-      btnWhatsApp: "Запитати у WhatsApp",
-      whatsappMsg: (loc: string) => `Вітаю, Bouwvast! Я живу в ${loc}. Чи можете ви виконати там проєкт для мене?`,
-    },
-    ru: {
-      eyebrow: "Зона работы",
-      title: "Входит ли ваш город в нашу зону работы?",
-      desc: "Введите почтовый индекс или город для предварительной проверки. Мы всегда лично подтверждаем, можем ли взяться за проект.",
-      label: "Почтовый индекс или город",
-      placeholder: "Напр. 3811 или Amersfoort",
-      btnCheck: "Проверить",
-      quickLabel: "Быстрая проверка:",
-      coreTitle: "Ваш адрес в нашей основной зоне работы.",
-      extendedTitle: "Ваш адрес в нашей расширенной зоне работы.",
-      unknownTitle: "Мы не можем подтвердить это автоматически.",
-      knownDesc: "Отправьте запрос без обязательств — мы лично подтвердим возможности.",
-      unknownDesc: "Укажите свой город в запросе, и мы сообщим, можем ли выполнить ваш проект.",
-      btnQuote: "Запрос без обязательств",
-      btnWhatsApp: "Спросить в WhatsApp",
-      whatsappMsg: (loc: string) => `Здравствуйте, Bouwvast! Я живу в ${loc}. Можете ли вы выполнить там проект для меня?`,
-    },
-  })
-
-  const check = (loc: string, label?: string) => {
-    const trimmed = loc.trim()
-    if (!trimmed) return
-    setCheckedLocation(label ?? trimmed)
-    setResult(determineServiceArea(trimmed))
+  const run = (value: string) => {
+    const match = findServiceArea(value)
+    setResult(match)
+    track("area_checked", { status: match.status })
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    check(query)
+  const place = result && result.status !== "invalid" ? result.place : ""
+  // What goes into the form's "Woonplaats of postcode" field.
+  const formCity =
+    result?.status === "covered"
+      ? place.replace(/ \((.+)\)$/, /^\d/.test(place) ? " $1" : ", $1")
+      : result?.status === "unknown"
+        ? place
+        : ""
+
+  const requestQuote = () => {
+    if (formCity) suggest({ city: formCity })
+    if (!scrollToQuote()) navigate("contact")
   }
 
-  const wa = whatsappHref(copy.whatsappMsg(checkedLocation || query))
-  const title =
-    result?.serviceRadius === "core"
-      ? copy.coreTitle
-      : result?.serviceRadius === "extended"
-        ? copy.extendedTitle
-        : copy.unknownTitle
+  const wa =
+    result && result.status !== "invalid"
+      ? whatsappHref(
+          pick({
+            nl: `Hallo Bouwvast, ik woon in ${formCity}. Kunnen jullie daar een project voor mij uitvoeren?`,
+            en: `Hello Bouwvast, I live in ${formCity}. Could you carry out a project for me there?`,
+            uk: `Вітаю, Bouwvast! Я живу в ${formCity}. Чи можете ви виконати там проєкт для мене?`,
+            ru: `Здравствуйте, Bouwvast! Я живу в ${formCity}. Можете ли вы выполнить там проект для меня?`,
+          }),
+        )
+      : undefined
 
   return (
-    <section className="section bg-white border-y border-[var(--border)]" id="werkgebied-check" aria-labelledby="area-check-title">
-      <div className="container max-w-4xl">
-        <div className="rounded-2xl border border-pine-200/80 bg-gradient-to-b from-pine-50/40 to-white p-6 sm:p-9 shadow-lg">
-          <p className="mb-2 text-pine-800 font-bold text-xs uppercase tracking-wider">{copy.eyebrow}</p>
-          <h2 id="area-check-title" className="text-2xl sm:text-3xl font-extrabold text-[var(--fg)] mb-3 leading-tight">
-            {copy.title}
-          </h2>
-          <p className="text-[var(--muted)] text-sm sm:text-base leading-relaxed mb-6">{copy.desc}</p>
+    <section className="section section--night area-check" id="werkgebied-check" aria-labelledby={`${uid}-title`}>
+      <div className="container area-check-grid">
+        <div className="area-check-intro">
+          <p className="eyebrow eyebrow--on-dark">{t("area_eyebrow")}</p>
+          <h2 id={`${uid}-title`}>{t("area_title")}</h2>
+          <p className="area-check-desc">
+            {t("area_desc")}
+            {claim("freeSurvey") ? ` ${t("area_free_survey")}` : ""}
+          </p>
+          {showRegions && (
+            <>
+              <p className="area-check-regions-label">{t("area_regions")}</p>
+              <ul className="area-check-regions">
+                {REGIONS.map((region) => (
+                  <li key={region}>
+                    <Icon name="pin" size={15} />
+                    <span>{t(REGION_LABELS[region])}</span>
+                    <span className="area-check-region-count">
+                      {CITIES.filter((c) => c.region === region)
+                        .map((c) => c.name)
+                        .join(", ")}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 mb-4">
-            <label htmlFor="area-check-input" className="sr-only">{copy.label}</label>
-            <input
-              id="area-check-input"
-              type="text"
-              value={query}
-              maxLength={60}
-              autoComplete="postal-code"
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder={copy.placeholder}
-              className="flex-1 px-4 py-3.5 rounded-xl border-2 border-line-strong focus:border-pine-700 focus:ring-4 focus:ring-pine-500/15 outline-none font-medium text-ink placeholder-subtle text-sm sm:text-base bg-white"
-            />
-            <button type="submit" className="btn btn-primary whitespace-nowrap py-3.5 px-6 rounded-xl font-bold flex items-center justify-center gap-2 text-sm sm:text-base">
-              <Icon name="check" size={18} />
-              {copy.btnCheck}
-            </button>
-          </form>
-
-          <div className="flex flex-wrap items-center gap-1.5 text-xs text-muted mb-2">
-            <span className="font-semibold text-ink-soft mr-1">{copy.quickLabel}</span>
-            {POPULAR_QUICK_SEARCHES.map((item) => (
-              <button
-                key={item.label}
-                type="button"
-                onClick={() => {
-                  setQuery(item.query)
-                  check(item.query, item.city)
+        <div className="area-check-card">
+          <label htmlFor={`${uid}-input`} className="field-label">
+            {t("area_label")}
+          </label>
+          <div className="area-check-row">
+            <div className="area-check-input">
+              <Icon name="pin" size={18} />
+              <input
+                id={`${uid}-input`}
+                type="text"
+                className="field"
+                value={query}
+                maxLength={60}
+                autoComplete="postal-code"
+                enterKeyHint="search"
+                placeholder={t("area_placeholder")}
+                aria-invalid={result?.status === "invalid" ? true : undefined}
+                aria-describedby={result?.status === "invalid" ? `${uid}-error` : undefined}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault()
+                    run(query)
+                  }
                 }}
-                className="px-2.5 py-1 rounded-full bg-pine-50 hover:bg-pine-100 text-pine-900 border border-pine-200/60 font-medium transition-colors cursor-pointer"
-              >
-                {item.label}
-              </button>
-            ))}
+              />
+            </div>
+            <button type="button" className="btn btn-primary" onClick={() => run(query)}>
+              {t("area_btn")}
+            </button>
+          </div>
+          {result?.status === "invalid" && (
+            <p id={`${uid}-error`} className="field-error">
+              {t("area_invalid")}
+            </p>
+          )}
+
+          <div className="area-check-quick">
+            <span>{t("area_quick")}</span>
+            <div className="chip-row">
+              {QUICK.map((item) => (
+                <button
+                  key={item.code}
+                  type="button"
+                  className="chip chip--sm"
+                  onClick={() => {
+                    setQuery(item.code)
+                    run(item.code)
+                  }}
+                >
+                  {item.city} ({item.code})
+                </button>
+              ))}
+            </div>
           </div>
 
           <div aria-live="polite">
-            {result && (
-              <div className="mt-6 rounded-xl border border-pine-300 bg-white p-5 sm:p-6 shadow-md">
-                <h3 className="text-lg sm:text-xl font-bold text-ink mb-1.5">{title}</h3>
-                <p className="text-muted text-sm leading-relaxed mb-4">
-                  {result.serviceRadius === "unknown" ? copy.unknownDesc : copy.knownDesc}
-                </p>
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (!scrollToQuote()) navigate?.("contact")
-                    }}
-                    className="btn btn-primary text-sm py-2.5 px-5 rounded-lg flex items-center justify-center gap-2"
-                  >
-                    <Icon name="check" size={16} />
-                    {copy.btnQuote}
-                  </button>
-                  {wa && (
-                    <a href={wa} target="_blank" rel="noopener noreferrer" className="btn btn-outline text-sm py-2.5 px-5 rounded-lg no-underline">
-                      {copy.btnWhatsApp}
-                    </a>
-                  )}
+            {result && result.status !== "invalid" && (
+              <div
+                className={`area-result ${result.status === "covered" ? "area-result--ok" : "area-result--unknown"}`}
+                data-testid="area-result"
+                data-status={result.status}
+              >
+                <span className="area-result-icon" aria-hidden="true">
+                  <Icon
+                    name={result.status === "covered" ? "check" : "info"}
+                    size={18}
+                    strokeWidth={result.status === "covered" ? 2.6 : 2}
+                  />
+                </span>
+                <div className="min-w-0">
+                  <p className="area-result-title">
+                    {result.status === "covered" ? t("area_ok_title", { place }) : t("area_unknown_title", { place })}
+                  </p>
+                  <p className="area-result-text">
+                    {result.status === "covered" ? t("area_ok_text") : t("area_unknown_text")} {t("area_prefilled")}
+                  </p>
+                  <div className="area-result-actions">
+                    <button type="button" className="btn btn-primary btn-sm" onClick={requestQuote}>
+                      {t("nav_cta")}
+                      <span className="btn-arrow" aria-hidden="true">
+                        <Icon name="arrow-right" size={16} />
+                      </span>
+                    </button>
+                    {result.status === "covered" && (
+                      <PageLink
+                        to={{ type: "city", city: result.city.name }}
+                        navigate={navigate}
+                        className="btn btn-outline btn-sm"
+                      >
+                        {t("area_city_link", { city: result.city.name })}
+                      </PageLink>
+                    )}
+                    {wa && (
+                      <a
+                        href={wa}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-whatsapp btn-sm"
+                        onClick={() => track("whatsapp_clicked", { source: "area-check" })}
+                      >
+                        <Icon name="whatsapp" size={16} />
+                        WhatsApp
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             )}

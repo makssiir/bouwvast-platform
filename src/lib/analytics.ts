@@ -1,4 +1,12 @@
-export type AnalyticsEvent = "form_started" | "form_submitted" | "language_changed" | "phone_clicked" | "email_clicked"
+export type AnalyticsEvent =
+  | "form_started"
+  | "form_submitted"
+  | "language_changed"
+  | "phone_clicked"
+  | "email_clicked"
+  | "whatsapp_clicked"
+  | "estimate_applied"
+  | "area_checked"
 
 export function track(
   _event: AnalyticsEvent,

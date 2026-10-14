@@ -15,7 +15,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..")
 const { COMPANY, REQUIRED_FOR_LAUNCH } = await import("../src/data/company.ts")
 const { CLAIMS } = await import("../src/data/claims.ts")
 const { LEGAL } = await import("../src/data/legal.ts")
-const { SERVICE_PRICES } = await import("../src/data/pricing.ts")
+const { SERVICE_PRICES, ESTIMATOR } = await import("../src/data/pricing.ts")
 const { PROJECTS } = await import("../src/data/projects.ts")
 const { CITIES } = await import("../src/data/cities.ts")
 const { loadConfig, notifierConfigured } = await import("../server/config.mjs")
@@ -42,10 +42,18 @@ for (const [key, c] of Object.entries(CLAIMS)) {
 }
 if (CLAIMS.pricing.enabled && Object.keys(SERVICE_PRICES).length === 0)
   errors.push("CLAIMS.pricing is enabled but SERVICE_PRICES is empty (src/data/pricing.ts).")
-if (CLAIMS.pricing.enabled)
-  warnings.push("Pricing is on: confirm the cost estimator ranges (CostEstimator.tsx) match the real price list.")
+if (!ESTIMATOR.ratesChecked)
+  errors.push(
+    "Calculator rates are unchecked (ESTIMATOR in src/data/pricing.ts): compare them with the real price list, then set ratesChecked: true.",
+  )
 if (CLAIMS.projects.enabled && PROJECTS.length === 0)
   warnings.push("CLAIMS.projects is enabled but PROJECTS is empty: the project sections stay hidden.")
+if (!CLAIMS.projects.enabled || !PROJECTS.some((p) => p.beforeImage))
+  warnings.push(
+    'Before/after slider shows illustrations labelled "Impressie": add real projects with beforeImage (src/data/projects.ts) to replace them.',
+  )
+if (!COMPANY.whatsapp.verified)
+  warnings.push("No confirmed WhatsApp number: WhatsApp buttons stay hidden and the pop-up points to the quote form.")
 
 // --- Legal ------------------------------------------------------------------
 if (!LEGAL.privacy.approved) errors.push("Privacy statement not approved (LEGAL.privacy.approved in src/data/legal.ts).")

@@ -1,459 +1,423 @@
-import { useState } from "react"
+import { useEffect, useId, useRef, useState } from "react"
+import type { CSSProperties } from "react"
 import Icon from "../Icon"
 import { useLang } from "../../i18n/LangContext"
 import type { TranslationKey } from "../../i18n/translations"
 import { useQuoteDraft, scrollToQuote } from "../../lib/quoteDraft"
 import { whatsappHref } from "../../data/contact"
+import { ESTIMATOR, estimateRange } from "../../data/pricing"
+import type { EstimatorService, EstimatorServiceId, EstimatorTier } from "../../data/pricing"
+import { track } from "../../lib/analytics"
 
-interface EstimatorOption {
-  id: string
+const TIERS: {
+  id: EstimatorTier
   nameKey: TranslationKey
-  defaultName: string
-  unit: string
-  defaultQty: number
-  minQty: number
-  maxQty: number
-  step: number
-  baseRateMin: number
-  baseRateMax: number
-  icon: string
-}
-
-const SERVICES_DATA: EstimatorOption[] = [
+  descKey: TranslationKey
+  symbol: string
+}[] = [
   {
-    id: "stucwerk",
-    nameKey: "svc_finishing",
-    defaultName: "Stuc- & Pleisterwerk",
-    unit: "m²",
-    defaultQty: 60,
-    minQty: 15,
-    maxQty: 250,
-    step: 5,
-    baseRateMin: 28,
-    baseRateMax: 42,
-    icon: "finishing",
+    id: "standard",
+    nameKey: "est_tier_std",
+    descKey: "est_tier_std_desc",
+    symbol: "€",
   },
   {
-    id: "schilderwerk",
-    nameKey: "svc_painting",
-    defaultName: "Schilderwerk Binnen",
-    unit: "m²",
-    defaultQty: 80,
-    minQty: 20,
-    maxQty: 300,
-    step: 10,
-    baseRateMin: 22,
-    baseRateMax: 35,
-    icon: "painting",
+    id: "premium",
+    nameKey: "est_tier_prem",
+    descKey: "est_tier_prem_desc",
+    symbol: "€€",
   },
   {
-    id: "badkamer",
-    nameKey: "svc_bathroom",
-    defaultName: "Badkamer Renovatie",
-    unit: "m²",
-    defaultQty: 7,
-    minQty: 3,
-    maxQty: 25,
-    step: 1,
-    baseRateMin: 950,
-    baseRateMax: 1600,
-    icon: "bathroom",
-  },
-  {
-    id: "renovatie",
-    nameKey: "svc_renovation",
-    defaultName: "Woningrenovatie",
-    unit: "m²",
-    defaultQty: 50,
-    minQty: 20,
-    maxQty: 200,
-    step: 5,
-    baseRateMin: 180,
-    baseRateMax: 340,
-    icon: "renovation",
+    id: "luxury",
+    nameKey: "est_tier_lux",
+    descKey: "est_tier_lux_desc",
+    symbol: "€€€",
   },
 ]
 
+const STEPS: { tab: TranslationKey; question: TranslationKey }[] = [
+  { tab: "est_tab_1", question: "est_step_1" },
+  { tab: "est_tab_2", question: "est_step_2" },
+  { tab: "est_tab_3", question: "est_step_3" },
+]
+
+const euro = (n: number) => `€\u00a0${n.toLocaleString("nl-NL")}`
+
+/** Value that settles once the input has stopped changing for `ms`. */
+function useSettled<T>(value: T, ms: number): T {
+  const [settled, setSettled] = useState(value)
+  useEffect(() => {
+    const timer = window.setTimeout(() => setSettled(value), ms)
+    return () => window.clearTimeout(timer)
+  }, [value, ms])
+  return settled
+}
+
 /**
- * Price ranges here are business claims: the section is only rendered when
- * CLAIMS.pricing is enabled (see HomePage) with owner-approved rates.
+ * "Bereken direct uw richtprijs": three short steps with a live price range.
+ * "Offerte aanvragen voor deze berekening" attaches the calculation to the
+ * quote request and fills in the description, then moves to the form.
+ * Rates live in data/pricing.ts (ESTIMATOR).
  */
 export default function CostEstimator({
+  initialService,
   onApplied,
+  muted = true,
 }: {
+  initialService?: EstimatorServiceId
   /** Called when there is no on-page form to scroll to. */
   onApplied?: () => void
+  muted?: boolean
 }) {
-  const { t, lang, pick } = useLang()
-  const waHref = whatsappHref("Hallo Bouwvast, ik heb de kostenindicatie gebruikt en stuur graag foto's.")
-  const { setEstimate } = useQuoteDraft()
-  const [selectedService, setSelectedService] = useState<EstimatorOption>(
-    SERVICES_DATA[0],
-  )
-  const [qty, setQty] = useState(SERVICES_DATA[0].defaultQty)
-  const [tier, setTier] = useState<"standard" | "premium" | "luxury">("premium")
-  const [includeDemo, setIncludeDemo] = useState(false)
-  const [includeMaterials, setIncludeMaterials] = useState(true)
+  const { t, pick, lang } = useLang()
+  const uid = useId().replace(/:/g, "")
+  const { setEstimate, suggest } = useQuoteDraft()
+  const first = ESTIMATOR.services.find((s) => s.id === initialService) ?? ESTIMATOR.services[0]
+  const [service, setService] = useState<EstimatorService>(first)
+  const [qty, setQty] = useState(first.defaultQty)
+  const [tier, setTier] = useState<EstimatorTier>("premium")
+  const [demolition, setDemolition] = useState(false)
+  const [materials, setMaterials] = useState(true)
   const [step, setStep] = useState(1)
+  const [applied, setApplied] = useState(false)
+  const resultRef = useRef<HTMLElement>(null)
 
-  const handleNext = () => setStep(s => Math.min(3, s + 1))
-  const handleBack = () => setStep(s => Math.max(1, s - 1))
+  const range = estimateRange({ service, qty, tier, demolition, materials })
+  const perMin = Math.round(range.min / qty)
+  const perMax = Math.round(range.max / qty)
+  const serviceName = t(service.nameKey)
+  const tierName = t(TIERS.find((x) => x.id === tier)!.nameKey)
+  const extras = [demolition ? t("est_extra_demo") : "", materials ? t("est_extra_mat") : ""].filter(Boolean)
+  const extrasText = extras.join(pick({ nl: " en ", en: " and ", uk: " і ", ru: " и " }))
+  const capitalised = extrasText ? extrasText.charAt(0).toUpperCase() + extrasText.slice(1) : t("est_none")
+  const summary = [
+    serviceName,
+    `${qty} ${ESTIMATOR.unit}`,
+    tierName,
+    ...(extras.length ? [`${t("est_sum_extras")}: ${extras.join(", ")}`] : []),
+    `${euro(range.min)} – ${euro(range.max)}`,
+  ].join(" · ")
+  const announced = useSettled(`${t("est_est_price")}: ${euro(range.min)} – ${euro(range.max)}`, 700)
+  const wa = whatsappHref(t("est_wa_msg", { summary }))
 
-  const handleServiceChange = (s: EstimatorOption) => {
-    setSelectedService(s)
-    setQty(s.defaultQty)
+  // Any change after applying makes the attached calculation stale.
+  useEffect(() => setApplied(false), [service, qty, tier, demolition, materials])
+
+  const chooseService = (next: EstimatorService) => {
+    setService(next)
+    setQty(next.defaultQty)
   }
+  const clampQty = (value: number) => Math.min(service.maxQty, Math.max(service.minQty, value))
 
-  const tierMultiplier =
-    tier === "standard" ? 0.88 : tier === "premium" ? 1.0 : 1.25
-  const demoMultiplier = includeDemo ? 1.15 : 1.0
-  const materialsMultiplier = includeMaterials ? 1.18 : 1.0
-
-  const rawMin = Math.round(
-    selectedService.baseRateMin *
-      qty *
-      tierMultiplier *
-      demoMultiplier *
-      materialsMultiplier,
-  )
-  const rawMax = Math.round(
-    selectedService.baseRateMax *
-      qty *
-      tierMultiplier *
-      demoMultiplier *
-      materialsMultiplier,
-  )
-
-  // Round to nearest 50
-  const totalMin = Math.round(rawMin / 50) * 50
-  const totalMax = Math.round(rawMax / 50) * 50
-
-  const handleApply = () => {
-    const serviceName = t(selectedService.nameKey) || selectedService.defaultName
-    const tierName =
-      tier === "standard" ? t("est_tier_std") : tier === "premium" ? t("est_tier_prem") : t("est_tier_lux")
-    const euro = (n: number) => `€${n.toLocaleString("nl-NL")}`
-    const extras = [includeDemo ? t("est_opt_demo") : "", includeMaterials ? t("est_opt_mat") : ""]
-      .filter(Boolean)
-      .join(", ")
-    const summary = `${serviceName}, ${qty} ${selectedService.unit}, ${tierName}${extras ? ` (${extras})` : ""}: ${euro(totalMin)} – ${euro(totalMax)}`
-
+  const apply = (focusPhotos = false) => {
+    const lower = lang === "nl" || lang === "en"
     setEstimate({
-      service: selectedService.id,
+      service: service.id,
       quantity: qty,
-      unit: selectedService.unit,
+      unit: ESTIMATOR.unit,
       tier,
-      includeDemolition: includeDemo,
-      includeMaterials,
-      priceMin: totalMin,
-      priceMax: totalMax,
+      includeDemolition: demolition,
+      includeMaterials: materials,
+      priceMin: range.min,
+      priceMax: range.max,
       summary,
     })
-
-    if (!scrollToQuote()) onApplied?.()
+    suggest({
+      description: t("est_desc_seed", {
+        service: lower ? serviceName.toLowerCase() : serviceName,
+        qty: String(qty),
+        tier: lower ? tierName.toLowerCase() : tierName,
+        extras: extrasText ? t("est_desc_extras", { extras: extrasText }) : "",
+      }),
+    })
+    setApplied(true)
+    track("estimate_applied", { service: service.id, tier })
+    if (!scrollToQuote()) {
+      onApplied?.()
+      return
+    }
+    if (focusPhotos) {
+      window.setTimeout(() => {
+        document.querySelector<HTMLElement>("#quote .file-picker-input")?.focus({ preventScroll: true })
+      }, 450)
+    }
   }
 
-  const stepLabels: Record<string, string[]> = {
-    uk: ["Тип робіт", "Обсяг", "Якість"],
-    en: ["Type of work", "Scope", "Quality"],
-    ru: ["Тип работ", "Объем", "Качество"],
-    nl: ["Type werk", "Omvang", "Kwaliteit"],
+  const showResult = () => {
+    const el = resultRef.current
+    if (!el) return
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" })
+    el.focus({ preventScroll: true })
   }
-  const currentStepLabels = stepLabels[lang] ?? stepLabels.nl
+
+  const fill = ((qty - service.minQty) / (service.maxQty - service.minQty)) * 100
 
   return (
-    <section
-      className="section bg-[var(--muted-bg)] border-y border-[var(--border)]"
-      id="calculator"
-    >
+    <section className={`section ${muted ? "section--soft" : ""}`} id="calculator" aria-labelledby={`${uid}-title`}>
       <div className="container">
-        <div className="center mb-10">
-          <span className="eyebrow">{t("est_eyebrow")}</span>
-          <h2>{t("est_title")}</h2>
-          <p className="lead">{t("est_sub")}</p>
+        <div className="section-head">
+          <div>
+            <p className="eyebrow">{t("est_eyebrow")}</p>
+            <h2 id={`${uid}-title`}>{t("est_title")}</h2>
+            <p>{t("est_sub")}</p>
+          </div>
         </div>
 
-        <div className="max-w-4xl mx-auto card p-6 md:p-10 shadow-lg border-2 border-[var(--brand)] bg-white">
-          {/* Progress Indicator */}
-          <div className="mb-10 relative">
-            <div className="flex justify-between items-center max-w-sm mx-auto relative z-10">
-              {/* Connecting lines */}
-              <div className="absolute top-4 left-[10%] right-[10%] h-[2px] flex z-[-1]">
-                <div className={`h-full w-1/2 transition-colors duration-300 ${step >= 2 ? 'bg-[var(--brand)]' : 'bg-sand-200'}`}></div>
-                <div className={`h-full w-1/2 transition-colors duration-300 ${step >= 3 ? 'bg-[var(--brand)]' : 'bg-sand-200'}`}></div>
-              </div>
-              
-              {[1, 2, 3].map((s) => (
-                <div key={s} className="flex flex-col items-center gap-2">
-                  <div 
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
-                      step > s 
-                        ? 'bg-[var(--brand)] text-white' 
-                        : step === s 
-                          ? 'bg-[var(--brand)] text-white ring-4 ring-[var(--brand-subtle)]' 
-                          : 'bg-white text-[var(--muted)] border-2 border-line'
-                    }`}
-                  >
-                    {step > s ? '✓' : s}
-                  </div>
-                  <span className={`text-[10px] font-bold uppercase tracking-wider text-center absolute -bottom-5 w-24 ${
-                    step >= s ? 'text-[var(--brand)]' : 'text-[var(--muted)]'
-                  }`}>
-                    {currentStepLabels[s - 1]}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {step === 1 && (
-            <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-              {/* Step 1: Select Service */}
-              <div className="mb-8">
-                <p id="est-step-1" className="block text-xs font-bold uppercase tracking-wider text-[var(--muted)] mb-3">
-                  {t("est_step_1")}
-                </p>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3" role="group" aria-labelledby="est-step-1">
-                  {SERVICES_DATA.map((s) => {
-                    const isActive = selectedService.id === s.id
-                    const displayName = t(s.nameKey) || s.defaultName
-                    return (
-                      <button
-                        type="button"
-                        key={s.id}
-                        aria-pressed={isActive}
-                        onClick={() => handleServiceChange(s)}
-                        className={`p-3.5 rounded-xl border text-center transition-all cursor-pointer flex flex-col items-center gap-2 ${
-                          isActive
-                            ? "border-[var(--brand)] bg-[var(--brand-subtle)] text-[var(--brand-dark)] shadow-xs"
-                            : "border-[var(--border)] bg-white text-[var(--fg)] hover:border-[var(--brand)]"
-                        }`}
-                      >
-                        <Icon
-                          name={s.icon}
-                          size={22}
-                          color={isActive ? "var(--brand)" : "var(--muted)"}
-                        />
-                        <span className="text-xs font-bold leading-tight">
-                          {displayName}
-                        </span>
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
-              
-              <div className="flex justify-end mt-6">
-                <button type="button" onClick={handleNext} className="btn btn-primary px-8">
-                  {t("btn_next")}
-                  <span className="btn-arrow" aria-hidden="true">
-                    <Icon name="arrow-right" size={18} />
-                  </span>
-                </button>
-              </div>
-            </div>
-          )}
-
-          {step === 2 && (
-            <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-              {/* Step 2: Sliders & Quantity */}
-              <div className="mb-8 bg-[var(--muted-bg)] p-5 rounded-xl border border-[var(--border)]">
-                <div className="flex justify-between items-center mb-3">
-                  <label htmlFor="est-qty" className="text-sm font-bold text-[var(--fg)]">
-                    {t("est_step_2")} ({selectedService.unit})
-                  </label>
-                  <span className="text-xl font-extrabold text-[var(--brand)] bg-white px-3 py-1 rounded-lg border border-[var(--border)]">
-                    {qty} {selectedService.unit}
-                  </span>
-                </div>
-                <input
-                  id="est-qty"
-                  type="range"
-                  min={selectedService.minQty}
-                  max={selectedService.maxQty}
-                  step={selectedService.step}
-                  value={qty}
-                  onChange={(e) => setQty(Number(e.target.value))}
-                  aria-valuetext={`${qty} ${selectedService.unit}`}
-                  aria-valuemin={selectedService.minQty}
-                  aria-valuemax={selectedService.maxQty}
-                  aria-valuenow={qty}
-                  className="w-full accent-[var(--brand)] h-2 bg-sand-200 rounded-lg cursor-pointer"
-                />
-                <div className="flex justify-between text-[11px] text-[var(--muted)] mt-1.5 font-medium">
-                  <span>
-                    {selectedService.minQty} {selectedService.unit}
-                  </span>
-                  <span>
-                    {Math.round(
-                      (selectedService.minQty + selectedService.maxQty) / 2,
-                    )}{" "}
-                    {selectedService.unit}
-                  </span>
-                  <span>
-                    {selectedService.maxQty} {selectedService.unit}
-                  </span>
-                </div>
-              </div>
-
-              {/* Options: Demolition & Materials */}
-              <div className="grid sm:grid-cols-2 gap-4 mb-8 pt-4 border-t border-[var(--border)]">
-                <label className="flex items-center gap-3 p-3 rounded-lg border border-[var(--border)] bg-white cursor-pointer hover:bg-sand-50 text-xs">
-                  <input
-                    type="checkbox"
-                    checked={includeDemo}
-                    onChange={(e) => setIncludeDemo(e.target.checked)}
-                    className="w-4 h-4 accent-[var(--brand)] rounded"
-                  />
-                  <span className="font-semibold text-[var(--fg)]">
-                    {t("est_opt_demo")}
-                  </span>
-                </label>
-
-                <label className="flex items-center gap-3 p-3 rounded-lg border border-[var(--border)] bg-white cursor-pointer hover:bg-sand-50 text-xs">
-                  <input
-                    type="checkbox"
-                    checked={includeMaterials}
-                    onChange={(e) => setIncludeMaterials(e.target.checked)}
-                    className="w-4 h-4 accent-[var(--brand)] rounded"
-                  />
-                  <span className="font-semibold text-[var(--fg)]">
-                    {t("est_opt_mat")}
-                  </span>
-                </label>
-              </div>
-              
-              <div className="flex justify-between mt-8">
-                <button type="button" onClick={handleBack} className="btn btn-outline">
-                  &larr; {t("btn_back")}
-                </button>
-                <button type="button" onClick={handleNext} className="btn btn-primary px-8">
-                  {t("btn_next")}
-                  <span className="btn-arrow" aria-hidden="true">
-                    <Icon name="arrow-right" size={18} />
-                  </span>
-                </button>
-              </div>
-            </div>
-          )}
-
-          {step === 3 && (
-            <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-              {/* Step 3: Material Quality Tier */}
-              <div className="mb-8">
-                <p id="est-step-3" className="block text-xs font-bold uppercase tracking-wider text-[var(--muted)] mb-3">
-                  {t("est_step_3")}
-                </p>
-                <div className="grid sm:grid-cols-3 gap-3" role="group" aria-labelledby="est-step-3">
-                  {[
-                    {
-                      id: "standard",
-                      name: t("est_tier_std"),
-                      desc: t("est_tier_std_desc"),
-                      symbol: "€",
-                    },
-                    {
-                      id: "premium",
-                      name: t("est_tier_prem"),
-                      desc: t("est_tier_prem_desc"),
-                      symbol: "€€",
-                    },
-                    {
-                      id: "luxury",
-                      name: t("est_tier_lux"),
-                      desc: t("est_tier_lux_desc"),
-                      symbol: "€€€",
-                    },
-                  ].map((item) => (
+        <div className="estimator">
+          <div className="estimator-main">
+            <ol className="estimator-steps">
+              {STEPS.map((s, i) => {
+                const n = i + 1
+                const state = n < step ? "done" : n === step ? "current" : "todo"
+                return (
+                  <li key={s.tab}>
                     <button
                       type="button"
-                      key={item.id}
-                      onClick={() => setTier(item.id as typeof tier)}
-                      aria-pressed={tier === item.id}
-                      className={`relative p-4 rounded-xl border text-left cursor-pointer transition-all ${
-                        tier === item.id
-                          ? "border-[var(--brand)] bg-[var(--brand-subtle)] ring-2 ring-[var(--brand)] shadow-sm"
-                          : "border-[var(--border)] bg-white hover:border-[var(--brand)] hover:shadow-sm"
-                      }`}
+                      className="estimator-step"
+                      data-state={state}
+                      aria-current={n === step ? "step" : undefined}
+                      onClick={() => setStep(n)}
                     >
-                      <div className="flex items-center justify-between mb-1.5">
-                        <div className="flex items-center gap-2">
-                          <span className="font-bold text-sm text-[var(--fg)]">
-                            {item.name}
-                          </span>
-                          <span className="text-[10px] text-[var(--muted)] font-normal tracking-widest">
-                            {item.symbol}
-                          </span>
-                        </div>
-                        {tier === item.id && (
-                          <span className="text-[var(--brand)]">
-                            <Icon name="check" size={16} />
-                          </span>
-                        )}
-                      </div>
-                      <span className="text-xs text-[var(--muted)] block leading-relaxed">
-                        {item.desc}
+                      <span className="estimator-step-no" aria-hidden="true">
+                        {n < step ? <Icon name="check" size={14} strokeWidth={2.8} /> : n}
                       </span>
+                      <span className="estimator-step-label">{t(s.tab)}</span>
+                    </button>
+                  </li>
+                )
+              })}
+            </ol>
+
+            <div className="estimator-panel" key={step}>
+              <h3 id={`${uid}-q`} className="estimator-q">
+                {t(STEPS[step - 1].question)}
+              </h3>
+
+              {step === 1 && (
+                <div className="estimator-options" role="group" aria-labelledby={`${uid}-q`}>
+                  {ESTIMATOR.services.map((s) => (
+                    <button
+                      type="button"
+                      key={s.id}
+                      aria-pressed={s.id === service.id}
+                      className="estimator-option"
+                      onClick={() => chooseService(s)}
+                    >
+                      <span className="estimator-option-icon" aria-hidden="true">
+                        <Icon name={s.icon} size={22} />
+                      </span>
+                      <span className="estimator-option-text">
+                        <span className="estimator-option-title">{t(s.nameKey)}</span>
+                        <span className="estimator-option-hint">{pick(s.hint)}</span>
+                      </span>
+                      <span className="estimator-radio" aria-hidden="true" />
                     </button>
                   ))}
                 </div>
-              </div>
+              )}
 
-              {/* Result Price Band */}
-              <div className="p-6 rounded-2xl bg-gradient-to-br from-night to-night-soft text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
-                <div>
-                  <span className="text-xs uppercase tracking-widest text-pine-300 font-bold block mb-1">
-                    {t("est_est_price")}
-                  </span>
-                  <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex items-baseline gap-2">
-                    <span>€{totalMin.toLocaleString("nl-NL")}</span>
-                    <span className="text-on-night-muted font-light text-2xl">—</span>
-                    <span>€{totalMax.toLocaleString("nl-NL")}</span>
+              {step === 2 && (
+                <>
+                  <div className="estimator-area">
+                    <div className="estimator-area-head">
+                      <label htmlFor={`${uid}-qty`} className="field-label mb-0">
+                        {t("est_area")} <span className="font-normal text-muted">({t(service.nameKey)})</span>
+                      </label>
+                      <div className="estimator-counter">
+                        <button
+                          type="button"
+                          aria-label={t("est_less")}
+                          disabled={qty <= service.minQty}
+                          onClick={() => setQty((q) => clampQty(q - service.step))}
+                        >
+                          <Icon name="minus" size={18} strokeWidth={2.2} />
+                        </button>
+                        <output htmlFor={`${uid}-qty`} className="estimator-qty">
+                          {qty}
+                          <span> {ESTIMATOR.unit}</span>
+                        </output>
+                        <button
+                          type="button"
+                          aria-label={t("est_more")}
+                          disabled={qty >= service.maxQty}
+                          onClick={() => setQty((q) => clampQty(q + service.step))}
+                        >
+                          <Icon name="plus" size={18} strokeWidth={2.2} />
+                        </button>
+                      </div>
+                    </div>
+                    <input
+                      id={`${uid}-qty`}
+                      type="range"
+                      className="range"
+                      min={service.minQty}
+                      max={service.maxQty}
+                      step={service.step}
+                      value={qty}
+                      onChange={(e) => setQty(Number(e.target.value))}
+                      aria-valuetext={`${qty} ${ESTIMATOR.unit}`}
+                      style={{ "--fill": `${fill}%` } as CSSProperties}
+                    />
+                    <div className="estimator-scale" aria-hidden="true">
+                      <span>
+                        {service.minQty} {ESTIMATOR.unit}
+                      </span>
+                      <span>
+                        {service.maxQty} {ESTIMATOR.unit}
+                      </span>
+                    </div>
                   </div>
-                  <span className="text-[11px] text-on-night-muted block mt-1.5">
-                    {t("est_disclaimer")}
-                  </span>
-                </div>
 
-                <button
-                  type="button"
-                  onClick={handleApply}
-                  className="w-full md:w-auto px-6 py-3.5 rounded-xl font-bold text-sm bg-[var(--brand)] hover:bg-[var(--brand-dark)] text-white shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 border-0"
-                >
-                  <Icon name="check" size={18} />
-                  {t("est_apply_btn")}
+                  <div className="estimator-extras">
+                    {(
+                      [
+                        ["est_opt_demo", "est_opt_demo_desc", demolition, setDemolition],
+                        ["est_opt_mat", "est_opt_mat_desc", materials, setMaterials],
+                      ] as const
+                    ).map(([title, desc, checked, set]) => (
+                      <label key={title} className="estimator-toggle">
+                        <input type="checkbox" checked={checked} onChange={(e) => set(e.target.checked)} />
+                        <span className="estimator-toggle-box" aria-hidden="true">
+                          <Icon name="check" size={14} strokeWidth={3} />
+                        </span>
+                        <span>
+                          <span className="estimator-toggle-title">{t(title)}</span>
+                          <span className="estimator-toggle-hint">{t(desc)}</span>
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {step === 3 && (
+                <div className="estimator-options estimator-options--tiers" role="group" aria-labelledby={`${uid}-q`}>
+                  {TIERS.map((item) => (
+                    <button
+                      type="button"
+                      key={item.id}
+                      aria-pressed={tier === item.id}
+                      className="estimator-option"
+                      onClick={() => setTier(item.id)}
+                    >
+                      <span className="estimator-option-text">
+                        <span className="estimator-tier-symbol" aria-hidden="true">
+                          {item.symbol}
+                        </span>
+                        <span className="estimator-option-title">{t(item.nameKey)}</span>
+                        <span className="estimator-option-hint">{t(item.descKey)}</span>
+                      </span>
+                      <span className="estimator-radio" aria-hidden="true" />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="estimator-nav">
+              {step > 1 ? (
+                <button type="button" className="btn btn-outline" onClick={() => setStep((s) => s - 1)}>
+                  <span className="btn-arrow btn-arrow--back" aria-hidden="true">
+                    <Icon name="arrow-right" size={18} />
+                  </span>
+                  {t("btn_back")}
+                </button>
+              ) : (
+                <span />
+              )}
+              {step < 3 ? (
+                <button type="button" className="btn btn-primary" onClick={() => setStep((s) => s + 1)}>
+                  {t("btn_next")}
                   <span className="btn-arrow" aria-hidden="true">
                     <Icon name="arrow-right" size={18} />
                   </span>
                 </button>
-              </div>
-              
-              <div className="flex justify-start mt-6">
-                <button type="button" onClick={handleBack} className="btn btn-outline">
-                  &larr; {t("btn_back")}
+              ) : (
+                // Stacked layout only: the price sits below the steps.
+                <button type="button" className="btn btn-primary estimator-to-result" onClick={showResult}>
+                  {t("est_show_result")}
+                  <span className="btn-arrow btn-arrow--down" aria-hidden="true">
+                    <Icon name="arrow-right" size={18} />
+                  </span>
                 </button>
-              </div>
+              )}
             </div>
-          )}
-
-          {/* Photo tip; the WhatsApp shortcut appears only with a confirmed number. */}
-          <div className="mt-5 p-4 rounded-xl bg-pine-50/90 border border-pine-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-            <div className="flex items-center gap-2.5 text-pine-950 font-semibold text-center sm:text-left">
-              <span className="text-lg" aria-hidden="true">💬</span>
-              <span>{t("nudge_estimator_tip")}</span>
-            </div>
-            {waHref && (
-              <a
-                href={waHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs no-underline flex items-center gap-1.5 shadow-xs transition-colors shrink-0"
-              >
-                <Icon name="whatsapp" size={16} />
-                <span>{pick({ nl: "Foto's via WhatsApp", en: "Photos via WhatsApp", uk: "Фото у WhatsApp", ru: "Фото в WhatsApp" })}</span>
-              </a>
-            )}
           </div>
+
+          <aside ref={resultRef} tabIndex={-1} className="estimator-result" aria-label={t("est_est_price")}>
+            <p className="estimator-result-label">{t("est_est_price")}</p>
+            <p className="estimator-price" data-testid="estimate-price">
+              <span>{euro(range.min)}</span>
+              <span className="estimator-price-sep" aria-hidden="true">
+                –
+              </span>
+              <span>{euro(range.max)}</span>
+            </p>
+            <p className="estimator-per-unit">{t("est_per_unit", { min: euro(perMin), max: euro(perMax) })}</p>
+            <p className="sr-only" aria-live="polite">
+              {announced}
+            </p>
+
+            <dl className="estimator-summary">
+              <div>
+                <dt>{t("est_sum_work")}</dt>
+                <dd>{serviceName}</dd>
+              </div>
+              <div>
+                <dt>{t("est_sum_area")}</dt>
+                <dd>
+                  {qty} {ESTIMATOR.unit}
+                </dd>
+              </div>
+              <div>
+                <dt>{t("est_sum_quality")}</dt>
+                <dd>{tierName}</dd>
+              </div>
+              <div>
+                <dt>{t("est_sum_extras")}</dt>
+                <dd>{capitalised}</dd>
+              </div>
+            </dl>
+
+            <button type="button" className="btn btn-white btn-lg w-full" onClick={() => apply()}>
+              {t("est_apply_btn")}
+              <span className="btn-arrow" aria-hidden="true">
+                <Icon name="arrow-right" size={18} />
+              </span>
+            </button>
+            <p className="estimator-note" role="status">
+              <Icon name="check" size={15} strokeWidth={2.4} />
+              <span>{applied ? t("est_applied") : t("est_apply_note")}</span>
+            </p>
+            <p className="estimator-disclaimer">{t("est_disclaimer")}</p>
+          </aside>
+        </div>
+
+        <div className="estimator-tip">
+          <span className="estimator-tip-icon" aria-hidden="true">
+            <Icon name="camera" size={20} />
+          </span>
+          <p>{wa ? t("est_tip_wa") : t("est_tip_form")}</p>
+          {wa ? (
+            <a
+              href={wa}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-whatsapp btn-sm"
+              onClick={() => track("whatsapp_clicked", { source: "estimator" })}
+            >
+              <Icon name="whatsapp" size={17} />
+              {t("est_wa_btn")}
+            </a>
+          ) : (
+            <button type="button" className="btn btn-outline btn-sm" onClick={() => apply(true)}>
+              {t("est_form_btn")}
+              <span className="btn-arrow" aria-hidden="true">
+                <Icon name="arrow-right" size={16} />
+              </span>
+            </button>
+          )}
         </div>
       </div>
     </section>

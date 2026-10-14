@@ -16,7 +16,9 @@ For each field: fill in `value`, set `verified: true`, note the `source`
 - [ ] VAT/BTW number (`btw`)
 - [ ] Visiting/postal address (`address`) — enables full LocalBusiness data
 - [ ] Opening hours (`hours`)
-- [ ] WhatsApp number (`whatsapp`) — only if someone actually answers it
+- [ ] WhatsApp number (`whatsapp`) — only if someone actually answers it.
+      Until then every WhatsApp button stays hidden and the desktop pop-up
+      points to the quote form instead.
 
 Contact page, footer, form fallback and structured data pick these up
 automatically; unverified fields are never rendered.
@@ -27,15 +29,29 @@ Every switch is off. Turn one on only together with a `source` **(gate)**.
 
 | Switch | Shows | Evidence needed |
 | --- | --- | --- |
-| `pricing` | "Vanaf" prices, cost estimator | Real price list in `src/data/pricing.ts` (incl./excl. btw) **(gate)**; estimator ranges in `CostEstimator.tsx` checked against it |
-| `projects` | Before/after, `/projecten` gallery | Entries in `src/data/projects.ts`: own photos, client permission, town-level location only |
-| `serviceArea` | Postcode checker | Confirmed postcode ranges |
+| `pricing` | "Vanaf" prices on service cards | Real price list in `SERVICE_PRICES`, `src/data/pricing.ts` (incl./excl. btw) **(gate)** |
+| `projects` | `/projecten` gallery; real photos in the before/after slider | Entries in `src/data/projects.ts`: own photos (`beforeImage` for the slider), client permission, town-level location only |
 | `reviews` | Ratings/testimonials | Linkable review platform; no copied or invented quotes |
 | `stats`, `team`, `warranty`, `responseTime`, `freeSurvey`, `certification` | Respective statements | Certificate, warranty terms, staffing that makes the promise true |
 
+### Widgets that are always on
+
+- **Cost calculator** ("Bereken direct uw richtprijs", home page and the four
+  matching service pages). Rates in `ESTIMATOR`, `src/data/pricing.ts`, were
+  copied from the original site and are unchecked. Compare them with the real
+  price list, then set `ratesChecked: true` **(gate)**. The result is always
+  shown as an indication incl. btw, never as a quote.
+- **Before/after slider**: shows AI illustrations labelled "Impressie"
+  (`src/data/impressions.ts`) until `projects` is on and projects have a
+  `beforeImage`.
+- **Area checker**: answers from `src/data/cities.ts` (names and postcode
+  ranges, the same list as `/werkgebied/`); unknown places get "we check
+  personally", never "no".
+
 ## 3. Service area — `src/data/cities.ts`
 
-- [ ] Confirm the 15 places around Amersfoort (remove or add as needed).
+- [ ] Confirm the 15 places around Amersfoort (remove or add as needed) and
+      their postcode ranges (`postcodes`), which the area checker uses.
 - [ ] Keep `INDEX_CITY_PAGES=false` until each `/werkgebied/<plaats>/` page has
       genuine local content (projects, photos). Otherwise they are thin
       doorway pages.

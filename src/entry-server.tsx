@@ -15,6 +15,10 @@ export function render(pathname: string): string {
 
 // Re-exported so the prerender script works from this one bundle and cannot
 // drift away from the route table the app itself uses.
+// Build-time reminders (scripts/prerender.mjs).
+export { ESTIMATOR } from "./data/pricing"
+export { CONTACT } from "./data/contact"
+
 export {
   allRoutes,
   indexableRoutes,

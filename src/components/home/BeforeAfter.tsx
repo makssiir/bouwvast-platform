@@ -1,270 +1,258 @@
-import React, { useState, useRef } from "react"
+import { useEffect, useId, useRef, useState } from "react"
+import type { CSSProperties, KeyboardEvent, PointerEvent } from "react"
 import Icon from "../Icon"
+import PageLink from "../PageLink"
+import More from "../More"
 import { useLang } from "../../i18n/LangContext"
+import { claim } from "../../data/claims"
+import { PROJECTS } from "../../data/projects"
+import { IMPRESSIONS } from "../../data/impressions"
+import type { Comparison } from "../../data/impressions"
+import { imageSize } from "../../data/images"
+import type { Page } from "../../lib/routes"
 
-export default function BeforeAfter() {
-  const { t, lang } = useLang()
-  const [activeIdx, setActiveIdx] = useState(0)
+/** Real projects with a before photo win; otherwise the labelled impressions. */
+function comparisons(): Comparison[] {
+  if (!claim("projects")) return IMPRESSIONS
+  const real = PROJECTS.filter((p) => p.beforeImage).map<Comparison>((p) => {
+    const size = imageSize(p.image)
+    return {
+      id: p.id,
+      title: p.title,
+      description: p.description,
+      scope: { nl: [] },
+      before: p.beforeImage!,
+      after: p.image,
+      beforeAlt: p.beforeImageAlt ?? p.imageAlt,
+      afterAlt: p.imageAlt,
+      width: size.width ?? p.imageWidth,
+      height: size.height ?? p.imageHeight,
+      serviceSlug: p.serviceSlug,
+      city: p.city,
+      impression: false,
+    }
+  })
+  return real.length > 0 ? real : IMPRESSIONS
+}
+
+const clamp = (n: number) => Math.min(100, Math.max(0, n))
+
+/**
+ * "Voor & na" comparison slider: drag anywhere on the photo, or focus the
+ * handle and use the arrow keys. Vertical swipes still scroll the page.
+ */
+export default function BeforeAfter({ navigate }: { navigate: (p: Page) => void }) {
+  const { t, pick } = useLang()
+  const uid = useId().replace(/:/g, "")
+  const items = comparisons()
+  const [active, setActive] = useState(0)
   const [pos, setPos] = useState(50)
-  const containerRef = useRef<HTMLDivElement>(null)
+  const [touched, setTouched] = useState(false)
+  const frame = useRef<HTMLDivElement>(null)
   const dragging = useRef(false)
+  const interacted = useRef(false)
+  const current = items[active] ?? items[0]
 
-  const comparisonsByLang: Record<
-    string,
-    { id: string; title: string; location: string; beforeImg: string; afterImg: string; desc: string }[]
-  > = {
-    uk: [
-      {
-        id: "kitchen",
-        title: "Комплексний ремонт кухні",
-        location: "Амерсфорт Ватгорст",
-        beforeImg: "/images/kitchen-before.webp",
-        afterImg: "/images/kitchen-after.webp",
-        desc: "Від старих дубових шаф до сучасної преміум-кухні з матовими антрацитовими фасадами, індукцією та паркетом ялинкою.",
-      },
-      {
-        id: "renovation",
-        title: "Ремонт житла та штукатурка",
-        location: "Леусден",
-        beforeImg: "/images/living-before.webp",
-        afterImg: "/images/living-after.webp",
-        desc: "Повна переробка необроблених стін, дзеркально-гладка штукатурка під фарбування та дубова паркетна підлога.",
-      },
-      {
-        id: "bathroom",
-        title: "Ремонт ванної кімнати та сантехніки",
-        location: "Утрехт Схід",
-        beforeImg: "/images/bath-before.webp",
-        afterImg: "/images/bath-after.webp",
-        desc: "Від старої плитки до сучасної безбар'єрної душової зони з великоформатною керамікою під бетон та меблями з масиву дуба.",
-      },
-    ],
-    en: [
-      {
-        id: "kitchen",
-        title: "Complete Kitchen Remodel",
-        location: "Amersfoort Vathorst",
-        beforeImg: "/images/kitchen-before.webp",
-        afterImg: "/images/kitchen-after.webp",
-        desc: "From outdated oak cabinets to a modern luxury kitchen with matte anthracite cabinetry, induction, and herringbone flooring.",
-      },
-      {
-        id: "renovation",
-        title: "Home Renovation & Plastering",
-        location: "Leusden",
-        beforeImg: "/images/living-before.webp",
-        afterImg: "/images/living-after.webp",
-        desc: "Complete overhaul of raw walls, mirror-smooth plastering, and oak herringbone flooring throughout.",
-      },
-      {
-        id: "bathroom",
-        title: "Bathroom & Sanitary Renovation",
-        location: "Utrecht East",
-        beforeImg: "/images/bath-before.webp",
-        afterImg: "/images/bath-after.webp",
-        desc: "From dated tiling to a modern walk-in shower with large-format concrete-look tiles and an oak vanity.",
-      },
-    ],
-    ru: [
-      {
-        id: "kitchen",
-        title: "Комплексный ремонт кухни",
-        location: "Амерсфорт Ватхорст",
-        beforeImg: "/images/kitchen-before.webp",
-        afterImg: "/images/kitchen-after.webp",
-        desc: "От устаревших дубовых шкафов к современной кухне с матовыми антрацитовыми фасадами, индукцией и паркетом елочкой.",
-      },
-      {
-        id: "renovation",
-        title: "Ремонт дома и штукатурка",
-        location: "Леусден",
-        beforeImg: "/images/living-before.webp",
-        afterImg: "/images/living-after.webp",
-        desc: "Полная отделка сырых стен, зеркально гладкая штукатурка под покраску и дубовый паркет.",
-      },
-      {
-        id: "bathroom",
-        title: "Ремонт ванной комнаты и сантехники",
-        location: "Утрехт Восток",
-        beforeImg: "/images/bath-before.webp",
-        afterImg: "/images/bath-after.webp",
-        desc: "От старой плитки к современной душевой зоне с крупноформатной плиткой под бетон и дубовой мебелью.",
-      },
-    ],
-    nl: [
-      {
-        id: "kitchen",
-        title: "Complete Keukenrenovatie",
-        location: "Amersfoort Vathorst",
-        beforeImg: "/images/kitchen-before.webp",
-        afterImg: "/images/kitchen-after.webp",
-        desc: "Van gedateerde eikenhouten kasten naar een moderne luxe keuken met mat-antraciet kasten, inductie en visgraatvloer.",
-      },
-      {
-        id: "renovation",
-        title: "Woningrenovatie & Stucwerk",
-        location: "Leusden",
-        beforeImg: "/images/living-before.webp",
-        afterImg: "/images/living-after.webp",
-        desc: "Complete aanpak van ruwe wanden, strak sausklaar stucwerk en eikenhouten visgraatvloer.",
-      },
-      {
-        id: "bathroom",
-        title: "Badkamer & Sanitair Renovatie",
-        location: "Utrecht Oost",
-        beforeImg: "/images/bath-before.webp",
-        afterImg: "/images/bath-after.webp",
-        desc: "Van gedateerd tegelwerk naar een moderne inloopdouche met grootformaat betonlook tegels en eiken meubel.",
-      },
-    ],
+  const touch = () => {
+    interacted.current = true
+    setTouched(true)
   }
 
-  const comparisons = comparisonsByLang[lang] ?? comparisonsByLang.nl
-  const current = comparisons[activeIdx] ?? comparisons[0]
+  // One gentle sweep the first time the slider comes into view, so it is
+  // obvious that it moves. Skipped for reduced motion or once touched.
+  useEffect(() => {
+    const el = frame.current
+    if (!el || typeof IntersectionObserver === "undefined") return
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return
+    let raf = 0
+    let timer = 0
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return
+        observer.disconnect()
+        timer = window.setTimeout(() => {
+          const start = performance.now()
+          const tick = (now: number) => {
+            if (interacted.current) return
+            const p = Math.min(1, (now - start) / 1800)
+            setPos(50 - 16 * Math.sin(p * 2 * Math.PI) * (1 - p * 0.35))
+            if (p < 1) raf = requestAnimationFrame(tick)
+            else setPos(50)
+          }
+          raf = requestAnimationFrame(tick)
+        }, 350)
+      },
+      { threshold: 0.55 },
+    )
+    observer.observe(el)
+    return () => {
+      observer.disconnect()
+      window.clearTimeout(timer)
+      cancelAnimationFrame(raf)
+    }
+  }, [])
 
   const setFromClientX = (clientX: number) => {
-    const el = containerRef.current
-    if (!el) return
-    const rect = el.getBoundingClientRect()
-    const pct = ((clientX - rect.left) / rect.width) * 100
-    setPos(Math.min(100, Math.max(0, pct)))
+    const rect = frame.current?.getBoundingClientRect()
+    if (!rect || rect.width === 0) return
+    setPos(clamp(((clientX - rect.left) / rect.width) * 100))
   }
 
-  return (
-    <section className="section" id="voor-na">
-      <div className="container">
-        <div className="center mb-10">
-          <span className="eyebrow">{t("ba_label")}</span>
-          <h2>{t("ba_title")}</h2>
-          <p className="lead">{t("ba_sub")}</p>
+  const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0) return
+    touch()
+    dragging.current = true
+    e.currentTarget.setPointerCapture?.(e.pointerId)
+    setFromClientX(e.clientX)
+  }
 
-          {/* Selector pills */}
-          <div className="flex flex-wrap justify-center gap-2.5 mt-4">
-            {comparisons.map((comp, idx) => (
-              <button
-                type="button"
-                key={comp.id}
-                aria-pressed={activeIdx === idx}
-                onClick={() => {
-                  setActiveIdx(idx)
-                  setPos(50)
-                }}
-                className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
-                  activeIdx === idx
-                    ? "bg-[var(--brand)] text-white shadow-md"
-                    : "bg-white border border-[var(--border)] text-[var(--muted)] hover:text-[var(--fg)] hover:border-[var(--brand)]"
-                }`}
-              >
-                {comp.title}
-              </button>
-            ))}
+  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    const step = e.shiftKey ? 10 : 5
+    const next: Record<string, number> = {
+      ArrowLeft: pos - step,
+      ArrowDown: pos - step,
+      ArrowRight: pos + step,
+      ArrowUp: pos + step,
+      PageDown: pos - 10,
+      PageUp: pos + 10,
+      Home: 0,
+      End: 100,
+    }
+    if (!(e.key in next)) return
+    e.preventDefault()
+    touch()
+    setPos(clamp(next[e.key]))
+  }
+
+  const rounded = Math.round(pos)
+
+  return (
+    <section className="section" id="voor-na" aria-labelledby={`${uid}-title`}>
+      <div className="container">
+        <div className="section-head">
+          <div>
+            <p className="eyebrow">{t("ba_label")}</p>
+            <h2 id={`${uid}-title`}>{t("ba_title")}</h2>
+            <p>{t("ba_sub")}</p>
           </div>
         </div>
 
-        <div className="max-w-4xl mx-auto">
+        {items.length > 1 && (
+          <div className="chip-row ba-tabs" role="group" aria-label={t("ba_choose")}>
+            {items.map((item, idx) => (
+              <button
+                type="button"
+                key={item.id}
+                className="chip"
+                aria-pressed={idx === active}
+                onClick={() => {
+                  setActive(idx)
+                  setPos(50)
+                }}
+              >
+                {pick(item.title)}
+              </button>
+            ))}
+          </div>
+        )}
+
+        <div className="ba-layout">
           <div
-            ref={containerRef}
-            className="relative w-full overflow-hidden rounded-2xl border border-[var(--border)] shadow-2xl select-none touch-none aspect-video md:aspect-[16/9] cursor-ew-resize bg-night"
-            onPointerDown={(e) => {
-              dragging.current = true
-              ;(e.target as HTMLElement).setPointerCapture?.(e.pointerId)
-              setFromClientX(e.clientX)
-            }}
-            onPointerMove={(e) => {
-              if (dragging.current) setFromClientX(e.clientX)
-            }}
-            onPointerUp={() => {
-              dragging.current = false
-            }}
-            role="slider"
-            aria-label={t("ba_hint")}
-            aria-valuenow={Math.round(pos)}
-            aria-valuetext={`${Math.round(pos)}%`}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === "ArrowLeft") setPos((p) => Math.max(0, p - 5))
-              if (e.key === "ArrowRight") setPos((p) => Math.min(100, p + 5))
-              if (e.key === "Home") setPos(0)
-              if (e.key === "End") setPos(100)
-            }}
+            ref={frame}
+            className={`ba-frame${touched ? " is-touched" : ""}`}
+            style={
+              {
+                "--pos": `${pos}%`,
+                "--ratio": `${current.width} / ${current.height}`,
+              } as CSSProperties
+            }
+            onPointerDown={onPointerDown}
+            onPointerMove={(e) => dragging.current && setFromClientX(e.clientX)}
+            onPointerUp={() => (dragging.current = false)}
+            onPointerCancel={() => (dragging.current = false)}
           >
-            {/* After (Base Layer) */}
             <img
-              src={current.afterImg}
+              key={`${current.id}-after`}
+              src={current.after}
+              alt={pick(current.afterAlt)}
+              width={current.width}
+              height={current.height}
               loading="lazy"
-              width={1376}
-              height={768}
               decoding="async"
-              alt={t("ba_after")}
-              className="absolute inset-0 w-full h-full object-cover"
               draggable={false}
+              className="ba-img"
             />
-            <span className="absolute top-4 right-4 z-10 px-3.5 py-1.5 rounded-full text-xs font-bold text-white bg-[var(--brand)] shadow-lg inline-flex items-center gap-1.5">
-              <span>{t("ba_after")}</span>
-            </span>
-
-            {/* Before (Clipped Layer) */}
             <img
-              src={current.beforeImg}
+              key={`${current.id}-before`}
+              src={current.before}
+              alt={pick(current.beforeAlt)}
+              width={current.width}
+              height={current.height}
               loading="lazy"
-              width={1376}
-              height={768}
               decoding="async"
-              alt={t("ba_before")}
-              className="absolute inset-0 w-full h-full object-cover"
-              style={{
-                clipPath: `inset(0 ${100 - pos}% 0 0)`,
-                filter: "brightness(0.96)",
-              }}
               draggable={false}
+              className="ba-img ba-img--before"
             />
-            <span
-              className="absolute top-4 left-4 z-10 px-3.5 py-1.5 rounded-full text-xs font-bold text-white bg-night/85 backdrop-blur-xs shadow-lg transition-opacity inline-flex items-center gap-1.5"
-              style={{ opacity: pos > 15 ? 1 : 0 }}
-            >
-              <span>{t("ba_before")}</span>
+            <span className="ba-tag ba-tag--before" aria-hidden="true" style={{ opacity: pos > 14 ? 1 : 0 }}>
+              {t("ba_before")}
             </span>
-
-            {/* Divider Line & Glow Handle */}
-            <div
-              className="absolute top-0 bottom-0 z-20 pointer-events-none"
-              style={{ left: `${pos}%`, transform: "translateX(-50%)" }}
-            >
-              <div className="h-full w-1 bg-white shadow-[0_0_12px_rgba(0,0,0,0.6)]" />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white text-[var(--brand)] flex items-center justify-center shadow-2xl border-2 border-[var(--brand)]">
-                <Icon
-                  name="swap"
-                  size={20}
-                  color="var(--brand)"
-                  strokeWidth={2.4}
-                />
+            <span className="ba-tag ba-tag--after" aria-hidden="true" style={{ opacity: pos < 86 ? 1 : 0 }}>
+              {t("ba_after")}
+            </span>
+            {current.impression && (
+              <span className="ba-impression" aria-hidden="true">
+                {t("ba_impression")}
+              </span>
+            )}
+            <div className="ba-divider">
+              <div
+                role="slider"
+                tabIndex={0}
+                className="ba-handle"
+                aria-label={t("ba_slider")}
+                aria-orientation="horizontal"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={rounded}
+                aria-valuetext={t("ba_value", {
+                  before: String(rounded),
+                  after: String(100 - rounded),
+                })}
+                onKeyDown={onKeyDown}
+              >
+                <Icon name="arrows-h" size={20} strokeWidth={2.2} />
               </div>
             </div>
-
-            {/* Helper label */}
-            <span className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 px-4 py-1.5 rounded-full text-xs font-semibold text-white bg-night/80 backdrop-blur-xs shadow-md pointer-events-none">
-              ◀ {t("ba_hint")} ▶
+            <span className="ba-hint" aria-hidden="true">
+              {t("ba_hint")}
             </span>
           </div>
 
-          <div className="mt-5 text-center">
-            <h3 className="text-lg font-bold text-[var(--fg)] m-0">
-              {current.title} — {current.location}
-            </h3>
-            <p className="text-sm text-[var(--muted)] mt-1.5 max-w-xl mx-auto">
-              {current.desc}
-            </p>
-
-            <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-pine-50 text-pine-800 border border-pine-200/60">
-                ✓ {lang === "uk" ? "Повний демонтаж та вирівнювання" : lang === "nl" ? "Vakkundige egalisatie" : lang === "ru" ? "Полный демонтаж и выравнивание" : "Precision leveling"}
-              </span>
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-pine-50 text-pine-800 border border-pine-200/60">
-                ✓ {lang === "uk" ? "Нові інженерні мережі" : lang === "nl" ? "Nieuwe leidingen & elektra" : lang === "ru" ? "Новые инженерные сети" : "Modern utilities & wiring"}
-              </span>
+          <div className="ba-info">
+            <div className="article-meta">
+              <span className="tag">{current.impression ? t("ba_impression") : current.city}</span>
             </div>
+            <h3>{pick(current.title)}</h3>
+            <p>{pick(current.description)}</p>
+            {pick(current.scope).length > 0 && (
+              <>
+                <p className="ba-scope-label">{t("ba_scope")}</p>
+                <ul className="check-list check-list--stacked">
+                  {pick(current.scope).map((item) => (
+                    <li key={item}>
+                      <span className="check-dot" aria-hidden="true">
+                        <Icon name="check" size={13} strokeWidth={2.6} />
+                      </span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+            <PageLink to={{ type: "service", slug: current.serviceSlug }} navigate={navigate} className="ba-link">
+              <More>{t("ba_service_link")}</More>
+            </PageLink>
+            {current.impression && <p className="fine-print">{t("ba_impression_note")}</p>}
           </div>
         </div>
       </div>

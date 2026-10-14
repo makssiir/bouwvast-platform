@@ -19,7 +19,7 @@ import { useLang } from "./i18n/LangContext"
 import Icon from "./components/Icon"
 import { CONTACT, phoneHref, whatsappHref } from "./data/contact"
 import { applyPageMeta } from "./lib/head"
-import { QuoteDraftProvider } from "./lib/quoteDraft"
+import { QuoteDraftProvider, scrollToQuote } from "./lib/quoteDraft"
 import {
   hrefForPage,
   isIndexable,
@@ -117,7 +117,12 @@ export default function App({ initialPage }: { initialPage?: Page } = {}) {
 
         <Footer navigate={navigate} />
 
-        <NudgeWidgets onOpenQuote={() => navigate("contact")} />
+        <NudgeWidgets
+          suppress={page === "contact"}
+          onOpenQuote={() => {
+            if (!scrollToQuote()) navigate("contact")
+          }}
+        />
 
         <MobileContactBar navigate={navigate} t={t} showCta={page !== "contact"} />
       </div>

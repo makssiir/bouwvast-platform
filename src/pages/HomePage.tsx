@@ -4,7 +4,6 @@ import QuoteSection from "../components/QuoteSection"
 import More from "../components/More"
 import Icon from "../components/Icon"
 import { ARTICLES } from "../data/articles"
-import { claim } from "../data/claims"
 import { useLang } from "../i18n/LangContext"
 import JsonLd from "../components/JsonLd"
 import { faqEntries } from "../data/faq"
@@ -19,17 +18,20 @@ import BeforeAfter from "../components/home/BeforeAfter"
 
 /**
  * Sections that make a factual claim (statistics, reviews, projects, team,
- * prices) only render when the matching switch in data/claims.ts is on.
+ * prices) only render when the matching switch in data/claims.ts is on. The
+ * widgets below make none: the calculator is labelled an indication, the
+ * before/after pairs are labelled impressions until real projects exist,
+ * and the area checker answers from the same list as /werkgebied/.
  */
 export default function HomePage({ navigate }: { navigate: (p: Page) => void }) {
   return (
     <>
       <HeroSection navigate={navigate} />
-      {claim("pricing") && <CostEstimator />}
-      {claim("serviceArea") && <PostalCodeChecker navigate={navigate} />}
       <ServicesSection navigate={navigate} />
-      {claim("projects") && <BeforeAfter />}
+      <CostEstimator />
+      <BeforeAfter navigate={navigate} />
       <HowItWorksSection />
+      <PostalCodeChecker navigate={navigate} />
       <KennisbankPreviewSection navigate={navigate} />
       <FAQSection navigate={navigate} />
       <QuoteSection sourcePage="home" />

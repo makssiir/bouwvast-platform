@@ -1,4 +1,4 @@
-export type IconName = "renovation" | "finishing" | "painting" | "facade" | "assembly" | "maintenance" | "bathroom" | "general" | "pin" | "check" | "arrow-right" | "swap" | "phone" | "whatsapp" | "mail" | "bolt" | "star" | "menu" | "close" | "shield" | "clock" | "calendar" | "user" | "tools" | "globe" | "chevron-down" | "arrow-up-right" | "ruler" | "home" | "camera"
+export type IconName = "renovation" | "finishing" | "painting" | "facade" | "assembly" | "maintenance" | "bathroom" | "general" | "pin" | "check" | "arrow-right" | "swap" | "phone" | "whatsapp" | "mail" | "bolt" | "star" | "menu" | "close" | "shield" | "clock" | "calendar" | "user" | "tools" | "globe" | "chevron-down" | "arrow-up-right" | "ruler" | "home" | "camera" | "calculator" | "plus" | "minus" | "info" | "arrows-h" | "chat"
 
 const paths: Record<IconName, string> = {
   renovation: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10",
@@ -15,6 +15,13 @@ const paths: Record<IconName, string> = {
     "M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z M15.5 9H14V7.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5S16.33 9 15.5 9z M10 9.5c0 .83-.67 1.5-1.5 1.5h-5C2.67 11 2 10.33 2 9.5S2.67 8 3.5 8h5c.83 0 1.5.67 1.5 1.5z M8.5 15H10v1.5c0 .83-.67 1.5-1.5 1.5S7 17.33 7 16.5 7.67 15 8.5 15z",
   pin: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z",
   check: "M20 6L9 17l-5-5",
+  calculator:
+    "M6 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z M8 6h8v4H8z M8 14h.01 M12 14h.01 M16 14h.01 M8 18h.01 M12 18h.01 M16 18h.01",
+  plus: "M12 5v14 M5 12h14",
+  minus: "M5 12h14",
+  info: "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z M12 16v-4.5 M12 8h.01",
+  "arrows-h": "M8 7l-5 5 5 5 M16 7l5 5-5 5",
+  chat: "M21 12a8.5 8.5 0 0 1-12.4 7.55L3 21l1.45-5.6A8.5 8.5 0 1 1 21 12z",
   "arrow-right": "M5 12h14 M12 5l7 7-7 7",
   swap: "M7 16V4m0 0L3 8m4-4l4 4 M17 8v12m0 0l4-4m-4 4l-4-4",
   phone:

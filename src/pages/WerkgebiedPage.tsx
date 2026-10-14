@@ -3,6 +3,7 @@ import PageHero from "../components/PageHero"
 import PageLink from "../components/PageLink"
 import { CITIES, REGION_LABELS } from "../data/cities"
 import Icon from "../components/Icon"
+import PostalCodeChecker from "../components/home/PostalCodeChecker"
 import { useLang } from "../i18n/LangContext"
 
 const REGIONS = ["kern", "utrecht", "gooi", "gelderland"] as const
@@ -25,6 +26,8 @@ export default function WerkgebiedPage({
         title={t("area_page_title")}
         lead={t("area_page_sub")}
       />
+
+      <PostalCodeChecker navigate={navigate} showRegions={false} />
 
       <section className="section">
         <div className="container">

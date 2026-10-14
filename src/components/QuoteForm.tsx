@@ -42,7 +42,14 @@ export default function QuoteForm({
   const { t, lang, pick } = useLang()
   const uid = useId()
   const fid = (name: string) => `${uid}-${name}`.replace(/:/g, "")
-  const [form, setForm] = useState<FormState>({ ...EMPTY, city: presetCity })
+  const { estimate, setEstimate, prefill } = useQuoteDraft()
+  const [form, setForm] = useState<FormState>(() => ({
+    ...EMPTY,
+    city: presetCity || prefill?.city || "",
+    description: prefill?.description ?? "",
+  }))
+  // What the widgets last suggested, so a newer suggestion may replace it.
+  const suggested = useRef({ city: prefill?.city, description: prefill?.description })
   const [photos, setPhotos] = useState<File[]>([])
   const [errors, setErrors] = useState<Partial<Record<LeadField, string>>>({})
   const leadId = useRef<string | null>(null)
@@ -51,8 +58,30 @@ export default function QuoteForm({
   const formRef = useRef<HTMLFormElement>(null)
   const resultRef = useRef<HTMLDivElement>(null)
   const lead = useLeadSubmission(sourcePage)
-  const { estimate, setEstimate } = useQuoteDraft()
   const photoCheck = acceptablePhotos(photos)
+
+  // Suggestions from the calculator or the area checker fill empty fields
+  // (or replace an earlier suggestion), never text the visitor wrote.
+  useEffect(() => {
+    if (!prefill) return
+    const previous = suggested.current
+    setForm((current) => {
+      const next = { ...current }
+      if (prefill.city && (!current.city.trim() || current.city === previous.city)) {
+        next.city = prefill.city
+      }
+      if (prefill.description && (!current.description.trim() || current.description === previous.description)) {
+        next.description = prefill.description
+      }
+      return next
+    })
+    suggested.current = {
+      city: prefill.city ?? previous.city,
+      description: prefill.description ?? previous.description,
+    }
+    leadId.current = null
+    setErrors((e) => ({ ...e, city: undefined, description: undefined }))
+  }, [prefill])
 
   // Server-side field errors come back through the hook.
   useEffect(() => {
@@ -205,10 +234,20 @@ export default function QuoteForm({
       </Field>
 
       {estimate && (
-        <div className="flex items-start justify-between gap-3 rounded-xl border border-pine-100 bg-pine-50 p-3.5 text-sm text-ink">
-          <div>
-            <span className="block font-semibold text-pine-800">{t("est_title")}</span>
-            <span>{estimate.summary}</span>
+        <div className="estimate-attached" data-testid="estimate-attached">
+          <span className="estimate-attached-icon" aria-hidden="true">
+            <Icon name="calculator" size={18} />
+          </span>
+          <div className="min-w-0 flex-1">
+            <span className="estimate-attached-label">
+              {pick({
+                nl: "Uw berekening is toegevoegd",
+                en: "Your calculation is attached",
+                uk: "Ваш розрахунок додано",
+                ru: "Ваш расчёт добавлен",
+              })}
+            </span>
+            <span className="estimate-attached-text">{estimate.summary}</span>
           </div>
           <button
             type="button"
@@ -216,7 +255,7 @@ export default function QuoteForm({
               leadId.current = null
               setEstimate(null)
             }}
-            className="shrink-0 cursor-pointer rounded border-0 bg-transparent p-1 text-sm text-muted underline hover:text-ink"
+            className="estimate-attached-remove"
           >
             {pick({ nl: "Verwijderen", en: "Remove", uk: "Видалити", ru: "Удалить" })}
           </button>

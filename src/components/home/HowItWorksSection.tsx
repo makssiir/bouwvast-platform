@@ -1,11 +1,10 @@
 import { useLang } from "../../i18n/LangContext"
-import { claim } from "../../data/claims"
 
 export default function HowItWorksSection() {
   const { t } = useLang()
   const steps = [
-    // The calculator is only mentioned while it is actually shown.
-    { title: t("how_1_title"), text: claim("pricing") ? t("how_1_desc") : t("how_1_desc_form") },
+    // Mentions the calculator, which is on the same page.
+    { title: t("how_1_title"), text: t("how_1_desc") },
     { title: t("how_2_title"), text: t("how_2_desc") },
     { title: t("how_3_title"), text: t("how_3_desc") },
     { title: t("how_4_title"), text: t("how_4_desc") },

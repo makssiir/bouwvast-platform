@@ -17,11 +17,18 @@ export const CLAIMS = {
   stats: { enabled: false },
   /** Ratings and testimonials. Needs a real, linkable review source. */
   reviews: { enabled: false },
-  /** Project gallery, before/after sliders, project stories and locations. */
+  /**
+   * Project gallery, project stories and locations. Until this is on, the
+   * before/after slider shows illustrations clearly labelled "Impressie".
+   */
   projects: { enabled: false },
   /** Owner/team photo and "own team" statements. */
   team: { enabled: false },
-  /** Rate table and the cost estimator's price ranges. */
+  /**
+   * "Vanaf" prices on service cards and any rate table. The calculator keeps
+   * its own rates in data/pricing.ts (ESTIMATOR) and always shows them as an
+   * indication; `npm run check:launch` asks for those to be checked.
+   */
   pricing: { enabled: false },
   /** Any warranty duration or "100% guarantee" statement. */
   warranty: { enabled: false },
@@ -31,8 +38,6 @@ export const CLAIMS = {
   freeSurvey: { enabled: false },
   /** VCA or other certifications. */
   certification: { enabled: false },
-  /** The postcode → service-area mapping used by the coverage checker. */
-  serviceArea: { enabled: false },
 } satisfies Record<string, Claim>
 
 export type ClaimKey = keyof typeof CLAIMS

@@ -1,8 +1,6 @@
 import type { Page } from "../../lib/routes"
 import Icon from "../Icon"
-import PageLink from "../PageLink"
 import { useLang } from "../../i18n/LangContext"
-import { claim } from "../../data/claims"
 import { imageSize } from "../../data/images"
 import { scrollToQuote } from "../../lib/quoteDraft"
 
@@ -17,7 +15,8 @@ export default function HeroSection({ navigate }: { navigate: (p: Page) => void 
   }
 
   const handleCalculatorClick = () => {
-    document.getElementById("calculator")?.scrollIntoView({ behavior: "smooth" })
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+    document.getElementById("calculator")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" })
   }
 
   return (
@@ -39,16 +38,10 @@ export default function HeroSection({ navigate }: { navigate: (p: Page) => void 
                 <Icon name="arrow-right" size={18} strokeWidth={2} />
               </span>
             </button>
-            {claim("pricing") ? (
-              <button type="button" onClick={handleCalculatorClick} className="btn btn-outline btn-lg">
-                <Icon name="ruler" size={18} />
-                {t("est_eyebrow")}
-              </button>
-            ) : (
-              <PageLink to="diensten" navigate={navigate} className="btn btn-outline btn-lg">
-                {t("services_all")}
-              </PageLink>
-            )}
+            <button type="button" onClick={handleCalculatorClick} className="btn btn-outline btn-lg">
+              <Icon name="calculator" size={18} />
+              {t("hero_cta_calc")}
+            </button>
           </div>
 
           <ul className="check-list">

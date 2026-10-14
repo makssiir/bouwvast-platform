@@ -18,6 +18,9 @@ export interface Project {
   /** Path under /public, e.g. "/images/projects/badkamer-leusden.webp". */
   image: string
   imageAlt: Localized<string>
+  /** Optional "before" photo of the same view; the project then also appears in the before/after slider. */
+  beforeImage?: string
+  beforeImageAlt?: Localized<string>
   imageWidth: number
   imageHeight: number
   description: Localized<string>

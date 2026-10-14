@@ -10,7 +10,8 @@ import Icon from "../components/Icon"
 import QuoteForm from "../components/QuoteForm"
 import { useLang } from "../i18n/LangContext"
 import { scrollToQuote } from "../lib/quoteDraft"
-import { claim } from "../data/claims"
+import { estimatorServiceFor } from "../data/pricing"
+import CostEstimator from "../components/home/CostEstimator"
 
 export default function ServicePage({ slug, navigate }: { slug: string; navigate: (p: Page) => void }) {
   const { t } = useLang()
@@ -18,8 +19,10 @@ export default function ServicePage({ slug, navigate }: { slug: string; navigate
 
   if (!service) return <NotFoundPage navigate={navigate} />
 
+  const estimator = estimatorServiceFor(service.slug)
   const steps = [
-    { title: t("how_1_title"), desc: claim("pricing") ? t("how_1_desc") : t("how_1_desc_form") },
+    // Only mention the calculator where it is on the page.
+    { title: t("how_1_title"), desc: estimator ? t("how_1_desc") : t("how_1_desc_form") },
     { title: t("how_2_title"), desc: t("how_2_desc") },
     { title: t("how_3_title"), desc: t("how_3_desc") },
   ]
@@ -122,7 +125,9 @@ export default function ServicePage({ slug, navigate }: { slug: string; navigate
         </div>
       </div>
 
-      <section className="section section--muted" aria-labelledby="related-title">
+      {estimator && <CostEstimator initialService={estimator.id} />}
+
+      <section className={`section ${estimator ? "" : "section--muted"}`} aria-labelledby="related-title">
         <div className="container">
           <div className="section-head">
             <div>
