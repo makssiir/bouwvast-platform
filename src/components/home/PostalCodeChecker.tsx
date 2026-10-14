@@ -175,8 +175,8 @@ export default function PostalCodeChecker({
   return (
     <section className="section bg-white border-y border-[var(--border)]" id="werkgebied-check" aria-labelledby="area-check-title">
       <div className="container max-w-4xl">
-        <div className="rounded-2xl border border-emerald-200/80 bg-gradient-to-b from-emerald-50/40 to-white p-6 sm:p-9 shadow-lg">
-          <p className="mb-2 text-emerald-800 font-bold text-xs uppercase tracking-wider">{copy.eyebrow}</p>
+        <div className="rounded-2xl border border-pine-200/80 bg-gradient-to-b from-pine-50/40 to-white p-6 sm:p-9 shadow-lg">
+          <p className="mb-2 text-pine-800 font-bold text-xs uppercase tracking-wider">{copy.eyebrow}</p>
           <h2 id="area-check-title" className="text-2xl sm:text-3xl font-extrabold text-[var(--fg)] mb-3 leading-tight">
             {copy.title}
           </h2>
@@ -192,7 +192,7 @@ export default function PostalCodeChecker({
               autoComplete="postal-code"
               onChange={(e) => setQuery(e.target.value)}
               placeholder={copy.placeholder}
-              className="flex-1 px-4 py-3.5 rounded-xl border-2 border-slate-300 focus:border-emerald-700 focus:ring-4 focus:ring-emerald-500/15 outline-none font-medium text-slate-800 placeholder-slate-500 text-sm sm:text-base bg-white"
+              className="flex-1 px-4 py-3.5 rounded-xl border-2 border-line-strong focus:border-pine-700 focus:ring-4 focus:ring-pine-500/15 outline-none font-medium text-ink placeholder-subtle text-sm sm:text-base bg-white"
             />
             <button type="submit" className="btn btn-primary whitespace-nowrap py-3.5 px-6 rounded-xl font-bold flex items-center justify-center gap-2 text-sm sm:text-base">
               <Icon name="check" size={18} />
@@ -200,8 +200,8 @@ export default function PostalCodeChecker({
             </button>
           </form>
 
-          <div className="flex flex-wrap items-center gap-1.5 text-xs text-slate-600 mb-2">
-            <span className="font-semibold text-slate-700 mr-1">{copy.quickLabel}</span>
+          <div className="flex flex-wrap items-center gap-1.5 text-xs text-muted mb-2">
+            <span className="font-semibold text-ink-soft mr-1">{copy.quickLabel}</span>
             {POPULAR_QUICK_SEARCHES.map((item) => (
               <button
                 key={item.label}
@@ -210,7 +210,7 @@ export default function PostalCodeChecker({
                   setQuery(item.query)
                   check(item.query, item.city)
                 }}
-                className="px-2.5 py-1 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200/60 font-medium transition-colors cursor-pointer"
+                className="px-2.5 py-1 rounded-full bg-pine-50 hover:bg-pine-100 text-pine-900 border border-pine-200/60 font-medium transition-colors cursor-pointer"
               >
                 {item.label}
               </button>
@@ -219,9 +219,9 @@ export default function PostalCodeChecker({
 
           <div aria-live="polite">
             {result && (
-              <div className="mt-6 rounded-xl border border-emerald-300 bg-white p-5 sm:p-6 shadow-md">
-                <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-1.5">{title}</h3>
-                <p className="text-slate-600 text-sm leading-relaxed mb-4">
+              <div className="mt-6 rounded-xl border border-pine-300 bg-white p-5 sm:p-6 shadow-md">
+                <h3 className="text-lg sm:text-xl font-bold text-ink mb-1.5">{title}</h3>
+                <p className="text-muted text-sm leading-relaxed mb-4">
                   {result.serviceRadius === "unknown" ? copy.unknownDesc : copy.knownDesc}
                 </p>
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">

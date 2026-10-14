@@ -21,7 +21,7 @@ export default function ProjectModal({
 
   return (
     <div
-      className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-[rgba(15,23,42,0.8)] backdrop-blur-xs"
+      className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-night/80 backdrop-blur-xs"
       onClick={onClose}
     >
       <div
@@ -30,19 +30,19 @@ export default function ProjectModal({
         aria-modal="true"
         aria-labelledby="project-modal-title"
         tabIndex={-1}
-        className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white shadow-2xl border border-[var(--border)]"
+        className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-[20px] border border-line bg-white shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-[rgba(15,23,42,0.7)] text-white flex items-center justify-center hover:bg-[var(--brand)] transition-colors border-0 cursor-pointer"
+          className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-night/70 text-white flex items-center justify-center hover:bg-pine-700 transition-colors border-0 cursor-pointer"
           aria-label={closeLabel}
         >
           <Icon name="close" size={20} />
         </button>
 
-        <div className="relative w-full overflow-hidden bg-gray-900">
+        <div className="relative w-full overflow-hidden bg-night">
           <img
             src={project.image}
             alt={pick(project.imageAlt)}
@@ -51,46 +51,46 @@ export default function ProjectModal({
             className="w-full h-72 md:h-96 object-cover"
           />
           <div className="absolute top-4 left-4 flex gap-2">
-            <span className="px-3 py-1 rounded-full text-xs font-bold text-white bg-[var(--brand)] shadow-md">
+            <span className="rounded-full bg-pine-700 px-3 py-1 text-xs font-semibold text-white shadow-md">
               {pick(project.category)}
             </span>
-            <span className="px-3 py-1 rounded-full text-xs font-bold text-white bg-[rgba(15,23,42,0.85)] shadow-md">
+            <span className="rounded-full bg-night/85 px-3 py-1 text-xs font-semibold text-white shadow-md">
               {project.city}
             </span>
           </div>
         </div>
 
         <div className="p-6 md:p-8">
-          <h2 id="project-modal-title" className="text-2xl font-bold mb-3 text-[var(--fg)]">
+          <h2 id="project-modal-title" className="mb-3 text-2xl text-ink">
             {pick(project.title)}
           </h2>
-          <p className="text-sm text-[var(--muted)] leading-relaxed mb-6">
+          <p className="mb-6 text-muted">
             {pick(project.description)}
           </p>
 
           {(project.duration || project.materials) && (
-            <dl className="grid sm:grid-cols-2 gap-4 p-4 rounded-xl bg-[var(--muted-bg)] border border-[var(--border)] mb-6 text-xs text-[var(--fg)]">
+            <dl className="mb-6 grid gap-4 rounded-xl border border-line bg-sand-50 p-4 text-sm text-ink sm:grid-cols-2">
               {project.duration && (
                 <div>
-                  <dt className="text-[var(--muted)] mb-0.5">
+                  <dt className="mb-0.5 text-subtle">
                     {pick({ nl: "Doorlooptijd", en: "Duration", uk: "Тривалість", ru: "Длительность" })}
                   </dt>
-                  <dd className="font-bold m-0">{pick(project.duration)}</dd>
+                  <dd className="m-0 font-semibold">{pick(project.duration)}</dd>
                 </div>
               )}
               {project.materials && (
                 <div>
-                  <dt className="text-[var(--muted)] mb-0.5">
+                  <dt className="mb-0.5 text-subtle">
                     {pick({ nl: "Materialen", en: "Materials", uk: "Матеріали", ru: "Материалы" })}
                   </dt>
-                  <dd className="font-bold m-0">{pick(project.materials)}</dd>
+                  <dd className="m-0 font-semibold">{pick(project.materials)}</dd>
                 </div>
               )}
             </dl>
           )}
 
           <div className="flex flex-col sm:flex-row gap-3 justify-end">
-            <button type="button" onClick={onClose} className="btn btn-white">
+            <button type="button" onClick={onClose} className="btn btn-outline">
               {closeLabel}
             </button>
             <button
@@ -101,13 +101,15 @@ export default function ProjectModal({
               }}
               className="btn btn-primary"
             >
-              <Icon name="check" size={18} />
               {pick({
                 nl: "Vraag een vergelijkbare offerte aan",
                 en: "Request a similar quote",
                 uk: "Замовити схожу пропозицію",
                 ru: "Запросить похожее предложение",
               })}
+              <span className="btn-arrow" aria-hidden="true">
+                <Icon name="arrow-right" size={18} />
+              </span>
             </button>
           </div>
         </div>

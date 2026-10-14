@@ -18,7 +18,7 @@ export const ARTICLES: Article[] = [
       "Wat kost een verbouwing in 2026? Complete richtprijzen & bespaartips",
     excerpt:
       "Een helder overzicht van de gemiddelde kosten per m², uurtarieven van vakmensen, en hoe u onverwachte meerkosten voorkomt.",
-    category: "Kosten & Budget",
+    category: "Kosten & budget",
     readTime: "5 min leestijd",
     date: "Februari 2026",
     image: "/images/kitchen-renovation.webp",
@@ -37,10 +37,10 @@ export const ARTICLES: Article[] = [
   },
   {
     slug: "badkamer-renoveren-stappenplan",
-    title: "Badkamer renoveren: Stappenplan van sloop tot strakke oplevering",
+    title: "Badkamer renoveren: stappenplan van sloop tot strakke oplevering",
     excerpt:
       "Van leidingen verleggen en waterdichting tot tegelwerk en sanitair montage. Zo verloopt een vakkundige badkamerrenovatie.",
-    category: "Renovatie Gids",
+    category: "Renovatiegids",
     readTime: "6 min leestijd",
     date: "Januari 2026",
     image: "/images/tile-work.webp",
@@ -60,10 +60,10 @@ export const ARTICLES: Article[] = [
   },
   {
     slug: "stucwerk-droogtijd-kosten",
-    title: "Stucwerk: Droogtijden, soorten afwerking en kosten per m²",
+    title: "Stucwerk: droogtijden, soorten afwerking en kosten per m²",
     excerpt:
       "Alles wat u moet weten over sausklaar stucwerk, behangklaar stucen, spackspuiten en de benodigde droogtijd voor u gaat schilderen.",
-    category: "Afbouw & Stuc",
+    category: "Afbouw & stucwerk",
     readTime: "4 min leestijd",
     date: "Februari 2026",
     image: "/images/carpentry-work.webp",
@@ -82,10 +82,10 @@ export const ARTICLES: Article[] = [
   {
     slug: "laag-btw-tarief-verbouwing-regels",
     title:
-      "9% Btw op verbouwing: Voor welke werkzaamheden geldt het lage tarief?",
+      "9% btw op verbouwing: voor welke werkzaamheden geldt het lage tarief?",
     excerpt:
       "Bespaar honderden tot duizenden euro's op uw verbouwing dankzij het verlaagde btw-tarief op schilderen, stukadoren en isoleren.",
-    category: "Regelgeving & Subsidie",
+    category: "Regelgeving & subsidie",
     readTime: "4 min leestijd",
     date: "Januari 2026",
     image: "/images/tools-detail.webp",

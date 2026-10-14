@@ -1,5 +1,5 @@
 import type { Page } from "../lib/routes"
-import Breadcrumb from "../components/Breadcrumb"
+import PageHero from "../components/PageHero"
 import PageLink from "../components/PageLink"
 import { SERVICES } from "../data/services"
 import Icon from "../components/Icon"
@@ -36,28 +36,22 @@ export default function CityPage({
 
   return (
     <>
-      {/* Page hero */}
-      <section className="hero hero--service">
-        <div className="container">
-          <Breadcrumb
-            navigate={navigate}
-            items={[{ label: t("nav_area"), to: "werkgebied" }, { label: city }]}
-          />
-          <h1>{t("city_hero_title", { city })}</h1>
-          <p className="lead-xl max-w-2xl">
-            {t("city_hero_sub", { city })}
-          </p>
-        </div>
-      </section>
+      <PageHero
+        navigate={navigate}
+        crumbs={[{ label: t("nav_area"), to: "werkgebied" }, { label: city }]}
+        eyebrow={t("nav_area")}
+        title={t("city_hero_title", { city })}
+        lead={t("city_hero_sub", { city })}
+      />
 
       {/* Main content + sticky form */}
       <div className="container section">
-        <div className="grid md:grid-cols-[1.3fr_0.9fr] gap-12 items-start">
-          <div className="space-y-12">
+        <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,0.9fr)] lg:gap-14">
+          <div className="space-y-6">
             {/* Services in City */}
             <section className="card p-6 md:p-8">
-              <span className="eyebrow">{t("city_services_eyebrow", { city })}</span>
-              <h2 className="text-2xl font-bold mb-6">
+              <p className="eyebrow">{t("city_services_eyebrow", { city })}</p>
+              <h2 className="mb-6 text-2xl md:text-[1.75rem]">
                 {t("city_services_title", { city })}
               </h2>
               <div className="grid sm:grid-cols-2 gap-4">
@@ -67,15 +61,15 @@ export default function CityPage({
                       key={s.slug}
                       to={{ type: "service", slug: s.slug }}
                       navigate={navigate}
-                      className="block text-left p-4 rounded-xl border transition-all no-underline border-[var(--border)] bg-white hover:border-[var(--brand)] hover:shadow-xs"
+                      className="block rounded-xl border border-line bg-white p-4 text-left transition-colors hover:border-pine-500 hover:bg-pine-50 hover:no-underline"
                     >
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <Icon name={s.icon} size={18} color="var(--brand)" />
-                        <span className="font-bold text-sm text-[var(--fg)]">
+                      <div className="mb-1.5 flex items-center gap-2">
+                        <Icon name={s.icon} size={18} color="var(--color-pine-700)" />
+                        <span className="font-display text-[0.95rem] font-bold text-ink">
                           {t(s.nameKey)}
                         </span>
                       </div>
-                      <p className="text-xs text-[var(--muted)] m-0 line-clamp-2">
+                      <p className="m-0 line-clamp-2 text-sm text-muted">
                         {t(s.introKey)}
                       </p>
                     </PageLink>
@@ -86,10 +80,10 @@ export default function CityPage({
 
             {/* SEO Text */}
             <section className="card p-6 md:p-8">
-              <h2 className="text-xl font-bold mb-4">
+              <h2 className="mb-4 text-2xl">
                 {t("city_seo_title", { city })}
               </h2>
-              <div className="space-y-3 text-sm text-[var(--muted)] leading-relaxed">
+              <div className="space-y-3 leading-relaxed text-muted">
                 <p>{t("city_seo_p1", { city })}</p>
                 <p>{t("city_seo_p2", { city })}</p>
               </div>
@@ -97,7 +91,7 @@ export default function CityPage({
 
             {/* FAQ */}
             <section className="card p-6 md:p-8">
-              <h2 className="text-xl font-bold mb-5">
+              <h2 className="mb-5 text-2xl">
                 {t("city_faq_title", { city })}
               </h2>
               <div className="faq">
@@ -111,19 +105,13 @@ export default function CityPage({
             </section>
           </div>
 
-          {/* Right: sticky quote form */}
-          <div>
-            <div id="quote" className="sticky top-24 card p-6 md:p-7 shadow-lg border-2 border-[var(--brand)]">
-              <div className="flex items-center gap-2 mb-2">
-                <Icon name="check" size={18} color="var(--brand)" />
-                <h2 className="text-lg font-bold m-0">{t("city_quote_title", { city })}</h2>
-              </div>
-              <p className="text-xs text-[var(--muted)] mb-5">
-                {t("city_quote_sub", { city })}
-              </p>
-              <QuoteForm compact sourcePage={`city:${city}`} presetCity={city} />
-            </div>
-          </div>
+          <aside id="quote" className="form-card lg:sticky lg:top-24" aria-labelledby="city-quote-title">
+            <h2 id="city-quote-title" className="mb-1 text-xl">
+              {t("city_quote_title", { city })}
+            </h2>
+            <p className="mb-5 text-sm text-muted">{t("city_quote_sub", { city })}</p>
+            <QuoteForm compact sourcePage={`city:${city}`} presetCity={city} />
+          </aside>
         </div>
       </div>
     </>

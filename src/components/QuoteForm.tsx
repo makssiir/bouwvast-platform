@@ -135,8 +135,8 @@ export default function QuoteForm({
   if (lead.status === "sending") {
     return (
       <div className="py-12 text-center" role="status" aria-live="polite">
-        <div className="mx-auto mb-5 h-10 w-10 animate-spin rounded-full border-3 border-[var(--border)] border-t-[var(--brand)]" aria-hidden="true" />
-        <p className="text-sm font-semibold text-[var(--muted)]">{t("form_sending")}</p>
+        <div className="mx-auto mb-5 h-10 w-10 animate-spin rounded-full border-3 border-line border-t-pine-700" aria-hidden="true" />
+        <p className="m-0 text-sm font-semibold text-muted">{t("form_sending")}</p>
       </div>
     )
   }
@@ -160,19 +160,19 @@ export default function QuoteForm({
   if (lead.status === "sent") {
     return (
       <div ref={resultRef} tabIndex={-1} className="py-12 text-center outline-none" role="status">
-        <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[var(--brand-tint)] text-[var(--brand)]">
+        <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-pine-100 text-pine-700">
           <Icon name="check" size={32} />
         </div>
-        <h3 className="text-2xl font-bold text-[var(--fg)]">{t("form_success_title")}</h3>
-        <p className="mt-2 text-sm text-[var(--muted)]">{t("form_success_sub")}</p>
+        <h3 className="m-0 text-2xl text-ink">{t("form_success_title")}</h3>
+        <p className="mx-auto mt-2 mb-0 max-w-sm text-muted">{t("form_success_sub")}</p>
         {lead.reference && (
-          <p className="mt-3 text-xs text-[var(--muted)]">
+          <p className="mt-4 mb-0 inline-flex items-center gap-2 rounded-full bg-sand-100 px-3.5 py-1.5 text-sm text-muted">
             {pick({ nl: "Referentie", en: "Reference", uk: "Номер запиту", ru: "Номер запроса" })}:{" "}
-            <strong className="font-mono text-[var(--fg)]">{lead.reference}</strong>
+            <strong className="font-mono text-ink">{lead.reference}</strong>
           </p>
         )}
         {lead.photosSkipped && (
-          <p className="mx-auto mt-3 max-w-sm text-xs text-[var(--muted)]">{t("form_photos_too_big")}</p>
+          <p className="mx-auto mt-3 mb-0 max-w-sm text-sm text-muted">{t("form_photos_too_big")}</p>
         )}
       </div>
     )
@@ -187,7 +187,7 @@ export default function QuoteForm({
   return (
     <form ref={formRef} onSubmit={handleSubmit} className="space-y-4" noValidate>
       {lead.failure === "invalid" && Object.keys(errors).length > 0 && (
-        <p role="alert" className="m-0 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">
+        <p role="alert" className="notice">
           {pick({ nl: "Controleer de gemarkeerde velden.", en: "Please check the highlighted fields.", uk: "Перевірте позначені поля.", ru: "Проверьте отмеченные поля." })}
         </p>
       )}
@@ -205,9 +205,9 @@ export default function QuoteForm({
       </Field>
 
       {estimate && (
-        <div className="flex items-start justify-between gap-3 rounded-lg border border-[var(--brand-tint)] bg-[var(--brand-subtle)] p-3 text-xs text-[var(--fg)]">
+        <div className="flex items-start justify-between gap-3 rounded-xl border border-pine-100 bg-pine-50 p-3.5 text-sm text-ink">
           <div>
-            <span className="block font-bold text-[var(--brand-dark)]">{t("est_title")}</span>
+            <span className="block font-semibold text-pine-800">{t("est_title")}</span>
             <span>{estimate.summary}</span>
           </div>
           <button
@@ -216,7 +216,7 @@ export default function QuoteForm({
               leadId.current = null
               setEstimate(null)
             }}
-            className="shrink-0 cursor-pointer rounded border-0 bg-transparent p-1 text-[var(--muted)] underline hover:text-[var(--fg)]"
+            className="shrink-0 cursor-pointer rounded border-0 bg-transparent p-1 text-sm text-muted underline hover:text-ink"
           >
             {pick({ nl: "Verwijderen", en: "Remove", uk: "Видалити", ru: "Удалить" })}
           </button>
@@ -253,7 +253,7 @@ export default function QuoteForm({
       </div>
 
       <div className={compact ? "space-y-4" : "grid gap-4 sm:grid-cols-2"}>
-        <Field id={fid("email")} label={`${t("form_email")} — ${t("form_optional")}`} error={message("email", errors.email)}>
+        <Field id={fid("email")} label={t("form_email")} optional={t("form_optional")} error={message("email", errors.email)}>
           <input
             {...field("email")}
             type="email"
@@ -280,22 +280,35 @@ export default function QuoteForm({
       </div>
 
       <div>
-        <label htmlFor={fid("photos")} className="mb-1.5 block text-xs font-bold text-[var(--fg)]">
-          {t("form_photos")} — {t("form_optional")}
-        </label>
+        <span id={fid("photos-label")} className="field-label">
+          {t("form_photos")} <span className="optional">— {t("form_optional")}</span>
+        </span>
+        {/* A styled label stands in for the native control so its text follows the page language. */}
         <input
           id={fid("photos")}
           type="file"
           accept="image/jpeg,image/png,image/webp"
           multiple
-          aria-describedby={fid("photos-hint")}
+          aria-labelledby={fid("photos-label")}
+          aria-describedby={`${fid("photos-status")} ${fid("photos-hint")}`}
           onChange={(event) => {
             leadId.current = null
             setPhotos(Array.from(event.target.files ?? []))
           }}
-          className="block w-full text-sm text-[var(--muted)] file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-[var(--brand)] file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white"
+          className="file-picker-input sr-only"
         />
-        <p id={fid("photos-hint")} className="mt-1.5 mb-0 text-xs text-[var(--muted)]">
+        <label htmlFor={fid("photos")} className="file-picker">
+          <span className="file-picker-btn" aria-hidden="true">
+            <Icon name="camera" size={18} />
+            {pick({ nl: "Foto's kiezen", en: "Choose photos", uk: "Вибрати фото", ru: "Выбрать фото" })}
+          </span>
+          <span id={fid("photos-status")} className={`file-picker-status ${photos.length > 0 ? "is-selected" : ""}`}>
+            {photos.length > 0
+              ? t("form_photos_selected", { n: String(photoCheck.files.length) })
+              : pick({ nl: "Nog geen foto's gekozen", en: "No photos chosen yet", uk: "Фото ще не вибрано", ru: "Фото ещё не выбраны" })}
+          </span>
+        </label>
+        <p id={fid("photos-hint")} className="mt-2 mb-0 text-[0.8125rem] text-subtle">
           {pick({
             nl: "Maximaal 5 foto's (JPG, PNG of WebP), samen tot 12 MB.",
             en: "Up to 5 photos (JPG, PNG or WebP), 12 MB in total.",
@@ -303,13 +316,8 @@ export default function QuoteForm({
             ru: "До 5 фото (JPG, PNG или WebP), всего до 12 МБ.",
           })}
         </p>
-        {photoCheck.files.length > 0 && (
-          <p className="mt-1 text-xs font-semibold text-[var(--brand)]">
-            {t("form_photos_selected", { n: String(photoCheck.files.length) })}
-          </p>
-        )}
         {photoCheck.skipped && (
-          <p className="mt-1 text-xs text-amber-800" role="status">
+          <p className="mt-1.5 mb-0 text-[0.8125rem] text-amber-ink" role="status">
             {pick({
               nl: "Niet alle foto's kunnen mee (te groot, te veel of geen JPG/PNG/WebP). De overige foto's worden wel verstuurd.",
               en: "Not all photos can be sent (too large, too many or not JPG/PNG/WebP). The others will be sent.",
@@ -333,16 +341,16 @@ export default function QuoteForm({
         />
       </div>
 
-      <button
-        type="submit"
-        className="btn btn-primary w-full py-4 text-base font-bold shadow-md"
-      >
+      <button type="submit" className="btn btn-primary btn-lg w-full">
         {t("btn_submit_request")}
+        <span className="btn-arrow" aria-hidden="true">
+          <Icon name="arrow-right" size={18} />
+        </span>
       </button>
 
-      <p className="m-0 text-center text-xs text-[var(--muted)]">
+      <p className="m-0 text-center text-[0.8125rem] text-subtle">
         {t("form_privacy")}{" "}
-        <a href={hrefForPage("privacy")} className="underline text-[var(--muted)] hover:text-[var(--fg)]">
+        <a href={hrefForPage("privacy")} className="text-subtle underline hover:text-ink">
           {t("footer_privacy")}
         </a>
       </p>
@@ -354,24 +362,27 @@ function Field({
   id,
   label,
   required,
+  optional,
   error,
   children,
 }: {
   id: string
   label: string
   required?: boolean
+  optional?: string
   error?: string
   children: React.ReactNode
 }) {
   return (
     <div>
-      <label htmlFor={id} className="mb-1.5 block text-xs font-bold text-[var(--fg)]">
+      <label htmlFor={id} className="field-label">
         {label}
-        {required && <span className="text-[var(--brand-dark)]" aria-hidden="true"> *</span>}
+        {required && <span className="text-pine-700" aria-hidden="true"> *</span>}
+        {optional && <span className="optional"> — {optional}</span>}
       </label>
       {children}
       {error && (
-        <p id={`${id}-error`} className="mt-1.5 mb-0 text-xs font-semibold text-red-700">
+        <p id={`${id}-error`} className="mt-1.5 mb-0 text-[0.8125rem] font-semibold text-danger">
           {error}
         </p>
       )}

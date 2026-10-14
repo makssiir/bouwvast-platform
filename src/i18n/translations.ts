@@ -31,12 +31,12 @@ const translations = {
     nav_business: "Zakelijk",
 
     // Hero
-    hero_label: "Vakmannen & Aannemers in Nederland",
+    hero_label: "Bouw · renovatie · afbouw — regio Amersfoort",
     hero_title: "Bouwen, renoveren en afwerken.",
     hero_title_accent: "Van idee tot strak resultaat.",
     hero_sub:
       "Bouw-, renovatie- en afbouwwerkzaamheden voor woningen en bedrijven. Beschrijf uw plannen en ontvang een duidelijke, gespecificeerde offerte.",
-    hero_cta_primary: "Direct offerte aanvragen",
+    hero_cta_primary: "Offerte aanvragen",
     hero_trust_1: "Vrijblijvende aanvraag",
     hero_trust_2: "Gespecificeerde offerte vooraf",
     hero_trust_3: "Persoonlijk contact",
@@ -53,7 +53,7 @@ const translations = {
     // Multi-step & CRO
     btn_next: "Volgende stap",
     btn_back: "Terug",
-    btn_submit_request: "Verstuur Aanvraag",
+    btn_submit_request: "Aanvraag versturen",
 
     // Estimator
     est_eyebrow: "Direct inzicht",
@@ -61,13 +61,13 @@ const translations = {
     est_sub:
       "Selecteer uw type werkzaamheden en oppervlakte voor een realtime indicatie van de kosten.",
     est_step_1: "1. Kies het type werkzaamheden",
-    est_step_2: "2. Oppervlakte / Omvang",
+    est_step_2: "2. Oppervlakte / omvang",
     est_step_3: "3. Kwaliteitsniveau van materialen",
     est_tier_std: "Standaard",
     est_tier_std_desc: "Degelijke basiskwaliteit",
     est_tier_prem: "Premium",
     est_tier_prem_desc: "Hoogwaardige A-merken",
-    est_tier_lux: "Luxe / Design",
+    est_tier_lux: "Luxe / design",
     est_tier_lux_desc: "High-end afwerking",
     est_opt_demo: "Inclusief sloopwerk & afvoer",
     est_opt_mat: "Inclusief hoogwaardige materialen",
@@ -77,33 +77,33 @@ const translations = {
       "* Indicatieve berekening incl. btw, geen offerte. De definitieve prijs volgt na een opname op locatie.",
 
     // Services section & pages
-    services_label: "Onze Vakgebieden",
+    services_label: "Onze vakgebieden",
     services_title: "Waarmee kan Bouwvast u helpen?",
     services_sub:
       "Bekijk per discipline wat we voor u kunnen betekenen en wat erbij hoort.",
     services_all: "Bekijk alle diensten",
-    more_info: "Bekijk dienst →",
+    more_info: "Bekijk dienst",
 
     // Service names & descriptions
     svc_renovation: "Woningrenovatie",
     svc_renovation_desc:
       "Complete of gedeeltelijke renovatie van woningen en bedrijfsruimtes.",
-    svc_finishing: "Afbouw & Stucwerk",
+    svc_finishing: "Afbouw & stucwerk",
     svc_finishing_desc:
       "Sausklaar stucen, behangklaar, pleisterwerk, scheidingswanden en plafonds.",
-    svc_painting: "Binnen- & Buitenschilderwerk",
+    svc_painting: "Binnen- & buitenschilderwerk",
     svc_painting_desc:
       "Vakkundig saus- en lakwerk voor particulieren en bedrijven met 9% btw voordeel.",
-    svc_facade: "Gevel- & Metselwerk",
+    svc_facade: "Gevel- & metselwerk",
     svc_facade_desc:
       "Voegwerk, scheurherstel, gevelreiniging en buitengevelisolatie.",
-    svc_assembly: "Montage & Afwerking",
+    svc_assembly: "Montage & afwerking",
     svc_assembly_desc:
       "Nauwkeurige montage van keukens, deuren, kasten en interieurelementen.",
-    svc_maintenance: "Onderhoud & Schadeherstel",
+    svc_maintenance: "Onderhoud & schadeherstel",
     svc_maintenance_desc:
       "Kleine en grotere onderhoudswerkzaamheden, vochtherstel en mutatieonderhoud.",
-    svc_bathroom: "Badkamer & Keuken",
+    svc_bathroom: "Badkamer & keuken",
     svc_bathroom_desc:
       "Complete renovatie, leidingwerk, tegelwerk en luxe sanitairmontage.",
     svc_carpenter: "Timmerman",
@@ -112,13 +112,13 @@ const translations = {
     svc_plumber: "Loodgieter",
     svc_plumber_desc:
       "Leidingwerk, sanitair aansluiten, vloerverwarming en lekkages verhelpen.",
-    svc_general: "Algemene Bouwwerkzaamheden",
+    svc_general: "Algemene bouwwerkzaamheden",
     svc_general_desc:
       "Multidisciplinaire verbouwingen en projecten van ontwerp tot oplevering.",
 
     // Before/After
     ba_label: "Het verschil",
-    ba_title: "Voor & Na: Echte transformaties",
+    ba_title: "Voor & na: echte transformaties",
     ba_sub:
       "Sleep met de balk om het verschil vóór en na onze werkzaamheden te bekijken.",
     ba_before: "VOOR",
@@ -134,13 +134,13 @@ const translations = {
     how_1_title: "Vrijblijvende aanvraag",
     how_1_desc:
       "Beschrijf uw project via het online aanvraagformulier of bereken vooraf uw richtprijs.",
-    how_2_title: "Opname & Advies",
+    how_2_title: "Opname & advies",
     how_2_desc:
       "We bespreken uw wensen en plannen zo nodig een opname op locatie in.",
-    how_3_title: "Transparante Offerte",
+    how_3_title: "Transparante offerte",
     how_3_desc:
       "U ontvangt een gespecificeerde offerte met duidelijke planning en vaste prijsafspraken.",
-    how_4_title: "Vakkundige Oplevering",
+    how_4_title: "Vakkundige oplevering",
     how_4_desc:
       "Het werk wordt uitgevoerd volgens de afspraken in de offerte en samen met u opgeleverd.",
 
@@ -151,11 +151,11 @@ const translations = {
     // Founder Trust Card
 
     // Area & City Page
-    area_page_title: "Werkgebied & Gemeenten",
+    area_page_title: "Werkgebied & gemeenten",
     area_page_sub:
       "Ons werkgebied ligt rond Amersfoort. Staat uw woonplaats er niet bij? Vraag het ons gerust.",
     area_places: "plaatsen",
-    city_page_title: "Aannemer & Verbouwing in",
+    city_page_title: "Aannemer & verbouwing in",
 
     // Projects Page
     projects_title: "Projecten",
@@ -165,7 +165,7 @@ const translations = {
     // About Page
 
     // Business Page
-    b2b_page_title: "Zakelijke Samenwerking & Partners",
+    b2b_page_title: "Zakelijke samenwerking & partners",
     b2b_page_sub:
       "Uitvoerende bouwpartner voor aannemers, keukenzaken, VvE's en vastgoedbeheerders.",
 
@@ -195,8 +195,8 @@ const translations = {
     form_name: "Uw naam",
     form_phone: "Telefoonnummer",
     form_email: "E-mailadres",
-    form_city: "Woonplaats / Postcode",
-    form_desc: "Beschrijf uw wensen en bijzonderheden...",
+    form_city: "Woonplaats of postcode",
+    form_desc: "Beschrijf uw wensen en bijzonderheden",
     form_photos: "Foto's toevoegen",
     form_optional: "optioneel",
     form_photos_selected: "{n} foto('s) geselecteerd",
@@ -230,7 +230,7 @@ const translations = {
     footer_cities: "Werkgebied",
     footer_privacy: "Privacybeleid",
     footer_terms: "Algemene voorwaarden",
-    footer_partner: "Zakelijk & Samenwerking",
+    footer_partner: "Zakelijk & samenwerking",
     footer_rights: "Alle rechten voorbehouden.",
 
     // Global / UI
@@ -246,7 +246,7 @@ const translations = {
     region_gelderland: "Gelderland",
 
     // Page Specific
-    city_hero_title: "Vakman in {city} — Bouwvast",
+    city_hero_title: "Vakman in {city}",
     city_hero_sub: "Bouw-, renovatie- en onderhoudswerkzaamheden in {city} en omgeving. Vraag vrijblijvend een offerte aan.",
     city_services_eyebrow: "Diensten in {city}",
     city_services_title: "Werkzaamheden in {city}",
@@ -360,31 +360,32 @@ const translations = {
     kb_disclaimer: "Dit artikel geeft algemene informatie. Genoemde bedragen en regels zijn indicatief en kunnen veranderen; ze zijn geen offerte. Controleer fiscale regels bij de Belastingdienst.",
     kb_more_articles: "Meer artikelen",
     legal_dutch_only: "",
+    how_1_desc_form: "Beschrijf uw project kort via het aanvraagformulier, eventueel met foto's.",
   },
 
   en: {
     // Navigation
     nav_services: "Services",
     nav_projects: "Projects",
-    nav_area: "Service Area",
-    nav_kennisbank: "Knowledge Base",
-    kb_page_title: "Knowledge Base",
+    nav_area: "Service area",
+    nav_kennisbank: "Knowledge base",
+    kb_page_title: "Knowledge base",
     kb_page_sub:
       "Practical guides and general information for your renovation.",
     nav_contact: "Contact",
-    nav_cta: "Request a Quote",
+    nav_cta: "Request a quote",
     nav_business: "Business",
     btn_next: "Next step",
     btn_back: "Back",
-    btn_submit_request: "Submit Request",
+    btn_submit_request: "Send request",
 
     // Hero
-    hero_label: "Professional Contractors & Builders in the Netherlands",
+    hero_label: "Construction · renovation · finishing — Amersfoort region",
     hero_title: "Building, renovating and finishing.",
     hero_title_accent: "From concept to premium result.",
     hero_sub:
       "Construction, renovation and finishing work for homes and businesses. Describe your plans and receive a clear, itemised quote.",
-    hero_cta_primary: "Request a Quote Now",
+    hero_cta_primary: "Request a quote",
     hero_trust_1: "No-obligation request",
     hero_trust_2: "Itemised quote up front",
     hero_trust_3: "Personal contact",
@@ -399,7 +400,7 @@ const translations = {
     // Stats
 
     // Estimator
-    est_eyebrow: "Instant Estimate",
+    est_eyebrow: "Instant estimate",
     est_title: "Calculate your estimated price online",
     est_sub:
       "Select your project type and square footage for a real-time price range estimation.",
@@ -410,7 +411,7 @@ const translations = {
     est_tier_std_desc: "Solid baseline quality",
     est_tier_prem: "Premium",
     est_tier_prem_desc: "High-quality A-brands",
-    est_tier_lux: "Luxury / Design",
+    est_tier_lux: "Luxury / design",
     est_tier_lux_desc: "High-end bespoke finish",
     est_opt_demo: "Include demolition & waste removal",
     est_opt_mat: "Include premium materials",
@@ -420,33 +421,33 @@ const translations = {
       "* Indicative calculation incl. VAT, not a quote. The final price follows after an on-site assessment.",
 
     // Services section & pages
-    services_label: "Our Disciplines",
+    services_label: "Our disciplines",
     services_title: "How can Bouwvast assist your build?",
     services_sub:
       "See per discipline what we can do for you and what is included.",
     services_all: "View all services",
-    more_info: "View service →",
+    more_info: "View service",
 
     // Service names & descriptions
-    svc_renovation: "Home Renovation",
+    svc_renovation: "Home renovation",
     svc_renovation_desc:
       "Complete or partial turn-key renovation of homes and commercial spaces.",
-    svc_finishing: "Plastering & Drywall",
+    svc_finishing: "Plastering & drywall",
     svc_finishing_desc:
       "Smooth finish plastering, drywall partitions, suspended ceilings, and subfloors.",
-    svc_painting: "Interior & Exterior Painting",
+    svc_painting: "Interior & exterior painting",
     svc_painting_desc:
       "Professional paint spraying and woodwork lacquering with 9% VAT benefit for residential.",
-    svc_facade: "Facade & Masonry",
+    svc_facade: "Facade & masonry",
     svc_facade_desc:
       "Tuckpointing, brickwork restoration, pressure cleaning, and exterior insulation.",
-    svc_assembly: "Mounting & Fitting",
+    svc_assembly: "Mounting & fitting",
     svc_assembly_desc:
       "Precision installation of kitchens, interior doors, custom cabinetry, and finishes.",
-    svc_maintenance: "Maintenance & Repairs",
+    svc_maintenance: "Maintenance & repairs",
     svc_maintenance_desc:
       "Small and large maintenance tasks, moisture repairs, and ongoing property maintenance.",
-    svc_bathroom: "Bathroom & Kitchen",
+    svc_bathroom: "Bathroom & kitchen",
     svc_bathroom_desc:
       "Complete remodeling, plumbing, tile leveling, and luxury sanitary fitting.",
     svc_carpenter: "Carpenter",
@@ -455,13 +456,13 @@ const translations = {
     svc_plumber: "Plumber",
     svc_plumber_desc:
       "Pipework, sanitary connections, underfloor heating and leak repairs.",
-    svc_general: "General Building Works",
+    svc_general: "General building works",
     svc_general_desc:
       "Multidisciplinary construction projects coordinated from design to clean handover.",
 
     // Before/After
-    ba_label: "The Difference",
-    ba_title: "Before & After: Real Transformations",
+    ba_label: "The difference",
+    ba_title: "Before & after: real transformations",
     ba_sub: "Slide the divider to inspect the space before and after our work.",
     ba_before: "BEFORE",
     ba_after: "AFTER",
@@ -471,18 +472,18 @@ const translations = {
 
     // How it works
     how_label: "Process",
-    how_title: "4 Steps to a Smooth Renovation",
+    how_title: "Four steps to a smooth renovation",
     how_cta: "Request a quote",
     how_1_title: "No-obligation request",
     how_1_desc:
       "Tell us about your project via our form or calculate an online estimate in seconds.",
-    how_2_title: "Survey & Advice",
+    how_2_title: "Survey & advice",
     how_2_desc:
       "We discuss your wishes and, if needed, schedule an on-site assessment.",
-    how_3_title: "Transparent Quote",
+    how_3_title: "Transparent quote",
     how_3_desc:
       "You receive an itemized proposal with clear schedules, scope, and fixed pricing terms.",
-    how_4_title: "Professional Delivery",
+    how_4_title: "Professional delivery",
     how_4_desc:
       "The work is carried out as agreed in the quote and handed over together with you.",
 
@@ -493,11 +494,11 @@ const translations = {
     // Founder Trust Card
 
     // Area & City Page
-    area_page_title: "Service Areas & Municipalities",
+    area_page_title: "Service areas & municipalities",
     area_page_sub:
       "We work in the area around Amersfoort. Your town not listed? Just ask us.",
     area_places: "locations",
-    city_page_title: "Contractor & Renovations in",
+    city_page_title: "Contractor & renovations in",
 
     // Projects Page
     projects_title: "Projects",
@@ -507,14 +508,14 @@ const translations = {
     // About Page
 
     // Business Page
-    b2b_page_title: "Business Partnerships & B2B",
+    b2b_page_title: "Business partnerships & B2B",
     b2b_page_sub:
       "Execution partner for contractors, kitchen retailers, owners' associations and property managers.",
 
     // FAQ
     faq_label: "FAQ",
-    faq_title: "Frequently Asked Questions",
-    faq_1_q: "Are prices including VAT?",
+    faq_title: "Frequently asked questions",
+    faq_1_q: "Do prices include VAT?",
     faq_1_a: "The quote always states clearly which VAT rate applies. For certain labour on homes older than 2 years (such as painting and plastering) the reduced 9% rate may apply.",
     faq_1b_q: "What types of construction work do you handle?",
     faq_1b_a:
@@ -534,12 +535,12 @@ const translations = {
     // Form & Modals
     form_title: "Request a quote",
     form_sub: "Describe your project. We will contact you to discuss the options.",
-    form_name: "Full Name",
-    form_phone: "Phone Number",
-    form_email: "Email Address",
-    form_city: "City / Postal Code",
-    form_desc: "Describe your project requirements...",
-    form_photos: "Attach Photos",
+    form_name: "Full name",
+    form_phone: "Phone number",
+    form_email: "Email address",
+    form_city: "City or postcode",
+    form_desc: "Describe your project and requirements",
+    form_photos: "Attach photos",
     form_optional: "optional",
     form_photos_selected: "{n} photo(s) selected",
     form_privacy:
@@ -562,7 +563,7 @@ const translations = {
     // CTA
     cta_sub:
       "Request a no-obligation quote and briefly describe your plans.",
-    cta_btn: "Request a Quote",
+    cta_btn: "Request a quote",
 
     // Footer
     footer_desc:
@@ -571,31 +572,31 @@ const translations = {
     footer_services: "Services",
     footer_cities: "Service area",
     footer_privacy: "Privacy Policy",
-    footer_terms: "Terms & Conditions",
-    footer_partner: "Commercial & Business",
+    footer_terms: "Terms & conditions",
+    footer_partner: "Business & partnerships",
     footer_rights: "All rights reserved.",
 
     // Global / UI
     skip_link: "Skip to main content",
-    nav_call: "Call Us",
+    nav_call: "Call us",
     close: "Close",
 
     // Home Sections
     // Regions
-    region_kern: "Core Service Area",
-    region_utrecht: "Utrecht Region",
+    region_kern: "Core service area",
+    region_utrecht: "Utrecht region",
     region_gooi: "Gooi & Eemland",
     region_gelderland: "Gelderland",
 
     // Page Specific
-    city_hero_title: "Contractor in {city} — Bouwvast",
+    city_hero_title: "Contractor in {city}",
     city_hero_sub: "Construction, renovation and maintenance work in {city} and the surrounding area. Request a no-obligation quote.",
     city_services_eyebrow: "Services in {city}",
-    city_services_title: "Our Work in {city}",
+    city_services_title: "Our work in {city}",
     city_seo_title: "Why choose Bouwvast in {city}?",
     city_seo_p1: "Do you live in {city} or have a commercial property here and are looking for a reliable contractor for your renovation, bathroom, painting or maintenance? Bouwvast offers a complete package of professional disciplines under one roof.",
     city_seo_p2: "You receive an itemised quote in advance with clear agreements on schedule and price.",
-    city_faq_title: "Frequently Asked Questions about {city}",
+    city_faq_title: "Frequently asked questions about {city}",
     city_quote_title: "Quote in {city}",
     city_quote_sub: "No obligation · briefly describe your project.",
     city_faq_1_q: "Does Bouwvast also operate in {city}?",
@@ -612,7 +613,7 @@ const translations = {
     service_includes_title: "Work that we provide",
     service_process_eyebrow: "Approach",
     service_process_title: "How we work",
-    service_area_eyebrow: "Service Area",
+    service_area_eyebrow: "Service area",
     service_area_title: "{service} in your region",
     service_area_desc: "See the places in our service area or mention your town in the request.",
     service_quote_title: "Free quote",
@@ -702,6 +703,7 @@ const translations = {
     kb_disclaimer: "This article provides general information. Amounts and rules mentioned are indicative and may change; they are not a quote. Check tax rules with the Dutch Tax Administration.",
     kb_more_articles: "More articles",
     legal_dutch_only: "This text is available in Dutch only; the Dutch version applies.",
+    how_1_desc_form: "Briefly describe your project using the request form, with photos if you like.",
   },
 
   uk: {
@@ -714,19 +716,19 @@ const translations = {
     kb_page_sub:
       "Практичні посібники та загальна інформація для вашого ремонту.",
     nav_contact: "Контакти",
-    nav_cta: "Замовити розрахунок",
+    nav_cta: "Замовити пропозицію",
     nav_business: "Для бізнесу",
     btn_next: "Наступний крок",
     btn_back: "Назад",
     btn_submit_request: "Надіслати запит",
 
     // Hero
-    hero_label: "Професійні майстри та будівельники в Нідерландах",
+    hero_label: "Будівництво · ремонт · оздоблення — регіон Амерсфорт",
     hero_title: "Будівництво, ремонт і оздоблення.",
     hero_title_accent: "Від ідеї до якісного результату.",
     hero_sub:
       "Будівельні, ремонтні та оздоблювальні роботи для житла й бізнесу. Опишіть свої плани та отримайте зрозумілу, детальну пропозицію.",
-    hero_cta_primary: "Отримати кошторис онлайн",
+    hero_cta_primary: "Замовити пропозицію",
     hero_trust_1: "Запит без зобов'язань",
     hero_trust_2: "Детальний кошторис заздалегідь",
     hero_trust_3: "Особистий контакт",
@@ -766,7 +768,7 @@ const translations = {
     services_sub:
       "Перегляньте за напрямами, що ми можемо для вас зробити і що входить у роботи.",
     services_all: "Усі послуги",
-    more_info: "Детальніше про послугу →",
+    more_info: "Детальніше про послугу",
 
     // Service names & descriptions
     svc_renovation: "Комплексний ремонт житла",
@@ -878,8 +880,8 @@ const translations = {
     form_name: "Ваше ім'я",
     form_phone: "Номер телефону",
     form_email: "Електронна пошта",
-    form_city: "Місто / поштовий індекс",
-    form_desc: "Опишіть свій проєкт та особливості...",
+    form_city: "Місто або індекс",
+    form_desc: "Опишіть свій проєкт та особливості",
     form_photos: "Додати фотографії",
     form_optional: "необов'язково",
     form_photos_selected: "Обрано {n} фото",
@@ -903,7 +905,7 @@ const translations = {
     // CTA
     cta_sub:
       "Замовте пропозицію без зобов'язань і коротко опишіть свої плани.",
-    cta_btn: "Отримати пропозицію",
+    cta_btn: "Замовити пропозицію",
 
     // Footer
     footer_desc:
@@ -925,11 +927,11 @@ const translations = {
     // Regions
     region_kern: "Основна зона обслуговування",
     region_utrecht: "Регіон Утрехт",
-    region_gooi: "Гой-Вестфалія та Емланд",
+    region_gooi: "Гой та Емланд",
     region_gelderland: "Гелдерланд",
 
     // Page Specific
-    city_hero_title: "Підрядник у {city} — Bouwvast",
+    city_hero_title: "Підрядник у {city}",
     city_hero_sub: "Будівельні, ремонтні роботи та обслуговування в {city} та околицях. Замовте пропозицію без зобов'язань.",
     city_services_eyebrow: "Послуги в {city}",
     city_services_title: "Наші роботи в {city}",
@@ -1043,6 +1045,7 @@ const translations = {
     kb_disclaimer: "Ця стаття містить загальну інформацію. Наведені суми та правила орієнтовні й можуть змінюватися; це не пропозиція. Податкові правила перевіряйте в Belastingdienst.",
     kb_more_articles: "Більше статей",
     legal_dutch_only: "Цей текст доступний лише нідерландською мовою; чинною є нідерландська версія.",
+    how_1_desc_form: "Коротко опишіть свій проєкт у формі запиту, за бажанням — з фото.",
   },
 
   ru: {
@@ -1055,19 +1058,19 @@ const translations = {
     kb_page_sub:
       "Практические руководства и общая информация для вашего ремонта.",
     nav_contact: "Контакты",
-    nav_cta: "Запросить смету",
+    nav_cta: "Запросить предложение",
     nav_business: "Для бизнеса",
     btn_next: "Следующий шаг",
     btn_back: "Назад",
     btn_submit_request: "Отправить заявку",
 
     // Hero
-    hero_label: "Мастера и Подрядчики в Нидерландах",
+    hero_label: "Строительство · ремонт · отделка — регион Амерсфорт",
     hero_title: "Строительство, ремонт и отделка.",
     hero_title_accent: "От идеи к безупречному результату.",
     hero_sub:
       "Строительные, ремонтные и отделочные работы для жилья и бизнеса. Опишите свои планы и получите понятное, детальное предложение.",
-    hero_cta_primary: "Рассчитать смету онлайн",
+    hero_cta_primary: "Запросить предложение",
     hero_trust_1: "Запрос без обязательств",
     hero_trust_2: "Детальная смета заранее",
     hero_trust_3: "Личный контакт",
@@ -1087,13 +1090,13 @@ const translations = {
     est_sub:
       "Выберите тип работ и площадь для мгновенной оценки стоимости проекта.",
     est_step_1: "1. Выберите тип работ",
-    est_step_2: "2. Площадь / Объем",
+    est_step_2: "2. Площадь / объём",
     est_step_3: "3. Качество материалов",
     est_tier_std: "Стандарт",
     est_tier_std_desc: "Надежное базовое качество",
     est_tier_prem: "Премиум",
     est_tier_prem_desc: "Высококачественные европейские бренды",
-    est_tier_lux: "Люкс / Дизайн",
+    est_tier_lux: "Люкс / дизайн",
     est_tier_lux_desc: "Эксклюзивная отделка",
     est_opt_demo: "Включить демонтаж и вывоз мусора",
     est_opt_mat: "Включить качественные материалы",
@@ -1103,33 +1106,33 @@ const translations = {
       "* Ориентировочный расчёт с НДС, не является предложением. Окончательная цена — после осмотра на объекте.",
 
     // Services section & pages
-    services_label: "Наши Направления",
+    services_label: "Наши направления",
     services_title: "Чем Bouwvast может вам помочь?",
     services_sub:
       "Посмотрите по направлениям, что мы можем для вас сделать и что входит в работы.",
     services_all: "Все услуги",
-    more_info: "Подробнее об услуге →",
+    more_info: "Подробнее об услуге",
 
     // Service names & descriptions
-    svc_renovation: "Комплексный Ремонт Жилья",
+    svc_renovation: "Комплексный ремонт жилья",
     svc_renovation_desc:
       "Полный или частичный ремонт домов и коммерческих помещений «под ключ».",
-    svc_finishing: "Штукатурка и Отделка",
+    svc_finishing: "Штукатурка и отделка",
     svc_finishing_desc:
       "Идеально гладкая штукатурка под покраску, перегородки из гипсокартона и потолки.",
-    svc_painting: "Малярные Работы (Интерьер и Фасад)",
+    svc_painting: "Малярные работы (интерьер и фасад)",
     svc_painting_desc:
       "Профессиональная безвоздушная покраска стен, лакировка окон и дверей со сниженным НДС 9%.",
-    svc_facade: "Фасадные и Каменные Работы",
+    svc_facade: "Фасадные и каменные работы",
     svc_facade_desc:
       "Обновление швов, ремонт кирпичной кладки, гидрофобизация и утепление фасадов.",
-    svc_assembly: "Монтаж и Установка",
+    svc_assembly: "Монтаж и установка",
     svc_assembly_desc:
       "Точная установка кухонь, дверей, встроенных шкафов и элементов интерьера.",
-    svc_maintenance: "Обслуживание и Ремонт",
+    svc_maintenance: "Обслуживание и ремонт",
     svc_maintenance_desc:
       "Мелкий и крупный ремонт, устранение сырости и плановое обслуживание недвижимости.",
-    svc_bathroom: "Ванные Комнаты и Санузлы",
+    svc_bathroom: "Ванные комнаты и санузлы",
     svc_bathroom_desc:
       "Полный ремонт ванных, душевые трапы, крупноформатная плитка и монтаж сантехники.",
     svc_carpenter: "Плотник",
@@ -1138,13 +1141,13 @@ const translations = {
     svc_plumber: "Сантехник",
     svc_plumber_desc:
       "Трубопроводы, подключение сантехники, тёплый пол и устранение протечек.",
-    svc_general: "Общестроительные Работы",
+    svc_general: "Общестроительные работы",
     svc_general_desc:
       "Мультидисциплинарные строительные проекты от проектирования до чистовой сдачи.",
 
     // Before/After
     ba_label: "Разница",
-    ba_title: "До и После: Реальные превращения",
+    ba_title: "До и после: реальные преображения",
     ba_sub:
       "Потяните ползунок, чтобы увидеть пространство до и после наших работ.",
     ba_before: "ДО",
@@ -1160,13 +1163,13 @@ const translations = {
     how_1_title: "Запрос без обязательств",
     how_1_desc:
       "Опишите задачу через форму или мгновенно рассчитайте примерную стоимость в калькуляторе.",
-    how_2_title: "Осмотр и Консультация",
+    how_2_title: "Осмотр и консультация",
     how_2_desc:
       "Обсуждаем ваши пожелания и при необходимости планируем осмотр на объекте.",
-    how_3_title: "Прозрачная Смета",
+    how_3_title: "Прозрачная смета",
     how_3_desc:
       "Вы получаете детализированное предложение с фиксированными сроками и стоимостью.",
-    how_4_title: "Качественная Сдача",
+    how_4_title: "Качественная сдача",
     how_4_desc:
       "Работы выполняются согласно договорённостям в предложении и сдаются вместе с вами.",
 
@@ -1177,11 +1180,11 @@ const translations = {
     // Founder Trust Card
 
     // Area & City Page
-    area_page_title: "Зона обслуживания и Города",
+    area_page_title: "Зона обслуживания и города",
     area_page_sub:
       "Мы работаем в регионе вокруг Амерсфорта. Вашего города нет в списке? Просто спросите нас.",
     area_places: "городов",
-    city_page_title: "Подрядчик и Ремонт в г.",
+    city_page_title: "Подрядчик и ремонт в г.",
 
     // Projects Page
     projects_title: "Проекты",
@@ -1190,7 +1193,7 @@ const translations = {
     // About Page
 
     // Business Page
-    b2b_page_title: "Для Бизнеса и Партнеров",
+    b2b_page_title: "Для бизнеса и партнёров",
     b2b_page_sub:
       "Партнёр по выполнению работ для подрядчиков, кухонных салонов, объединений собственников и управляющих недвижимостью.",
 
@@ -1219,8 +1222,8 @@ const translations = {
     form_name: "Ваше имя",
     form_phone: "Номер телефона",
     form_email: "Электронная почта",
-    form_city: "Город / Индекс",
-    form_desc: "Опишите ваш проект и пожелания...",
+    form_city: "Город или индекс",
+    form_desc: "Опишите ваш проект и пожелания",
     form_photos: "Добавить фото",
     form_optional: "опционально",
     form_photos_selected: "Выбрано {n} фото",
@@ -1244,7 +1247,7 @@ const translations = {
     // CTA
     cta_sub:
       "Запросите предложение без обязательств и кратко опишите свои планы.",
-    cta_btn: "Получить смету",
+    cta_btn: "Запросить предложение",
 
     // Footer
     footer_desc:
@@ -1270,7 +1273,7 @@ const translations = {
     region_gelderland: "Гелдерланд",
 
     // Page Specific
-    city_hero_title: "Подрядчик в г. {city} — Bouwvast",
+    city_hero_title: "Подрядчик в г. {city}",
     city_hero_sub: "Строительные, ремонтные работы и обслуживание в {city} и окрестностях. Запросите предложение без обязательств.",
     city_services_eyebrow: "Услуги в г. {city}",
     city_services_title: "Наши работы в г. {city}",
@@ -1384,6 +1387,7 @@ const translations = {
     kb_disclaimer: "Эта статья содержит общую информацию. Указанные суммы и правила ориентировочные и могут меняться; это не предложение. Налоговые правила проверяйте в Belastingdienst.",
     kb_more_articles: "Больше статей",
     legal_dutch_only: "Этот текст доступен только на нидерландском языке; действует нидерландская версия.",
+    how_1_desc_form: "Кратко опишите свой проект в форме запроса, по желанию — с фото.",
   },
 } as const
 

@@ -164,7 +164,7 @@ export default function BeforeAfter() {
         <div className="max-w-4xl mx-auto">
           <div
             ref={containerRef}
-            className="relative w-full overflow-hidden rounded-2xl border border-[var(--border)] shadow-2xl select-none touch-none aspect-video md:aspect-[16/9] cursor-ew-resize bg-black"
+            className="relative w-full overflow-hidden rounded-2xl border border-[var(--border)] shadow-2xl select-none touch-none aspect-video md:aspect-[16/9] cursor-ew-resize bg-night"
             onPointerDown={(e) => {
               dragging.current = true
               ;(e.target as HTMLElement).setPointerCapture?.(e.pointerId)
@@ -221,7 +221,7 @@ export default function BeforeAfter() {
               draggable={false}
             />
             <span
-              className="absolute top-4 left-4 z-10 px-3.5 py-1.5 rounded-full text-xs font-bold text-white bg-[rgba(15,23,42,0.85)] backdrop-blur-xs shadow-lg transition-opacity inline-flex items-center gap-1.5"
+              className="absolute top-4 left-4 z-10 px-3.5 py-1.5 rounded-full text-xs font-bold text-white bg-night/85 backdrop-blur-xs shadow-lg transition-opacity inline-flex items-center gap-1.5"
               style={{ opacity: pos > 15 ? 1 : 0 }}
             >
               <span>{t("ba_before")}</span>
@@ -244,7 +244,7 @@ export default function BeforeAfter() {
             </div>
 
             {/* Helper label */}
-            <span className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 px-4 py-1.5 rounded-full text-xs font-semibold text-white bg-[rgba(15,23,42,0.8)] backdrop-blur-xs shadow-md pointer-events-none">
+            <span className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 px-4 py-1.5 rounded-full text-xs font-semibold text-white bg-night/80 backdrop-blur-xs shadow-md pointer-events-none">
               ◀ {t("ba_hint")} ▶
             </span>
           </div>
@@ -258,10 +258,10 @@ export default function BeforeAfter() {
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-pine-50 text-pine-800 border border-pine-200/60">
                 ✓ {lang === "uk" ? "Повний демонтаж та вирівнювання" : lang === "nl" ? "Vakkundige egalisatie" : lang === "ru" ? "Полный демонтаж и выравнивание" : "Precision leveling"}
               </span>
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-pine-50 text-pine-800 border border-pine-200/60">
                 ✓ {lang === "uk" ? "Нові інженерні мережі" : lang === "nl" ? "Nieuwe leidingen & elektra" : lang === "ru" ? "Новые инженерные сети" : "Modern utilities & wiring"}
               </span>
             </div>

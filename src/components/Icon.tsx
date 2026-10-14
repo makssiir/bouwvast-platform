@@ -1,4 +1,4 @@
-export type IconName = "renovation" | "finishing" | "painting" | "facade" | "assembly" | "maintenance" | "bathroom" | "general" | "pin" | "check" | "arrow-right" | "swap" | "phone" | "whatsapp" | "mail" | "bolt" | "star" | "menu" | "close" | "shield" | "clock" | "calendar" | "user" | "tools"
+export type IconName = "renovation" | "finishing" | "painting" | "facade" | "assembly" | "maintenance" | "bathroom" | "general" | "pin" | "check" | "arrow-right" | "swap" | "phone" | "whatsapp" | "mail" | "bolt" | "star" | "menu" | "close" | "shield" | "clock" | "calendar" | "user" | "tools" | "globe" | "chevron-down" | "arrow-up-right" | "ruler" | "home" | "camera"
 
 const paths: Record<IconName, string> = {
   renovation: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10",
@@ -32,6 +32,13 @@ const paths: Record<IconName, string> = {
   calendar:
     "M19 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z M16 2v4 M8 2v4 M3 10h18",
   user: "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2 M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z",
+  globe:
+    "M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z M2 12h20 M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z",
+  "chevron-down": "M6 9l6 6 6-6",
+  "arrow-up-right": "M7 17L17 7 M8 7h9v9",
+  ruler: "M21.3 8.7 8.7 21.3a1 1 0 0 1-1.4 0l-4.6-4.6a1 1 0 0 1 0-1.4L15.3 2.7a1 1 0 0 1 1.4 0l4.6 4.6a1 1 0 0 1 0 1.4z M7.5 10.5l2 2 M10.5 7.5l2 2 M13.5 4.5l2 2 M4.5 13.5l2 2",
+  home: "M3 10.5 12 3l9 7.5 M5 9v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9 M10 21v-6h4v6",
+  camera: "M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z M12 16.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z",
   tools:
     "M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z",
 }

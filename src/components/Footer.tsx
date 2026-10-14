@@ -36,36 +36,36 @@ export default function Footer({ navigate }: { navigate: (p: Page) => void }) {
             <div className="mb-4">
               <Logo white />
             </div>
-            <p className="text-sm leading-relaxed text-[#94a3b8] mb-6">
+            <p className="text-[0.95rem] leading-relaxed text-on-night-muted mb-6 max-w-xs">
               {t("footer_desc")}
             </p>
-            <div className="space-y-3 text-sm text-[#cbd5e1]">
+            <div className="space-y-3 text-[0.95rem]">
               {CONTACT.address && (
                 <a
                   href={maps}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2.5 text-[#cbd5e1] hover:text-[#4ade80] transition-colors no-underline"
+                  className="flex items-center gap-2.5"
                 >
-                  <Icon name="pin" size={18} color="#4ade80" />
+                  <Icon name="pin" size={18} color="var(--color-pine-300)" />
                   <span className="font-medium">{CONTACT.address}</span>
                 </a>
               )}
               {tel && (
                 <a
                   href={tel}
-                  className="flex items-center gap-2.5 text-[#cbd5e1] hover:text-[#4ade80] transition-colors no-underline"
+                  className="flex items-center gap-2.5"
                 >
-                  <Icon name="phone" size={18} color="#4ade80" />
+                  <Icon name="phone" size={18} color="var(--color-pine-300)" />
                   <span className="font-bold">{CONTACT.phoneDisplay}</span>
                 </a>
               )}
               {mail && (
                 <a
                   href={mail}
-                  className="flex items-center gap-2.5 text-[#cbd5e1] hover:text-[#4ade80] transition-colors no-underline"
+                  className="flex items-center gap-2.5"
                 >
-                  <Icon name="mail" size={18} color="#4ade80" />
+                  <Icon name="mail" size={18} color="var(--color-pine-300)" />
                   <span>{CONTACT.email}</span>
                 </a>
               )}
@@ -73,9 +73,9 @@ export default function Footer({ navigate }: { navigate: (p: Page) => void }) {
                 <PageLink
                   to="contact"
                   navigate={navigate}
-                  className="flex items-center gap-2.5 text-[#cbd5e1] hover:text-[#4ade80] transition-colors no-underline"
+                  className="flex items-center gap-2.5"
                 >
-                  <Icon name="mail" size={18} color="#4ade80" />
+                  <Icon name="mail" size={18} color="var(--color-pine-300)" />
                   <span>{t("nav_cta")}</span>
                 </PageLink>
               )}
@@ -121,12 +121,12 @@ export default function Footer({ navigate }: { navigate: (p: Page) => void }) {
             <h2 className="footer-head">{t("footer_cities")}</h2>
             <ul
               id="footer-cities"
-              className="grid grid-cols-2 gap-x-3 gap-y-1.5 list-none m-0 p-0"
+              className="grid grid-cols-2 gap-x-4 gap-y-2 list-none m-0 p-0"
             >
               {visibleCities.map((c) => (
                 <li key={c} className="min-w-0">
                   <PageLink
-                    className="block text-left text-xs text-[#94a3b8] hover:text-[#4ade80] py-0.5 truncate transition-colors"
+                    className="block truncate py-0.5 text-[0.95rem]"
                     to={{ type: "city", city: c }}
                     navigate={navigate}
                   >
@@ -140,11 +140,14 @@ export default function Footer({ navigate }: { navigate: (p: Page) => void }) {
               aria-expanded={isCitiesExpanded}
               aria-controls="footer-cities"
               onClick={() => setIsCitiesExpanded(!isCitiesExpanded)}
-              className="text-xs text-[#4ade80] hover:text-white bg-transparent border-0 p-0 mt-3 cursor-pointer transition-colors flex items-center gap-1 font-semibold"
+              className="mt-4 flex cursor-pointer items-center gap-1 border-0 bg-transparent p-0 text-sm font-semibold text-pine-300 transition-colors hover:text-white"
             >
               {isCitiesExpanded
-                ? pick({ nl: "Minder plaatsen ↑", en: "Fewer places ↑", uk: "Згорнути список ↑", ru: "Свернуть список ↑" })
-                : pick({ nl: "Alle plaatsen →", en: "All places →", uk: "Усі міста →", ru: "Все города →" })}
+                ? pick({ nl: "Minder plaatsen", en: "Fewer places", uk: "Згорнути список", ru: "Свернуть список" })
+                : pick({ nl: "Alle plaatsen", en: "All places", uk: "Усі міста", ru: "Все города" })}
+              <span className={`inline-flex transition-transform ${isCitiesExpanded ? "rotate-180" : ""}`} aria-hidden="true">
+                <Icon name="chevron-down" size={16} />
+              </span>
             </button>
           </div>
         </div>
@@ -156,19 +159,19 @@ export default function Footer({ navigate }: { navigate: (p: Page) => void }) {
             {CONTACT.kvk && <> · KvK {CONTACT.kvk}</>}
             {CONTACT.btw && <> · btw {CONTACT.btw}</>}
           </p>
-          <ul className="flex flex-wrap gap-6 list-none m-0 p-0">
+          <ul className="flex flex-wrap gap-x-6 gap-y-2 list-none m-0 p-0">
             <li>
-              <PageLink className="text-xs text-[#94a3b8] hover:text-white" to="privacy" navigate={navigate}>
+              <PageLink className="text-sm" to="privacy" navigate={navigate}>
                 {t("footer_privacy")}
               </PageLink>
             </li>
             <li>
-              <PageLink className="text-xs text-[#94a3b8] hover:text-white" to="voorwaarden" navigate={navigate}>
+              <PageLink className="text-sm" to="voorwaarden" navigate={navigate}>
                 {t("footer_terms")}
               </PageLink>
             </li>
             <li>
-              <PageLink className="text-xs text-[#94a3b8] hover:text-white" to="zakelijk" navigate={navigate}>
+              <PageLink className="text-sm" to="zakelijk" navigate={navigate}>
                 {t("footer_partner")}
               </PageLink>
             </li>

@@ -1,6 +1,6 @@
 import Icon from "../components/Icon"
+import PageHero from "../components/PageHero"
 import QuoteForm from "../components/QuoteForm"
-import Breadcrumb from "../components/Breadcrumb"
 import PageLink from "../components/PageLink"
 import { CONTACT, emailHref, googleMapsHref, phoneHref, whatsappHref } from "../data/contact"
 import { useLang } from "../i18n/LangContext"
@@ -48,61 +48,78 @@ export default function ContactPage({ navigate }: { navigate: (p: Page) => void 
 
   return (
     <>
-      <section className="hero hero--contact">
-        <div className="container">
-          <Breadcrumb navigate={navigate} items={[{ label: t("nav_contact") }]} />
-          <h1>
-            {pick({ nl: "Neem contact op met Bouwvast", en: "Contact Bouwvast", uk: "Зв'яжіться з Bouwvast", ru: "Свяжитесь с Bouwvast" })}
-          </h1>
-          <p className="lead-xl max-w-2xl">
-            {pick({
-              nl: "Heeft u plannen, een concrete verbouwing of wilt u eerst overleggen? Beschrijf uw situatie en we nemen contact met u op.",
-              en: "Have plans, a specific renovation, or want to talk it through first? Describe your situation and we will get in touch.",
-              uk: "Маєте плани, конкретний ремонт або хочете спершу порадитися? Опишіть ситуацію, і ми з вами зв'яжемося.",
-              ru: "Есть планы, конкретный ремонт или хотите сначала посоветоваться? Опишите ситуацию, и мы с вами свяжемся.",
-            })}
-          </p>
-        </div>
-      </section>
+      <PageHero
+        navigate={navigate}
+        crumbs={[{ label: t("nav_contact") }]}
+        eyebrow={t("nav_contact")}
+        title={pick({ nl: "Neem contact op met Bouwvast", en: "Contact Bouwvast", uk: "Зв'яжіться з Bouwvast", ru: "Свяжитесь с Bouwvast" })}
+        lead={pick({
+          nl: "Heeft u plannen, een concrete verbouwing of wilt u eerst overleggen? Beschrijf uw situatie en we nemen contact met u op.",
+          en: "Have plans, a specific renovation, or want to talk it through first? Describe your situation and we will get in touch.",
+          uk: "Маєте плани, конкретний ремонт або хочете спершу порадитися? Опишіть ситуацію, і ми з вами зв'яжемося.",
+          ru: "Есть планы, конкретный ремонт или хотите сначала посоветоваться? Опишите ситуацию, и мы с вами свяжемся.",
+        })}
+      />
 
       <section className="section">
         <div className="container">
-          {channels.length > 0 && (
-            <ul className="grid grid-3 mb-16 list-none p-0">
-              {channels.map((channel) => (
-                <li key={channel.label}>
-                  <a
-                    href={channel.href}
-                    target={channel.external ? "_blank" : undefined}
-                    rel={channel.external ? "noopener noreferrer" : undefined}
-                    className="card p-6 flex flex-col items-center text-center hover:border-[var(--brand)] hover:shadow-md transition-all no-underline text-inherit group h-full"
-                  >
-                    <span className="w-12 h-12 rounded-xl bg-[var(--brand-tint)] flex items-center justify-center mb-4">
-                      <Icon name={channel.icon} size={24} color="var(--brand)" />
-                    </span>
-                    <span className="text-base font-bold mb-1">{channel.label}</span>
-                    <span className="text-sm font-semibold text-[var(--fg)]">{channel.value}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          )}
-
-          <div className="grid md:grid-cols-[1.3fr_0.9fr] gap-12 items-start">
-            <div className="card p-6 md:p-8 shadow-md" id="quote">
-              <h2 className="text-2xl font-bold mb-2">{t("form_title")}</h2>
-              <p className="text-sm text-[var(--muted)] mb-6">{t("form_sub")}</p>
+          <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)] lg:gap-14">
+            <div className="form-card" id="quote">
+              <h2 className="mb-2 text-[1.6rem]">{t("form_title")}</h2>
+              <p className="mb-7 text-muted">{t("form_sub")}</p>
               <QuoteForm sourcePage="contact" />
             </div>
 
-            <div className="space-y-6">
-              <div className="card p-6">
-                <h2 className="text-lg font-bold mb-3">{CONTACT.legalName ?? "Bouwvast"}</h2>
-                <p className="text-sm text-[var(--muted)] leading-relaxed mb-4">{t("footer_desc")}</p>
-                <ul className="space-y-2 text-sm text-[var(--fg)] list-none p-0 m-0">
+            <aside className="space-y-6 lg:sticky lg:top-28">
+              {channels.length > 0 && (
+                <div className="card">
+                  <h2 className="mb-4 text-lg">
+                    {pick({ nl: "Direct contact", en: "Direct contact", uk: "Прямий зв'язок", ru: "Прямая связь" })}
+                  </h2>
+                  <ul className="contact-list">
+                    {channels.map((channel) => (
+                      <li key={channel.label}>
+                        <a
+                          href={channel.href}
+                          target={channel.external ? "_blank" : undefined}
+                          rel={channel.external ? "noopener noreferrer" : undefined}
+                          className="contact-link"
+                        >
+                          <span className="icon-tile" aria-hidden="true">
+                            <Icon name={channel.icon} size={20} />
+                          </span>
+                          <span>
+                            <small>{channel.label}</small>
+                            <strong>{channel.value}</strong>
+                          </span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <div className="card">
+                <h2 className="mb-5 text-lg">
+                  {pick({ nl: "Wat er daarna gebeurt", en: "What happens next", uk: "Що буде далі", ru: "Что будет дальше" })}
+                </h2>
+                <ol className="mini-steps">
+                  {(["how_2", "how_3", "how_4"] as const).map((key) => (
+                    <li key={key}>
+                      <strong>{t(`${key}_title`)}</strong>
+                      <p>{t(`${key}_desc`)}</p>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+
+              <div className="card">
+                <h2 className="mb-2 text-lg">{CONTACT.legalName ?? "Bouwvast"}</h2>
+                <p className="mb-4 text-[0.9375rem] text-muted">{t("footer_desc")}</p>
+                <ul className="info-list">
                   {CONTACT.address && (
-                    <li className="flex items-center gap-2">
-                      <Icon name="pin" size={16} color="var(--brand)" />
+                    <li>
+                      <Icon name="home" size={16} />
                       {maps ? (
                         <a href={maps} target="_blank" rel="noopener noreferrer">
                           {CONTACT.address}
@@ -113,20 +130,26 @@ export default function ContactPage({ navigate }: { navigate: (p: Page) => void 
                     </li>
                   )}
                   {CONTACT.hours && (
-                    <li className="flex items-center gap-2">
-                      <Icon name="clock" size={16} color="var(--brand)" />
+                    <li>
+                      <Icon name="clock" size={16} />
                       <span>{CONTACT.hours}</span>
                     </li>
                   )}
-                  {CONTACT.kvk && <li>KvK {CONTACT.kvk}</li>}
+                  {CONTACT.kvk && (
+                    <li>
+                      <Icon name="shield" size={16} />
+                      <span>KvK {CONTACT.kvk}</span>
+                    </li>
+                  )}
                   <li>
+                    <Icon name="pin" size={16} />
                     <PageLink to="werkgebied" navigate={navigate}>
                       {t("nav_area")}
                     </PageLink>
                   </li>
                 </ul>
               </div>
-            </div>
+            </aside>
           </div>
         </div>
       </section>

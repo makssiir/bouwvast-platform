@@ -179,8 +179,8 @@ export default function CostEstimator({
             <div className="flex justify-between items-center max-w-sm mx-auto relative z-10">
               {/* Connecting lines */}
               <div className="absolute top-4 left-[10%] right-[10%] h-[2px] flex z-[-1]">
-                <div className={`h-full w-1/2 transition-colors duration-300 ${step >= 2 ? 'bg-[var(--brand)]' : 'bg-gray-200'}`}></div>
-                <div className={`h-full w-1/2 transition-colors duration-300 ${step >= 3 ? 'bg-[var(--brand)]' : 'bg-gray-200'}`}></div>
+                <div className={`h-full w-1/2 transition-colors duration-300 ${step >= 2 ? 'bg-[var(--brand)]' : 'bg-sand-200'}`}></div>
+                <div className={`h-full w-1/2 transition-colors duration-300 ${step >= 3 ? 'bg-[var(--brand)]' : 'bg-sand-200'}`}></div>
               </div>
               
               {[1, 2, 3].map((s) => (
@@ -191,7 +191,7 @@ export default function CostEstimator({
                         ? 'bg-[var(--brand)] text-white' 
                         : step === s 
                           ? 'bg-[var(--brand)] text-white ring-4 ring-[var(--brand-subtle)]' 
-                          : 'bg-white text-[var(--muted)] border-2 border-gray-200'
+                          : 'bg-white text-[var(--muted)] border-2 border-line'
                     }`}
                   >
                     {step > s ? '✓' : s}
@@ -245,7 +245,10 @@ export default function CostEstimator({
               
               <div className="flex justify-end mt-6">
                 <button type="button" onClick={handleNext} className="btn btn-primary px-8">
-                  {t("btn_next")} &rarr;
+                  {t("btn_next")}
+                  <span className="btn-arrow" aria-hidden="true">
+                    <Icon name="arrow-right" size={18} />
+                  </span>
                 </button>
               </div>
             </div>
@@ -275,7 +278,7 @@ export default function CostEstimator({
                   aria-valuemin={selectedService.minQty}
                   aria-valuemax={selectedService.maxQty}
                   aria-valuenow={qty}
-                  className="w-full accent-[var(--brand)] h-2 bg-gray-200 rounded-lg cursor-pointer"
+                  className="w-full accent-[var(--brand)] h-2 bg-sand-200 rounded-lg cursor-pointer"
                 />
                 <div className="flex justify-between text-[11px] text-[var(--muted)] mt-1.5 font-medium">
                   <span>
@@ -295,7 +298,7 @@ export default function CostEstimator({
 
               {/* Options: Demolition & Materials */}
               <div className="grid sm:grid-cols-2 gap-4 mb-8 pt-4 border-t border-[var(--border)]">
-                <label className="flex items-center gap-3 p-3 rounded-lg border border-[var(--border)] bg-white cursor-pointer hover:bg-gray-50 text-xs">
+                <label className="flex items-center gap-3 p-3 rounded-lg border border-[var(--border)] bg-white cursor-pointer hover:bg-sand-50 text-xs">
                   <input
                     type="checkbox"
                     checked={includeDemo}
@@ -307,7 +310,7 @@ export default function CostEstimator({
                   </span>
                 </label>
 
-                <label className="flex items-center gap-3 p-3 rounded-lg border border-[var(--border)] bg-white cursor-pointer hover:bg-gray-50 text-xs">
+                <label className="flex items-center gap-3 p-3 rounded-lg border border-[var(--border)] bg-white cursor-pointer hover:bg-sand-50 text-xs">
                   <input
                     type="checkbox"
                     checked={includeMaterials}
@@ -325,7 +328,10 @@ export default function CostEstimator({
                   &larr; {t("btn_back")}
                 </button>
                 <button type="button" onClick={handleNext} className="btn btn-primary px-8">
-                  {t("btn_next")} &rarr;
+                  {t("btn_next")}
+                  <span className="btn-arrow" aria-hidden="true">
+                    <Icon name="arrow-right" size={18} />
+                  </span>
                 </button>
               </div>
             </div>
@@ -394,17 +400,17 @@ export default function CostEstimator({
               </div>
 
               {/* Result Price Band */}
-              <div className="p-6 rounded-2xl bg-gradient-to-br from-[#0f172a] to-[#1e293b] text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+              <div className="p-6 rounded-2xl bg-gradient-to-br from-night to-night-soft text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
                 <div>
-                  <span className="text-xs uppercase tracking-widest text-[#4ade80] font-bold block mb-1">
+                  <span className="text-xs uppercase tracking-widest text-pine-300 font-bold block mb-1">
                     {t("est_est_price")}
                   </span>
                   <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex items-baseline gap-2">
-                    <span>€{totalMin.toLocaleString()}</span>
-                    <span className="text-gray-400 font-light text-2xl">—</span>
-                    <span>€{totalMax.toLocaleString()}</span>
+                    <span>€{totalMin.toLocaleString("nl-NL")}</span>
+                    <span className="text-on-night-muted font-light text-2xl">—</span>
+                    <span>€{totalMax.toLocaleString("nl-NL")}</span>
                   </div>
-                  <span className="text-[11px] text-gray-400 block mt-1.5">
+                  <span className="text-[11px] text-on-night-muted block mt-1.5">
                     {t("est_disclaimer")}
                   </span>
                 </div>
@@ -415,7 +421,10 @@ export default function CostEstimator({
                   className="w-full md:w-auto px-6 py-3.5 rounded-xl font-bold text-sm bg-[var(--brand)] hover:bg-[var(--brand-dark)] text-white shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 border-0"
                 >
                   <Icon name="check" size={18} />
-                  {t("est_apply_btn")} &rarr;
+                  {t("est_apply_btn")}
+                  <span className="btn-arrow" aria-hidden="true">
+                    <Icon name="arrow-right" size={18} />
+                  </span>
                 </button>
               </div>
               
@@ -428,8 +437,8 @@ export default function CostEstimator({
           )}
 
           {/* Photo tip; the WhatsApp shortcut appears only with a confirmed number. */}
-          <div className="mt-5 p-4 rounded-xl bg-emerald-50/90 border border-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-            <div className="flex items-center gap-2.5 text-emerald-950 font-semibold text-center sm:text-left">
+          <div className="mt-5 p-4 rounded-xl bg-pine-50/90 border border-pine-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-2.5 text-pine-950 font-semibold text-center sm:text-left">
               <span className="text-lg" aria-hidden="true">💬</span>
               <span>{t("nudge_estimator_tip")}</span>
             </div>

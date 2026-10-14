@@ -24,7 +24,7 @@ export default function Breadcrumb({
   return (
     <nav
       aria-label={pick({ nl: "Kruimelpad", en: "Breadcrumb", uk: "Навігаційний ланцюжок", ru: "Навигационная цепочка" })}
-      className={`breadcrumb mb-4 ${className}`}
+      className={`breadcrumb ${className}`}
     >
       <ol className="flex flex-wrap items-center gap-x-2 list-none p-0 m-0">
         {trail.map((crumb, index) => {
@@ -40,7 +40,11 @@ export default function Breadcrumb({
                   {crumb.label}
                 </span>
               )}
-              {!last && <span aria-hidden="true">›</span>}
+              {!last && (
+                <span className="breadcrumb-sep" aria-hidden="true">
+                  /
+                </span>
+              )}
             </li>
           )
         })}

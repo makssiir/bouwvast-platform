@@ -133,7 +133,7 @@ function headBlock({ title, description, path, indexable, trail, type = "website
     `<title>${escapeHtml(fullTitle)}</title>`,
     `<meta name="description" content="${escapeHtml(description)}" />`,
     `<meta name="robots" content="${robots}" />`,
-    `<meta name="theme-color" content="#16a34a" />`,
+    `<meta name="theme-color" content="#1e6b3e" />`,
     `<link rel="icon" href="/favicon.svg" type="image/svg+xml" />`,
     `<link rel="apple-touch-icon" href="/apple-touch-icon.png" />`,
     `<meta property="og:type" content="${type}" />`,

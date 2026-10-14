@@ -1,9 +1,9 @@
 import type { ReactNode } from "react"
+import PageHero from "../components/PageHero"
 import type { Page } from "../lib/routes"
 import { useLang } from "../i18n/LangContext"
 import { CONTACT, emailHref } from "../data/contact"
 import { LEGAL } from "../data/legal"
-import Breadcrumb from "../components/Breadcrumb"
 import PageLink from "../components/PageLink"
 import { LEAD_LIMITS } from "../lib/leadSchema"
 
@@ -24,18 +24,13 @@ function LegalShell({
   lastUpdated: string
   children: ReactNode
 }) {
-  const { t, lang } = useLang()
+  const { t, lang, pick } = useLang()
   return (
     <>
-      <section className="hero hero--service">
-        <div className="container">
-          <Breadcrumb navigate={navigate} items={[{ label: title }]} />
-          <h1>{title}</h1>
-        </div>
-      </section>
+      <PageHero navigate={navigate} crumbs={[{ label: title }]} title={title} />
       <section className="section">
-        <div className="container">
-          <div className="prose-page mx-auto" lang="nl">
+        <div className="container article-layout">
+          <div className="prose-page" lang="nl">
             {lang !== "nl" && <p className="notice" lang={lang}>{t("legal_dutch_only")}</p>}
             {!approved && (
               <p className="notice" role="note">
@@ -45,9 +40,25 @@ function LegalShell({
             )}
             {children}
             {approved && lastUpdated && (
-              <p className="text-sm text-[var(--muted)] mt-10">Laatst bijgewerkt: {lastUpdated}</p>
+              <p className="fine-print">Laatst bijgewerkt: {lastUpdated}</p>
             )}
           </div>
+          <aside className="card lg:sticky lg:top-28">
+            <h2 className="mb-2 text-lg">
+              {pick({ nl: "Vragen over deze tekst?", en: "Questions about this text?", uk: "Питання щодо цього тексту?", ru: "Вопросы по этому тексту?" })}
+            </h2>
+            <p className="mb-5 text-[0.9375rem] text-muted">
+              {pick({
+                nl: "Neem contact met ons op, dan lichten we het graag toe.",
+                en: "Get in touch and we will be happy to explain.",
+                uk: "Зв'яжіться з нами — ми охоче пояснимо.",
+                ru: "Свяжитесь с нами — мы охотно поясним.",
+              })}
+            </p>
+            <PageLink to="contact" navigate={navigate} className="btn btn-outline btn-sm">
+              {t("nav_contact")}
+            </PageLink>
+          </aside>
         </div>
       </section>
     </>

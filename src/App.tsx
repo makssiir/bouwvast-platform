@@ -119,7 +119,7 @@ export default function App({ initialPage }: { initialPage?: Page } = {}) {
 
         <NudgeWidgets onOpenQuote={() => navigate("contact")} />
 
-        <MobileContactBar navigate={navigate} t={t} />
+        <MobileContactBar navigate={navigate} t={t} showCta={page !== "contact"} />
       </div>
     </QuoteDraftProvider>
   )
@@ -158,18 +158,40 @@ function useRouter(initialPage?: Page): [Page, (next: Page) => void] {
   return [page, navigate]
 }
 
+/**
+ * Fixed action bar on small screens. It slides in once the visitor has
+ * scrolled past the first screen, so it never doubles up with the hero
+ * button, and it drops the quote button on the contact page, where the form
+ * is already in view.
+ */
 function MobileContactBar({
   navigate,
   t,
+  showCta,
 }: {
   navigate: (p: Page) => void
   t: (key: TranslationKey) => string
+  showCta: boolean
 }) {
   const wa = whatsappHref()
   const tel = phoneHref()
+  const [revealed, setRevealed] = useState(false)
+
+  useEffect(() => {
+    const update = () => setRevealed(window.scrollY > Math.min(window.innerHeight * 0.6, 480))
+    update()
+    window.addEventListener("scroll", update, { passive: true })
+    window.addEventListener("resize", update)
+    return () => {
+      window.removeEventListener("scroll", update)
+      window.removeEventListener("resize", update)
+    }
+  }, [])
+
+  if (!showCta && !wa && !tel) return null
 
   return (
-    <div className="mobile-contact-bar">
+    <div className={`mobile-contact-bar${revealed ? " is-revealed" : ""}`}>
       <div className="mobile-contact-bar-inner">
         {wa && (
           <a
@@ -193,17 +215,19 @@ function MobileContactBar({
           </a>
         )}
 
-        <a
-          href={hrefForPage("contact")}
-          onClick={(event) => {
-            event.preventDefault()
-            navigate("contact")
-          }}
-          className="mobile-contact-btn mobile-contact-btn--cta no-underline"
-        >
-          <Icon name="check" size={17} color="#ffffff" />
-          <span>{t("nav_cta")}</span>
-        </a>
+        {showCta && (
+          <a
+            href={hrefForPage("contact")}
+            onClick={(event) => {
+              event.preventDefault()
+              navigate("contact")
+            }}
+            className="mobile-contact-btn mobile-contact-btn--cta no-underline"
+          >
+            <span>{t("nav_cta")}</span>
+            <Icon name="arrow-right" size={17} color="#ffffff" strokeWidth={2} />
+          </a>
+        )}
       </div>
     </div>
   )

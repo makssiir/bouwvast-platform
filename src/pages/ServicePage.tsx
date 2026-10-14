@@ -1,6 +1,7 @@
 import type { Page } from "../lib/routes"
-import Breadcrumb from "../components/Breadcrumb"
+import PageHero from "../components/PageHero"
 import PageLink from "../components/PageLink"
+import More from "../components/More"
 import NotFoundPage from "./NotFoundPage"
 import { imageSize } from "../data/images"
 import { SERVICE_BY_SLUG, SERVICES } from "../data/services"
@@ -8,155 +9,145 @@ import { CITIES } from "../data/cities"
 import Icon from "../components/Icon"
 import QuoteForm from "../components/QuoteForm"
 import { useLang } from "../i18n/LangContext"
+import { scrollToQuote } from "../lib/quoteDraft"
+import { claim } from "../data/claims"
 
-export default function ServicePage({
-  slug,
-  navigate,
-}: {
-  slug: string
-  navigate: (p: Page) => void
-}) {
+export default function ServicePage({ slug, navigate }: { slug: string; navigate: (p: Page) => void }) {
   const { t } = useLang()
   const service = SERVICE_BY_SLUG[slug]
 
   if (!service) return <NotFoundPage navigate={navigate} />
 
   const steps = [
-    { num: "01", title: t("how_1_title"), desc: t("how_1_desc") },
-    { num: "02", title: t("how_2_title"), desc: t("how_2_desc") },
-    { num: "03", title: t("how_3_title"), desc: t("how_3_desc") },
+    { title: t("how_1_title"), desc: claim("pricing") ? t("how_1_desc") : t("how_1_desc_form") },
+    { title: t("how_2_title"), desc: t("how_2_desc") },
+    { title: t("how_3_title"), desc: t("how_3_desc") },
   ]
   const coreCities = CITIES.slice(0, 10)
   const related = SERVICES.filter((s) => s.slug !== service.slug).slice(0, 3)
+  const name = t(service.nameKey)
 
   return (
     <>
-      {/* Service Hero */}
-      <section className="hero hero--service">
-        <div className="container">
-          <Breadcrumb
-            navigate={navigate}
-            items={[{ label: t("nav_services"), to: "diensten" }, { label: t(service.nameKey) }]}
-          />
-          <h1>{t(service.nameKey) + t("service_hero_suffix")}</h1>
-          <p className="lead-xl max-w-2xl">{t(service.introKey)}</p>
-        </div>
-      </section>
+      <PageHero
+        navigate={navigate}
+        crumbs={[{ label: t("nav_services"), to: "diensten" }, { label: name }]}
+        title={name + t("service_hero_suffix")}
+        lead={t(service.introKey)}
+        image={service.image}
+      >
+        <button type="button" className="btn btn-primary btn-lg" onClick={() => scrollToQuote()}>
+          {t("cta_btn")}
+          <span className="btn-arrow" aria-hidden="true">
+            <Icon name="arrow-right" size={18} strokeWidth={2} />
+          </span>
+        </button>
+      </PageHero>
 
-      {/* Content + sticky form */}
       <div className="container section">
-        <div className="grid md:grid-cols-[1.3fr_0.9fr] gap-12 items-start">
-          <div className="space-y-12">
-            {/* What's included */}
-            <section className="card p-6 md:p-8">
-              <span className="eyebrow">{t("service_includes_eyebrow")}</span>
-              <h2 className="text-2xl font-bold mb-6">
+        <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,0.9fr)] lg:gap-14">
+          <div className="space-y-6">
+            <section className="card p-6 md:p-8" aria-labelledby="includes-title">
+              <p className="eyebrow">{t("service_includes_eyebrow")}</p>
+              <h2 id="includes-title" className="text-2xl md:text-[1.75rem]">
                 {t("service_includes_title")}
               </h2>
-              <div className="grid sm:grid-cols-2 gap-3">
+              <ul className="mt-6 grid list-none gap-3 p-0 sm:grid-cols-2">
                 {service.includesKeys.map((itemKey) => (
-                  <div
+                  <li
                     key={itemKey}
-                    className="flex items-start gap-3 p-3.5 rounded-lg bg-[var(--muted-bg)] border border-[var(--border)]"
+                    className="flex items-start gap-3 rounded-xl border border-line bg-sand-50 p-3.5"
                   >
-                    <span className="shrink-0 mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--brand-tint)] text-[var(--brand)] font-bold text-xs">
-                      ✓
+                    <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-pine-100 text-pine-800">
+                      <Icon name="check" size={12} strokeWidth={2.8} />
                     </span>
-                    <span className="text-sm font-medium text-[var(--fg)]">
-                      {t(itemKey)}
-                    </span>
-                  </div>
+                    <span className="text-[0.95rem] font-medium text-ink">{t(itemKey)}</span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </section>
 
-            {/* Process */}
-            <section className="card p-6 md:p-8">
-              <span className="eyebrow">{t("service_process_eyebrow")}</span>
-              <h2 className="text-2xl font-bold mb-6">{t("service_process_title")}</h2>
-              <div className="grid gap-6">
-                {steps.map((s, i) => (
-                  <div key={s.num} className="flex gap-4 items-start">
-                    <span className="step-no shrink-0">{i + 1}</span>
-                    <div>
-                      <h3 className="text-base font-bold mb-1">{s.title}</h3>
-                      <p className="text-sm text-[var(--muted)] m-0">
-                        {s.desc}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Service × City — internal linking */}
-            <section className="card p-6 md:p-8">
-              <span className="eyebrow">{t("service_area_eyebrow")}</span>
-              <h2 className="text-2xl font-bold mb-3">
-                {t("service_area_title", { service: t(service.nameKey) })}
+            <section className="card p-6 md:p-8" aria-labelledby="process-title">
+              <p className="eyebrow">{t("service_process_eyebrow")}</p>
+              <h2 id="process-title" className="text-2xl md:text-[1.75rem]">
+                {t("service_process_title")}
               </h2>
-              <p className="text-sm text-[var(--muted)] mb-6">
-                {t("service_area_desc")}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {coreCities.map((c) => (
-                  <PageLink
-                    key={c.name}
-                    to={{ type: "city", city: c.name }}
-                    navigate={navigate}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-[var(--border)] bg-white text-xs font-semibold text-[var(--fg)] hover:border-[var(--brand)] hover:text-[var(--brand)] transition-all no-underline"
-                  >
-                    <Icon name="pin" size={13} color="var(--brand)" />
-                    {c.name}
-                  </PageLink>
+              <ol className="mt-6 grid list-none gap-6 p-0">
+                {steps.map((s, i) => (
+                  <li key={s.title} className="flex items-start gap-4">
+                    <span className="step-no mb-0" aria-hidden="true">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div>
+                      <h3 className="mb-1 text-lg">{s.title}</h3>
+                      <p className="m-0 text-[0.95rem] text-muted">{s.desc}</p>
+                    </div>
+                  </li>
                 ))}
-              </div>
+              </ol>
+            </section>
+
+            <section className="card p-6 md:p-8" aria-labelledby="area-title">
+              <p className="eyebrow">{t("service_area_eyebrow")}</p>
+              <h2 id="area-title" className="text-2xl md:text-[1.75rem]">
+                {t("service_area_title", { service: name })}
+              </h2>
+              <p className="text-muted">{t("service_area_desc")}</p>
+              <ul className="mt-5 flex list-none flex-wrap gap-2 p-0">
+                {coreCities.map((c) => (
+                  <li key={c.name}>
+                    <PageLink
+                      to={{ type: "city", city: c.name }}
+                      navigate={navigate}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-white px-3.5 py-1.5 text-sm font-medium text-ink transition-colors hover:border-pine-600 hover:text-pine-800 hover:no-underline"
+                    >
+                      <Icon name="pin" size={14} color="var(--color-pine-600)" />
+                      {c.name}
+                    </PageLink>
+                  </li>
+                ))}
+              </ul>
             </section>
           </div>
 
-          {/* Sticky quote form */}
-          <div>
-            <div id="quote" className="sticky top-24 card p-6 md:p-7 shadow-lg border-2 border-[var(--brand)]">
-              <div className="flex items-center gap-2 mb-2">
-                <Icon name="check" size={18} color="var(--brand)" />
-                <h2 className="text-lg font-bold m-0">{t("service_quote_title")}</h2>
-              </div>
-              <p className="text-xs text-[var(--muted)] mb-5">
-                {t("service_quote_sub", { service: t(service.nameKey).toLowerCase() })}
-              </p>
-              <QuoteForm
-                compact
-                sourcePage={`service:${service.slug}`}
-                presetService={service.name}
-              />
-            </div>
-          </div>
+          <aside id="quote" className="form-card lg:sticky lg:top-24" aria-labelledby="service-quote-title">
+            <h2 id="service-quote-title" className="mb-1 text-xl">
+              {t("service_quote_title")}
+            </h2>
+            <p className="mb-5 text-sm text-muted">
+              {t("service_quote_sub", { service: name.toLowerCase() })}
+            </p>
+            <QuoteForm compact sourcePage={`service:${service.slug}`} presetService={service.name} />
+          </aside>
         </div>
       </div>
 
-      {/* Related services */}
-      <section className="section section--muted">
+      <section className="section section--muted" aria-labelledby="related-title">
         <div className="container">
-          <span className="eyebrow">{t("service_related_eyebrow")}</span>
-          <h2>{t("service_related_title")}</h2>
-          <div className="grid sm:grid-cols-3 gap-6 mt-6">
-            {related.map((s) => (
-              <PageLink
-                key={s.slug}
-                to={{ type: "service", slug: s.slug }}
-                navigate={navigate}
-                className="card service-card-link text-left no-underline bg-white"
-              >
-                <div className="service-card-media" style={{ height: 140 }}>
-                  <img src={s.image} alt="" {...imageSize(s.image)} loading="lazy" decoding="async" />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-bold text-base mb-1">{t(s.nameKey)}</h3>
-                  <span className="more text-xs" aria-hidden="true">{t("link_more")} &rarr;</span>
-                </div>
-              </PageLink>
-            ))}
+          <div className="section-head">
+            <div>
+              <p className="eyebrow">{t("service_related_eyebrow")}</p>
+              <h2 id="related-title">{t("service_related_title")}</h2>
+            </div>
+            <PageLink to="diensten" navigate={navigate} className="btn btn-outline">
+              {t("services_all")}
+            </PageLink>
           </div>
+          <ul className="grid grid-3 list-none m-0 p-0">
+            {related.map((s) => (
+              <li key={s.slug}>
+                <PageLink to={{ type: "service", slug: s.slug }} navigate={navigate} className="card service-card-link">
+                  <div className="service-card-media">
+                    <img src={s.image} alt="" {...imageSize(s.image)} loading="lazy" decoding="async" />
+                  </div>
+                  <div className="service-card-body">
+                    <h3>{t(s.nameKey)}</h3>
+                    <More hidden>{t("link_more")}</More>
+                  </div>
+                </PageLink>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
     </>

@@ -1,10 +1,11 @@
 import { useState } from "react"
+import PageHero from "../components/PageHero"
 import type { Page } from "../lib/routes"
 import { useLang } from "../i18n/LangContext"
 import ProjectModal from "../components/ProjectModal"
-import Breadcrumb from "../components/Breadcrumb"
 import PageLink from "../components/PageLink"
 import Icon from "../components/Icon"
+import More from "../components/More"
 import { PROJECTS, type Project } from "../data/projects"
 import { SERVICES } from "../data/services"
 import { claim } from "../data/claims"
@@ -26,26 +27,19 @@ export default function ProjectenPage({ navigate }: { navigate: (p: Page) => voi
 
   return (
     <>
-      <section className="hero hero--projects">
-        <div className="container">
-          <Breadcrumb navigate={navigate} items={[{ label: t("nav_projects") }]} />
-          <h1>{t("projects_title")}</h1>
-          <p className="lead-xl max-w-2xl">{t("projects_sub")}</p>
-        </div>
-      </section>
+      <PageHero
+        navigate={navigate}
+        crumbs={[{ label: t("nav_projects") }]}
+        eyebrow={t("nav_projects")}
+        title={t("projects_title")}
+        lead={t("projects_sub")}
+      />
 
       <section className="section">
         <div className="container">
           {projects.length === 0 ? (
-            <div className="grid md:grid-cols-2 gap-10 items-center max-w-5xl mx-auto">
-              <img
-                src="/projectfoto-volgt.webp"
-                alt=""
-                width={1200}
-                height={800}
-                decoding="async"
-                className="w-full rounded-2xl border border-[var(--border)]"
-              />
+            <div className="empty-state">
+              <img src="/projectfoto-volgt.webp" alt="" width={1200} height={800} decoding="async" />
               <div>
                 <h2>
                   {pick({
@@ -55,7 +49,7 @@ export default function ProjectenPage({ navigate }: { navigate: (p: Page) => voi
                     ru: "Фото проектов скоро появятся",
                   })}
                 </h2>
-                <p className="text-[var(--muted)] mb-6">
+                <p className="mb-6 text-[1.0625rem] text-muted">
                   {pick({
                     nl: "We publiceren hier alleen eigen projecten, met toestemming van de opdrachtgever. Wilt u weten wat we voor u kunnen doen? Bekijk onze diensten of beschrijf uw project.",
                     en: "We only publish our own projects here, with the client's permission. Want to know what we can do for you? See our services or describe your project.",
@@ -63,73 +57,68 @@ export default function ProjectenPage({ navigate }: { navigate: (p: Page) => voi
                     ru: "Здесь мы публикуем только собственные проекты — с согласия заказчика. Хотите узнать, что мы можем сделать для вас? Посмотрите услуги или опишите свой проект.",
                   })}
                 </p>
-                <ul className="flex flex-wrap gap-2 list-none p-0 mb-6">
+                <ul className="chip-row mb-8">
                   {SERVICES.map((service) => (
                     <li key={service.slug}>
-                      <PageLink
-                        to={{ type: "service", slug: service.slug }}
-                        navigate={navigate}
-                        className="inline-block px-3 py-1.5 rounded-full text-xs font-bold border border-[var(--border)] text-[var(--fg)] no-underline hover:border-[var(--brand)]"
-                      >
+                      <PageLink to={{ type: "service", slug: service.slug }} navigate={navigate} className="chip">
                         {t(service.nameKey)}
                       </PageLink>
                     </li>
                   ))}
                 </ul>
-                <PageLink to="contact" navigate={navigate} className="btn btn-primary no-underline">
-                  <Icon name="check" size={18} />
+                <PageLink to="contact" navigate={navigate} className="btn btn-primary">
                   {t("cta_btn")}
+                  <span className="btn-arrow" aria-hidden="true">
+                    <Icon name="arrow-right" size={18} />
+                  </span>
                 </PageLink>
               </div>
             </div>
           ) : (
             <>
               {categories.length > 1 && (
-                <div className="flex flex-wrap gap-2.5 justify-center mb-12" role="group">
+                <div
+                  className="chip-row"
+                  role="group"
+                  aria-label={pick({ nl: "Filter op soort werk", en: "Filter by type of work", uk: "Фільтр за видом робіт", ru: "Фильтр по виду работ" })}
+                >
                   {["all", ...categories].map((cat) => (
-                    <button
-                      type="button"
-                      key={cat}
-                      aria-pressed={filter === cat}
-                      onClick={() => setFilter(cat)}
-                      className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
-                        filter === cat
-                          ? "bg-[var(--brand)] text-white shadow-md"
-                          : "bg-white border border-[var(--border)] text-[var(--muted)] hover:text-[var(--fg)]"
-                      }`}
-                    >
+                    <button type="button" key={cat} aria-pressed={filter === cat} onClick={() => setFilter(cat)} className="chip">
                       {cat === "all" ? pick({ nl: "Alle", en: "All", uk: "Усі", ru: "Все" }) : cat}
                     </button>
                   ))}
                 </div>
               )}
 
-              <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 list-none p-0">
+              <ul className="grid grid-3 m-0 list-none p-0">
                 {filtered.map((item) => (
-                  <li key={item.id} className="card p-0 overflow-hidden flex flex-col rounded-2xl">
-                    <img
-                      src={item.image}
-                      alt={pick(item.imageAlt)}
-                      width={item.imageWidth}
-                      height={item.imageHeight}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-64 object-cover"
-                    />
-                    <div className="p-6 flex flex-col flex-1">
-                      <span className="text-xs font-bold text-[var(--brand)] mb-1">
-                        {pick(item.category)} · {item.city}
-                      </span>
-                      <h2 className="text-lg font-bold mb-2.5 leading-snug">{pick(item.title)}</h2>
-                      <p className="text-sm text-[var(--muted)] leading-relaxed mb-4 line-clamp-3">
-                        {pick(item.description)}
-                      </p>
+                  <li key={item.id} className="card article-card article-card--media">
+                    <div className="article-card-media">
+                      <img
+                        src={item.image}
+                        alt={pick(item.imageAlt)}
+                        width={item.imageWidth}
+                        height={item.imageHeight}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+                    <div className="article-card-body">
+                      <div className="article-meta">
+                        <span className="tag">{pick(item.category)}</span>
+                        <span className="inline-flex items-center gap-1.5">
+                          <Icon name="pin" size={14} />
+                          {item.city}
+                        </span>
+                      </div>
+                      <h2>{pick(item.title)}</h2>
+                      <p className="line-clamp-3">{pick(item.description)}</p>
                       <button
                         type="button"
                         onClick={() => setActiveProject(item)}
-                        className="more text-sm font-bold bg-transparent border-0 p-0 cursor-pointer text-left mt-auto"
+                        className="mt-auto cursor-pointer self-start border-0 bg-transparent p-0 text-left"
                       >
-                        {pick({ nl: "Bekijk details", en: "View details", uk: "Деталі проєкту", ru: "Детали проекта" })} &rarr;
+                        <More>{pick({ nl: "Bekijk details", en: "View details", uk: "Деталі проєкту", ru: "Детали проекта" })}</More>
                       </button>
                     </div>
                   </li>

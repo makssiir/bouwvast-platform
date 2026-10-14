@@ -111,11 +111,6 @@ export default function Header({
                   to={n.page as Page}
                   navigate={navigate}
                   ariaCurrent={page === n.page ? "page" : undefined}
-                  className={`no-underline text-sm font-semibold transition-colors ${
-                    page === n.page
-                      ? "text-[#15803d] font-extrabold"
-                      : "text-[#0f172a] hover:text-[#16a34a]"
-                  }`}
                 >
                   {n.label}
                 </PageLink>
@@ -131,53 +126,37 @@ export default function Header({
               ref={langButtonRef}
               type="button"
               onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-extrabold text-[#0f172a] bg-white hover:bg-slate-50 border-2 border-slate-300 hover:border-slate-400 rounded-lg shadow-2xs transition-all cursor-pointer"
+              className="lang-btn"
               aria-expanded={langDropdownOpen}
               aria-controls="lang-options"
               aria-label={`${pick({ nl: "Taal kiezen", en: "Choose language", uk: "Вибрати мову", ru: "Выбрать язык" })}: ${LANG_NAMES[lang]}`}
             >
-              <span className="text-sm leading-none" aria-hidden="true">
-                🌐
-              </span>
+              <Icon name="globe" size={17} />
               <span>{lang.toUpperCase()}</span>
-              <span
-                className={`text-[10px] text-slate-600 transition-transform duration-200 ${
-                  langDropdownOpen ? "rotate-180" : ""
-                }`}
-                aria-hidden="true"
-              >
-                ▾
+              <span className="lang-chevron" aria-hidden="true">
+                <Icon name="chevron-down" size={15} strokeWidth={2} />
               </span>
             </button>
 
             {langDropdownOpen && (
-              <ul
-                id="lang-options"
-                className="absolute right-0 mt-2 w-44 rounded-xl bg-white border-2 border-slate-200 shadow-2xl py-1 z-50 animate-[fade-in-up_0.15s_ease-out] list-none m-0 p-0"
-              >
+              <ul id="lang-options" className="lang-menu">
                 {LANGS.map((l) => (
                   <li key={l}>
-                  <button
-                    type="button"
-                    lang={l}
-                    aria-pressed={lang === l}
-                    onClick={() => {
-                      setLang(l)
-                      setLangDropdownOpen(false)
-                      langButtonRef.current?.focus()
-                      track("language_changed", { language: l })
-                    }}
-                    className={`w-full text-left px-4 py-2.5 text-xs font-bold flex items-center justify-between hover:bg-[var(--brand-subtle)] hover:text-[var(--brand-dark)] transition-colors cursor-pointer border-0 bg-transparent ${
-                      lang === l
-                        ? "text-[var(--brand-dark)] font-extrabold bg-[var(--brand-subtle)]"
-                        : "text-[#0f172a]"
-                    }`}
-                  >
-                    <span>{LANG_NAMES[l]}</span>
-                    {lang === l && (
-                      <span className="text-[var(--brand-dark)] font-extrabold" aria-hidden="true">✓</span>
-                    )}
-                  </button>
+                    <button
+                      type="button"
+                      lang={l}
+                      aria-pressed={lang === l}
+                      onClick={() => {
+                        setLang(l)
+                        setLangDropdownOpen(false)
+                        langButtonRef.current?.focus()
+                        track("language_changed", { language: l })
+                      }}
+                      className="lang-option"
+                    >
+                      <span>{LANG_NAMES[l]}</span>
+                      {lang === l && <Icon name="check" size={16} strokeWidth={2.2} />}
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -187,16 +166,16 @@ export default function Header({
           <PageLink
             to="contact"
             navigate={navigate}
-            className="btn btn-primary btn-sm btn-hide-mobile hidden sm:inline-flex no-underline"
+            className="btn btn-primary btn-sm btn-hide-mobile"
           >
-            <Icon name="check" size={16} />
             {t("nav_cta")}
+            <Icon name="arrow-right" size={16} strokeWidth={2} />
           </PageLink>
 
           {tel && (
             <a
               href={tel}
-              className="btn btn-outline btn-sm btn-hide-mobile hidden md:inline-flex"
+              className="btn btn-outline btn-sm btn-hide-mobile hidden xl:inline-flex"
             >
               <Icon name="phone" size={16} />
               {CONTACT.phoneDisplay}
@@ -212,7 +191,7 @@ export default function Header({
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
           >
-            <Icon name={menuOpen ? "close" : "menu"} size={26} />
+            <Icon name={menuOpen ? "close" : "menu"} size={22} strokeWidth={2} />
           </button>
         </div>
       </div>
@@ -235,7 +214,9 @@ export default function Header({
                   }`}
                 >
                   <span>{n.label}</span>
-                  <span className="nav-mobile-arrow">→</span>
+                  <span className="nav-mobile-arrow" aria-hidden="true">
+                    <Icon name="arrow-right" size={18} />
+                  </span>
                 </PageLink>
               </li>
             ))}
@@ -249,16 +230,16 @@ export default function Header({
                 navigate(next)
                 setMenuOpen(false)
               }}
-              className="btn btn-primary w-full justify-center py-3.5 text-base font-bold shadow-md no-underline"
+              className="btn btn-primary btn-lg w-full"
             >
-              <Icon name="check" size={18} />
               <span>{t("nav_cta")}</span>
+              <Icon name="arrow-right" size={18} strokeWidth={2} />
             </PageLink>
 
             {tel && (
               <a
                 href={tel}
-                className="btn btn-outline w-full justify-center py-3 text-sm font-bold no-underline text-[var(--fg)]"
+                className="btn btn-outline btn-lg w-full"
               >
                 <Icon name="phone" size={16} />
                 <span>{t("nav_call")} ({CONTACT.phoneDisplay})</span>

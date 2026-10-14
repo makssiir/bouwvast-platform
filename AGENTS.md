@@ -34,7 +34,15 @@ This is the canonical project structure. Start with task-relevant files below. O
 
 This project uses **Tailwind CSS v4** through the `@tailwindcss/vite` plugin configured in `vite.config.ts`. `src/index.css` imports Tailwind with `@import 'tailwindcss';`. Use Tailwind utility classes directly in JSX and put global CSS or Tailwind v4 theme customization in `src/index.css`. This scaffold does not need a Tailwind config file or PostCSS config.
 
-`src/main.tsx` imports `src/index.css`, so global font wiring belongs in `src/index.css`. Keep CSS `@import` statements first, then add any `@font-face` rules and font-family defaults there.
+`src/main.tsx` imports `src/index.css`. Keep CSS `@import` statements first in `src/index.css`.
+
+### Design system
+
+- **Fonts:** Manrope Variable for headings (`font-display`, `--font-display`) and Inter Variable for body text (`font-sans`). Both are self-hosted through `@fontsource-variable/*`, imported in `src/main.tsx`, and include the Cyrillic subset needed for the Ukrainian and Russian pages. Do not add Google Fonts links.
+- **Colours:** use the tokens in the `@theme` block of `src/index.css`: `ink` / `muted` / `subtle` for text, `line` / `line-strong` for borders, `sand-50…300` for warm backgrounds, `pine-50…950` for the brand (primary actions are `pine-700`), `night` / `on-night` for dark sections, `amber-*` for notices and `danger` for errors. Do not use raw Tailwind palettes (`emerald-*`, `slate-*`, `gray-*`) or ad-hoc hex values in components (white, the logo and the WhatsApp brand green are the only exceptions).
+- **Building blocks:** buttons are `.btn` plus `.btn-primary`, `.btn-outline`, `.btn-white` or `.btn-outline-white` (sizes `.btn-lg`, `.btn-sm`); add a trailing arrow with `<span className="btn-arrow">` and the `arrow-right` icon instead of text arrows. Page tops use `PageHero`, section intros use `.section-head` with an `.eyebrow`, the closing form block is `QuoteSection`, and "read more" links use `More`. Cards are `.card` / `.article-card`, filters are `.chip`, numbered steps are `.mini-steps`.
+- **Copy:** sentence case for headings, buttons, labels and categories in every language (only the first word and proper names capitalised).
+- **Brand assets:** `public/favicon.svg` mirrors `LogoMark` in `src/components/Logo.tsx`; `public/og-image.jpg` (1200×630) and `public/apple-touch-icon.png` (180×180) are rendered from it. Regenerate them together if the logo changes.
 
 ## Code quality
 

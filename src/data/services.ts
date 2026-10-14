@@ -41,7 +41,7 @@ export const SERVICES: Service[] = [
     icon: "bathroom",
     nameKey: "svc_bathroom",
     descKey: "svc_bathroom_desc",
-    image: "/images/kitchen-renovation.webp",
+    image: "/images/bath-after.webp",
     introKey: "svc_bathroom_intro",
     includesKeys: [
       "svc_bathroom_inc_1",
@@ -57,7 +57,7 @@ export const SERVICES: Service[] = [
     icon: "finishing",
     nameKey: "svc_finishing",
     descKey: "svc_finishing_desc",
-    image: "/images/carpentry-work.webp",
+    image: "/images/kitchen-renovation.webp",
     introKey: "svc_finishing_intro",
     includesKeys: [
       "svc_finishing_inc_1",
@@ -137,7 +137,7 @@ export const SERVICES: Service[] = [
     icon: "bathroom",
     nameKey: "svc_plumber",
     descKey: "svc_plumber_desc",
-    image: "/images/tile-work.webp",
+    image: "/images/kitchen-before.webp",
     introKey: "svc_plumber_intro",
     includesKeys: [
       "svc_plumber_inc_1",
@@ -153,7 +153,7 @@ export const SERVICES: Service[] = [
     icon: "maintenance",
     nameKey: "svc_maintenance",
     descKey: "svc_maintenance_desc",
-    image: "/images/tools-detail.webp",
+    image: "/images/bath-before.webp",
     introKey: "svc_maintenance_intro",
     includesKeys: [
       "svc_maintenance_inc_1",
@@ -169,7 +169,7 @@ export const SERVICES: Service[] = [
     icon: "general",
     nameKey: "svc_general",
     descKey: "svc_general_desc",
-    image: "/images/renovation-ladder.webp",
+    image: "/images/living-after.webp",
     introKey: "svc_general_intro",
     includesKeys: [
       "svc_general_inc_1",

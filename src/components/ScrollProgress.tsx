@@ -32,8 +32,8 @@ export default function ScrollProgress() {
     <>
       {/* Top progress bar */}
       <div
-        className="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-[#4ade80] to-[#16a34a] z-[110] transition-all duration-100 ease-out"
-        style={{ width: `${scrollProgress}%` }}
+        className="pointer-events-none fixed top-0 left-0 z-[110] h-[3px] w-full origin-left bg-gradient-to-r from-pine-500 to-pine-700"
+        style={{ transform: `scaleX(${scrollProgress / 100})` }}
         aria-hidden="true"
       />
 
@@ -41,7 +41,8 @@ export default function ScrollProgress() {
       {showToTop && (
         <button
           onClick={scrollToTop}
-          className="hidden md:flex fixed bottom-8 left-8 z-40 w-11 h-11 rounded-full bg-[var(--brand)] text-white items-center justify-center shadow-lg hover:bg-[var(--brand-dark)] transition-all hover:scale-110 border-0 cursor-pointer animate-[fade-in_0.3s_ease-out]"
+          type="button"
+          className="hidden md:flex fixed bottom-8 left-8 z-40 h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-line bg-white text-ink shadow-[var(--shadow)] transition-colors hover:border-pine-700 hover:text-pine-700 animate-[fade-in_0.3s_ease-out]"
           aria-label={pick({ nl: "Terug naar boven", en: "Back to top", uk: "Вгору", ru: "Наверх" })}
         >
           <svg

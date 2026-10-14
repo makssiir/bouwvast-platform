@@ -1,5 +1,5 @@
 import type { Page } from "../lib/routes"
-import Breadcrumb from "../components/Breadcrumb"
+import PageHero from "../components/PageHero"
 import PageLink from "../components/PageLink"
 import { CITIES, REGION_LABELS } from "../data/cities"
 import Icon from "../components/Icon"
@@ -12,19 +12,19 @@ export default function WerkgebiedPage({
 }: {
   navigate: (p: Page) => void
 }) {
-  const { t } = useLang()
+  const { t, pick } = useLang()
   const citiesByRegion = (region: string) =>
     CITIES.filter((c) => c.region === region)
 
   return (
     <>
-      <section className="hero hero--service">
-        <div className="container">
-          <Breadcrumb navigate={navigate} items={[{ label: t("nav_area") }]} />
-          <h1>{t("area_page_title")}</h1>
-          <p className="lead-xl max-w-2xl">{t("area_page_sub")}</p>
-        </div>
-      </section>
+      <PageHero
+        navigate={navigate}
+        crumbs={[{ label: t("nav_area") }]}
+        eyebrow={t("nav_area")}
+        title={t("area_page_title")}
+        lead={t("area_page_sub")}
+      />
 
       <section className="section">
         <div className="container">
@@ -33,32 +33,35 @@ export default function WerkgebiedPage({
             const cities = citiesByRegion(region)
             return (
               <div key={region} className="mb-12">
-                <div className="flex items-center gap-3 mb-6">
-                  <h2 className="text-xl font-bold m-0">
+                <div className="mb-6 flex items-center gap-4">
+                  <h2 className="m-0 text-2xl">
                     {t(REGION_LABELS[region])}
                   </h2>
-                  <div className="flex-1 h-px bg-[var(--border)]" />
-                  <span className="text-xs font-semibold text-[var(--muted)]">
+                  <div className="h-px flex-1 bg-line" />
+                  <span className="tag">
                     {cities.length} {t("area_places")}
                   </span>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                <div className="grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 md:grid-cols-3">
                   {cities.map((city) => (
                     <PageLink
                       key={city.name}
                       to={{ type: "city", city: city.name }}
                       navigate={navigate}
-                      className="card p-4 text-left no-underline hover:border-[var(--brand)] hover:shadow-xs group"
+                      className="card group flex items-center gap-3.5 p-4 text-left"
                     >
-                      <div className="mb-1.5">
-                        <Icon name="pin" size={16} color="var(--brand)" />
-                      </div>
-                      <span className="block font-bold text-sm m-0 text-[var(--fg)] group-hover:text-[var(--brand)] transition-colors">
-                        {city.name}
+                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-pine-50 text-pine-700">
+                        <Icon name="pin" size={18} />
                       </span>
-                      <span className="block text-xs text-[var(--muted)] m-0 mt-0.5">
-                        {city.province}
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate font-display text-base font-bold text-ink transition-colors group-hover:text-pine-700">
+                          {city.name}
+                        </span>
+                        <span className="block text-[0.8125rem] text-subtle">{city.province}</span>
+                      </span>
+                      <span className="text-subtle transition-transform group-hover:translate-x-0.5 group-hover:text-pine-700" aria-hidden="true">
+                        <Icon name="arrow-right" size={18} />
                       </span>
                     </PageLink>
                   ))}
@@ -66,6 +69,33 @@ export default function WerkgebiedPage({
               </div>
             )
           })}
+
+          <div className="cta-band mt-6 grid items-center gap-6 md:grid-cols-[minmax(0,1fr)_auto]">
+            <div>
+              <h2 className="mb-2 text-[clamp(1.5rem,1.2rem+1vw,2rem)]">
+                {pick({
+                  nl: "Staat uw woonplaats er niet bij?",
+                  en: "Is your town not listed?",
+                  uk: "Вашого міста немає у списку?",
+                  ru: "Вашего города нет в списке?",
+                })}
+              </h2>
+              <p className="m-0 max-w-[46ch]">
+                {pick({
+                  nl: "Beschrijf uw project en vermeld uw woonplaats in de aanvraag. We laten u weten of we u kunnen helpen.",
+                  en: "Describe your project and mention your town in the request. We will let you know whether we can help.",
+                  uk: "Опишіть свій проєкт і вкажіть місто в запиті. Ми повідомимо, чи зможемо допомогти.",
+                  ru: "Опишите свой проект и укажите город в запросе. Мы сообщим, сможем ли помочь.",
+                })}
+              </p>
+            </div>
+            <PageLink to="contact" navigate={navigate} className="btn btn-white btn-lg">
+              {t("cta_btn")}
+              <span className="btn-arrow" aria-hidden="true">
+                <Icon name="arrow-right" size={18} />
+              </span>
+            </PageLink>
+          </div>
         </div>
       </section>
     </>

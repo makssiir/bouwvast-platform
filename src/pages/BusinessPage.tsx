@@ -1,6 +1,6 @@
 import type { Page } from "../lib/routes"
-import QuoteForm from "../components/QuoteForm"
-import Breadcrumb from "../components/Breadcrumb"
+import PageHero from "../components/PageHero"
+import QuoteSection from "../components/QuoteSection"
 import Icon from "../components/Icon"
 import { useLang } from "../i18n/LangContext"
 import { scrollToQuote } from "../lib/quoteDraft"
@@ -42,73 +42,99 @@ export default function BusinessPage({ navigate }: { navigate: (page: Page) => v
   ]
 
   const steps = [
-    pick({
-      nl: "Kennismaking: we bespreken uw projecten en wat u nodig heeft.",
-      en: "Introduction: we discuss your projects and what you need.",
-      uk: "Знайомство: обговорюємо ваші проєкти та потреби.",
-      ru: "Знакомство: обсуждаем ваши проекты и потребности.",
-    }),
-    pick({
-      nl: "Een projectofferte of raamafspraak met heldere tarieven en voorwaarden.",
-      en: "A project quote or framework agreement with clear rates and terms.",
-      uk: "Проєктна пропозиція або рамкова домовленість із чіткими тарифами та умовами.",
-      ru: "Проектное предложение или рамочное соглашение с понятными тарифами и условиями.",
-    }),
-    pick({
-      nl: "Uitvoering volgens de gemaakte afspraken over planning en kwaliteit.",
-      en: "Execution according to the agreements on schedule and quality.",
-      uk: "Виконання згідно з домовленостями щодо графіка та якості.",
-      ru: "Выполнение согласно договорённостям по срокам и качеству.",
-    }),
+    {
+      title: pick({ nl: "Kennismaking", en: "Introduction", uk: "Знайомство", ru: "Знакомство" }),
+      text: pick({
+        nl: "We bespreken uw projecten en wat u nodig heeft.",
+        en: "We discuss your projects and what you need.",
+        uk: "Обговорюємо ваші проєкти та потреби.",
+        ru: "Обсуждаем ваши проекты и потребности.",
+      }),
+    },
+    {
+      title: pick({ nl: "Offerte of raamafspraak", en: "Quote or framework agreement", uk: "Пропозиція або рамкова домовленість", ru: "Предложение или рамочное соглашение" }),
+      text: pick({
+        nl: "Per project of als raamafspraak, met heldere tarieven en voorwaarden.",
+        en: "Per project or as a framework agreement, with clear rates and terms.",
+        uk: "Для окремого проєкту або як рамкова домовленість — з чіткими тарифами та умовами.",
+        ru: "Для отдельного проекта или как рамочное соглашение — с понятными тарифами и условиями.",
+      }),
+    },
+    {
+      title: pick({ nl: "Uitvoering", en: "Execution", uk: "Виконання", ru: "Выполнение" }),
+      text: pick({
+        nl: "Volgens de gemaakte afspraken over planning en kwaliteit.",
+        en: "According to the agreements on schedule and quality.",
+        uk: "Згідно з домовленостями щодо графіка та якості.",
+        ru: "Согласно договорённостям по срокам и качеству.",
+      }),
+    },
   ]
+
+  const discuss = pick({ nl: "Bespreek uw project", en: "Discuss your project", uk: "Обговорити проєкт", ru: "Обсудить проект" })
 
   return (
     <>
-      <section className="hero hero--business">
-        <div className="container">
-          <Breadcrumb navigate={navigate} items={[{ label: t("nav_business") }]} />
-          <h1>{t("b2b_page_title")}</h1>
-          <p className="lead-xl max-w-2xl">{t("b2b_page_sub")}</p>
-        </div>
-      </section>
+      <PageHero
+        navigate={navigate}
+        crumbs={[{ label: t("nav_business") }]}
+        eyebrow={t("nav_business")}
+        title={t("b2b_page_title")}
+        lead={t("b2b_page_sub")}
+        image="/images/tools-rack.webp"
+      >
+        <button type="button" onClick={() => scrollToQuote()} className="btn btn-primary btn-lg">
+          {discuss}
+          <span className="btn-arrow" aria-hidden="true">
+            <Icon name="arrow-right" size={18} />
+          </span>
+        </button>
+      </PageHero>
 
-      <section className="section">
+      <section className="section" aria-labelledby="audiences-title">
         <div className="container">
-          <div className="center mb-12">
-            <h2>{pick({ nl: "Met wie werken wij samen?", en: "Who do we work with?", uk: "З ким ми співпрацюємо?", ru: "С кем мы сотрудничаем?" })}</h2>
+          <div className="section-head">
+            <div>
+              <p className="eyebrow">{pick({ nl: "Voor wie", en: "Who it's for", uk: "Для кого", ru: "Для кого" })}</p>
+              <h2 id="audiences-title">
+                {pick({ nl: "Met wie werken wij samen?", en: "Who do we work with?", uk: "З ким ми співпрацюємо?", ru: "С кем мы сотрудничаем?" })}
+              </h2>
+            </div>
           </div>
-          <ul className="grid grid-3 list-none p-0">
+          <ul className="grid grid-3 m-0 list-none p-0">
             {audiences.map((item) => (
               <li key={item.title} className="card">
-                <div className="business-card-icon">
-                  <Icon name={item.icon} size={22} color="var(--brand)" />
-                </div>
-                <h3 className="text-lg font-bold mb-2">{item.title}</h3>
-                <p className="text-sm text-[var(--muted)] m-0 leading-relaxed">{item.text}</p>
+                <span className="icon-tile" aria-hidden="true">
+                  <Icon name={item.icon} size={22} />
+                </span>
+                <h3 className="mb-2 text-lg">{item.title}</h3>
+                <p className="m-0 text-[0.9375rem] text-muted">{item.text}</p>
               </li>
             ))}
           </ul>
         </div>
       </section>
 
-      <section className="section section--muted">
+      <section className="section section--muted" aria-labelledby="collab-title">
         <div className="container">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid items-start gap-10 md:grid-cols-2 md:gap-16">
             <div>
-              <h2>
+              <p className="eyebrow">{pick({ nl: "Werkwijze", en: "How we work", uk: "Як ми працюємо", ru: "Как мы работаем" })}</p>
+              <h2 id="collab-title">
                 {pick({ nl: "Hoe verloopt een samenwerking?", en: "How does working together go?", uk: "Як відбувається співпраця?", ru: "Как проходит сотрудничество?" })}
               </h2>
-              <button type="button" onClick={() => scrollToQuote()} className="btn btn-primary mt-4">
-                {pick({ nl: "Bespreek uw project", en: "Discuss your project", uk: "Обговорити проєкт", ru: "Обсудить проект" })} &rarr;
+              <button type="button" onClick={() => scrollToQuote()} className="btn btn-outline mt-3">
+                {discuss}
+                <span className="btn-arrow" aria-hidden="true">
+                  <Icon name="arrow-right" size={18} />
+                </span>
               </button>
             </div>
-            <ol className="space-y-4 list-none p-0 m-0">
-              {steps.map((step, idx) => (
-                <li key={idx} className="card flex items-start gap-4 p-5">
-                  <span className="step-no shrink-0 text-sm" style={{ width: 36, height: 36 }} aria-hidden="true">
-                    {idx + 1}
-                  </span>
-                  <p className="text-sm font-medium text-[var(--fg)] m-0 pt-1.5">{step}</p>
+            <ol className="mini-steps mini-steps--lg">
+              {steps.map((step) => (
+                <li key={step.title}>
+                  <strong>{step.title}</strong>
+                  <p>{step.text}</p>
                 </li>
               ))}
             </ol>
@@ -116,19 +142,12 @@ export default function BusinessPage({ navigate }: { navigate: (page: Page) => v
         </div>
       </section>
 
-      <section id="quote" className="section">
-        <div className="container">
-          <div className="grid md:grid-cols-[1fr_1.4fr] gap-12 items-start">
-            <div>
-              <h2>{pick({ nl: "Bespreek uw zakelijke project", en: "Discuss your business project", uk: "Обговоріть ваш бізнес-проєкт", ru: "Обсудите ваш бизнес-проект" })}</h2>
-              <p className="text-[var(--muted)] text-base mb-6">{t("form_sub")}</p>
-            </div>
-            <div className="card p-6 md:p-8 shadow-md">
-              <QuoteForm sourcePage="business" />
-            </div>
-          </div>
-        </div>
-      </section>
+      <QuoteSection
+        sourcePage="business"
+        muted={false}
+        eyebrow={t("nav_business")}
+        title={pick({ nl: "Bespreek uw zakelijke project", en: "Discuss your business project", uk: "Обговоріть ваш бізнес-проєкт", ru: "Обсудите ваш бизнес-проект" })}
+      />
     </>
   )
 }
