@@ -1,0 +1,10 @@
+{
+  "description": "Bouwvast biedt bouw-, renovatie- en onderhoudswerkzaamheden in de regio Amersfoort.",
+  "robots": {
+    "index": true
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

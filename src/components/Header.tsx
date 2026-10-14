@@ -1,0 +1,225 @@
+import { useState, useRef, useEffect } from "react"
+import type { Page } from "../App"
+import { Logo } from "./Logo"
+import { useLang } from "../i18n/LangContext"
+import { LANG_NAMES, type Lang } from "../i18n/translations"
+import Icon from "./Icon"
+import { CONTACT } from "../data/contact"
+import { track } from "../lib/analytics"
+import PageLink from "./PageLink"
+
+const LANGS: Lang[] = ["uk", "nl", "en", "ru"]
+
+export default function Header({
+  page,
+  navigate,
+  menuOpen,
+  setMenuOpen,
+}: {
+  page: string
+  navigate: (p: Page) => void
+  menuOpen: boolean
+  setMenuOpen: (v: boolean) => void
+}) {
+  const { t, lang, setLang } = useLang()
+  const [langDropdownOpen, setLangDropdownOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setLangDropdownOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
+
+  // Lock body scroll when mobile menu overlay is open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : ""
+    return () => { document.body.style.overflow = "" }
+  }, [menuOpen])
+
+  const NAV = [
+    { label: t("nav_services"), page: "diensten" },
+    { label: t("nav_projects"), page: "projecten" },
+    { label: t("nav_area"), page: "werkgebied" },
+    { label: t("nav_kennisbank"), page: "kennisbank" },
+    { label: t("nav_business"), page: "zakelijk" },
+    { label: t("nav_contact"), page: "contact" },
+  ] as const
+
+  return (
+    <header className={`site-header ${menuOpen ? "menu-is-open" : ""}`}>
+      <div className="container nav">
+        <PageLink
+          to="home"
+          navigate={navigate}
+          className="brand no-underline"
+          ariaLabel="Bouwvast Home"
+        >
+          <Logo />
+        </PageLink>
+
+        <nav
+          aria-label="Hoofdnavigatie"
+          className="hidden lg:flex items-center"
+        >
+          <ul className="nav-links">
+            {NAV.map((n) => (
+              <li key={n.page}>
+                <PageLink
+                  to={n.page as Page}
+                  navigate={navigate}
+                  ariaCurrent={page === n.page ? "page" : undefined}
+                  className={`no-underline text-sm font-semibold transition-colors ${
+                    page === n.page
+                      ? "text-[#15803d] font-extrabold"
+                      : "text-[#0f172a] hover:text-[#16a34a]"
+                  }`}
+                >
+                  {n.label}
+                </PageLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div className="nav-cta">
+          {/* Compact Dropdown Language Switcher Toggle */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              type="button"
+              onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-extrabold text-[#0f172a] bg-white hover:bg-slate-50 border-2 border-slate-300 hover:border-slate-400 rounded-lg shadow-2xs transition-all cursor-pointer"
+              aria-expanded={langDropdownOpen}
+              aria-haspopup="true"
+              aria-label="Taalkeuze menu"
+            >
+              <span className="text-sm leading-none" aria-hidden="true">
+                🌐
+              </span>
+              <span>{lang.toUpperCase()}</span>
+              <span
+                className={`text-[10px] text-slate-600 transition-transform duration-200 ${
+                  langDropdownOpen ? "rotate-180" : ""
+                }`}
+                aria-hidden="true"
+              >
+                ▾
+              </span>
+            </button>
+
+            {langDropdownOpen && (
+              <div
+                className="absolute right-0 mt-2 w-44 rounded-xl bg-white border-2 border-slate-200 shadow-2xl py-1 z-50 animate-[fade-in-up_0.15s_ease-out]"
+                role="menu"
+                aria-label="Beschikbare talen"
+              >
+                {LANGS.map((l) => (
+                  <button
+                    key={l}
+                    role="menuitem"
+                    onClick={() => {
+                      setLang(l)
+                      setLangDropdownOpen(false)
+                      track("language_changed", { language: l })
+                    }}
+                    className={`w-full text-left px-4 py-2.5 text-xs font-bold flex items-center justify-between hover:bg-[var(--brand-subtle)] hover:text-[var(--brand-dark)] transition-colors cursor-pointer border-0 bg-transparent ${
+                      lang === l
+                        ? "text-[var(--brand-dark)] font-extrabold bg-[var(--brand-subtle)]"
+                        : "text-[#0f172a]"
+                    }`}
+                  >
+                    <span>{LANG_NAMES[l]}</span>
+                    {lang === l && (
+                      <span className="text-[var(--brand-dark)] font-extrabold">✓</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <PageLink
+            to="contact"
+            navigate={navigate}
+            className="btn btn-primary btn-sm btn-hide-mobile hidden sm:inline-flex no-underline"
+          >
+            <Icon name="check" size={16} />
+            {t("nav_cta")}
+          </PageLink>
+
+          <a
+            href={`tel:${CONTACT.phoneTel}`}
+            className="btn btn-outline btn-sm btn-hide-mobile hidden md:inline-flex"
+          >
+            <Icon name="phone" size={16} />
+            {CONTACT.phoneDisplay}
+          </a>
+
+          <button
+            aria-controls="nav-mobile"
+            aria-expanded={menuOpen}
+            aria-label="Menu"
+            className="nav-toggle"
+            type="button"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            <Icon name={menuOpen ? "close" : "menu"} size={26} />
+          </button>
+        </div>
+      </div>
+
+      {menuOpen && (
+        <div id="nav-mobile" className="open">
+          <ul className="nav-mobile-list">
+            {NAV.map((n) => (
+              <li key={n.page}>
+                <PageLink
+                  to={n.page as Page}
+                  navigate={(next) => {
+                    navigate(next)
+                    setMenuOpen(false)
+                  }}
+                  ariaCurrent={page === n.page ? "page" : undefined}
+                  className={`nav-mobile-link ${
+                    page === n.page ? "active" : ""
+                  }`}
+                >
+                  <span>{n.label}</span>
+                  <span className="nav-mobile-arrow">→</span>
+                </PageLink>
+              </li>
+            ))}
+          </ul>
+
+          <div className="nav-mobile-footer">
+            <button
+              onClick={() => {
+                navigate("contact")
+                setMenuOpen(false)
+              }}
+              className="btn btn-primary w-full justify-center py-3.5 text-base font-bold shadow-md cursor-pointer border-0"
+            >
+              <Icon name="check" size={18} />
+              <span>{t("nav_cta")}</span>
+            </button>
+
+            <a
+              href={`tel:${CONTACT.phoneTel}`}
+              className="btn btn-outline w-full justify-center py-3 text-sm font-bold no-underline text-[var(--fg)]"
+            >
+              <Icon name="phone" size={16} />
+              <span>{t("nav_call")} ({CONTACT.phoneDisplay})</span>
+            </a>
+          </div>
+        </div>
+      )}
+    </header>
+  )
+}
