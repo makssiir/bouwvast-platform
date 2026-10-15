@@ -26,6 +26,9 @@ automatically; unverified fields are never rendered.
 ## 2. Claims that need evidence — `src/data/claims.ts`
 
 Every switch is off. Turn one on only together with a `source` **(gate)**.
+The UI requires both the enabled switch and a nonempty source to render a claim.
+Do not add generic "Licensed", "Fully insured" or "Bonded" badges: verify the
+actual Dutch registration, policy, certificate or warranty first.
 
 | Switch | Shows | Evidence needed |
 | --- | --- | --- |
@@ -36,6 +39,12 @@ Every switch is off. Turn one on only together with a `source` **(gate)**.
 
 ### Widgets that are always on
 
+- **Reassurance bar**: uses only the existing request-process statements, not
+  unverified certifications, reviews, guarantees or response-time promises.
+- **Three-step quote request**: project → place/details → contact. Contact
+  details appear only at the end. Nothing is sent before the final submit.
+  Service pages and the calculator carry their context into the request;
+  going back preserves the visitor's text and photos.
 - **Cost calculator** ("Bereken direct uw richtprijs", home page and the four
   matching service pages). Rates in `ESTIMATOR`, `src/data/pricing.ts`, were
   copied from the original site and are unchecked. Compare them with the real
@@ -43,7 +52,9 @@ Every switch is off. Turn one on only together with a `source` **(gate)**.
   shown as an indication incl. btw, never as a quote.
 - **Before/after slider**: shows AI illustrations labelled "Impressie"
   (`src/data/impressions.ts`) until `projects` is on and projects have a
-  `beforeImage`.
+  `beforeImage`. The caption explicitly says they are not completed
+  Huisklusdienst projects. Buttons offer a non-drag alternative; the CTA
+  preselects the matching service without inventing a budget or location.
 - **Postcode → job → contact dialog** (home page and `/werkgebied/`): takes
   any Dutch postcode or place, asks what the job is and how the visitor wants
   to be contacted (call, WhatsApp, e-mail), and sends it as a normal lead

@@ -40,7 +40,19 @@ const port = await freePort()
 const dataDir = await mkdtemp(join(tmpdir(), "huisklusdienst-browser-"))
 const server = spawn(process.execPath, ["server/index.mjs"], {
   cwd: root,
-  env: { ...process.env, PORT: String(port), HOST: "127.0.0.1", DATA_DIR: dataDir, SITE_ORIGIN: "", LEAD_RATE_LIMIT_MAX: "50" },
+  env: {
+    ...process.env,
+    PORT: String(port),
+    HOST: "127.0.0.1",
+    DATA_DIR: dataDir,
+    SITE_ORIGIN: "",
+    LEAD_RATE_LIMIT_MAX: "50",
+    // Tests must never notify a real recipient, even in a configured shell.
+    LEAD_WEBHOOK_URL: "",
+    RESEND_API_KEY: "",
+    LEAD_NOTIFY_TO: "",
+    LEAD_NOTIFY_FROM: "",
+  },
   stdio: ["ignore", "pipe", "pipe"],
 })
 await new Promise((ok, fail) => {
@@ -92,6 +104,7 @@ try {
     check("title is this page's", (await page.title()).startsWith("Timmerman"), await page.title())
     check("heading is server-rendered", /Timmerman/i.test((await page.locator("h1").textContent()) ?? ""))
     check("the quote form is present without JS", (await page.locator("form").count()) === 1)
+    check("the no-JS form explains how to enable the interactive steps", /JavaScript/.test((await page.locator("noscript").textContent()) ?? ""))
     await ctx.close()
   }
 
@@ -157,27 +170,59 @@ try {
     await ctx.close()
   }
 
-  console.log("\n5. Quote form: validation, delivery, receipt")
+  console.log("\n5. Project-first quote form: validation, preservation, delivery")
   {
     const ctx = await browser.newContext()
     const page = await ctx.newPage()
     await page.goto(`${base}/contact/`)
     await page.waitForLoadState("networkidle")
     const form = page.locator("form")
+    let posts = 0
+    page.on("request", (request) => {
+      if (request.method() === "POST" && new URL(request.url()).pathname === "/api/leads") posts += 1
+    })
+    check("starts with a project choice, not personal details", (await form.getAttribute("data-step")) === "1" && !(await form.locator('input[autocomplete="name"]').isVisible()))
+    check("later steps cannot be skipped", (await form.locator(".quote-progress button:disabled").count()) === 2)
+    await form.locator('[data-service="other"]').click()
+    check("one project click opens details without sending anything", (await form.getAttribute("data-step")) === "2" && posts === 0)
     await form.locator('button[type="submit"]').click()
-    const invalid = await form.locator('[aria-invalid="true"]').count()
-    check("empty submit marks the required fields invalid", invalid >= 3, String(invalid))
+    const invalid = await form.locator('[aria-invalid="true"]:visible').count()
+    check("other work needs a place and description, but no contacts yet", invalid === 2, String(invalid))
     check("focus goes to the first invalid field", await page.evaluate(() => document.activeElement?.getAttribute("aria-invalid") === "true"))
     await form.locator("textarea").fill("Badkamer vernieuwen, ongeveer 6 m2, inclusief tegelwerk.")
-    await form.locator('input[autocomplete="name"]').fill("Test Bezoeker")
-    await form.locator('input[autocomplete="tel"]').fill("06 12345678")
     await form.locator('input[autocomplete="address-level2"]').fill("Leusden")
+    await form.locator(".quote-photo-details summary").click()
+    await form.locator('input[type="file"]').setInputFiles(join(root, "public/images/bath-after.webp"))
+    await form.locator('button[type="submit"]').click()
+    check("contacts are requested only in the last step", (await form.getAttribute("data-step")) === "3" && posts === 0)
+    check("last step shows the project summary", /Leusden/.test((await form.locator(".quote-review").textContent()) ?? ""))
+    await form.locator('button[type="submit"]').click()
+    check("empty final step marks only name and phone", (await form.locator('[aria-invalid="true"]:visible').count()) === 2)
+    await form.locator('input[autocomplete="name"]').fill("Test Bezoeker")
+    await form.locator('input[autocomplete="tel"]').fill("123")
+    await form.locator('button[type="submit"]').click()
+    check("a bad phone stays on the contact step", (await form.locator('input[type="tel"]').getAttribute("aria-invalid")) === "true" && posts === 0)
+    await form.locator('input[autocomplete="tel"]').fill("06 12345678")
+    await form.locator('input[type="email"]').fill("not-an-email")
+    await form.locator('button[type="submit"]').click()
+    check("an invalid optional email is explained before anything is sent", (await form.locator('input[type="email"]').getAttribute("aria-invalid")) === "true" && posts === 0)
+    await form.locator('input[type="email"]').fill("")
+    await form.locator(".quote-actions").getByRole("button", { name: "Terug", exact: true }).click()
+    check("going back keeps the place and description", (await form.locator("textarea").inputValue()).includes("6 m2") && (await form.locator('input[autocomplete="address-level2"]').inputValue()) === "Leusden")
+    check("going back keeps the actual photo selection", await form.locator('input[type="file"]').evaluate((input) => input.files.length === 1))
+    await form.locator('button[type="submit"]').click()
+    check("returning to contact keeps the typed name and phone", (await form.locator('input[autocomplete="name"]').inputValue()) === "Test Bezoeker" && (await form.locator('input[autocomplete="tel"]').inputValue()) === "06 12345678")
     await form.locator('button[type="submit"]').click()
     const status = page.locator('[role="status"]', { hasText: /HK-\d{6}-/ })
     await status.waitFor({ timeout: 10_000 }).catch(() => {})
     check("success shows the server's reference", (await status.count()) > 0)
     const stored = await readdir(join(dataDir, "leads")).catch(() => [])
     check("the lead is stored on the server", stored.length === 1, String(stored.length))
+    const record = JSON.parse(await readFile(join(dataDir, "leads", stored[0], "lead.json"), "utf8"))
+    check("step navigation never submits a partial lead", posts === 1, String(posts))
+    check("photos and project data reach the server", record.photos?.length === 1 && record.lead?.city === "Leusden" && record.lead?.description?.includes("6 m2"))
+    await page.getByRole("button", { name: "Nog een aanvraag doen" }).click()
+    check("a new request starts clean", (await form.getAttribute("data-step")) === "1" && (await form.locator("textarea").inputValue()) === "" && (await form.locator('input[autocomplete="name"]').inputValue()) === "")
     await ctx.close()
   }
 
@@ -341,6 +386,7 @@ try {
     )
 
     const quote = page.locator("#quote form")
+    await quote.locator('button[type="submit"]').click()
     await quote.locator('input[autocomplete="name"]').fill("Widget Test")
     await quote.locator('input[autocomplete="tel"]').fill("06 12345678")
     await quote.locator('button[type="submit"]').click()
@@ -365,6 +411,15 @@ try {
     const clicked = Number(await handle.getAttribute("aria-valuenow"))
     check("before/after: clicking the photo moves the divider", Math.abs(clicked - 25) <= 3, String(clicked))
     check("before/after: illustrations are labelled as such", (await page.locator("#voor-na .ba-impression").count()) > 0)
+    await page.locator(".ba-controls").getByRole("button", { name: "Na", exact: true }).click()
+    check("before/after: a button shows the complete after image", Number(await handle.getAttribute("aria-valuenow")) === 0)
+    const fullBox = await page.locator("#voor-na .ba-frame").boundingBox()
+    const handleBox = await handle.boundingBox()
+    check("before/after: the handle stays fully inside the photo at an endpoint", fullBox && handleBox && handleBox.x >= fullBox.x && handleBox.x + handleBox.width <= fullBox.x + fullBox.width)
+    await page.locator(".ba-controls").getByRole("button", { name: "Voor", exact: true }).click()
+    check("before/after: a button shows the complete before image", Number(await handle.getAttribute("aria-valuenow")) === 100)
+    await page.locator(".ba-controls").getByRole("button", { name: "Vergelijk", exact: true }).click()
+    check("before/after: comparison can be reset without dragging", Number(await handle.getAttribute("aria-valuenow")) === 50)
     check("no WhatsApp links without a confirmed number", (await page.locator('a[href*="wa.me"]').count()) === 0)
     check("widgets: no console errors", problems.length === 0, problems.slice(0, 3).join(" | "))
     await ctx.close()
@@ -413,6 +468,151 @@ try {
       await page3.evaluate(() => document.activeElement?.classList.contains("estimator-result") === true),
     )
     await phone.close()
+  }
+
+  console.log("\n10. CRO entry points and route-specific context")
+  {
+    const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" })
+    await ctx.addInitScript(() => { sessionStorage.setItem("hk-nudge-seen", "1") })
+    const page = await ctx.newPage()
+    await page.goto(base + "/")
+    await page.waitForLoadState("networkidle")
+    check("trust bar contains process reassurance, not invented credentials", (await page.locator(".trust-bar li").count()) === 3 && !/licensed|fully insured|bonded|VCA/i.test((await page.locator(".trust-bar").textContent()) ?? ""))
+    await page.locator(".home-hero").getByRole("button", { name: "Bespreek uw project" }).click()
+    await page.waitForFunction(() => document.activeElement?.classList.contains("quote-step-title"))
+    check("hero CTA focuses the first project step", (await page.locator("#quote form").getAttribute("data-step")) === "1")
+    await page.locator("#voor-na").getByRole("button", { name: "Badkamerrenovatie", exact: true }).click()
+    await page.locator("#voor-na").getByRole("button", { name: "Bespreek mijn project" }).click()
+    const form = page.locator("#quote form")
+    await page.waitForFunction(() => document.querySelector("#quote form")?.getAttribute("data-step") === "2")
+    check("inspiration CTA preselects the matching service", /Badkamer & keuken/.test((await form.locator(".quote-selection").textContent()) ?? ""))
+    check("inspiration never invents the visitor's description", (await form.locator("textarea").inputValue()) === "")
+    await form.locator("textarea").fill("Mijn eigen projectomschrijving blijft bewaard.")
+    await page.locator("#calculator").getByRole("button", { name: "Offerte aanvragen voor deze berekening" }).click()
+    check("calculator does not overwrite a visitor's own description", (await form.locator("textarea").inputValue()) === "Mijn eigen projectomschrijving blijft bewaard.")
+    await form.locator(".quote-selection button").click()
+    await form.locator('[data-service="uitbouw-aanbouw"]').click()
+    check("changing to unrelated work removes the stale estimate", (await form.locator('[data-testid="estimate-attached"]').count()) === 0)
+    check("changing work still preserves the visitor's own text", (await form.locator("textarea").inputValue()) === "Mijn eigen projectomschrijving blijft bewaard.")
+
+    await page.goto(base + "/diensten/timmerman/")
+    await page.waitForLoadState("networkidle")
+    check("a service page skips a question already answered by the route", (await page.locator("#quote form").getAttribute("data-step")) === "2" && /Timmerman/.test((await page.locator("#quote .quote-selection").textContent()) ?? ""))
+    await page.locator('main a[href="/diensten/renovatie/"]').first().click()
+    await page.waitForFunction(() => location.pathname === "/diensten/renovatie/")
+    check("in-app service navigation refreshes the form's service", /Woningrenovatie/.test((await page.locator("#quote .quote-selection").textContent()) ?? ""))
+    await page.goto(base + "/werkgebied/amsterdam/loodgieter/")
+    await page.waitForLoadState("networkidle")
+    check("service × place page carries both route defaults", /Loodgieter/.test((await page.locator("#quote .quote-selection").textContent()) ?? "") && (await page.locator('#quote input[autocomplete="address-level2"]').inputValue()) === "Amsterdam")
+    await page.locator('#quote button[type="submit"]').click()
+    check("a known service does not force a long description", (await page.locator("#quote form").getAttribute("data-step")) === "3")
+    await ctx.close()
+  }
+
+  console.log("\n11. Error recovery across steps")
+  {
+    const ctx = await browser.newContext({ reducedMotion: "reduce" })
+    const page = await ctx.newPage()
+    let attempts = 0
+    await page.route("**/api/leads", async (route) => {
+      attempts += 1
+      if (attempts === 1) return route.fulfill({ status: 503, contentType: "application/json", body: '{"ok":false}' })
+      if (attempts === 2) return route.fulfill({ status: 422, contentType: "application/json", body: '{"ok":false,"errors":{"city":"invalid","photos":"invalid"}}' })
+      return route.continue()
+    })
+    await page.goto(base + "/contact/")
+    await page.waitForLoadState("networkidle")
+    const form = page.locator("form")
+    await form.locator('[data-service="renovatie"]').click()
+    await form.locator('input[autocomplete="address-level2"]').fill("Utrecht")
+    await form.locator("textarea").fill("Renovatie van woonkamer en keuken.")
+    await form.locator(".quote-photo-details summary").click()
+    await form.locator('input[type="file"]').setInputFiles(join(root, "public/images/bath-after.webp"))
+    await form.locator('button[type="submit"]').click()
+    await form.locator('input[autocomplete="name"]').fill("Recovery Test")
+    await form.locator('input[autocomplete="tel"]').fill("06 12345678")
+    await form.locator('button[type="submit"]').click()
+    await page.getByRole("button", { name: "Aanvraag aanpassen" }).waitFor()
+    check("a server failure is not presented as success", (await page.locator('[role="status"]', { hasText: /HK-\d{6}-/ }).count()) === 0)
+    await page.getByRole("button", { name: "Aanvraag aanpassen" }).click()
+    check("editing after failure restores the filled contact step", (await form.getAttribute("data-step")) === "3" && (await form.locator('input[autocomplete="name"]').inputValue()) === "Recovery Test")
+    await form.locator('button[type="submit"]').click()
+    await page.waitForFunction(() => document.querySelector("form")?.getAttribute("data-step") === "2")
+    check("a server-side project error reopens the correct step", (await form.locator('input[autocomplete="address-level2"]').getAttribute("aria-invalid")) === "true")
+    check("server validation preserves the project and contacts", (await form.locator("textarea").inputValue()).includes("woonkamer") && (await form.locator('input[autocomplete="name"]').inputValue()) === "Recovery Test")
+    await form.locator('input[autocomplete="address-level2"]').fill("Utrecht centrum")
+    await form.locator('button[type="submit"]').click()
+    await form.locator(".quote-photo-details[open]").waitFor()
+    check("a rejected photo reopens its upload panel", (await form.getAttribute("data-step")) === "2" && (await form.locator(".quote-photo-details").getAttribute("open")) !== null)
+    check("a rejected photo has an actionable error message", /konden niet worden verwerkt/.test((await form.locator('.quote-photo-details [role="alert"]').textContent()) ?? ""))
+    await form.getByRole("button", { name: "Foto's verwijderen", exact: true }).click()
+    check("removing photos clears the actual selection and its error", await form.locator('input[type="file"]').evaluate((input) => input.files.length === 0 && input.getAttribute("aria-invalid") !== "true"))
+    await form.locator('button[type="submit"]').click()
+    await form.locator('button[type="submit"]').click()
+    const receipt = page.locator('[role="status"]', { hasText: /HK-\d{6}-/ })
+    await receipt.waitFor({ timeout: 10_000 })
+    check("a corrected request still reaches the real server", await receipt.isVisible())
+    await ctx.close()
+  }
+
+  console.log("\n12. Every new step on small screens and in every language")
+  for (const [language, width] of [["nl", 320], ["en", 360], ["uk", 390], ["ru", 320]]) {
+    const ctx = await browser.newContext({
+      viewport: { width, height: 844 }, isMobile: true, hasTouch: true, reducedMotion: "reduce",
+    })
+    await ctx.addInitScript((lang) => { localStorage.setItem("huisklusdienst.lang", lang) }, language)
+    const page = await ctx.newPage()
+    await page.goto(base + "/")
+    await page.waitForLoadState("networkidle")
+    const hasNoOverflow = () => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)
+    check(`${language} at ${width}px: header, trust bar and hero fit`, await hasNoOverflow())
+    const primary = await page.locator(".home-hero .btn-primary").boundingBox()
+    check(`${language}: primary CTA is visible in the first phone viewport`, primary && primary.y + primary.height <= 844)
+    const form = page.locator("#quote form")
+    check(`${language}: personal details are hidden in step one`, !(await form.locator('input[autocomplete="name"]').isVisible()))
+    const kitchenTerm = { nl: "keuken", en: "kitchen", uk: "кух", ru: "кух" }[language]
+    check(`${language}: the combined service visibly includes kitchens`, (await form.locator('[data-service="badkamer-keuken"]').innerText()).toLowerCase().includes(kitchenTerm))
+    await form.locator('[data-service="uitbouw-aanbouw"]').click()
+    check(`${language}: project step fits`, await hasNoOverflow())
+    await form.locator('input[autocomplete="address-level2"]').fill("Amsterdam")
+    await form.locator('button[type="submit"]').click()
+    check(`${language}: contact step fits`, await hasNoOverflow())
+    check(`${language}: new copy is translated, without raw keys`, !/quote_|trust_short_|ba_project_/.test((await page.locator("body").innerText()) ?? ""))
+    await page.locator(".mobile-contact-btn--cta").click()
+    check(`${language}: mobile CTA keeps the visitor on the current page`, pathOf(page) === "/" && (await form.getAttribute("data-step")) === "3")
+    await ctx.close()
+  }
+
+  console.log("\n13. A real malformed image is rejected and can be removed")
+  {
+    const ctx = await browser.newContext({ reducedMotion: "reduce" })
+    const page = await ctx.newPage()
+    await page.goto(base + "/contact/")
+    await page.waitForLoadState("networkidle")
+    const form = page.locator("form")
+    await form.locator('[data-service="renovatie"]').click()
+    await form.locator('input[autocomplete="address-level2"]').fill("Amersfoort")
+    await form.locator(".quote-photo-details summary").click()
+    await form.locator('input[type="file"]').setInputFiles({
+      name: "broken.webp", mimeType: "image/webp", buffer: Buffer.from("This is not an image."),
+    })
+    await form.locator('button[type="submit"]').click()
+    await form.locator('input[autocomplete="name"]').fill("Photo Validation Test")
+    await form.locator('input[autocomplete="tel"]').fill("06 12345678")
+    await form.locator('button[type="submit"]').click()
+    await page.waitForFunction(() => document.querySelector("form")?.getAttribute("data-step") === "2")
+    check("real server signature validation returns to the photo step", (await form.locator('input[type="file"]').getAttribute("aria-invalid")) === "true")
+    check("photo errors open the upload controls automatically", (await form.locator(".quote-photo-details").getAttribute("open")) !== null && await form.getByRole("button", { name: "Foto's verwijderen", exact: true }).isVisible())
+    const removeBox = await form.getByRole("button", { name: "Foto's verwijderen", exact: true }).boundingBox()
+    check("the photo removal control has a full-size touch target", removeBox && removeBox.height >= 44)
+    await form.getByRole("button", { name: "Foto's verwijderen", exact: true }).click()
+    await form.locator('button[type="submit"]').click()
+    check("removing a broken image does not lose the contact details", (await form.locator('input[autocomplete="name"]').inputValue()) === "Photo Validation Test")
+    await form.locator('button[type="submit"]').click()
+    const receipt = page.locator('[role="status"]', { hasText: /HK-\d{6}-/ })
+    await receipt.waitFor({ timeout: 10_000 })
+    check("the request can be delivered without the broken image", await receipt.isVisible())
+    await ctx.close()
   }
 } finally {
   console.log(`\n${passed} passed, ${failed} failed`)

@@ -39,6 +39,21 @@ export default function QuoteSection({
                 </li>
               ))}
             </ul>
+            <h3 className="quote-next-heading">{t("quote_after_title")}</h3>
+            <ol className="mini-steps">
+              <li>
+                <strong>{t("how_2_title")}</strong>
+                <p>{t("how_2_desc")}</p>
+              </li>
+              <li>
+                <strong>{t("how_3_title")}</strong>
+                <p>{t("how_3_desc")}</p>
+              </li>
+              <li>
+                <strong>{t("quote_decide_title")}</strong>
+                <p>{t("quote_decide_text")}</p>
+              </li>
+            </ol>
             {children}
           </div>
           <div className="form-card">

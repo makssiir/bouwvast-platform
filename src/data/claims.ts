@@ -43,5 +43,6 @@ export const CLAIMS = {
 export type ClaimKey = keyof typeof CLAIMS
 
 export function claim(key: ClaimKey): boolean {
-  return (CLAIMS[key] as Claim).enabled === true
+  const value = CLAIMS[key] as Claim
+  return value.enabled === true && Boolean(value.source?.trim())
 }

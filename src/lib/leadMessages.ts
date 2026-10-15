@@ -6,6 +6,14 @@ type Pick = <T>(copy: Localized<T>) => T
 /** Turns a validation code from lib/leadSchema.ts into a sentence for the visitor. */
 export function leadFieldMessage(field: LeadField, code: string | undefined, pick: Pick): string | undefined {
   if (!code) return undefined
+  if (field === "photos") {
+    return pick({
+      nl: "De foto's konden niet worden verwerkt. Kies maximaal 5 JPG-, PNG- of WebP-bestanden (tot 8 MB per foto, samen tot 12 MB), of verstuur uw aanvraag zonder foto's.",
+      en: "The photos could not be processed. Choose up to 5 JPG, PNG or WebP files (8 MB per photo, 12 MB in total), or send your request without photos.",
+      uk: "Не вдалося обробити фото. Виберіть до 5 файлів JPG, PNG чи WebP (до 8 МБ кожне, разом до 12 МБ) або надішліть запит без фото.",
+      ru: "Не удалось обработать фото. Выберите до 5 файлов JPG, PNG или WebP (до 8 МБ каждое, всего до 12 МБ) либо отправьте запрос без фото.",
+    })
+  }
   if (field === "phone" && code === "invalid") {
     return pick({
       nl: "Vul een geldig telefoonnummer in, bijvoorbeeld 06 12345678.",

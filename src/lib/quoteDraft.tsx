@@ -27,6 +27,10 @@ export interface QuoteEstimate {
 export interface QuotePrefill {
   city?: string
   description?: string
+  /** Canonical service slug; translated labels are for display only. */
+  service?: string
+  /** Changes only for an explicit service choice, not a later city suggestion. */
+  serviceNonce?: number
   /** Changes on every request, so the same suggestion can be applied twice. */
   nonce: number
 }
@@ -35,7 +39,8 @@ interface QuoteDraftCtx {
   estimate: QuoteEstimate | null
   setEstimate: (estimate: QuoteEstimate | null) => void
   prefill: QuotePrefill | null
-  suggest: (fields: Omit<QuotePrefill, "nonce">) => void
+  suggest: (fields: Omit<QuotePrefill, "nonce" | "serviceNonce">) => void
+  resetDraft: () => void
 }
 
 const Ctx = createContext<QuoteDraftCtx>({
@@ -43,15 +48,28 @@ const Ctx = createContext<QuoteDraftCtx>({
   setEstimate: () => {},
   prefill: null,
   suggest: () => {},
+  resetDraft: () => {},
 })
 
 export function QuoteDraftProvider({ children }: { children: React.ReactNode }) {
   const [estimate, setEstimate] = useState<QuoteEstimate | null>(null)
   const [prefill, setPrefill] = useState<QuotePrefill | null>(null)
-  const suggest = useCallback((fields: Omit<QuotePrefill, "nonce">) => {
-    setPrefill((current) => ({ ...current, ...fields, nonce: (current?.nonce ?? 0) + 1 }))
+  const suggest = useCallback((fields: Omit<QuotePrefill, "nonce" | "serviceNonce">) => {
+    setPrefill((current) => ({
+      ...current,
+      ...fields,
+      nonce: (current?.nonce ?? 0) + 1,
+      serviceNonce: fields.service ? (current?.serviceNonce ?? 0) + 1 : current?.serviceNonce,
+    }))
   }, [])
-  const value = useMemo(() => ({ estimate, setEstimate, prefill, suggest }), [estimate, prefill, suggest])
+  const resetDraft = useCallback(() => {
+    setEstimate(null)
+    setPrefill(null)
+  }, [])
+  const value = useMemo(
+    () => ({ estimate, setEstimate, prefill, suggest, resetDraft }),
+    [estimate, prefill, suggest, resetDraft],
+  )
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>
 }
 
@@ -65,7 +83,7 @@ export function scrollToQuote(): boolean {
   if (!el) return false
   const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
   el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" })
-  const field = el.querySelector<HTMLElement>("textarea, input:not([type=hidden])")
+  const field = el.querySelector<HTMLElement>(".quote-step-title, textarea, input:not([type=hidden])")
   window.setTimeout(() => {
     // Never pull focus out of a dialog that opened in the meantime.
     if (document.querySelector('[aria-modal="true"]')) return

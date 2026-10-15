@@ -4,7 +4,7 @@ import { useLang } from "../../i18n/LangContext"
 import { imageSize } from "../../data/images"
 import { scrollToQuote } from "../../lib/quoteDraft"
 
-const MAIN_IMAGE = "/images/living-before.webp"
+const MAIN_IMAGE = "/images/living-after.webp"
 const SUB_IMAGE = "/images/tile-work.webp"
 
 export default function HeroSection({ navigate }: { navigate: (p: Page) => void }) {
@@ -26,7 +26,9 @@ export default function HeroSection({ navigate }: { navigate: (p: Page) => void 
           <p className="eyebrow">{t("hero_label")}</p>
 
           <h1 id="home-hero-title">
-            {t("hero_title")} <span className="accent">{t("hero_title_accent")}</span>
+            <span className="hero-title-line">{t("hero_title")}</span>{" "}
+            <span className="hero-title-line">{t("hero_title_second")}</span>{" "}
+            <span className="accent">{t("hero_title_accent")}</span>
           </h1>
 
           <p className="lead">{t("hero_sub")}</p>
@@ -44,16 +46,10 @@ export default function HeroSection({ navigate }: { navigate: (p: Page) => void 
             </button>
           </div>
 
-          <ul className="check-list">
-            {[t("hero_trust_1"), t("hero_trust_2"), t("hero_trust_3")].map((item) => (
-              <li key={item}>
-                <span className="check-dot" aria-hidden="true">
-                  <Icon name="check" size={13} strokeWidth={2.6} />
-                </span>
-                {item}
-              </li>
-            ))}
-          </ul>
+          <p className="hero-cta-note">
+            <Icon name="check" size={16} strokeWidth={2.2} />
+            {t("quote_project_first")}
+          </p>
         </div>
 
         <div className="hero-media">
@@ -61,10 +57,10 @@ export default function HeroSection({ navigate }: { navigate: (p: Page) => void 
             <img
               src={MAIN_IMAGE}
               alt={pick({
-                nl: "Woonkamer tijdens een renovatie, met steigerwerk en nieuwe leidingen",
-                en: "Living room during a renovation, with scaffolding and new wiring",
-                uk: "Вітальня під час ремонту з риштуванням і новою проводкою",
-                ru: "Гостиная во время ремонта со строительными лесами и новой проводкой",
+                nl: "Wooninspiratie: een lichte woonkamer met strakke wanden en een eiken visgraatvloer",
+                en: "Home inspiration: a bright living room with smooth walls and an oak herringbone floor",
+                uk: "Інтер'єр для натхнення: світла вітальня з рівними стінами та дубовою підлогою ялинкою",
+                ru: "Интерьер для вдохновения: светлая гостиная с ровными стенами и дубовым полом ёлочкой",
               })}
               {...imageSize(MAIN_IMAGE)}
               decoding="async"
@@ -89,12 +85,7 @@ export default function HeroSection({ navigate }: { navigate: (p: Page) => void 
             <span className="badge-icon" aria-hidden="true">
               <Icon name="home" size={16} strokeWidth={2} />
             </span>
-            {pick({
-              nl: "Bouw, renovatie & afbouw",
-              en: "Construction, renovation & finishing",
-              uk: "Будівництво, ремонт та оздоблення",
-              ru: "Строительство, ремонт и отделка",
-            })}
+            {t("hero_inspiration")}
           </p>
         </div>
       </div>

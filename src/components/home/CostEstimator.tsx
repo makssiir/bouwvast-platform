@@ -71,7 +71,7 @@ export default function CostEstimator({
 }) {
   const { t, pick, lang } = useLang()
   const uid = useId().replace(/:/g, "")
-  const { setEstimate, suggest } = useQuoteDraft()
+  const { estimate, setEstimate, suggest } = useQuoteDraft()
   const first = ESTIMATOR.services.find((s) => s.id === initialService) ?? ESTIMATOR.services[0]
   const [service, setService] = useState<EstimatorService>(first)
   const [qty, setQty] = useState(first.defaultQty)
@@ -102,6 +102,9 @@ export default function CostEstimator({
 
   // Any change after applying makes the attached calculation stale.
   useEffect(() => setApplied(false), [service, qty, tier, demolition, materials])
+  useEffect(() => {
+    if (!estimate) setApplied(false)
+  }, [estimate])
 
   const chooseService = (next: EstimatorService) => {
     setService(next)
@@ -123,6 +126,7 @@ export default function CostEstimator({
       summary,
     })
     suggest({
+      service: service.serviceSlug,
       description: t("est_desc_seed", {
         service: lower ? serviceName.toLowerCase() : serviceName,
         qty: String(qty),
@@ -138,7 +142,10 @@ export default function CostEstimator({
     }
     if (focusPhotos) {
       window.setTimeout(() => {
-        document.querySelector<HTMLElement>("#quote .file-picker-input")?.focus({ preventScroll: true })
+        const input = document.querySelector<HTMLElement>("#quote .file-picker-input")
+        const details = input?.closest("details")
+        if (details) details.open = true
+        input?.focus({ preventScroll: true })
       }, 450)
     }
   }

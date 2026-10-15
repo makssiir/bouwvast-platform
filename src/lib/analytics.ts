@@ -8,6 +8,8 @@ export type AnalyticsEvent =
   | "estimate_applied"
   | "area_checked"
   | "area_lead_opened"
+  | "quote_step_viewed"
+  | "project_inspiration_selected"
 
 export function track(
   _event: AnalyticsEvent,

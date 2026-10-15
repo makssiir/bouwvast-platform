@@ -10,6 +10,8 @@ import { IMPRESSIONS } from "../../data/impressions"
 import type { Comparison } from "../../data/impressions"
 import { imageSize } from "../../data/images"
 import type { Page } from "../../lib/routes"
+import { scrollToQuote, useQuoteDraft } from "../../lib/quoteDraft"
+import { track } from "../../lib/analytics"
 
 /** Real projects with a before photo win; otherwise the labelled impressions. */
 function comparisons(): Comparison[] {
@@ -43,6 +45,7 @@ const clamp = (n: number) => Math.min(100, Math.max(0, n))
  */
 export default function BeforeAfter({ navigate }: { navigate: (p: Page) => void }) {
   const { t, pick } = useLang()
+  const { suggest } = useQuoteDraft()
   const uid = useId().replace(/:/g, "")
   const items = comparisons()
   const [active, setActive] = useState(0)
@@ -126,6 +129,14 @@ export default function BeforeAfter({ navigate }: { navigate: (p: Page) => void 
 
   const rounded = Math.round(pos)
 
+  const requestSimilar = () => {
+    // An inspiration image is not evidence of the visitor's budget, place
+    // or exact wishes. Only pass the service they deliberately selected.
+    suggest({ service: current.serviceSlug })
+    track("project_inspiration_selected", { service: current.serviceSlug, example: current.id })
+    if (!scrollToQuote()) navigate("contact")
+  }
+
   return (
     <section className="section" id="voor-na" aria-labelledby={`${uid}-title`}>
       <div className="container">
@@ -146,6 +157,7 @@ export default function BeforeAfter({ navigate }: { navigate: (p: Page) => void 
                 className="chip"
                 aria-pressed={idx === active}
                 onClick={() => {
+                  touch()
                   setActive(idx)
                   setPos(50)
                 }}
@@ -157,54 +169,56 @@ export default function BeforeAfter({ navigate }: { navigate: (p: Page) => void 
         )}
 
         <div className="ba-layout">
-          <div
-            ref={frame}
-            className={`ba-frame${touched ? " is-touched" : ""}`}
-            style={
-              {
-                "--pos": `${pos}%`,
-                "--ratio": `${current.width} / ${current.height}`,
-              } as CSSProperties
-            }
-            onPointerDown={onPointerDown}
-            onPointerMove={(e) => dragging.current && setFromClientX(e.clientX)}
-            onPointerUp={() => (dragging.current = false)}
-            onPointerCancel={() => (dragging.current = false)}
-          >
-            <img
-              key={`${current.id}-after`}
-              src={current.after}
-              alt={pick(current.afterAlt)}
-              width={current.width}
-              height={current.height}
-              loading="lazy"
-              decoding="async"
-              draggable={false}
-              className="ba-img"
-            />
-            <img
-              key={`${current.id}-before`}
-              src={current.before}
-              alt={pick(current.beforeAlt)}
-              width={current.width}
-              height={current.height}
-              loading="lazy"
-              decoding="async"
-              draggable={false}
-              className="ba-img ba-img--before"
-            />
-            <span className="ba-tag ba-tag--before" aria-hidden="true" style={{ opacity: pos > 14 ? 1 : 0 }}>
-              {t("ba_before")}
-            </span>
-            <span className="ba-tag ba-tag--after" aria-hidden="true" style={{ opacity: pos < 86 ? 1 : 0 }}>
-              {t("ba_after")}
-            </span>
-            {current.impression && (
-              <span className="ba-impression" aria-hidden="true">
-                {t("ba_impression")}
+          <div>
+            <div
+              ref={frame}
+              className={`ba-frame${touched ? " is-touched" : ""}`}
+              style={
+                {
+                  "--pos": `${pos}%`,
+                  "--ratio": `${current.width} / ${current.height}`,
+                } as CSSProperties
+              }
+              onPointerDown={onPointerDown}
+              onPointerMove={(e) => dragging.current && setFromClientX(e.clientX)}
+              onPointerUp={() => (dragging.current = false)}
+              onPointerCancel={() => (dragging.current = false)}
+              onLostPointerCapture={() => (dragging.current = false)}
+            >
+              <img
+                key={`${current.id}-after`}
+                src={current.after}
+                alt={pick(current.afterAlt)}
+                width={current.width}
+                height={current.height}
+                loading="lazy"
+                decoding="async"
+                draggable={false}
+                className="ba-img"
+              />
+              <img
+                key={`${current.id}-before`}
+                src={current.before}
+                alt={pick(current.beforeAlt)}
+                width={current.width}
+                height={current.height}
+                loading="lazy"
+                decoding="async"
+                draggable={false}
+                className="ba-img ba-img--before"
+              />
+              <span className="ba-tag ba-tag--before" aria-hidden="true" style={{ opacity: pos > 14 ? 1 : 0 }}>
+                {t("ba_before")}
               </span>
-            )}
-            <div className="ba-divider">
+              <span className="ba-tag ba-tag--after" aria-hidden="true" style={{ opacity: pos < 86 ? 1 : 0 }}>
+                {t("ba_after")}
+              </span>
+              {current.impression && (
+                <span className="ba-impression" aria-hidden="true">
+                  {t("ba_impression")}
+                </span>
+              )}
+              <div className="ba-divider" aria-hidden="true" />
               <div
                 role="slider"
                 tabIndex={0}
@@ -218,14 +232,34 @@ export default function BeforeAfter({ navigate }: { navigate: (p: Page) => void 
                   before: String(rounded),
                   after: String(100 - rounded),
                 })}
+                aria-describedby={current.impression ? `${uid}-note` : undefined}
                 onKeyDown={onKeyDown}
               >
                 <Icon name="arrows-h" size={20} strokeWidth={2.2} />
               </div>
+              <span className="ba-hint" aria-hidden="true">
+                {t("ba_hint")}
+              </span>
             </div>
-            <span className="ba-hint" aria-hidden="true">
-              {t("ba_hint")}
-            </span>
+            <div className="ba-controls" role="group" aria-label={t("ba_view")}>
+              {([
+                { value: 100, label: "ba_before" },
+                { value: 50, label: "ba_compare" },
+                { value: 0, label: "ba_after" },
+              ] as const).map((control) => (
+                <button
+                  key={control.value}
+                  type="button"
+                  aria-pressed={Math.abs(pos - control.value) < 0.5}
+                  onClick={() => {
+                    touch()
+                    setPos(control.value)
+                  }}
+                >
+                  {t(control.label)}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="ba-info">
@@ -249,10 +283,17 @@ export default function BeforeAfter({ navigate }: { navigate: (p: Page) => void 
                 </ul>
               </>
             )}
+            <div className="ba-project-cta">
+              <p>{t("ba_project_prompt")}</p>
+              <button type="button" className="btn btn-primary" onClick={requestSimilar}>
+                {t("ba_project_cta")}
+                <span className="btn-arrow" aria-hidden="true"><Icon name="arrow-right" size={17} /></span>
+              </button>
+            </div>
             <PageLink to={{ type: "service", slug: current.serviceSlug }} navigate={navigate} className="ba-link">
               <More>{t("ba_service_link")}</More>
             </PageLink>
-            {current.impression && <p className="fine-print">{t("ba_impression_note")}</p>}
+            {current.impression && <p id={`${uid}-note`} className="fine-print">{t("ba_impression_note")}</p>}
           </div>
         </div>
       </div>

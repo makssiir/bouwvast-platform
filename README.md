@@ -40,6 +40,28 @@ and sees the verified contact channels. Notifications go out by signed webhook
 and/or Resend e-mail and are retried until delivered. Leads older than
 `LEAD_RETENTION_DAYS` are purged automatically.
 
+### Project-first conversion flow
+
+- The reassurance bar below the navigation describes the existing process:
+  a no-obligation request, a quote up front and personal contact. It does not
+  imply a licence, insurance policy, certification or warranty.
+- The shared quote form has three steps: project → place/details → contact.
+  A service-page visit, calculator or inspiration CTA can preselect the service
+  and skip the first question. A known service makes the description optional;
+  other work requires a short description. Name and phone remain required in
+  the final step, and e-mail and photos remain optional.
+- Only the final submit button sends data. Going back, validation errors and
+  retries keep the text, photo selection and attached calculation. Personal
+  form data is held in memory, not written to browser storage. Unrelated work
+  drops a stale estimate without deleting the visitor's own description.
+- The before/after slider also has Before / Compare / After buttons, keyboard
+  support and a service-specific request CTA. AI illustrations are explicitly
+  labelled as inspiration, not completed Huisklusdienst projects. Real photos
+  replace them only when the projects claim has evidence.
+- `src/lib/analytics.ts` remains a no-op integration boundary. Step-view and
+  inspiration-choice hooks contain no personal data; no analytics provider,
+  cookie or conversion-uplift claim has been added.
+
 ## Checks
 
 ```bash

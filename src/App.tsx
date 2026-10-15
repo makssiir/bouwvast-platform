@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import Header from "./components/Header"
+import TrustBar from "./components/TrustBar"
 import HomePage from "./pages/HomePage"
 import DienstenPage from "./pages/DienstenPage"
 import ProjectenPage from "./pages/ProjectenPage"
@@ -93,6 +94,7 @@ export default function App({ initialPage }: { initialPage?: Page } = {}) {
             menuOpen={menuOpen}
             setMenuOpen={setMenuOpen}
           />
+          <TrustBar />
           <main id="main" ref={mainRef} tabIndex={-1} className="outline-none">
             {page === "home" && <HomePage navigate={navigate} />}
             {page === "diensten" && <DienstenPage navigate={navigate} />}
@@ -229,7 +231,7 @@ function MobileContactBar({
             href={hrefForPage("contact")}
             onClick={(event) => {
               event.preventDefault()
-              navigate("contact")
+              if (!scrollToQuote()) navigate("contact")
             }}
             className="mobile-contact-btn mobile-contact-btn--cta no-underline"
           >

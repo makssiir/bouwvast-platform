@@ -140,7 +140,7 @@ export default function CityPage({ city: cityName, navigate }: { city: string; n
               {t("city_quote_title", vars)}
             </h2>
             <p className="mb-5 text-sm text-muted">{t("city_quote_sub", vars)}</p>
-            <QuoteForm compact sourcePage={`city:${city.name}`} presetCity={city.name} />
+            <QuoteForm key={city.name} compact sourcePage={`city:${city.name}`} presetCity={city.name} />
           </aside>
         </div>
       </div>

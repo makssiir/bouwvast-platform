@@ -190,6 +190,7 @@ export default function ServiceCityPage({
             </h2>
             <p className="mb-5 text-sm text-muted">{t("city_quote_sub", vars)}</p>
             <QuoteForm
+              key={`${service.slug}:${city.name}`}
               compact
               sourcePage={`service-city:${service.slug}:${city.name}`}
               presetService={service.name}

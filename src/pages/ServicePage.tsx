@@ -124,7 +124,7 @@ export default function ServicePage({ slug, navigate }: { slug: string; navigate
             <p className="mb-5 text-sm text-muted">
               {t("service_quote_sub", { service: name.toLowerCase() })}
             </p>
-            <QuoteForm compact sourcePage={`service:${service.slug}`} presetService={service.name} />
+            <QuoteForm key={service.slug} compact sourcePage={`service:${service.slug}`} presetService={service.name} />
           </aside>
         </div>
       </div>
