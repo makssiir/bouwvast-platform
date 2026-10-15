@@ -6,7 +6,7 @@ import type { Localized } from "../i18n/LangContext"
  * them and every service page for that city shows the tip that fits the
  * service. General, checkable facts only: no figures, no promises.
  */
-export type ServiceGroup = "wet" | "build" | "outside"
+export type ServiceGroup = "wet" | "build" | "outside" | "heating"
 
 export type TraitId =
   | "monuments"

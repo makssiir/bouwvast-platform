@@ -1,7 +1,11 @@
-export type IconName = "renovation" | "finishing" | "painting" | "facade" | "assembly" | "maintenance" | "bathroom" | "general" | "pin" | "check" | "arrow-right" | "swap" | "phone" | "whatsapp" | "mail" | "bolt" | "star" | "menu" | "close" | "shield" | "clock" | "calendar" | "user" | "tools" | "globe" | "chevron-down" | "arrow-up-right" | "ruler" | "home" | "camera" | "calculator" | "plus" | "minus" | "info" | "arrows-h" | "chat"
+export type IconName = "renovation" | "finishing" | "painting" | "facade" | "assembly" | "maintenance" | "bathroom" | "general" | "pin" | "check" | "arrow-right" | "swap" | "phone" | "whatsapp" | "mail" | "bolt" | "star" | "menu" | "close" | "shield" | "clock" | "calendar" | "user" | "tools" | "globe" | "chevron-down" | "arrow-up-right" | "ruler" | "home" | "camera" | "calculator" | "plus" | "minus" | "info" | "arrows-h" | "chat" | "heatpump" | "underfloor" | "heating" | "window"
 
 const paths: Record<IconName, string> = {
   renovation: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10",
+  heatpump: "M3 4h18v15H3z M6 22v-3 M18 22v-3 M12 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M12 7v8 M8 11h8",
+  underfloor: "M3 5h18 M3 19h18 M5 9h12a2 2 0 0 1 0 4H7a2 2 0 0 0 0 4h12 M4 2v3 M12 2v3 M20 2v3",
+  heating: "M5 7h14v13H5z M8 7v13 M12 7v13 M16 7v13 M3 10h2 M19 16h2 M8 2v2 M12 2v2 M16 2v2",
+  window: "M4 3h16v18H4z M4 12h16 M12 3v18 M8 7h.01 M16 17h.01",
   finishing: "M4 21V4h6v5h6V4h4v17 M10 9h4",
   painting:
     "M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z M12 8v8 M8 12h8",

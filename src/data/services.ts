@@ -1,7 +1,7 @@
 import type { TranslationKey } from "../i18n/translations"
 import type { ServiceName } from "./cities"
 
-export type ServiceIcon = "renovation" | "finishing" | "painting" | "facade" | "assembly" | "maintenance" | "bathroom" | "general" | "tools"
+export type ServiceIcon = "renovation" | "finishing" | "painting" | "facade" | "assembly" | "maintenance" | "bathroom" | "general" | "tools" | "heatpump" | "underfloor" | "heating" | "window"
 
 export interface Service {
   /** URL-safe identifier, stable across languages — the basis for Service × City routing. */
@@ -12,6 +12,10 @@ export interface Service {
   nameKey: TranslationKey
   descKey: TranslationKey
   image: string
+  /** Generated service imagery is decorative, not evidence of a completed job. */
+  illustration?: boolean
+  /** Important limits or assessment requirements for this kind of work. */
+  noteKey?: TranslationKey
   /** Translation key for the long-form intro. */
   introKey: TranslationKey
   /** Translation keys for concrete deliverables. */
@@ -74,7 +78,8 @@ export const SERVICES: Service[] = [
     icon: "general",
     nameKey: "svc_dormer",
     descKey: "svc_dormer_desc",
-    image: "/images/tile-work.webp",
+    image: "/images/attic-conversion.webp",
+    illustration: true,
     introKey: "svc_dormer_intro",
     includesKeys: [
       "svc_dormer_inc_1",
@@ -82,6 +87,77 @@ export const SERVICES: Service[] = [
       "svc_dormer_inc_3",
       "svc_dormer_inc_4",
       "svc_dormer_inc_5",
+    ],
+  },
+  {
+    slug: "warmtepompen",
+    name: "Warmtepompen",
+    icon: "heatpump",
+    nameKey: "svc_heatpump",
+    descKey: "svc_heatpump_desc",
+    image: "/images/heat-pump.webp",
+    illustration: true,
+    introKey: "svc_heatpump_intro",
+    noteKey: "svc_heatpump_note",
+    includesKeys: [
+      "svc_heatpump_inc_1",
+      "svc_heatpump_inc_2",
+      "svc_heatpump_inc_3",
+      "svc_heatpump_inc_4",
+      "svc_heatpump_inc_5",
+    ],
+  },
+  {
+    slug: "vloerverwarming",
+    name: "Vloerverwarming",
+    icon: "underfloor",
+    nameKey: "svc_underfloor",
+    descKey: "svc_underfloor_desc",
+    image: "/images/underfloor-heating.webp",
+    illustration: true,
+    introKey: "svc_underfloor_intro",
+    noteKey: "svc_underfloor_note",
+    includesKeys: [
+      "svc_underfloor_inc_1",
+      "svc_underfloor_inc_2",
+      "svc_underfloor_inc_3",
+      "svc_underfloor_inc_4",
+      "svc_underfloor_inc_5",
+    ],
+  },
+  {
+    slug: "verwarming",
+    name: "Verwarming",
+    icon: "heating",
+    nameKey: "svc_heating",
+    descKey: "svc_heating_desc",
+    image: "/images/heat-pump.webp",
+    illustration: true,
+    introKey: "svc_heating_intro",
+    noteKey: "svc_heating_note",
+    includesKeys: [
+      "svc_heating_inc_1",
+      "svc_heating_inc_2",
+      "svc_heating_inc_3",
+      "svc_heating_inc_4",
+      "svc_heating_inc_5",
+    ],
+  },
+  {
+    slug: "demontage-ramen-deuren",
+    name: "Demontage ramen & deuren",
+    icon: "window",
+    nameKey: "svc_dismantling",
+    descKey: "svc_dismantling_desc",
+    image: "/images/renovation-ladder.webp",
+    introKey: "svc_dismantling_intro",
+    noteKey: "svc_dismantling_note",
+    includesKeys: [
+      "svc_dismantling_inc_1",
+      "svc_dismantling_inc_2",
+      "svc_dismantling_inc_3",
+      "svc_dismantling_inc_4",
+      "svc_dismantling_inc_5",
     ],
   },
   {
@@ -177,6 +253,7 @@ export const SERVICES: Service[] = [
       "svc_plumber_inc_3",
       "svc_plumber_inc_4",
       "svc_plumber_inc_5",
+      "svc_plumber_inc_6",
     ],
   },
   {
@@ -216,3 +293,9 @@ export const SERVICES: Service[] = [
 export const SERVICE_BY_SLUG: Record<string, Service> = Object.fromEntries(
   SERVICES.map((s) => [s.slug, s]),
 )
+
+/**
+ * Owner launch gate, not a public certification claim. Confirm the actual scope,
+ * required certificates and any specialist arrangement before marking reviewed.
+ */
+export const HEAT_PUMP_SCOPE = { reviewed: false, source: "" }

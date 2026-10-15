@@ -113,7 +113,7 @@ try {
     const ctx = await browser.newContext()
     const page = await ctx.newPage()
     const problems = watch(page)
-    for (const path of ["/", "/diensten/", "/diensten/renovatie/", "/projecten/", "/werkgebied/", "/werkgebied/amersfoort/", "/werkgebied/amsterdam/loodgieter/", "/werkgebied/soest/", "/contact/", "/zakelijk/", "/kennisbank/", "/kennisbank/badkamer-renoveren-stappenplan/", "/privacy/", "/voorwaarden/"]) {
+    for (const path of ["/", "/diensten/", "/diensten/renovatie/", "/diensten/warmtepompen/", "/diensten/vloerverwarming/", "/diensten/verwarming/", "/diensten/demontage-ramen-deuren/", "/projecten/", "/werkgebied/", "/werkgebied/amersfoort/", "/werkgebied/amsterdam/loodgieter/", "/werkgebied/soest/", "/contact/", "/zakelijk/", "/kennisbank/", "/kennisbank/badkamer-renoveren-stappenplan/", "/privacy/", "/voorwaarden/"]) {
       const response = await page.goto(base + path)
       await page.waitForLoadState("networkidle")
       check(`${path} answers 200`, response?.status() === 200, String(response?.status()))
@@ -188,6 +188,7 @@ try {
     await form.locator('button[type="submit"]').click()
     const invalid = await form.locator('[aria-invalid="true"]:visible').count()
     check("other work needs a place and description, but no contacts yet", invalid === 2, String(invalid))
+    await page.waitForFunction(() => document.activeElement?.getAttribute("aria-invalid") === "true", null, { timeout: 2000 }).catch(() => {})
     check("focus goes to the first invalid field", await page.evaluate(() => document.activeElement?.getAttribute("aria-invalid") === "true"))
     await form.locator("textarea").fill("Badkamer vernieuwen, ongeveer 6 m2, inclusief tegelwerk.")
     await form.locator('input[autocomplete="address-level2"]').fill("Leusden")
@@ -566,6 +567,9 @@ try {
     await page.waitForLoadState("networkidle")
     const hasNoOverflow = () => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)
     check(`${language} at ${width}px: header, trust bar and hero fit`, await hasNoOverflow())
+    const photoBox = await page.locator(".hero-media-main img").boundingBox()
+    const captionBox = await page.locator(".hero-media-caption").boundingBox()
+    check(`${language}: mobile caption does not cover the hero photo`, photoBox && captionBox && captionBox.y >= photoBox.y + photoBox.height - 1)
     const primary = await page.locator(".home-hero .btn-primary").boundingBox()
     check(`${language}: primary CTA is visible in the first phone viewport`, primary && primary.y + primary.height <= 844)
     const form = page.locator("#quote form")
@@ -612,6 +616,81 @@ try {
     const receipt = page.locator('[role="status"]', { hasText: /HK-\d{6}-/ })
     await receipt.waitFor({ timeout: 10_000 })
     check("the request can be delivered without the broken image", await receipt.isVisible())
+    await ctx.close()
+  }
+  console.log("\n14. Expanded services, honest hero image and explicit VAT")
+  {
+    const ctx = await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion: "reduce" })
+    const page = await ctx.newPage()
+    await page.goto(base + "/")
+    await page.waitForLoadState("networkidle")
+    check("hero uses one strong image, without the old worker inset", await page.locator(".hero-media-main img").count() === 1 && await page.locator(".hero-media-sub").count() === 0)
+    check("hero image loads and has responsive sources", await page.locator(".hero-media-main img").evaluate((img) => img.complete && img.naturalWidth > 0 && img.src.includes("hero-craftsmanship") && Boolean(img.srcset)))
+    check("hero does not pretend the illustration is the real team", /geen eigen project of teamfoto/.test(await page.locator(".hero-media-disclosure").innerText()))
+    const obligation = page.locator("#faq details").filter({ hasText: "Verplicht een offerteaanvraag mij tot iets?" })
+    await obligation.locator("summary").click()
+    check("the no-obligation answer no longer begins with yes", (await obligation.locator(".answer").innerText()).startsWith("Een aanvraag"))
+    check("the calculator labels its gross total explicitly", /inclusief btw/.test(await page.locator(".estimator-vat-basis").innerText()))
+    await page.locator(".estimator-vat summary").click()
+    check("VAT explanation does not invent a uniform tax split", /geen afzonderlijke belastingberekening/.test(await page.locator(".estimator-vat p").innerText()))
+    const vatContrast = await page.evaluate(() => {
+      const luminance = (rgb) => rgb.map((x) => x / 255).map((x) => x <= 0.04045 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4).reduce((sum, x, i) => sum + x * [0.2126, 0.7152, 0.0722][i], 0)
+      const backgrounds = [[15, 29, 22], [29, 72, 48]]
+      return [".estimator-vat-basis", ".estimator-vat summary", ".estimator-vat p"].every((selector) => {
+        const rgb = getComputedStyle(document.querySelector(selector)).color.match(/\d+(?:\.\d+)?/g).slice(0, 3).map(Number)
+        const foreground = luminance(rgb)
+        return backgrounds.every((background) => (Math.max(foreground, luminance(background)) + 0.05) / (Math.min(foreground, luminance(background)) + 0.05) >= 4.5)
+      })
+    })
+    check("VAT labels and expanded explanation meet normal-text contrast on the dark result", vatContrast)
+    await page.goto(base + "/zakelijk/")
+    check("business quotes explicitly distinguish net pricing", /doorgaans exclusief btw/.test(await page.locator(".business-vat-note").innerText()))
+    await ctx.close()
+  }
+
+  for (const [language, width] of [["nl", 320], ["en", 360], ["uk", 390], ["ru", 320]]) {
+    const ctx = await browser.newContext({ viewport: { width, height: 844 }, isMobile: true, hasTouch: true, reducedMotion: "reduce" })
+    await ctx.addInitScript((lang) => localStorage.setItem("huisklusdienst.lang", lang), language)
+    const page = await ctx.newPage()
+    const problems = watch(page)
+    await page.goto(base + "/contact/")
+    const form = page.locator("#quote form")
+    await form.locator(".quote-more-services summary").click()
+    check(`${language}: all 16 services are selectable without a free-text guess`, await form.locator(".project-choice:not([data-service=other])").count() === 16)
+    check(`${language}: expanded choices fit on the phone`, await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1))
+    await form.locator('[data-service="warmtepompen"]').click()
+    check(`${language}: heat-pump choice starts the details step`, await form.getAttribute("data-step") === "2")
+    await form.locator('input[autocomplete="address-level2"]').fill("Amsterdam")
+    await form.locator('button[type="submit"]').click()
+    check(`${language}: VAT note appears before sending a request`, await form.getAttribute("data-step") === "3" && await form.locator(".quote-vat-note").isVisible())
+    check(`${language}: final contact step still fits`, await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1))
+    if (language === "nl") {
+      await form.locator('input[autocomplete="name"]').fill("Heat Pump Enquiry Test")
+      await form.locator('input[autocomplete="tel"]').fill("06 12345678")
+      await form.locator('button[type="submit"]').click()
+      await page.locator('[role="status"]', { hasText: /HK-\d{6}-/ }).waitFor({ timeout: 10_000 })
+      let saved
+      for (const id of await readdir(join(dataDir, "leads"))) {
+        const record = JSON.parse(await readFile(join(dataDir, "leads", id, "lead.json"), "utf8"))
+        if (record.lead?.name === "Heat Pump Enquiry Test") saved = record.lead
+      }
+      check("heat-pump request reaches the real server with its canonical service", saved?.service === "Warmtepompen" && saved?.city === "Amsterdam")
+    }
+    check(`${language}: new controls hydrate without console errors`, problems.length === 0, problems.join("; "))
+    await ctx.close()
+  }
+
+  for (const slug of ["warmtepompen", "vloerverwarming", "verwarming", "demontage-ramen-deuren"]) {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, reducedMotion: "reduce" })
+    const page = await ctx.newPage()
+    const problems = watch(page)
+    const response = await page.goto(`${base}/werkgebied/amsterdam/${slug}/`)
+    await page.waitForLoadState("networkidle")
+    check(`${slug}: local page answers 200 with its own title`, response?.status() === 200 && /Amsterdam/.test(await page.locator("h1").innerText()))
+    check(`${slug}: city and service are preset without another question`, await page.locator("#quote form").getAttribute("data-step") === "2" && await page.locator('#quote input[autocomplete="address-level2"]').inputValue() === "Amsterdam")
+    check(`${slug}: scope conditions are visible`, await page.locator(".service-scope-note").isVisible())
+    check(`${slug}: phone layout fits`, await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1))
+    check(`${slug}: hydrates without errors`, problems.length === 0, problems.join("; "))
     await ctx.close()
   }
 } finally {

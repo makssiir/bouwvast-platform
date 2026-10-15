@@ -23,7 +23,7 @@ Node ≥ 22.18 (`.nvmrc`). Copy `.env.example` to `.env` for local settings;
 | Pages & routes | `src/pages`, `src/lib/routes.ts` | One route table drives navigation, prerendering, sitemap and robots |
 | Translations | `src/i18n/translations.ts` | nl (canonical), en, uk, ru; preference stored client-side |
 | Owner facts | `src/data/company.ts`, `claims.ts`, `pricing.ts`, `projects.ts`, `legal.ts`, `cities.ts` | Unverified values are never rendered — see `LAUNCH-CHECKLIST.md` |
-| Local pages | `src/data/cities.ts`, `cityIntros.ts`, `localTraits.ts`, `serviceLocal.ts` | 58 places (`/werkgebied/<plaats>/`), 47 × 12 service × place pages (`/werkgebied/<plaats>/<dienst>/`), loaded as a separate chunk |
+| Local pages | `src/data/cities.ts`, `cityIntros.ts`, `localTraits.ts`, `heatingTips.ts`, `serviceLocal.ts` | 58 places (`/werkgebied/<plaats>/`), 47 × 16 service × place pages (`/werkgebied/<plaats>/<dienst>/`), loaded as a separate chunk |
 | Prerender | `scripts/prerender.mjs` | Writes `dist/<route>/index.html`, `404.html`, `robots.txt`, `sitemap.xml`, `llms.txt`, `llms-full.txt` |
 | Structured data | `src/lib/schema.ts`, `src/lib/localFaq.ts` | Business, service and place per page; FAQ markup for visible questions |
 | Server | `server/` | Static files with security headers + `POST /api/leads` + `GET /healthz` |
@@ -62,15 +62,44 @@ and/or Resend e-mail and are retried until delivered. Leads older than
   inspiration-choice hooks contain no personal data; no analytics provider,
   cookie or conversion-uplift claim has been added.
 
+### Services, images and VAT
+
+- There are 16 service pages. Heat pumps, underfloor heating, heating systems
+  and window/door removal have their own pages and request choices. Plumbing
+  explicitly includes concealed toilet frames; renovation covers reconfiguration
+  and restoration without claiming architectural or structural qualifications.
+- The homepage uses one stronger architectural/craftsmanship image instead of
+  the downward-looking worker inset. Generated imagery is labelled as such,
+  never presented as a real project, real team or proof of experience.
+- Consumer-facing indicative prices remain **including VAT**. Quote breakdowns
+  show net amounts, VAT at the applicable rates and a gross total. Business
+  quotes usually show net amounts, explicitly labelled; rates and exceptions
+  are confirmed per enquiry. No fictitious uniform VAT split is calculated.
+  See [ACM's consumer-price guidance](https://www.acm.nl/nl/verkoop-aan-consumenten/consumenten-informeren/prijzen-vermelden).
+- Heat-pump refrigerant work requires the appropriate qualifications; no
+  certification is claimed. Confirm the real scope, certificates and any
+  specialist arrangement in `HEAT_PUMP_SCOPE` in `src/data/services.ts`
+  before launch. See [official refrigerant certification guidance](https://business.gov.nl/regulations/certificates-working-with-f-gases/).
+- All existing routes remain stable. New service pages are automatically added
+  to the sitemap, structured data and `llms.txt` / `llms-full.txt`.
+
+### Git history
+
+This update continues the existing history from `78aa324` (baseline), including
+all prior website updates. It does not reinitialise or squash the repository.
+The handoff includes a full-history Git bundle and a clean repository archive.
+See `GIT-HANDOFF.md` for importing into an existing clone and pushing safely.
+
 ## Checks
 
 ```bash
 npm run typecheck
+npm run verify:content  # service registry, translations, VAT and FAQ consistency
 npm run verify:leads    # client ↔ server lead flow (48 cases)
 npm run verify:routes   # every prerendered page: claims, links, SEO, a11y basics
 npm run verify:browser  # real browser against the real server (needs Playwright)
 npm run check:launch    # owner data, legal approval, production config
-npm run release:check   # typecheck + leads + build + routes
+npm run release:check   # typecheck + content + leads + build + routes
 ```
 
 CI runs the same in `.github/workflows/ci.yml`.

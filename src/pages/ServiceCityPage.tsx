@@ -1,4 +1,5 @@
 import type { Page } from "../lib/routes"
+import { HEATING_TIPS } from "../data/heatingTips"
 import PageHero from "../components/PageHero"
 import PageLink from "../components/PageLink"
 import NotFoundPage from "./NotFoundPage"
@@ -54,7 +55,8 @@ export default function ServiceCityPage({
   const estimator = estimatorServiceFor(service.slug)
   const tips = city.traits.slice(0, 4).map((id) => {
     const trait = TRAITS[id]
-    return { id, title: pick(trait.title), text: pick(trait.tips[local.group] ?? trait.text) }
+    const tip = local.group === "heating" ? HEATING_TIPS[id] : trait.tips[local.group]
+    return { id, title: pick(trait.title), text: pick(tip ?? trait.text) }
   })
   const faq = serviceCityFaq(city, service.slug, lang, t, { calculator: Boolean(estimator) })
   const steps = [
@@ -78,6 +80,7 @@ export default function ServiceCityPage({
         title={withCity(pick(local.title), city.name)}
         lead={city.districts.length > 0 ? t("sc_lead", vars) : t("sc_meta_desc_short", vars)}
         image={service.image}
+        imageCaption={service.illustration ? t("image_impression") : undefined}
       >
         <button type="button" className="btn btn-primary btn-lg" onClick={() => scrollToQuote()}>
           {t("cta_btn")}
@@ -106,6 +109,7 @@ export default function ServiceCityPage({
                   </li>
                 ))}
               </ul>
+              {service.noteKey && <p className="service-scope-note"><Icon name="info" size={18} /><span>{t(service.noteKey)}</span></p>}
             </section>
 
             <section className="card p-6 md:p-8" aria-labelledby="sc-tips-title">

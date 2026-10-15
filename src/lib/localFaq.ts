@@ -22,6 +22,7 @@ export function cityFaq(city: City, t: Translate): FaqItem[] {
     { q: t("city_faq_2_q", vars), a: t("city_faq_2_a", vars) },
     { q: t("city_faq_3_q", vars), a: t("city_faq_3_a", vars) },
     { q: t("city_faq_4_q", vars), a: t("city_faq_4_a", vars) },
+    { q: t("faq_1_q"), a: t("faq_1_a") },
   ]
 }
 
@@ -44,6 +45,7 @@ export function serviceCityFaq(
   }
 
   const items: FaqItem[] = [
+    { q: t("faq_1_q"), a: t("faq_1_a") },
     {
       q: t("sc_faq_cost_q", vars),
       a: calculator ? `${t("sc_faq_cost_a", vars)} ${t("sc_faq_cost_a_calc", vars)}` : t("sc_faq_cost_a", vars),

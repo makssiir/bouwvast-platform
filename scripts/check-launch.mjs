@@ -18,6 +18,7 @@ const { LEGAL } = await import("../src/data/legal.ts")
 const { SERVICE_PRICES, ESTIMATOR } = await import("../src/data/pricing.ts")
 const { PROJECTS } = await import("../src/data/projects.ts")
 const { CITIES } = await import("../src/data/cities.ts")
+const { HEAT_PUMP_SCOPE } = await import("../src/data/services.ts")
 const { loadConfig, notifierConfigured } = await import("../server/config.mjs")
 
 const errors = []
@@ -46,6 +47,8 @@ if (!ESTIMATOR.ratesChecked)
   errors.push(
     "Calculator rates are unchecked (ESTIMATOR in src/data/pricing.ts): compare them with the real price list, then set ratesChecked: true.",
   )
+if (!HEAT_PUMP_SCOPE.reviewed || !HEAT_PUMP_SCOPE.source.trim())
+  errors.push("Heat-pump scope/certification is unreviewed: confirm permitted work and the qualified specialist, then record evidence in HEAT_PUMP_SCOPE (src/data/services.ts).")
 if (CLAIMS.projects.enabled && PROJECTS.length === 0)
   warnings.push("CLAIMS.projects is enabled but PROJECTS is empty: the project sections stay hidden.")
 if (!CLAIMS.projects.enabled || !PROJECTS.some((p) => p.beforeImage))

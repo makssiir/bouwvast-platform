@@ -19,6 +19,14 @@ export default defineConfig(({ mode }) => {
       minify: !emitSourcemaps,
       // Never inline assets as data: URIs; the server's CSP only allows 'self'.
       assetsInlineLimit: 0,
+      // Keep the stable React runtime cacheable when service copy changes.
+      rolldownOptions: {
+        output: {
+          codeSplitting: {
+            groups: [{ name: "react-vendor", test: /[\\/]node_modules[\\/](?:react|react-dom|scheduler)[\\/]/ }],
+          },
+        },
+      },
     },
     plugins: [
       react(),

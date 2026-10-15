@@ -362,6 +362,25 @@ export default function QuoteForm({
             <Icon name="arrow-right" size={17} />
           </button>
         </div>
+        <details className="quote-more-services">
+          <summary>{t("quote_more_services")}</summary>
+          <div className="project-choices">
+            {SERVICES.filter((service) => !options.includes(service)).map((service) => (
+              <button
+                type="button"
+                key={service.slug}
+                className="project-choice"
+                data-service={service.slug}
+                aria-pressed={form.service === service.slug}
+                onClick={() => choose(service.slug)}
+              >
+                <span className="project-choice-icon"><Icon name={service.icon} size={22} /></span>
+                <span>{t(service.nameKey)}</span>
+                <Icon name="arrow-right" size={17} />
+              </button>
+            ))}
+          </div>
+        </details>
         {choiceError && <p role="alert" className="field-error">{t("quote_choose_error")}</p>}
         <p className="quote-safe-note"><Icon name="check" size={16} />{t("quote_project_first")}</p>
       </div>
@@ -533,6 +552,7 @@ export default function QuoteForm({
       {step === 3 && (
         <>
           <p className="quote-safe-note"><Icon name="check" size={16} />{t("quote_no_commitment")}</p>
+          <p className="quote-vat-note">{t("quote_vat_note")}</p>
           <p className="m-0 text-center text-sm text-subtle">
             {t("form_privacy")}{" "}
             <a href={hrefForPage("privacy")} className="text-subtle underline hover:text-ink">

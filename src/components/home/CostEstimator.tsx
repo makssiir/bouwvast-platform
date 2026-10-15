@@ -361,6 +361,7 @@ export default function CostEstimator({
               </span>
               <span>{euro(range.max)}</span>
             </p>
+            <p className="estimator-vat-basis">{t("est_vat_basis")}</p>
             <p className="estimator-per-unit">{t("est_per_unit", { min: euro(perMin), max: euro(perMax) })}</p>
             <p className="sr-only" aria-live="polite">
               {announced}
@@ -398,6 +399,10 @@ export default function CostEstimator({
               <span>{applied ? t("est_applied") : t("est_apply_note")}</span>
             </p>
             <p className="estimator-disclaimer">{t("est_disclaimer")}</p>
+            <details className="estimator-vat">
+              <summary>{t("vat_details_title")}</summary>
+              <p>{t("vat_estimator_note")}</p>
+            </details>
           </aside>
         </div>
 

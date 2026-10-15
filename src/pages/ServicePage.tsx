@@ -38,6 +38,7 @@ export default function ServicePage({ slug, navigate }: { slug: string; navigate
         title={name + t("service_hero_suffix")}
         lead={t(service.introKey)}
         image={service.image}
+        imageCaption={service.illustration ? t("image_impression") : undefined}
       >
         <button type="button" className="btn btn-primary btn-lg" onClick={() => scrollToQuote()}>
           {t("cta_btn")}
@@ -68,6 +69,7 @@ export default function ServicePage({ slug, navigate }: { slug: string; navigate
                   </li>
                 ))}
               </ul>
+              {service.noteKey && <p className="service-scope-note"><Icon name="info" size={18} /><span>{t(service.noteKey)}</span></p>}
             </section>
 
             <section className="card p-6 md:p-8" aria-labelledby="process-title">

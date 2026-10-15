@@ -15,21 +15,21 @@ export const ARTICLES: Article[] = [
   {
     slug: "verbouwing-kosten-gids-2026",
     title:
-      "Wat kost een verbouwing in 2026? Complete richtprijzen & bespaartips",
+      "Wat kost een verbouwing? Zo leest u een gespecificeerde offerte",
     excerpt:
-      "Een helder overzicht van de gemiddelde kosten per m², uurtarieven van vakmensen, en hoe u onverwachte meerkosten voorkomt.",
+      "Welke kosten horen in een offerte en hoe herkent u of btw is inbegrepen? Een praktische gids voor uw verbouwbudget.",
     category: "Kosten & budget",
     readTime: "5 min leestijd",
     date: "Februari 2026",
     image: "/images/kitchen-renovation.webp",
     content: [
       "Bij het plannen van een verbouwing is een realistische begroting essentieel. De kosten van een verbouwing hangen af van het type werk, de oppervlakte, de staat van de woning en het gekozen afwerkingsniveau.",
-      "Voor een gemiddelde woningrenovatie moet u rekening houden met een richtbedrag tussen de €600 en €1.200 per m² voor een standaard renovatie, en €1.200 tot €2.000+ per m² voor een complete hoogwaardige turn-key verbouwing.",
-      "Vakmensen hanteren in 2026 gemiddelde uurtarieven tussen de €50 en €70 exclusief btw, afhankelijk van de specialisatie (loodgieters en elektriciens zitten vaak aan de bovenkant, schilders en tegelzetters werken vaak met m²-prijzen).",
-      "Tip van Huisklusdienst: Vraag altijd een gespecificeerde offerte waarin arbeid, materialen, afvalafvoer en eventuele voorrijkosten duidelijk gescheiden zijn.",
+      "Vraag om een uitsplitsing van arbeid, materialen, demontage, afvalafvoer en eventuele voorrijkosten. In de onderbouwing kunnen bedragen exclusief btw staan, met de btw en het totaal inclusief btw apart vermeld.",
+      "Prijzen voor particulieren op deze site zijn inclusief btw. Bij zakelijke offertes staan bedragen doorgaans exclusief btw; de offerte vermeldt dat expliciet. Tarieven en mogelijke uitzonderingen moeten per aanvraag worden bevestigd.",
+      "Tip van Huisklusdienst: vergelijk de totale prijs inclusief btw én wat er is inbegrepen. Een laag nettobedrag zegt weinig als materialen, afvoer of noodzakelijke bijkomende kosten ontbreken.",
     ],
     tips: [
-      "Reserveer minimaal 10-15% van uw totale budget voor onvoorziene kosten.",
+      "Spreek af hoe onvoorziene werkzaamheden worden gemeld, begroot en goedgekeurd.",
       "Combineer werkzaamheden (zoals leidingwerk en stucwerk) om voorrijkosten te drukken.",
       "Check of u recht heeft op het lage 9% btw-tarief op schilder- en stucwerk voor woningen ouder dan 2 jaar.",
     ],
@@ -84,22 +84,21 @@ export const ARTICLES: Article[] = [
     title:
       "9% btw op verbouwing: voor welke werkzaamheden geldt het lage tarief?",
     excerpt:
-      "Bespaar honderden tot duizenden euro's op uw verbouwing dankzij het verlaagde btw-tarief op schilderen, stukadoren en isoleren.",
+      "Het btw-tarief hangt af van de werkzaamheden en de voorwaarden. Laat de juiste behandeling per onderdeel bevestigen.",
     category: "Regelgeving & subsidie",
     readTime: "4 min leestijd",
     date: "Januari 2026",
     image: "/images/tools-detail.webp",
     content: [
-      "Wanneer uw woning ouder is dan 2 jaar na eerste ingebruikname, profiteert u voor bepaalde werkzaamheden van het lage btw-tarief van 9% in plaats van 21%.",
-      "Voor welke werkzaamheden geldt 9% btw?",
-      "• Binnen- en buitenschilderwerk aan de woning.",
-      "• Stucwerk en wandafwerking door een professionele stukadoor.",
-      "• Aanbrengen van isolatiematerialen aan vloeren, gevels en daken.",
-      "Voor andere werkzaamheden (zoals timmerwerk, loodgieterswerk, sanitair levering en complete uitbouwen) geldt het standaard 21% tarief op arbeid en materialen.",
+      "Voor bepaald schilder- en stucwerk aan woningen ouder dan 2 jaar kan het verlaagde btw-tarief van 9% gelden. Dat betekent niet dat een volledige verbouwing automatisch onder het lage tarief valt.",
+      "Laat per onderdeel controleren welke voorwaarden gelden en welk tarief van toepassing is. Arbeid, levering van materialen en andere werkzaamheden kunnen verschillend worden behandeld.",
+      "Een gespecificeerde offerte vermeldt bedragen zonder btw, de btw per toepasselijk tarief en het totaal inclusief btw. Voor consumenten moet de totale prijs duidelijk zijn.",
+      "Voor zakelijke opdrachten kunnen aanvullende regels gelden, zoals btw-verlegging. Pas dit niet automatisch toe: laat de behandeling voor de concrete opdracht bevestigen.",
+      "De calculator op deze site geeft een indicatieve totaalprijs inclusief btw, geen fiscale berekening of bindende offerte. Een eventuele afwijkende behandeling wordt in de definitieve offerte verwerkt.",
     ],
     tips: [
       "Laat de leeftijd van uw woning vooraf vastleggen in de offerte en factuur.",
-      "Informeer bij uw gemeente naar aanvullende ISDE-subsidies voor isolatie en verduurzaming.",
+      "Controleer actuele voorwaarden bij de Belastingdienst en bespreek uitzonderingen vóór akkoord op de offerte.",
     ],
     relatedServiceSlug: "schilderwerk",
   },

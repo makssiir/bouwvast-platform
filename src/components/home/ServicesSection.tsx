@@ -39,6 +39,7 @@ export default function ServicesSection({ navigate }: { navigate: (p: Page) => v
               >
                 <div className="service-card-media">
                   <img src={service.image} alt="" {...imageSize(service.image)} loading="lazy" decoding="async" />
+                  {service.illustration && <span className="service-card-impression">{t("image_impression")}</span>}
                   {price(service.slug) && <span className="service-card-price">{price(service.slug)}</span>}
                 </div>
                 <div className="service-card-body">

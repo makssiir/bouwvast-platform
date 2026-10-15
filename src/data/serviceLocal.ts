@@ -16,6 +16,30 @@ export interface ServiceLocal {
 }
 
 export const SERVICE_LOCAL: Record<string, ServiceLocal> = {
+  warmtepompen: {
+    group: "heating",
+    priority: 0.8,
+    title: { nl: "Warmtepomp installatie en service in {city}", en: "Heat pump installation and servicing in {city}", uk: "Теплові насоси: встановлення та сервіс у {city}", ru: "Тепловые насосы: установка и сервис в {city}" },
+    noun: { nl: "een warmtepomp installeren of onderhouden", en: "heat pump installation or servicing", uk: "встановлення чи обслуговування теплового насоса", ru: "установка или обслуживание теплового насоса" },
+  },
+  vloerverwarming: {
+    group: "heating",
+    priority: 0.75,
+    title: { nl: "Vloerverwarming in {city}", en: "Underfloor heating in {city}", uk: "Тепла підлога у {city}", ru: "Тёплый пол в {city}" },
+    noun: { nl: "vloerverwarming", en: "underfloor heating", uk: "тепла підлога", ru: "тёплый пол" },
+  },
+  verwarming: {
+    group: "heating",
+    priority: 0.7,
+    title: { nl: "Verwarming en radiatoren in {city}", en: "Heating and radiators in {city}", uk: "Опалення та радіатори у {city}", ru: "Отопление и радиаторы в {city}" },
+    noun: { nl: "werk aan uw verwarming", en: "heating system work", uk: "роботи із системою опалення", ru: "работы с системой отопления" },
+  },
+  "demontage-ramen-deuren": {
+    group: "outside",
+    priority: 0.6,
+    title: { nl: "Ramen en deuren demonteren in {city}", en: "Window and door removal in {city}", uk: "Демонтаж вікон і дверей у {city}", ru: "Демонтаж окон и дверей в {city}" },
+    noun: { nl: "ramen of deuren demonteren", en: "window or door removal", uk: "демонтаж вікон чи дверей", ru: "демонтаж окон или дверей" },
+  },
   renovatie: {
     group: "build",
     priority: 0.8,

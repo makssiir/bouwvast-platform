@@ -12,6 +12,7 @@ export default function PageHero({
   lead,
   image,
   imageAlt = "",
+  imageCaption,
   children,
 }: {
   navigate: (p: Page) => void
@@ -21,6 +22,7 @@ export default function PageHero({
   lead?: ReactNode
   image?: string
   imageAlt?: string
+  imageCaption?: string
   /** Optional actions shown under the lead. */
   children?: ReactNode
 }) {
@@ -37,6 +39,7 @@ export default function PageHero({
         {image && (
           <figure className="page-hero-media">
             <img src={image} alt={imageAlt} {...imageSize(image)} decoding="async" fetchPriority="high" />
+            {imageCaption && <figcaption className="page-hero-caption">{imageCaption}</figcaption>}
           </figure>
         )}
       </div>

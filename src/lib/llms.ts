@@ -84,6 +84,7 @@ export function llmsFullTxt(origin: string): string {
     out.push(`### ${t(service.nameKey)}`, "", `URL: ${link({ type: "service", slug: service.slug })}`, "")
     out.push(t(service.introKey), "", "Wat valt hieronder:")
     for (const key of service.includesKeys) out.push(`- ${t(key)}`)
+    if (service.noteKey) out.push("", t(service.noteKey))
     out.push("")
   }
 

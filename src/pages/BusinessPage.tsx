@@ -139,6 +139,13 @@ export default function BusinessPage({ navigate }: { navigate: (page: Page) => v
               ))}
             </ol>
           </div>
+          <aside className="business-vat-note" aria-labelledby="business-vat-title">
+            <Icon name="info" size={22} />
+            <div>
+              <h3 id="business-vat-title">{t("vat_business_title")}</h3>
+              <p>{t("vat_business_note")}</p>
+            </div>
+          </aside>
         </div>
       </section>
 

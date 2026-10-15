@@ -32,7 +32,7 @@ actual Dutch registration, policy, certificate or warranty first.
 
 | Switch | Shows | Evidence needed |
 | --- | --- | --- |
-| `pricing` | "Vanaf" prices on service cards | Real price list in `SERVICE_PRICES`, `src/data/pricing.ts` (incl./excl. btw) **(gate)** |
+| `pricing` | "Vanaf" prices on service cards | Real price list in `SERVICE_PRICES`, `src/data/pricing.ts`; consumer prices incl. btw **(gate)** |
 | `projects` | `/projecten` gallery; real photos in the before/after slider | Entries in `src/data/projects.ts`: own photos (`beforeImage` for the slider), client permission, town-level location only |
 | `reviews` | Ratings/testimonials | Linkable review platform; no copied or invented quotes |
 | `stats`, `team`, `warranty`, `responseTime`, `freeSurvey`, `certification` | Respective statements | Certificate, warranty terms, staffing that makes the promise true |
@@ -50,6 +50,17 @@ actual Dutch registration, policy, certificate or warranty first.
   copied from the original site and are unchecked. Compare them with the real
   price list, then set `ratesChecked: true` **(gate)**. The result is always
   shown as an indication incl. btw, never as a quote.
+- **VAT wording**: confirm rates per enquiry. Itemise net amounts, VAT by
+  applicable rate and the gross total. Public consumer totals include VAT;
+  business net amounts must explicitly say excl. btw. Do not add a uniform
+  VAT percentage to every job or treat reverse charging as automatic.
+- **Heat-pump scope and qualifications**: confirm the actual permitted work,
+  certificates and any specialist arrangement. Set `HEAT_PUMP_SCOPE.reviewed`
+  and record evidence in `source` in `src/data/services.ts` **(gate)**.
+  Heating copy does not imply gas-appliance or refrigerant authorisation.
+- **Hero image**: AI-generated interior and craftsperson, explicitly labelled
+  as an illustration, not the company's team or completed project. Replace
+  with genuine permitted photography when available.
 - **Before/after slider**: shows AI illustrations labelled "Impressie"
   (`src/data/impressions.ts`) until `projects` is on and projects have a
   `beforeImage`. The caption explicitly says they are not completed
