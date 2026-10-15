@@ -20,6 +20,10 @@ export const PHOTO_TYPES = ["image/jpeg", "image/png", "image/webp"] as const
 
 export type LeadField = "name" | "phone" | "email" | "city" | "description" | "photos"
 
+/** How the visitor would like to be contacted. */
+export const CONTACT_PREFERENCES = ["phone", "whatsapp", "email"] as const
+export type ContactPreference = (typeof CONTACT_PREFERENCES)[number]
+
 export interface LeadInput {
   id: string
   name: string
@@ -27,7 +31,10 @@ export interface LeadInput {
   email: string
   city: string
   service: string
+  /** Optional when a service was chosen; otherwise the only clue what the job is. */
   description: string
+  /** Missing means "no preference" (the quote form does not ask). */
+  contactPreference?: ContactPreference
   /** Estimator summary, if the visitor attached one. */
   estimate: string
   language: string
@@ -84,6 +91,9 @@ export function validateLead(raw: Record<string, unknown>): ValidationResult {
     city: text(raw.city).replace(/\s+/g, " "),
     service: text(raw.service).slice(0, LEAD_LIMITS.service.max),
     description: text(raw.description),
+    contactPreference: (CONTACT_PREFERENCES as readonly string[]).includes(text(raw.contactPreference))
+      ? (text(raw.contactPreference) as ContactPreference)
+      : undefined,
     estimate: text(raw.estimate).slice(0, LEAD_LIMITS.estimate.max),
     language: text(raw.language).slice(0, 5) || "nl",
     sourcePage: text(raw.sourcePage).slice(0, LEAD_LIMITS.sourcePage.max),
@@ -104,13 +114,18 @@ export function validateLead(raw: Record<string, unknown>): ValidationResult {
   if (!UUID.test(lead.id)) errors.id = "invalid"
   range("name", lead.name, LEAD_LIMITS.name.min, LEAD_LIMITS.name.max)
   range("city", lead.city, LEAD_LIMITS.city.min, LEAD_LIMITS.city.max)
-  range("description", lead.description, LEAD_LIMITS.description.min, LEAD_LIMITS.description.max)
+  // A chosen service says what the job is; without one the description must.
+  if (lead.description || !lead.service) {
+    range("description", lead.description, LEAD_LIMITS.description.min, LEAD_LIMITS.description.max)
+  }
 
   if (!lead.phone) errors.phone = "required"
   else if (lead.phone.length > LEAD_LIMITS.phone.max || !isPlausiblePhone(lead.phone)) errors.phone = "invalid"
 
   if (lead.email && (lead.email.length > LEAD_LIMITS.email.max || !EMAIL.test(lead.email))) {
     errors.email = "invalid"
+  } else if (!lead.email && lead.contactPreference === "email") {
+    errors.email = "required"
   }
 
   return { ok: Object.keys(errors).length === 0, errors, lead }

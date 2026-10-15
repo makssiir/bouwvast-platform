@@ -10,7 +10,7 @@ import { readPreference, writePreference } from "../lib/storage"
  */
 export const DEFAULT_LANG: Lang = "nl"
 export const SUPPORTED_LANGS: Lang[] = ["nl", "en", "uk", "ru"]
-const STORAGE_KEY = "bouwvast.lang"
+const STORAGE_KEY = "huisklusdienst.lang"
 
 export type Localized<T> = { nl: T } & Partial<Record<Lang, T>>
 

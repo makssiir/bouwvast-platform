@@ -8,7 +8,6 @@ import ContactPage from "./pages/ContactPage"
 import BusinessPage from "./pages/BusinessPage"
 import KennisbankPage from "./pages/KennisbankPage"
 import ArticlePage from "./pages/ArticlePage"
-import CityPage from "./pages/CityPage"
 import ServicePage from "./pages/ServicePage"
 import { PrivacyPage, TermsPage } from "./pages/LegalPages"
 import NotFoundPage from "./pages/NotFoundPage"
@@ -19,6 +18,7 @@ import { useLang } from "./i18n/LangContext"
 import Icon from "./components/Icon"
 import { CONTACT, phoneHref, whatsappHref } from "./data/contact"
 import { applyPageMeta } from "./lib/head"
+import { loadLocalPages, loadedLocalPages, needsLocalPages } from "./lib/localPages"
 import { QuoteDraftProvider, scrollToQuote } from "./lib/quoteDraft"
 import {
   hrefForPage,
@@ -34,6 +34,7 @@ export type { Page }
 
 export default function App({ initialPage }: { initialPage?: Page } = {}) {
   const [page, navigate] = useRouter(initialPage)
+  const local = useLocalPages(page)
   const [menuOpen, setMenuOpen] = useState(false)
   const { t, lang } = useLang()
   const mainRef = useRef<HTMLElement>(null)
@@ -110,7 +111,10 @@ export default function App({ initialPage }: { initialPage?: Page } = {}) {
               <ArticlePage slug={page.slug} navigate={navigate} />
             )}
             {typeof page === "object" && page.type === "city" && (
-              <CityPage city={page.city} navigate={navigate} />
+              local ? <local.CityPage city={page.city} navigate={navigate} /> : <PageLoading />
+            )}
+            {typeof page === "object" && page.type === "serviceCity" && (
+              local ? <local.ServiceCityPage slug={page.slug} city={page.city} navigate={navigate} /> : <PageLoading />
             )}
           </main>
         </div>
@@ -236,4 +240,30 @@ function MobileContactBar({
       </div>
     </div>
   )
+}
+
+/**
+ * The place pages come in their own chunk. The first page is loaded before
+ * hydration (main.tsx, entry-server.tsx); after an in-app navigation the
+ * chunk is fetched here. If that fails, a full page load gets the
+ * prerendered HTML instead.
+ */
+function useLocalPages(page: Page) {
+  const [local, setLocal] = useState(loadedLocalPages)
+  useEffect(() => {
+    if (local || !needsLocalPages(page)) return
+    let alive = true
+    loadLocalPages().then(
+      (module) => alive && setLocal(() => module),
+      () => alive && window.location.reload(),
+    )
+    return () => {
+      alive = false
+    }
+  }, [page, local])
+  return local
+}
+
+function PageLoading() {
+  return <div className="container section min-h-[60vh]" aria-busy="true" />
 }

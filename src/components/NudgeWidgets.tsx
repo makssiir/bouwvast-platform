@@ -6,7 +6,7 @@ import { track } from "../lib/analytics"
 import Icon from "./Icon"
 import { LogoMark } from "./Logo"
 
-const SEEN_KEY = "bv-nudge-seen"
+const SEEN_KEY = "hk-nudge-seen"
 /** Time on the site before the pop-up may appear. */
 const FIRST_DELAY_MS = 9000
 /** When the visitor is busy (typing, in a widget, reading the form), try again later. */

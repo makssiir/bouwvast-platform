@@ -95,9 +95,9 @@ export default function Header({
           to="home"
           navigate={navigate}
           className="brand no-underline"
-          ariaLabel={`Bouwvast — ${t("nav_home")}`}
+          ariaLabel={`Huisklusdienst — ${t("nav_home")}`}
         >
-          <Logo />
+          <Logo compact />
         </PageLink>
 
         <nav

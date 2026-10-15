@@ -37,7 +37,7 @@ const freePort = () =>
   })
 
 const port = await freePort()
-const dataDir = await mkdtemp(join(tmpdir(), "bouwvast-browser-"))
+const dataDir = await mkdtemp(join(tmpdir(), "huisklusdienst-browser-"))
 const server = spawn(process.execPath, ["server/index.mjs"], {
   cwd: root,
   env: { ...process.env, PORT: String(port), HOST: "127.0.0.1", DATA_DIR: dataDir, SITE_ORIGIN: "", LEAD_RATE_LIMIT_MAX: "50" },
@@ -100,7 +100,7 @@ try {
     const ctx = await browser.newContext()
     const page = await ctx.newPage()
     const problems = watch(page)
-    for (const path of ["/", "/diensten/", "/diensten/renovatie/", "/projecten/", "/werkgebied/", "/werkgebied/amersfoort/", "/contact/", "/zakelijk/", "/kennisbank/", "/kennisbank/badkamer-renoveren-stappenplan/", "/privacy/", "/voorwaarden/"]) {
+    for (const path of ["/", "/diensten/", "/diensten/renovatie/", "/projecten/", "/werkgebied/", "/werkgebied/amersfoort/", "/werkgebied/amsterdam/loodgieter/", "/werkgebied/soest/", "/contact/", "/zakelijk/", "/kennisbank/", "/kennisbank/badkamer-renoveren-stappenplan/", "/privacy/", "/voorwaarden/"]) {
       const response = await page.goto(base + path)
       await page.waitForLoadState("networkidle")
       check(`${path} answers 200`, response?.status() === 200, String(response?.status()))
@@ -125,6 +125,17 @@ try {
     await page.goBack()
     await page.waitForFunction(() => location.pathname === "/werkgebied/amersfoort/")
     check("back button restores the page", /Amersfoort/.test((await page.locator("h1").textContent()) ?? ""))
+    // Place pages come in their own chunk: it must load on an in-app navigation too.
+    await page.goto(`${base}/werkgebied/`)
+    await page.waitForLoadState("networkidle")
+    await page.locator("main a[href='/werkgebied/amsterdam/']").first().click()
+    await page.waitForFunction(() => location.pathname === "/werkgebied/amsterdam/")
+    await page.locator("h1", { hasText: "Amsterdam" }).waitFor({ timeout: 5000 }).catch(() => {})
+    check("in-app navigation renders a place page", /Klusbedrijf in Amsterdam/.test((await page.locator("h1").textContent()) ?? ""))
+    await page.locator("main a[href='/werkgebied/amsterdam/loodgieter/']").first().click()
+    await page.waitForFunction(() => location.pathname === "/werkgebied/amsterdam/loodgieter/")
+    check("place page links to the service in that place", /Loodgieter in Amsterdam/.test((await page.locator("h1").textContent()) ?? ""))
+    check("title follows to the service × place page", (await page.title()).startsWith("Loodgieter in Amsterdam"), await page.title())
     await page.goto(`${base}/kennisbank/`)
     await page.locator("main a[href^='/kennisbank/']").first().click()
     await page.waitForFunction(() => /^\/kennisbank\/.+\/$/.test(location.pathname))
@@ -162,7 +173,7 @@ try {
     await form.locator('input[autocomplete="tel"]').fill("06 12345678")
     await form.locator('input[autocomplete="address-level2"]').fill("Leusden")
     await form.locator('button[type="submit"]').click()
-    const status = page.locator('[role="status"]', { hasText: /BV-\d{6}-/ })
+    const status = page.locator('[role="status"]', { hasText: /HK-\d{6}-/ })
     await status.waitFor({ timeout: 10_000 }).catch(() => {})
     check("success shows the server's reference", (await status.count()) > 0)
     const stored = await readdir(join(dataDir, "leads")).catch(() => [])
@@ -238,7 +249,7 @@ try {
     // The pop-up has its own checks below; keep it out of the way here.
     await ctx.addInitScript(() => {
       try {
-        sessionStorage.setItem("bv-nudge-seen", "1")
+        sessionStorage.setItem("hk-nudge-seen", "1")
       } catch {}
     })
     const page = await ctx.newPage()
@@ -273,37 +284,67 @@ try {
 
     const areaCheck = page.locator("#werkgebied-check")
     const input = areaCheck.getByRole("textbox")
-    const result = areaCheck.locator('[data-testid="area-result"]')
-    await input.fill("3811")
+    const dialog = page.locator('[data-testid="area-dialog"]')
+    await input.fill("??")
+    await areaCheck.getByRole("button", { name: "Verder" }).click()
+    check("area checker: nonsense input is flagged", (await input.getAttribute("aria-invalid")) === "true")
+    check("area checker: nonsense input opens nothing", (await dialog.count()) === 0)
+
+    await input.fill("3811ab")
     await input.press("Enter")
-    check(
-      "area checker: 3811 is in the service area (Amersfoort)",
-      (await result.getAttribute("data-status")) === "covered" && /Amersfoort/.test((await result.textContent()) ?? ""),
-    )
-    await result.getByRole("button", { name: /Offerte aanvragen/ }).click()
-    const cityField = page.locator('#quote input[autocomplete="address-level2"]')
-    await page
-      .waitForFunction(
-        () => /Amersfoort/.test(document.querySelector('#quote input[autocomplete="address-level2"]')?.value ?? ""),
-        null,
-        { timeout: 3000 },
-      )
-      .catch(() => {})
-    check("area checker: the place is pre-filled in the form", /Amersfoort/.test(await cityField.inputValue()), await cityField.inputValue())
+    await dialog.waitFor({ timeout: 3000 }).catch(() => {})
+    check("area checker: a postcode opens the lead dialog", await dialog.isVisible())
+    check("area dialog: is a modal dialog", (await dialog.getAttribute("role")) === "dialog" && (await dialog.getAttribute("aria-modal")) === "true")
+    check("area dialog: never claims the place is covered", /persoonlijk/.test((await dialog.textContent()) ?? ""))
+    const placeField = dialog.locator('input[autocomplete="postal-code"]')
+    check("area dialog: the postcode is pre-filled and tidied", (await placeField.inputValue()) === "3811 AB", await placeField.inputValue())
+    check("area dialog: focus moves into the dialog", await dialog.evaluate((node) => node.contains(document.activeElement)))
+    await page.keyboard.press("Escape")
+    check("area dialog: Escape closes it", (await dialog.count()) === 0)
+
     await input.fill("9711")
     await input.press("Enter")
-    check("area checker: an unknown postcode gets 'we check', not 'no'", (await result.getAttribute("data-status")) === "unknown")
-    await input.fill("??")
-    await areaCheck.getByRole("button", { name: "Controleer" }).click()
-    check("area checker: nonsense input is flagged", (await input.getAttribute("aria-invalid")) === "true")
-    await areaCheck.getByRole("button", { name: /Utrecht \(3511\)/ }).click()
-    check("area checker: quick picks work", /Utrecht/.test((await result.textContent()) ?? ""))
+    await dialog.waitFor({ timeout: 3000 }).catch(() => {})
+    await dialog.getByRole("button", { name: "Klus doorgeven" }).click()
+    check("area dialog: asks what the job is", (await dialog.getByText("Kies een klus of beschrijf kort").count()) > 0)
+    check("area dialog: name and phone are required", (await dialog.locator('[aria-invalid="true"]').count()) >= 3)
+    await dialog.getByText("Loodgieter", { exact: true }).click()
+    check("area dialog: a chosen job makes the description optional", (await dialog.getByText("Kies een klus of beschrijf kort").count()) === 0)
+    await dialog.locator('input[autocomplete="name"]').fill("Dialoog Test")
+    await dialog.locator('input[autocomplete="tel"]').fill("06 12345678")
+    await dialog.getByText("E-mail", { exact: true }).click()
+    await dialog.getByRole("button", { name: "Klus doorgeven" }).click()
+    check("area dialog: asks for an email address when contact is by email", (await dialog.locator('input[type="email"][aria-invalid="true"]').count()) === 1)
+    await dialog.getByText("WhatsApp", { exact: true }).click()
+    await dialog.getByRole("button", { name: "Klus doorgeven" }).click()
+    const done = dialog.locator('[data-testid="area-lead-success"]')
+    await done.waitFor({ timeout: 10_000 }).catch(() => {})
+    check("area dialog: a job, name and phone are enough", /HK-\d{6}-/.test((await done.textContent()) ?? ""))
+    let quick = null
+    for (const id of await readdir(join(dataDir, "leads")).catch(() => [])) {
+      const record = JSON.parse(await readFile(join(dataDir, "leads", id, "lead.json"), "utf8").catch(() => "{}"))
+      if (record.lead?.name === "Dialoog Test") quick = record.lead
+    }
+    check(
+      "area dialog: the lead arrives with job, place, preference and source",
+      quick?.service === "Loodgieter" &&
+        quick?.city === "9711" &&
+        quick?.contactPreference === "whatsapp" &&
+        quick?.sourcePage === "area-check:home",
+      JSON.stringify(quick),
+    )
+    await done.getByRole("button", { name: "Sluiten" }).click()
+    check("area dialog: closes after sending", (await dialog.count()) === 0)
+    check(
+      "area checker: the place is also offered to the quote form",
+      (await page.locator('#quote input[autocomplete="address-level2"]').inputValue()) === "9711",
+    )
 
     const quote = page.locator("#quote form")
     await quote.locator('input[autocomplete="name"]').fill("Widget Test")
     await quote.locator('input[autocomplete="tel"]').fill("06 12345678")
     await quote.locator('button[type="submit"]').click()
-    const status = page.locator('[role="status"]', { hasText: /BV-\d{6}-/ })
+    const status = page.locator('[role="status"]', { hasText: /HK-\d{6}-/ })
     await status.waitFor({ timeout: 10_000 }).catch(() => {})
     const ids = await readdir(join(dataDir, "leads")).catch(() => [])
     let estimate = ""

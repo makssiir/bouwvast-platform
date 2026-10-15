@@ -5,7 +5,7 @@ import type { TranslationKey } from "../i18n/translations"
  * "Vanaf"-prices shown on service cards when CLAIMS.pricing is enabled.
  *
  * Empty on purpose: the prototype's rates were placeholders. Fill in only
- * rates Bouwvast actually charges, stating whether they include VAT, e.g.
+ * rates Huisklusdienst actually charges, stating whether they include VAT, e.g.
  *   afbouw: { nl: "Vanaf €45/m² incl. btw", en: "From €45/m² incl. VAT" },
  */
 export const SERVICE_PRICES: Record<string, Localized<string>> = {}
@@ -108,7 +108,7 @@ const ESTIMATOR_SERVICES: EstimatorService[] = [
  * Everything behind "Bereken direct uw richtprijs".
  *
  * The rates were carried over from the original site and have NOT been
- * checked against Bouwvast's own price list yet. The calculator always
+ * checked against Huisklusdienst's own price list yet. The calculator always
  * presents its result as an indication incl. btw ("geen offerte"), but check
  * the numbers and then set `ratesChecked: true`: until then every build
  * prints a reminder and `npm run check:launch` refuses a launch.

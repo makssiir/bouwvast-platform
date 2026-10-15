@@ -101,7 +101,7 @@ async function main() {
   maintenance()
 
   server.listen(config.port, config.host, () => {
-    log.info(`Bouwvast listening on http://${config.host}:${config.port} (serving ${config.distDir})`)
+    log.info(`Huisklusdienst listening on http://${config.host}:${config.port} (serving ${config.distDir})`)
   })
 
   const shutdown = () => {

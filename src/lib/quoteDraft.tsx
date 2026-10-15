@@ -66,6 +66,10 @@ export function scrollToQuote(): boolean {
   const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
   el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" })
   const field = el.querySelector<HTMLElement>("textarea, input:not([type=hidden])")
-  window.setTimeout(() => field?.focus({ preventScroll: true }), reduce ? 0 : 400)
+  window.setTimeout(() => {
+    // Never pull focus out of a dialog that opened in the meantime.
+    if (document.querySelector('[aria-modal="true"]')) return
+    field?.focus({ preventScroll: true })
+  }, reduce ? 0 : 400)
   return true
 }

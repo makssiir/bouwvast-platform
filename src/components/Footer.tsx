@@ -1,32 +1,21 @@
-import { useState } from "react"
 import type { Page } from "../App"
 import PageLink from "./PageLink"
 import { Logo } from "./Logo"
 import { CONTACT, emailHref, googleMapsHref, phoneHref } from "../data/contact"
-import { CITIES } from "../data/cities"
+import { MAJOR_CITIES } from "../data/cities"
+import { SERVICES } from "../data/services"
 import { useLang } from "../i18n/LangContext"
 import Icon from "./Icon"
-import type { TranslationKey } from "../i18n/translations"
 
-const FOOTER_SERVICES: { slug: string; key: TranslationKey }[] = [
-  { slug: "renovatie", key: "svc_renovation" },
-  { slug: "badkamer-keuken", key: "svc_bathroom" },
-  { slug: "afbouw", key: "svc_finishing" },
-  { slug: "schilderwerk", key: "svc_painting" },
-  { slug: "gevel-buitenwerk", key: "svc_facade" },
-  { slug: "montage", key: "svc_assembly" },
-  { slug: "loodgieter", key: "svc_plumber" },
-  { slug: "onderhoud-reparatie", key: "svc_maintenance" },
-]
+/** The larger jobs first, as in data/services.ts. */
+const FOOTER_SERVICES = SERVICES.slice(0, 8)
+const FOOTER_CITIES = MAJOR_CITIES.slice(0, 12).map((c) => c.name)
 
 export default function Footer({ navigate }: { navigate: (p: Page) => void }) {
   const { t, pick } = useLang()
-  const [isCitiesExpanded, setIsCitiesExpanded] = useState(false)
   const tel = phoneHref()
   const mail = emailHref()
   const maps = googleMapsHref()
-  const cities = CITIES.map((c) => c.name)
-  const visibleCities = isCitiesExpanded ? cities : cities.slice(0, 8)
 
   return (
     <footer className="site-footer">
@@ -110,7 +99,7 @@ export default function Footer({ navigate }: { navigate: (p: Page) => void }) {
               {FOOTER_SERVICES.map((s) => (
                 <li key={s.slug}>
                   <PageLink to={{ type: "service", slug: s.slug }} navigate={navigate}>
-                    {t(s.key)}
+                    {t(s.nameKey)}
                   </PageLink>
                 </li>
               ))}
@@ -119,42 +108,31 @@ export default function Footer({ navigate }: { navigate: (p: Page) => void }) {
 
           <div>
             <h2 className="footer-head">{t("footer_cities")}</h2>
-            <ul
-              id="footer-cities"
-              className="grid grid-cols-2 gap-x-4 gap-y-2 list-none m-0 p-0"
-            >
-              {visibleCities.map((c) => (
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-2 list-none m-0 p-0">
+              {FOOTER_CITIES.map((c) => (
                 <li key={c} className="min-w-0">
-                  <PageLink
-                    className="block truncate py-0.5 text-[0.95rem]"
-                    to={{ type: "city", city: c }}
-                    navigate={navigate}
-                  >
+                  <PageLink className="block truncate py-0.5 text-[0.95rem]" to={{ type: "city", city: c }} navigate={navigate}>
                     {c}
                   </PageLink>
                 </li>
               ))}
             </ul>
-            <button
-              type="button"
-              aria-expanded={isCitiesExpanded}
-              aria-controls="footer-cities"
-              onClick={() => setIsCitiesExpanded(!isCitiesExpanded)}
-              className="mt-4 flex cursor-pointer items-center gap-1 border-0 bg-transparent p-0 text-sm font-semibold text-pine-300 transition-colors hover:text-white"
+            <PageLink
+              to="werkgebied"
+              navigate={navigate}
+              className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-pine-300 transition-colors hover:text-white"
             >
-              {isCitiesExpanded
-                ? pick({ nl: "Minder plaatsen", en: "Fewer places", uk: "Згорнути список", ru: "Свернуть список" })
-                : pick({ nl: "Alle plaatsen", en: "All places", uk: "Усі міста", ru: "Все города" })}
-              <span className={`inline-flex transition-transform ${isCitiesExpanded ? "rotate-180" : ""}`} aria-hidden="true">
-                <Icon name="chevron-down" size={16} />
+              {pick({ nl: "Alle plaatsen", en: "All places", uk: "Усі міста", ru: "Все города" })}
+              <span aria-hidden="true" className="inline-flex">
+                <Icon name="arrow-right" size={16} />
               </span>
-            </button>
+            </PageLink>
           </div>
         </div>
 
         <div className="footer-bottom">
           <p className="m-0">
-            © {new Date().getFullYear()} {CONTACT.legalName ?? "Bouwvast"}.{" "}
+            © {new Date().getFullYear()} {CONTACT.legalName ?? "Huisklusdienst"}.{" "}
             {t("footer_rights")}
             {CONTACT.kvk && <> · KvK {CONTACT.kvk}</>}
             {CONTACT.btw && <> · btw {CONTACT.btw}</>}

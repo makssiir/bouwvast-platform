@@ -7,6 +7,7 @@ export type AnalyticsEvent =
   | "whatsapp_clicked"
   | "estimate_applied"
   | "area_checked"
+  | "area_lead_opened"
 
 export function track(
   _event: AnalyticsEvent,

@@ -1,6 +1,7 @@
 /**
  * Builds the site and writes real HTML for every URL the site serves, plus
- * 404.html, robots.txt and (with SITE_ORIGIN) sitemap.xml.
+ * 404.html, robots.txt, llms.txt / llms-full.txt and (with SITE_ORIGIN)
+ * sitemap.xml.
  *
  *   node scripts/prerender.mjs
  *
@@ -11,7 +12,7 @@
  * Environment:
  *   SITE_ORIGIN=https://www.example.nl  absolute canonicals, sitemap, structured data
  *   SITE_INDEXING=false                  staging/preview: noindex everywhere, robots Disallow
- *   INDEX_CITY_PAGES=true                offer the city pages to search engines
+ *   INDEX_CITY_PAGES=false               keep place and service × place pages out of search (noindex)
  */
 import { build } from "vite"
 import { mkdir, readFile, writeFile } from "node:fs/promises"
@@ -44,7 +45,7 @@ if (origin) {
 
 const indexing = String(process.env.SITE_INDEXING ?? process.env.VITE_SITE_INDEXING ?? "true") !== "false"
 const indexCities =
-  String(process.env.INDEX_CITY_PAGES ?? process.env.VITE_INDEX_CITY_PAGES ?? "") === "true"
+  String(process.env.INDEX_CITY_PAGES ?? process.env.VITE_INDEX_CITY_PAGES ?? "true") !== "false"
 
 // The app reads the same settings through import.meta.env, so the client
 // bundle, the server bundle and this script cannot disagree.
@@ -54,7 +55,23 @@ process.env.VITE_INDEX_CITY_PAGES = indexCities ? "true" : "false"
 
 const LANG = "nl"
 const OG_LOCALE = "nl_NL"
-const SITE_NAME = "Bouwvast"
+const SITE_NAME = "Huisklusdienst"
+
+/** Named in robots.txt so it is explicit that they may crawl (and cite) the site. */
+const AI_CRAWLERS = [
+  "GPTBot",
+  "OAI-SearchBot",
+  "ChatGPT-User",
+  "ClaudeBot",
+  "Claude-User",
+  "Claude-SearchBot",
+  "PerplexityBot",
+  "Perplexity-User",
+  "Google-Extended",
+  "Applebot-Extended",
+  "Bingbot",
+  "CCBot",
+]
 
 function escapeHtml(value) {
   return String(value)
@@ -86,7 +103,7 @@ function breadcrumbTrail(path, { pageForPath, metaForPage }) {
   return trail
 }
 
-function structuredData({ title, description, path, trail }) {
+function structuredData({ title, description, path, trail, nodes = [] }) {
   if (!origin) return ""
 
   const url = absoluteUrl(path)
@@ -97,6 +114,7 @@ function structuredData({ title, description, path, trail }) {
       url: `${origin}/`,
       name: SITE_NAME,
       inLanguage: LANG,
+      publisher: { "@id": `${origin}/#organization` },
     },
     {
       "@type": "WebPage",
@@ -117,6 +135,8 @@ function structuredData({ title, description, path, trail }) {
         item: absoluteUrl(crumb.path),
       })),
     },
+    // The business, and the service and place this page is about (src/lib/schema.ts).
+    ...nodes,
   ]
 
   const json = JSON.stringify({ "@context": "https://schema.org", "@graph": graph })
@@ -124,7 +144,16 @@ function structuredData({ title, description, path, trail }) {
   return `<script type="application/ld+json" data-route>${json.replace(/</g, "\\u003c")}</script>`
 }
 
-function headBlock({ title, description, path, indexable, trail, type = "website", canonical: withCanonical = true }) {
+function headBlock({
+  title,
+  description,
+  path,
+  indexable,
+  trail,
+  nodes,
+  type = "website",
+  canonical: withCanonical = true,
+}) {
   const fullTitle = title ? `${title} · ${SITE_NAME}` : SITE_NAME
   const canonical = withCanonical ? absoluteUrl(path) : ""
   const robots = indexing && indexable ? "index, follow" : "noindex, follow"
@@ -156,7 +185,7 @@ function headBlock({ title, description, path, indexable, trail, type = "website
   }
 
   if (withCanonical) {
-    const jsonLd = structuredData({ title: fullTitle, description, path, trail })
+    const jsonLd = structuredData({ title: fullTitle, description, path, trail, nodes })
     if (jsonLd) tags.push(jsonLd)
   }
 
@@ -221,8 +250,21 @@ async function main() {
   })
 
   const serverEntry = pathToFileURL(join(root, ssrOutDir, "entry-server.js")).href
-  const { render, allRoutes, indexableRoutes, isIndexable, metaForPage, pageForPath, ESTIMATOR, CONTACT } =
-    await import(serverEntry)
+  const {
+    prepare,
+    render,
+    allRoutes,
+    indexableRoutes,
+    isIndexable,
+    metaForPage,
+    pageForPath,
+    schemaNodes,
+    llmsTxt,
+    llmsFullTxt,
+    ESTIMATOR,
+    CONTACT,
+  } = await import(serverEntry)
+  await prepare()
 
   const template = await readFile(join(distDir, "index.html"), "utf8")
   const routes = allRoutes()
@@ -236,6 +278,7 @@ async function main() {
       path: route.path,
       indexable: isIndexable(route.page),
       trail,
+      nodes: schemaNodes(route.page, origin),
       type: typeof route.page === "object" && route.page.type === "article" ? "article" : "website",
     })
 
@@ -262,13 +305,28 @@ async function main() {
   const sitemapRoutes = indexableRoutes()
   let robots
   if (!indexing) {
+    // No named groups here: a crawler with its own group would ignore this one.
     robots = "User-agent: *\nDisallow: /\n"
-  } else if (origin) {
-    robots = `User-agent: *\nAllow: /\n\nSitemap: ${origin}/sitemap.xml\n`
   } else {
-    robots = "User-agent: *\nAllow: /\n"
+    robots = [
+      "User-agent: *",
+      "Allow: /",
+      "",
+      "# Search engines and AI assistants are welcome to read and cite this site.",
+      ...AI_CRAWLERS.map((agent) => `User-agent: ${agent}`),
+      "Allow: /",
+      "",
+      ...(origin ? [`Sitemap: ${origin}/sitemap.xml`, ""] : []),
+    ].join("\n")
   }
   await writeFile(join(distDir, "robots.txt"), robots, "utf8")
+
+  // Plain-text summaries for AI assistants (https://llmstxt.org).
+  if (indexing) {
+    await writeFile(join(distDir, "llms.txt"), llmsTxt(origin), "utf8")
+    await writeFile(join(distDir, "llms-full.txt"), llmsFullTxt(origin), "utf8")
+    console.log("→ wrote llms.txt and llms-full.txt")
+  }
   // Build settings for the verification scripts (kept outside dist so it is never served).
   await writeFile(
     join(ssrOutDir, "build-meta.json"),
@@ -282,7 +340,7 @@ async function main() {
   } else if (!origin) {
     console.warn(
       "! SITE_ORIGIN is not set: no sitemap, no canonicals and no structured data.\n" +
-        "  Set it to the production address, for example SITE_ORIGIN=https://www.bouwvast.nl",
+        "  Set it to the production address, for example SITE_ORIGIN=https://huisklusdienst.nl",
     )
   }
   if (!indexing) console.warn("! SITE_INDEXING=false: every page is noindex and robots.txt disallows crawling.")

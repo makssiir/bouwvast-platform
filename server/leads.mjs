@@ -1,7 +1,7 @@
 import { LEAD_LIMITS, PHOTO_TYPES, validateLead } from "../src/lib/leadSchema.ts"
 
 const FIELDS = [
-  "id", "name", "phone", "email", "city", "service", "description", "estimate",
+  "id", "name", "phone", "email", "city", "service", "description", "contactPreference", "estimate",
   "language", "sourcePage", "utm_source", "utm_medium", "utm_campaign", "createdAt", "hp",
 ]
 
@@ -66,7 +66,7 @@ function safeHost(value) {
 
 export function referenceFor(id, date) {
   const d = date.toISOString().slice(2, 10).replace(/-/g, "")
-  return `BV-${d}-${id.replace(/-/g, "").slice(0, 5).toUpperCase()}`
+  return `HK-${d}-${id.replace(/-/g, "").slice(0, 5).toUpperCase()}`
 }
 
 async function readBody(request) {

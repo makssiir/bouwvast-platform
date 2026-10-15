@@ -16,7 +16,7 @@ export interface CompanyField {
 
 export const COMPANY = {
   /** Trading name shown in copy. The brand name itself is not a claim. */
-  brand: { value: "Bouwvast", verified: true, source: "project brief" },
+  brand: { value: "Huisklusdienst", verified: true, source: "owner: domain huisklusdienst.nl" },
   legalName: { value: "", verified: false },
   /** Display form, e.g. "033 - 123 45 67". */
   phoneDisplay: { value: "", verified: false },

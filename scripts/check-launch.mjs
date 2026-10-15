@@ -64,11 +64,14 @@ if (LEGAL.processors.length === 0)
 
 // --- Build configuration ----------------------------------------------------
 const origin = String(env.SITE_ORIGIN ?? "").trim().replace(/\/+$/, "")
-if (!origin) errors.push("SITE_ORIGIN is not set (e.g. https://www.bouwvast.nl).")
+if (!origin) errors.push("SITE_ORIGIN is not set (e.g. https://huisklusdienst.nl).")
 else if (!origin.startsWith("https://")) errors.push(`SITE_ORIGIN must be https: ${origin}`)
 if (String(env.SITE_INDEXING ?? "true") === "false") warnings.push("SITE_INDEXING=false: the site will be noindex.")
-if (String(env.INDEX_CITY_PAGES ?? "false") === "true")
-  warnings.push("INDEX_CITY_PAGES=true: make sure every /werkgebied/<plaats>/ page has genuine local content.")
+if (String(env.INDEX_CITY_PAGES ?? "true") !== "false")
+  warnings.push(
+    "Place and service × place pages are indexed: every /werkgebied/<plaats>/ page tells visitors you work there. " +
+      "Remove places you cannot serve from src/data/cities.ts (or build with INDEX_CITY_PAGES=false).",
+  )
 
 let leadEndpoint = String(env.VITE_LEAD_ENDPOINT ?? "").trim()
 const prodEnv = join(root, ".env.production")

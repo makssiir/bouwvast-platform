@@ -26,7 +26,7 @@ export const ARTICLES: Article[] = [
       "Bij het plannen van een verbouwing is een realistische begroting essentieel. De kosten van een verbouwing hangen af van het type werk, de oppervlakte, de staat van de woning en het gekozen afwerkingsniveau.",
       "Voor een gemiddelde woningrenovatie moet u rekening houden met een richtbedrag tussen de €600 en €1.200 per m² voor een standaard renovatie, en €1.200 tot €2.000+ per m² voor een complete hoogwaardige turn-key verbouwing.",
       "Vakmensen hanteren in 2026 gemiddelde uurtarieven tussen de €50 en €70 exclusief btw, afhankelijk van de specialisatie (loodgieters en elektriciens zitten vaak aan de bovenkant, schilders en tegelzetters werken vaak met m²-prijzen).",
-      "Tip van Bouwvast: Vraag altijd een gespecificeerde offerte waarin arbeid, materialen, afvalafvoer en eventuele voorrijkosten duidelijk gescheiden zijn.",
+      "Tip van Huisklusdienst: Vraag altijd een gespecificeerde offerte waarin arbeid, materialen, afvalafvoer en eventuele voorrijkosten duidelijk gescheiden zijn.",
     ],
     tips: [
       "Reserveer minimaal 10-15% van uw totale budget voor onvoorziene kosten.",

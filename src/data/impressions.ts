@@ -3,7 +3,7 @@ import type { Localized } from "../i18n/LangContext"
 /**
  * Before/after pairs for the comparison slider.
  *
- * These are illustrations, not Bouwvast projects, so the slider labels them
+ * These are illustrations, not Huisklusdienst projects, so the slider labels them
  * "Impressie" and they carry no town, client or date. As soon as real
  * projects with a `beforeImage` exist in data/projects.ts (and
  * CLAIMS.projects is on) the slider shows those instead.

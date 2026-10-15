@@ -7,16 +7,20 @@ const LABELS = {
   city: "Plaats / postcode",
   service: "Dienst",
   description: "Omschrijving",
+  contactPreference: "Contactvoorkeur",
   estimate: "Kostenindicatie",
   language: "Taal",
   sourcePage: "Pagina",
 }
 
+const PREFERENCES = { phone: "Bellen", whatsapp: "WhatsApp", email: "E-mail" }
+
 export function leadSummary(record) {
   const { lead } = record
   const lines = [`Nieuwe aanvraag ${record.reference}`, ""]
   for (const [key, label] of Object.entries(LABELS)) {
-    if (lead[key]) lines.push(`${label}: ${lead[key]}`)
+    const value = key === "contactPreference" ? PREFERENCES[lead[key]] : lead[key]
+    if (value) lines.push(`${label}: ${value}`)
   }
   const utm = [lead.utm_source, lead.utm_medium, lead.utm_campaign].filter(Boolean).join(" / ")
   if (utm) lines.push(`Campagne: ${utm}`)
@@ -28,7 +32,7 @@ export function leadSummary(record) {
 /**
  * Sends a stored lead to the owner. Delivery channels:
  *   - LEAD_WEBHOOK_URL: JSON POST (CRM, Zapier/Make, Slack relay…), signed
- *     with HMAC-SHA256 in X-Bouwvast-Signature when LEAD_WEBHOOK_SECRET is set
+ *     with HMAC-SHA256 in X-Huisklusdienst-Signature when LEAD_WEBHOOK_SECRET is set
  *   - Resend e-mail: RESEND_API_KEY + LEAD_NOTIFY_TO + LEAD_NOTIFY_FROM,
  *     photos attached
  * Throws when every configured channel failed, so the caller can retry.
@@ -46,7 +50,7 @@ export function createNotifier(config, { fetchImpl = fetch, readPhoto } = {}) {
     })
     const headers = { "content-type": "application/json" }
     if (n.webhookSecret) {
-      headers["x-bouwvast-signature"] = `sha256=${createHmac("sha256", n.webhookSecret).update(body).digest("hex")}`
+      headers["x-huisklusdienst-signature"] = `sha256=${createHmac("sha256", n.webhookSecret).update(body).digest("hex")}`
     }
     const response = await fetchImpl(n.webhookUrl, { method: "POST", headers, body, signal: AbortSignal.timeout(10_000) })
     if (!response.ok) throw new Error(`webhook answered ${response.status}`)

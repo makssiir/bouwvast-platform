@@ -52,7 +52,7 @@ export default function ContactPage({ navigate }: { navigate: (p: Page) => void 
         navigate={navigate}
         crumbs={[{ label: t("nav_contact") }]}
         eyebrow={t("nav_contact")}
-        title={pick({ nl: "Neem contact op met Bouwvast", en: "Contact Bouwvast", uk: "Зв'яжіться з Bouwvast", ru: "Свяжитесь с Bouwvast" })}
+        title={pick({ nl: "Neem contact op met Huisklusdienst", en: "Contact Huisklusdienst", uk: "Зв'яжіться з Huisklusdienst", ru: "Свяжитесь с Huisklusdienst" })}
         lead={pick({
           nl: "Heeft u plannen, een concrete verbouwing of wilt u eerst overleggen? Beschrijf uw situatie en we nemen contact met u op.",
           en: "Have plans, a specific renovation, or want to talk it through first? Describe your situation and we will get in touch.",
@@ -114,7 +114,7 @@ export default function ContactPage({ navigate }: { navigate: (p: Page) => void 
               </div>
 
               <div className="card">
-                <h2 className="mb-2 text-lg">{CONTACT.legalName ?? "Bouwvast"}</h2>
+                <h2 className="mb-2 text-lg">{CONTACT.legalName ?? "Huisklusdienst"}</h2>
                 <p className="mb-4 text-[0.9375rem] text-muted">{t("footer_desc")}</p>
                 <ul className="info-list">
                   {CONTACT.address && (

@@ -4,7 +4,7 @@ import { useLang } from "../i18n/LangContext"
 import type { Lead, LeadFailure } from "../lib/leads"
 
 /** Turns the request the visitor already typed into a message they can send. */
-export function leadSummary(lead: Lead): string {
+export function leadSummary(lead: Lead, preference?: string): string {
   const lines = [
     lead.service,
     lead.description,
@@ -13,9 +13,16 @@ export function leadSummary(lead: Lead): string {
     [lead.name, lead.phone].filter(Boolean).join(" · "),
     lead.email,
     lead.city,
+    preference,
   ]
   return lines.filter((line, i) => Boolean(line) || i === 3).join("\n").trim()
 }
+
+const PREFERENCE_KEYS = {
+  phone: "area_modal_pref_phone",
+  whatsapp: "area_modal_pref_whatsapp",
+  email: "area_modal_pref_email",
+} as const
 
 /**
  * Shown when a request did not reach us. The visitor keeps their typed input,
@@ -33,7 +40,12 @@ export default function LeadFallback({
   onEdit: () => void
 }) {
   const { t, pick } = useLang()
-  const summary = leadSummary(lead)
+  const summary = leadSummary(
+    lead,
+    lead.contactPreference
+      ? `${t("area_modal_pref_label")}: ${t(PREFERENCE_KEYS[lead.contactPreference])}`
+      : undefined,
+  )
   const subject = `${t("form_error_subject")}: ${lead.service || lead.city}`
   const wa = whatsappHref(summary)
   const mail = emailHref(subject, summary)

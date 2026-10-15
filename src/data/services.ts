@@ -6,7 +6,7 @@ export type ServiceIcon = "renovation" | "finishing" | "painting" | "facade" | "
 export interface Service {
   /** URL-safe identifier, stable across languages — the basis for Service × City routing. */
   slug: string
-  /** Canonical NL name, matching cities.ts SERVICE_NAMES so a service can be paired with a city. */
+  /** Canonical NL name (cities.ts SERVICES_LIST), sent with a lead so the office knows the job. */
   name: ServiceName
   icon: ServiceIcon
   nameKey: TranslationKey
@@ -18,6 +18,7 @@ export interface Service {
   includesKeys: TranslationKey[]
 }
 
+/** Larger, higher-value jobs first: the homepage shows the first six. */
 export const SERVICES: Service[] = [
   {
     slug: "renovatie",
@@ -52,6 +53,53 @@ export const SERVICES: Service[] = [
     ],
   },
   {
+    slug: "uitbouw-aanbouw",
+    name: "Uitbouw & Aanbouw",
+    icon: "renovation",
+    nameKey: "svc_extension",
+    descKey: "svc_extension_desc",
+    image: "/images/living-before.webp",
+    introKey: "svc_extension_intro",
+    includesKeys: [
+      "svc_extension_inc_1",
+      "svc_extension_inc_2",
+      "svc_extension_inc_3",
+      "svc_extension_inc_4",
+      "svc_extension_inc_5",
+    ],
+  },
+  {
+    slug: "dakkapel-zolder",
+    name: "Dakkapel & Zolder",
+    icon: "general",
+    nameKey: "svc_dormer",
+    descKey: "svc_dormer_desc",
+    image: "/images/tile-work.webp",
+    introKey: "svc_dormer_intro",
+    includesKeys: [
+      "svc_dormer_inc_1",
+      "svc_dormer_inc_2",
+      "svc_dormer_inc_3",
+      "svc_dormer_inc_4",
+      "svc_dormer_inc_5",
+    ],
+  },
+  {
+    slug: "algemeen",
+    name: "Algemene Bouwwerkzaamheden",
+    icon: "general",
+    nameKey: "svc_general",
+    descKey: "svc_general_desc",
+    image: "/images/living-after.webp",
+    introKey: "svc_general_intro",
+    includesKeys: [
+      "svc_general_inc_1",
+      "svc_general_inc_2",
+      "svc_general_inc_3",
+      "svc_general_inc_4",
+    ],
+  },
+  {
     slug: "afbouw",
     name: "Afbouw",
     icon: "finishing",
@@ -65,6 +113,22 @@ export const SERVICES: Service[] = [
       "svc_finishing_inc_3",
       "svc_finishing_inc_4",
       "svc_finishing_inc_5",
+    ],
+  },
+  {
+    slug: "gevel-buitenwerk",
+    name: "Gevel & Buitenwerk",
+    icon: "facade",
+    nameKey: "svc_facade",
+    descKey: "svc_facade_desc",
+    image: "/images/site-team.webp",
+    introKey: "svc_facade_intro",
+    includesKeys: [
+      "svc_facade_inc_1",
+      "svc_facade_inc_2",
+      "svc_facade_inc_3",
+      "svc_facade_inc_4",
+      "svc_facade_inc_5",
     ],
   },
   {
@@ -100,38 +164,6 @@ export const SERVICES: Service[] = [
     ],
   },
   {
-    slug: "gevel-buitenwerk",
-    name: "Gevel & Buitenwerk",
-    icon: "facade",
-    nameKey: "svc_facade",
-    descKey: "svc_facade_desc",
-    image: "/images/site-team.webp",
-    introKey: "svc_facade_intro",
-    includesKeys: [
-      "svc_facade_inc_1",
-      "svc_facade_inc_2",
-      "svc_facade_inc_3",
-      "svc_facade_inc_4",
-      "svc_facade_inc_5",
-    ],
-  },
-  {
-    slug: "montage",
-    name: "Montage",
-    icon: "assembly",
-    nameKey: "svc_assembly",
-    descKey: "svc_assembly_desc",
-    image: "/images/tools-rack.webp",
-    introKey: "svc_assembly_intro",
-    includesKeys: [
-      "svc_assembly_inc_1",
-      "svc_assembly_inc_2",
-      "svc_assembly_inc_3",
-      "svc_assembly_inc_4",
-      "svc_assembly_inc_5",
-    ],
-  },
-  {
     slug: "loodgieter",
     name: "Loodgieter",
     icon: "bathroom",
@@ -164,18 +196,19 @@ export const SERVICES: Service[] = [
     ],
   },
   {
-    slug: "algemeen",
-    name: "Algemene Bouwwerkzaamheden",
-    icon: "general",
-    nameKey: "svc_general",
-    descKey: "svc_general_desc",
-    image: "/images/living-after.webp",
-    introKey: "svc_general_intro",
+    slug: "montage",
+    name: "Montage",
+    icon: "assembly",
+    nameKey: "svc_assembly",
+    descKey: "svc_assembly_desc",
+    image: "/images/tools-rack.webp",
+    introKey: "svc_assembly_intro",
     includesKeys: [
-      "svc_general_inc_1",
-      "svc_general_inc_2",
-      "svc_general_inc_3",
-      "svc_general_inc_4",
+      "svc_assembly_inc_1",
+      "svc_assembly_inc_2",
+      "svc_assembly_inc_3",
+      "svc_assembly_inc_4",
+      "svc_assembly_inc_5",
     ],
   },
 ]

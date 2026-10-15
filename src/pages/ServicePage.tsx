@@ -5,7 +5,8 @@ import More from "../components/More"
 import NotFoundPage from "./NotFoundPage"
 import { imageSize } from "../data/images"
 import { SERVICE_BY_SLUG, SERVICES } from "../data/services"
-import { CITIES } from "../data/cities"
+import { MAJOR_CITIES } from "../data/cities"
+import { SERVICE_LOCAL } from "../data/serviceLocal"
 import Icon from "../components/Icon"
 import QuoteForm from "../components/QuoteForm"
 import { useLang } from "../i18n/LangContext"
@@ -26,7 +27,6 @@ export default function ServicePage({ slug, navigate }: { slug: string; navigate
     { title: t("how_2_title"), desc: t("how_2_desc") },
     { title: t("how_3_title"), desc: t("how_3_desc") },
   ]
-  const coreCities = CITIES.slice(0, 10)
   const related = SERVICES.filter((s) => s.slug !== service.slug).slice(0, 3)
   const name = t(service.nameKey)
 
@@ -97,10 +97,14 @@ export default function ServicePage({ slug, navigate }: { slug: string; navigate
               </h2>
               <p className="text-muted">{t("service_area_desc")}</p>
               <ul className="mt-5 flex list-none flex-wrap gap-2 p-0">
-                {coreCities.map((c) => (
+                {MAJOR_CITIES.map((c) => (
                   <li key={c.name}>
                     <PageLink
-                      to={{ type: "city", city: c.name }}
+                      to={
+                        SERVICE_LOCAL[service.slug]
+                          ? { type: "serviceCity", slug: service.slug, city: c.name }
+                          : { type: "city", city: c.name }
+                      }
                       navigate={navigate}
                       className="inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-white px-3.5 py-1.5 text-sm font-medium text-ink transition-colors hover:border-pine-600 hover:text-pine-800 hover:no-underline"
                     >

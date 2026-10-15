@@ -167,7 +167,7 @@ async function main() {
     )
 
     const meta = metaForPage(route.page, "nl")
-    check(`${label} title matches the route table`, title.startsWith(meta.title || "Bouwvast"))
+    check(`${label} title matches the route table`, title.startsWith(meta.title || "Huisklusdienst"))
   }
 
   // 404 page: exists, not indexable, no canonical, no structured data.
@@ -181,11 +181,49 @@ async function main() {
   }
 
   check("unknown URLs do not resolve", pageForPath("/bestaat-niet") === null && pageForPath("/diensten/onbekend") === null)
-  check("old service×city URLs do not resolve", pageForPath("/werkgebied/amersfoort/renovatie") === null)
+  const serviceCity = pageForPath("/werkgebied/amsterdam/loodgieter/")
+  check(
+    "service × major place URLs resolve",
+    serviceCity?.type === "serviceCity" && serviceCity.city === "Amsterdam" && serviceCity.slug === "loodgieter",
+  )
+  check("service × smaller place URLs do not resolve", pageForPath("/werkgebied/soest/loodgieter") === null)
+  check("unknown services in a place do not resolve", pageForPath("/werkgebied/amsterdam/onbekend") === null)
+
+  // Structured data on a service × place page: valid JSON with the business and the local service.
+  {
+    const file = join(distDir, "werkgebied", "amsterdam", "loodgieter", "index.html")
+    if (existsSync(file)) {
+      const html = await readFile(file, "utf8")
+      const blocks = [...html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)]
+      let parsed = []
+      try {
+        parsed = blocks.map((m) => JSON.parse(m[1]))
+      } catch {
+        parsed = null
+      }
+      check("service × place JSON-LD parses", Array.isArray(parsed) && parsed.length > 0)
+      const types = JSON.stringify(parsed ?? [])
+      check("service × place page has FAQPage markup", types.includes('"FAQPage"'))
+      if (origin) {
+        check("service × place page describes the local service", types.includes('"Service"') && types.includes('"City"'))
+        check("service × place page names the business", types.includes('"HomeAndConstructionBusiness"'))
+      }
+    }
+  }
 
   const robotsTxt = await readFile(join(distDir, "robots.txt"), "utf8")
   if (indexing) {
     check("robots.txt allows crawling", /Allow: \//.test(robotsTxt) && !/Disallow: \/\s/.test(robotsTxt))
+    check("robots.txt names the AI crawlers", ["GPTBot", "OAI-SearchBot", "ClaudeBot", "PerplexityBot"].every((a) => robotsTxt.includes(`User-agent: ${a}`)))
+    for (const name of ["llms.txt", "llms-full.txt"]) {
+      const path = join(distDir, name)
+      const body = existsSync(path) ? await readFile(path, "utf8") : ""
+      check(`${name} exists`, body.startsWith("# Huisklusdienst"))
+      for (const [pattern, what] of BANNED) {
+        const hit = body.match(pattern)
+        check(`${name} contains no ${what}`, !hit, hit ? hit[0] : "")
+      }
+    }
   } else {
     check("robots.txt blocks crawling on staging", /Disallow: \//.test(robotsTxt))
   }

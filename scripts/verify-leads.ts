@@ -60,7 +60,7 @@ const JPEG = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0, 0x10, 0x4a, 0x46, 0x49, 
 const jpegFile = (name = "badkamer.jpg") => new File([JPEG], name, { type: "image/jpeg" })
 
 async function harness(env: Record<string, string> = {}) {
-  const dataDir = await mkdtemp(join(tmpdir(), "bouwvast-leads-"))
+  const dataDir = await mkdtemp(join(tmpdir(), "huisklusdienst-leads-"))
   const config = loadConfig({ DIST_DIR: "dist", DATA_DIR: dataDir, LEAD_RATE_LIMIT_MAX: "50", ...env })
   const store = createStore(config.dataDir)
   await store.init()
@@ -113,6 +113,23 @@ async function main() {
   check("validation reports stable codes", bad.errors.name === "too_short" && bad.errors.phone === "required" && bad.errors.id === "invalid")
   check("email is optional", validateLead({ ...makeLead(), email: "" }).ok)
   check("malformed email is rejected", validateLead({ ...makeLead(), email: "jan@" }).errors.email === "invalid")
+  check("a chosen service makes the description optional", validateLead({ ...makeLead(), description: "" }).ok)
+  check(
+    "without a service the description is required",
+    validateLead({ ...makeLead(), service: "", description: "" }).errors.description === "required",
+  )
+  check(
+    "a short description is still checked when given",
+    validateLead({ ...makeLead(), description: "ok" }).errors.description === "too_short",
+  )
+  {
+    const prefers = validateLead({ ...makeLead(), contactPreference: "whatsapp" })
+    check("contact preference is kept", prefers.ok && prefers.lead.contactPreference === "whatsapp")
+    const unknown = validateLead({ ...makeLead(), contactPreference: "fax" } as unknown as Record<string, unknown>)
+    check("unknown contact preference is dropped", unknown.ok && unknown.lead.contactPreference === undefined)
+    const byMail = validateLead({ ...makeLead(), email: "", contactPreference: "email" })
+    check("email is required when the visitor asks to be emailed", byMail.errors.email === "required")
+  }
 
   console.log("Client without endpoint")
   {
@@ -136,7 +153,7 @@ async function main() {
     const h = await harness({ LEAD_WEBHOOK_URL: "https://hooks.example/lead" })
     const lead = makeLead()
     const result = await deliverLead(lead, [], h.transport)
-    check("valid lead is delivered with a receipt", result.delivered && /^BV-\d{6}-[0-9A-F]{5}$/.test(result.reference ?? ""), JSON.stringify(result))
+    check("valid lead is delivered with a receipt", result.delivered && /^HK-\d{6}-[0-9A-F]{5}$/.test(result.reference ?? ""), JSON.stringify(result))
     const stored = await h.store.get(lead.id)
     check("lead is on disk before the receipt", stored?.lead.name === "Jan de Vries")
     check("stored IP is truncated", stored?.ipPrefix === "203.0.113.0")
@@ -155,6 +172,18 @@ async function main() {
     const photoResult = await deliverLead(withPhoto, [jpegFile()], h.transport)
     const photoRecord = await h.store.get(withPhoto.id)
     check("multipart lead with a photo is delivered", photoResult.delivered && photoRecord?.photos.length === 1)
+
+    // The postcode dialog: a service chip, no description, a contact preference.
+    const quick = makeLead({ description: "", contactPreference: "whatsapp", sourcePage: "area-check:home" })
+    const quickResult = await deliverLead(quick, [], h.transport)
+    const quickRecord = await h.store.get(quick.id)
+    check(
+      "lead without description but with a service is stored with its contact preference",
+      quickResult.delivered && quickRecord?.lead.contactPreference === "whatsapp",
+    )
+    const quickPhoto = makeLead({ description: "", contactPreference: "email" })
+    await deliverLead(quickPhoto, [jpegFile()], h.transport)
+    check("contact preference survives multipart", (await h.store.get(quickPhoto.id))?.lead.contactPreference === "email")
 
     const fake = makeLead()
     const fakeResult = await deliverLead(fake, [new File([new TextEncoder().encode("not an image")], "x.jpg", { type: "image/jpeg" })], h.transport)

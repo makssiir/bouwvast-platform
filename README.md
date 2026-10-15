@@ -1,6 +1,7 @@
-# Bouwvast website
+# Huisklusdienst website
 
-Marketing site and quote-request form for Bouwvast (bouw, renovatie, afbouw).
+Marketing site and quote-request form for Huisklusdienst (huisklusdienst.nl): klussen,
+renovatie en onderhoud in en om het huis, with a page per place and per service × place.
 React 19 + Vite 8 + Tailwind v4, prerendered to static HTML per route, served by
 a small dependency-free Node server that also receives quote requests.
 
@@ -22,7 +23,9 @@ Node ≥ 22.18 (`.nvmrc`). Copy `.env.example` to `.env` for local settings;
 | Pages & routes | `src/pages`, `src/lib/routes.ts` | One route table drives navigation, prerendering, sitemap and robots |
 | Translations | `src/i18n/translations.ts` | nl (canonical), en, uk, ru; preference stored client-side |
 | Owner facts | `src/data/company.ts`, `claims.ts`, `pricing.ts`, `projects.ts`, `legal.ts`, `cities.ts` | Unverified values are never rendered — see `LAUNCH-CHECKLIST.md` |
-| Prerender | `scripts/prerender.mjs` | Writes `dist/<route>/index.html`, `404.html`, `robots.txt`, `sitemap.xml` |
+| Local pages | `src/data/cities.ts`, `cityIntros.ts`, `localTraits.ts`, `serviceLocal.ts` | 58 places (`/werkgebied/<plaats>/`), 47 × 12 service × place pages (`/werkgebied/<plaats>/<dienst>/`), loaded as a separate chunk |
+| Prerender | `scripts/prerender.mjs` | Writes `dist/<route>/index.html`, `404.html`, `robots.txt`, `sitemap.xml`, `llms.txt`, `llms-full.txt` |
+| Structured data | `src/lib/schema.ts`, `src/lib/localFaq.ts` | Business, service and place per page; FAQ markup for visible questions |
 | Server | `server/` | Static files with security headers + `POST /api/leads` + `GET /healthz` |
 | Lead validation | `src/lib/leadSchema.ts` | Shared by the browser form and the server |
 
@@ -41,7 +44,7 @@ and/or Resend e-mail and are retried until delivered. Leads older than
 
 ```bash
 npm run typecheck
-npm run verify:leads    # client ↔ server lead flow (40 cases)
+npm run verify:leads    # client ↔ server lead flow (48 cases)
 npm run verify:routes   # every prerendered page: claims, links, SEO, a11y basics
 npm run verify:browser  # real browser against the real server (needs Playwright)
 npm run check:launch    # owner data, legal approval, production config
@@ -55,8 +58,8 @@ CI runs the same in `.github/workflows/ci.yml`.
 **Docker**
 
 ```bash
-docker build --build-arg SITE_ORIGIN=https://www.bouwvast.nl -t bouwvast .
-docker run -d -p 3000:3000 -v bouwvast-data:/data --env-file .env bouwvast
+docker build --build-arg SITE_ORIGIN=https://huisklusdienst.nl -t huisklusdienst .
+docker run -d -p 3000:3000 -v huisklusdienst-data:/data --env-file .env huisklusdienst
 ```
 
 **Any Node host**: `npm ci && npm run build && npm start` with the environment

@@ -37,7 +37,7 @@ export default function ArticlePage({
           inLanguage: "nl-NL",
           ...(url ? { mainEntityOfPage: url } : {}),
           ...(siteUrl("") ? { image: siteUrl(article.image.replace(/^\//, "")) } : {}),
-          publisher: { "@type": "Organization", name: "Bouwvast" },
+          publisher: { "@type": "Organization", name: "Huisklusdienst" },
         }}
       />
 

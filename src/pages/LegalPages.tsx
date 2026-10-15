@@ -34,7 +34,7 @@ function LegalShell({
             {lang !== "nl" && <p className="notice" lang={lang}>{t("legal_dutch_only")}</p>}
             {!approved && (
               <p className="notice" role="note">
-                <strong>Concept.</strong> Deze tekst is nog niet definitief vastgesteld door Bouwvast en
+                <strong>Concept.</strong> Deze tekst is nog niet definitief vastgesteld door Huisklusdienst en
                 kan nog wijzigen.
               </p>
             )}
@@ -67,7 +67,7 @@ function LegalShell({
 
 function CompanyIdentity() {
   const parts = [
-    CONTACT.legalName ?? "Bouwvast",
+    CONTACT.legalName ?? "Huisklusdienst",
     CONTACT.address,
     CONTACT.kvk ? `KvK ${CONTACT.kvk}` : undefined,
   ].filter(Boolean)
@@ -184,7 +184,7 @@ export function PrivacyPage({ navigate }: { navigate: (p: Page) => void }) {
       <h2>Beveiliging</h2>
       <p>
         De website werkt uitsluitend via een versleutelde verbinding (HTTPS). Aanvragen en foto's
-        worden opgeslagen op een server die alleen toegankelijk is voor Bouwvast.
+        worden opgeslagen op een server die alleen toegankelijk is voor Huisklusdienst.
       </p>
     </LegalShell>
   )
@@ -203,10 +203,10 @@ export function TermsPage({ navigate }: { navigate: (p: Page) => void }) {
     >
       <p>
         Een aanvraag via deze website is vrijblijvend en verplicht u tot niets. Een overeenkomst
-        komt pas tot stand als u een offerte van Bouwvast schriftelijk of per e-mail accepteert.
+        komt pas tot stand als u een offerte van Huisklusdienst schriftelijk of per e-mail accepteert.
       </p>
       <p>
-        Op offertes en opdrachten zijn de algemene voorwaarden van Bouwvast van toepassing. U
+        Op offertes en opdrachten zijn de algemene voorwaarden van Huisklusdienst van toepassing. U
         ontvangt die voorwaarden samen met de offerte, zodat u ze kunt lezen voordat u akkoord
         gaat.
       </p>

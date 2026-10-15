@@ -44,17 +44,51 @@ Every switch is off. Turn one on only together with a `source` **(gate)**.
 - **Before/after slider**: shows AI illustrations labelled "Impressie"
   (`src/data/impressions.ts`) until `projects` is on and projects have a
   `beforeImage`.
-- **Area checker**: answers from `src/data/cities.ts` (names and postcode
-  ranges, the same list as `/werkgebied/`); unknown places get "we check
-  personally", never "no".
+- **Postcode → job → contact dialog** (home page and `/werkgebied/`): takes
+  any Dutch postcode or place, asks what the job is and how the visitor wants
+  to be contacted (call, WhatsApp, e-mail), and sends it as a normal lead
+  (`sourcePage` `area-check:…`, field `contactPreference`). It never says a
+  place is covered: the text promises a personal answer on whether and when.
 
-## 3. Service area — `src/data/cities.ts`
+## 3. Service area — `src/data/cities.ts`, `src/data/cityIntros.ts`
 
-- [ ] Confirm the 15 places around Amersfoort (remove or add as needed) and
-      their postcode ranges (`postcodes`), which the area checker uses.
-- [ ] Keep `INDEX_CITY_PAGES=false` until each `/werkgebied/<plaats>/` page has
-      genuine local content (projects, photos). Otherwise they are thin
-      doorway pages.
+The site has a page for 58 places in all twelve provinces, and the 47 larger
+places also get a page per service (`/werkgebied/<plaats>/<dienst>/`,
+47 × 12 = 564 pages). Every one of those pages tells visitors and search
+engines that you take on work there.
+
+- [ ] Remove every place the team cannot actually serve (delete it from
+      `CITIES` and its intro from `CITY_INTROS`); set `major: false` for places
+      that should keep one page but no page per service. Pages, sitemap,
+      footer, `llms.txt` and structured data follow automatically.
+- [ ] Read the intro, districts and traits of the places you keep; correct
+      anything that does not match reality.
+- [ ] Add real local proof as it comes in (projects with town-level location,
+      reviews). Local pages with nothing but template text are what search
+      engines treat as doorway pages; `INDEX_CITY_PAGES=false` keeps them
+      reachable but out of search while you work on that.
+
+## 3b. Being found by search engines and AI assistants
+
+What the site already does: prerendered HTML for every URL, a sitemap,
+`robots.txt` that explicitly admits the AI crawlers (GPTBot, OAI-SearchBot,
+ChatGPT-User, ClaudeBot, PerplexityBot, Google-Extended, …), `/llms.txt` and
+`/llms-full.txt` generated from the same data as the pages, and schema.org
+markup (business, service per page, place with province, FAQ).
+
+What only the owner can do — and what decides rankings in Google, Bing (which
+ChatGPT search uses) and AI answers far more than anything on the site:
+
+- [ ] Google Business Profile and Bing Places with the same name, phone and
+      address as `company.ts` (service-area business if there is no shop).
+- [ ] KvK registration visible on the site (`kvk`), consistent NAP details on
+      Werkspot, Trustoo, Homedeal, Yelp/Gouden Gids and similar directories.
+- [ ] Real reviews on a public platform (Google, Trustoo, Werkspot); then turn
+      on the `reviews` claim with a link.
+- [ ] Real project photos and descriptions per town (`projects` claim).
+- [ ] Submit the sitemap in Google Search Console and Bing Webmaster Tools.
+- [ ] Nobody can guarantee a #1 position in ChatGPT or Google; anyone who
+      promises it is selling something.
 
 ## 4. Legal — `src/data/legal.ts`, `src/pages/LegalPages.tsx`
 

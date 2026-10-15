@@ -21,6 +21,6 @@ export const LEGAL = {
    * owner decides the period; 12 months is a proposal, not a legal fact.
    */
   leadRetentionMonths: 12,
-  /** Services that process lead data on Bouwvast's behalf (hosting, e-mail…). */
+  /** Services that process lead data on Huisklusdienst's behalf (hosting, e-mail…). */
   processors: [] as { name: string; purpose: string; location: string }[],
 }

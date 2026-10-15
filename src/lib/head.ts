@@ -1,6 +1,6 @@
 import type { Lang } from "../i18n/translations"
 
-const SITE_NAME = "Bouwvast"
+const SITE_NAME = "Huisklusdienst"
 
 /** Map our internal lang codes to valid BCP-47 attribute values. */
 const OG_LOCALE: Record<Lang, string> = { nl: "nl_NL", en: "en_GB", uk: "uk_UA", ru: "ru_RU" }

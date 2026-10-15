@@ -31,7 +31,7 @@ export default function HomePage({ navigate }: { navigate: (p: Page) => void }) 
       <CostEstimator />
       <BeforeAfter navigate={navigate} />
       <HowItWorksSection />
-      <PostalCodeChecker navigate={navigate} />
+      <PostalCodeChecker sourcePage="home" />
       <KennisbankPreviewSection navigate={navigate} />
       <FAQSection navigate={navigate} />
       <QuoteSection sourcePage="home" />
