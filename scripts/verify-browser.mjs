@@ -13,6 +13,7 @@ import { tmpdir } from "node:os"
 import { dirname, join, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 import { createServer } from "node:net"
+import { SERVICES, SERVICE_GROUPS } from "../src/data/services.ts"
 
 let chromium
 try {
@@ -113,7 +114,7 @@ try {
     const ctx = await browser.newContext()
     const page = await ctx.newPage()
     const problems = watch(page)
-    for (const path of ["/", "/diensten/", "/diensten/renovatie/", "/diensten/warmtepompen/", "/diensten/vloerverwarming/", "/diensten/verwarming/", "/diensten/demontage-ramen-deuren/", "/projecten/", "/werkgebied/", "/werkgebied/amersfoort/", "/werkgebied/amsterdam/loodgieter/", "/werkgebied/soest/", "/contact/", "/zakelijk/", "/kennisbank/", "/kennisbank/badkamer-renoveren-stappenplan/", "/privacy/", "/voorwaarden/"]) {
+    for (const path of ["/", "/diensten/", "/diensten/renovatie/", "/diensten/warmtepompen/", "/diensten/vloerverwarming/", "/diensten/verwarming/", "/diensten/ramen-deuren/", "/diensten/demontage-ramen-deuren/", "/projecten/", "/werkgebied/", "/werkgebied/amersfoort/", "/werkgebied/amsterdam/loodgieter/", "/werkgebied/soest/", "/contact/", "/zakelijk/", "/kennisbank/", "/kennisbank/badkamer-renoveren-stappenplan/", "/privacy/", "/voorwaarden/"]) {
       const response = await page.goto(base + path)
       await page.waitForLoadState("networkidle")
       check(`${path} answers 200`, response?.status() === 200, String(response?.status()))
@@ -354,7 +355,12 @@ try {
     await dialog.getByRole("button", { name: "Klus doorgeven" }).click()
     check("area dialog: asks what the job is", (await dialog.getByText("Kies een klus of beschrijf kort").count()) > 0)
     check("area dialog: name and phone are required", (await dialog.locator('[aria-invalid="true"]').count()) >= 3)
-    await dialog.getByText("Loodgieter", { exact: true }).click()
+    check("area dialog: every service is present in the grouped choices", await dialog.locator('input[type="radio"][name$="-service"]').count() === SERVICES.length + 1)
+    check("area dialog: the new window installation service is available", await dialog.locator('label.choice:has(input[value="ramen-deuren"])').isVisible())
+    check("area dialog: every service choice has a full-size touch target", await dialog.locator(".choice").evaluateAll((labels) => labels.every((label) => label.getBoundingClientRect().height >= 44 && label.getBoundingClientRect().width >= 44)))
+    const areaCloseBox = await dialog.getByRole("button", { name: "Sluiten", exact: true }).boundingBox()
+    check("area dialog: the close control is at least 44 pixels", areaCloseBox && areaCloseBox.width >= 44 && areaCloseBox.height >= 44)
+    await dialog.getByText("Loodgieterswerk & sanitair", { exact: true }).click()
     check("area dialog: a chosen job makes the description optional", (await dialog.getByText("Kies een klus of beschrijf kort").count()) === 0)
     await dialog.locator('input[autocomplete="name"]').fill("Dialoog Test")
     await dialog.locator('input[autocomplete="tel"]').fill("06 12345678")
@@ -655,8 +661,11 @@ try {
     const problems = watch(page)
     await page.goto(base + "/contact/")
     const form = page.locator("#quote form")
-    await form.locator(".quote-more-services summary").click()
-    check(`${language}: all 16 services are selectable without a free-text guess`, await form.locator(".project-choice:not([data-service=other])").count() === 16)
+    const serviceChoices = form.locator(".project-choice:not([data-service=other])")
+    check(`${language}: all ${SERVICES.length} services are selectable immediately`, await serviceChoices.count() === SERVICES.length)
+    check(`${language}: no service choices are hidden in a disclosure`, await serviceChoices.evaluateAll((choices) => choices.every((choice) => choice.getClientRects().length > 0 && !choice.closest("details:not([open])"))))
+    check(`${language}: all category headings are present`, await form.locator(".quote-service-group h4").count() === SERVICE_GROUPS.length)
+    check(`${language}: window installation is visible without expanding anything`, await form.locator('[data-service="ramen-deuren"]').isVisible())
     check(`${language}: expanded choices fit on the phone`, await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1))
     await form.locator('[data-service="warmtepompen"]').click()
     check(`${language}: heat-pump choice starts the details step`, await form.getAttribute("data-step") === "2")
@@ -680,7 +689,7 @@ try {
     await ctx.close()
   }
 
-  for (const slug of ["warmtepompen", "vloerverwarming", "verwarming", "demontage-ramen-deuren"]) {
+  for (const slug of ["warmtepompen", "vloerverwarming", "verwarming", "ramen-deuren", "demontage-ramen-deuren"]) {
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, reducedMotion: "reduce" })
     const page = await ctx.newPage()
     const problems = watch(page)
@@ -691,6 +700,35 @@ try {
     check(`${slug}: scope conditions are visible`, await page.locator(".service-scope-note").isVisible())
     check(`${slug}: phone layout fits`, await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1))
     check(`${slug}: hydrates without errors`, problems.length === 0, problems.join("; "))
+    await ctx.close()
+  }
+
+  console.log("\n15. Grouped catalogue and window installation request")
+  {
+    const ctx = await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion: "reduce" })
+    const page = await ctx.newPage()
+    const problems = watch(page)
+    await page.goto(base + "/diensten/")
+    check("catalogue groups cover all service pages", await page.locator(".service-category .service-card-link").count() === SERVICES.length && await page.locator(".service-category").count() === SERVICE_GROUPS.length)
+    check("catalogue offers all four category jump links", await page.locator(".service-category-nav a").count() === SERVICE_GROUPS.length)
+    check("service photos are not passed off as completed client projects", /geen portfolio/.test(await page.locator(".service-images-note").innerText()))
+    check("photo presentation has no AI badges", !/\bAI[- ](?:impressie|illustration)/i.test(await page.locator("main").innerText()))
+    await page.goto(base + "/diensten/ramen-deuren/")
+    const form = page.locator("#quote form")
+    check("window installation service is preset in its request form", await form.getAttribute("data-step") === "2" && /Ramen & deuren plaatsen/.test(await form.locator(".quote-selection").innerText()))
+    await form.locator('input[autocomplete="address-level2"]').fill("Utrecht")
+    await form.locator('button[type="submit"]').click()
+    await form.locator('input[autocomplete="name"]').fill("Window Door Enquiry Test")
+    await form.locator('input[autocomplete="tel"]').fill("06 12345678")
+    await form.locator('button[type="submit"]').click()
+    await page.locator('[role="status"]', { hasText: /HK-\d{6}-/ }).waitFor({ timeout: 10_000 })
+    let saved
+    for (const id of await readdir(join(dataDir, "leads"))) {
+      const record = JSON.parse(await readFile(join(dataDir, "leads", id, "lead.json"), "utf8"))
+      if (record.lead?.name === "Window Door Enquiry Test") saved = record.lead
+    }
+    check("window installation reaches the real server with the canonical service and place", saved?.service === "Ramen & Deuren" && saved?.city === "Utrecht")
+    check("window page and catalogue hydrate without errors", problems.length === 0, problems.join("; "))
     await ctx.close()
   }
 } finally {

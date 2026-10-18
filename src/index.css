@@ -1008,8 +1008,7 @@
     }
   }
 
-  .page-hero-caption,
-  .service-card-impression {
+  .page-hero-caption {
     position: absolute;
     bottom: 0.9rem;
     left: 0.9rem;
@@ -1040,11 +1039,6 @@
     margin-top: 0.15rem;
     color: var(--color-pine-800);
   }
-  .quote-more-services {
-    margin-top: 0.8rem;
-    border-top: 1px solid var(--color-line);
-  }
-  .quote-more-services summary,
   .estimator-vat summary {
     min-height: 44px;
     padding-block: 0.75rem;
@@ -1053,8 +1047,47 @@
     font-weight: 600;
     cursor: pointer;
   }
-  .quote-more-services[open] > .project-choices {
-    margin-top: 0.4rem;
+  .service-category-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-bottom: 2.5rem;
+  }
+  .service-category-nav .chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    height: auto;
+    white-space: normal;
+    line-height: 1.5;
+  }
+  .service-category {
+    scroll-margin-top: 7rem;
+  }
+  .service-category + .service-category {
+    margin-top: 3.5rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--color-line);
+  }
+  .service-category-heading {
+    max-width: 44rem;
+    margin-bottom: 1.5rem;
+  }
+  .service-category-heading h2 {
+    margin: 0 0 0.6rem;
+    font-size: clamp(1.4rem, 2.8vw, 1.85rem);
+  }
+  .service-category-heading p {
+    margin: 0;
+    color: var(--color-muted);
+    line-height: 1.65;
+  }
+  .service-images-note {
+    max-width: 48rem;
+    margin: 1.25rem 0 0;
+    color: var(--color-muted);
+    font-size: 0.875rem;
+    line-height: 1.6;
   }
   .quote-vat-note {
     margin: 0 0 1.25rem;
@@ -1826,12 +1859,12 @@
   }
   .project-choice {
     display: grid;
-    grid-template-columns: 36px minmax(0, 1fr) 17px;
+    grid-template-columns: 30px minmax(0, 1fr) 17px;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.6rem;
     min-width: 0;
-    min-height: 68px;
-    padding: 0.8rem;
+    min-height: 58px;
+    padding: 0.65rem 0.75rem;
     border: 1px solid var(--color-line-strong);
     border-radius: 10px;
     background: #fff;
@@ -1852,8 +1885,8 @@
   .project-choice-icon {
     display: grid;
     place-items: center;
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
     border-radius: 8px;
     background: var(--color-sand-100);
     color: var(--color-pine-800);
@@ -1862,6 +1895,32 @@
     .project-choices {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+  }
+  .quote-service-count {
+    margin: 0 0 1rem;
+    color: var(--color-pine-800);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+  .quote-service-catalogue {
+    display: grid;
+    gap: 1.4rem;
+  }
+  .quote-service-group {
+    min-width: 0;
+  }
+  .quote-service-group h4 {
+    margin: 0 0 0.65rem;
+    color: var(--color-muted);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.55;
+  }
+  .project-choice-other {
+    width: 100%;
+    border-style: dashed;
   }
   .quote-safe-note {
     display: flex;
@@ -3416,7 +3475,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    min-height: 40px;
+    min-height: 44px;
     padding: 0.45rem 0.9rem;
     border: 1px solid var(--color-line-strong);
     border-radius: 999px;

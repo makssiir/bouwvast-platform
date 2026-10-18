@@ -5,7 +5,7 @@ import QuoteSection from "../components/QuoteSection"
 import Icon from "../components/Icon"
 import More from "../components/More"
 import { useLang } from "../i18n/LangContext"
-import { SERVICES } from "../data/services"
+import { SERVICE_BY_SLUG, SERVICE_GROUPS } from "../data/services"
 import { imageSize } from "../data/images"
 
 export default function DienstenPage({ navigate }: { navigate: (p: Page) => void }) {
@@ -21,34 +21,48 @@ export default function DienstenPage({ navigate }: { navigate: (p: Page) => void
         lead={t("services_sub")}
       />
 
-      <section className="section">
+      <section className="section service-catalogue">
         <div className="container">
-          <ul className="grid grid-3 list-none m-0 p-0">
-            {SERVICES.map((s, index) => {
-              const wide = index === SERVICES.length - 1 && SERVICES.length % 3 === 1
-              return (
-                <li key={s.slug} className={wide ? "lg:col-span-3" : undefined}>
-                  <PageLink
-                    to={{ type: "service", slug: s.slug }}
-                    navigate={navigate}
-                    className={`card service-card-link ${wide ? "service-card-wide" : ""}`}
-                  >
-                    <div className="service-card-media">
-                      <img src={s.image} alt="" {...imageSize(s.image)} loading="lazy" decoding="async" />
-                    </div>
-                    <div className="service-card-body">
-                      <span className="icon-tile" aria-hidden="true">
-                        <Icon name={s.icon} size={20} />
-                      </span>
-                      <h2 className="text-xl">{t(s.nameKey)}</h2>
-                      <p className={wide ? undefined : "line-clamp-3"}>{t(s.introKey)}</p>
-                      <More hidden>{t("link_more")}</More>
-                    </div>
-                  </PageLink>
-                </li>
-              )
-            })}
-          </ul>
+          <nav className="service-category-nav" aria-label={t("services_categories")}>
+            {SERVICE_GROUPS.map((group) => (
+              <a className="chip" href={`#services-${group.id}`} key={group.id}>{t(group.titleKey)}</a>
+            ))}
+          </nav>
+          {SERVICE_GROUPS.map((group) => (
+            <section className="service-category" id={`services-${group.id}`} key={group.id} aria-labelledby={`title-${group.id}`}>
+              <div className="service-category-heading">
+                <h2 id={`title-${group.id}`}>{t(group.titleKey)}</h2>
+                <p>{t(group.descKey)}</p>
+              </div>
+              <ul className={`grid ${group.slugs.length === 4 ? "grid-2" : "grid-3"} list-none m-0 p-0`}>
+                {group.slugs.map((slug) => {
+                  const service = SERVICE_BY_SLUG[slug]
+                  return (
+                    <li key={service.slug}>
+                      <PageLink
+                        to={{ type: "service", slug: service.slug }}
+                        navigate={navigate}
+                        className="card service-card-link"
+                      >
+                        <div className="service-card-media">
+                          <img src={service.image} alt="" {...imageSize(service.image)} loading="lazy" decoding="async" />
+                        </div>
+                        <div className="service-card-body">
+                          <span className="icon-tile" aria-hidden="true">
+                            <Icon name={service.icon} size={20} />
+                          </span>
+                          <h3 className="text-xl">{t(service.nameKey)}</h3>
+                          <p>{t(service.descKey)}</p>
+                          <More hidden>{t("link_more")}</More>
+                        </div>
+                      </PageLink>
+                    </li>
+                  )
+                })}
+              </ul>
+            </section>
+          ))}
+          <p className="service-images-note">{t("service_images_note")}</p>
         </div>
       </section>
 

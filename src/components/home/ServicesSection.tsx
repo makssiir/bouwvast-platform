@@ -9,7 +9,8 @@ import More from "../More"
 
 export default function ServicesSection({ navigate }: { navigate: (p: Page) => void }) {
   const { t, pick } = useLang()
-  const highlighted = SERVICES.slice(0, 6)
+  const highlighted = ["renovatie", "warmtepompen", "vloerverwarming", "loodgieter", "ramen-deuren", "badkamer-keuken"]
+    .map((slug) => SERVICES.find((service) => service.slug === slug)!)
   const price = (slug: string) => {
     const value = SERVICE_PRICES[slug]
     return claim("pricing") && value ? pick(value) : undefined
@@ -39,7 +40,6 @@ export default function ServicesSection({ navigate }: { navigate: (p: Page) => v
               >
                 <div className="service-card-media">
                   <img src={service.image} alt="" {...imageSize(service.image)} loading="lazy" decoding="async" />
-                  {service.illustration && <span className="service-card-impression">{t("image_impression")}</span>}
                   {price(service.slug) && <span className="service-card-price">{price(service.slug)}</span>}
                 </div>
                 <div className="service-card-body">
@@ -51,6 +51,7 @@ export default function ServicesSection({ navigate }: { navigate: (p: Page) => v
             </li>
           ))}
         </ul>
+        <p className="service-images-note">{t("service_images_note")}</p>
       </div>
     </section>
   )

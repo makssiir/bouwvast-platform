@@ -11,7 +11,7 @@ import { useQuoteDraft } from "../lib/quoteDraft"
 import LeadFallback from "./LeadFallback"
 import { track } from "../lib/analytics"
 import { hrefForPage } from "../lib/routes"
-import { SERVICES } from "../data/services"
+import { SERVICES, SERVICE_BY_SLUG, SERVICE_GROUPS } from "../data/services"
 import { ESTIMATOR } from "../data/pricing"
 
 type FormState = {
@@ -28,9 +28,6 @@ type Step = 1 | 2 | 3
 const STEPS = [1, 2, 3] as const
 const FIELD_ORDER: LeadField[] = ["city", "description", "photos", "name", "phone", "email"]
 const stepForField = (field: LeadField): Step => ["city", "description", "photos"].includes(field) ? 2 : 3
-const MAIN_SERVICES = SERVICES.filter((s) =>
-  ["renovatie", "badkamer-keuken", "uitbouw-aanbouw", "dakkapel-zolder", "afbouw"].includes(s.slug),
-)
 const serviceSlug = (value: string | undefined) =>
   SERVICES.find((s) => s.slug === value || s.name === value)?.slug ?? ""
 const EMPTY: FormState = { service: "", name: "", phone: "", email: "", city: "", description: "", hp: "" }
@@ -83,7 +80,6 @@ export default function QuoteForm({
   const chosen = SERVICES.find((s) => s.slug === form.service)
   const needsDescription = !chosen
   const chosenName = chosen ? t(chosen.nameKey) : t("quote_other")
-  const options = chosen && !MAIN_SERVICES.includes(chosen) ? [...MAIN_SERVICES, chosen] : MAIN_SERVICES
 
   const focusStep = (fieldName?: LeadField) => {
     window.setTimeout(() => {
@@ -335,24 +331,35 @@ export default function QuoteForm({
       )}
 
       <div hidden={step !== 1}>
-        <div className="project-choices" role="group" aria-labelledby={fid("step-title")}>
-          {options.map((service) => (
-            <button
-              type="button"
-              key={service.slug}
-              className="project-choice"
-              data-service={service.slug}
-              aria-pressed={form.service === service.slug}
-              onClick={() => choose(service.slug)}
-            >
-              <span className="project-choice-icon"><Icon name={service.icon} size={22} /></span>
-              <span>{t(service.nameKey)}</span>
-              <Icon name="arrow-right" size={17} />
-            </button>
+        <p className="quote-service-count">{t("quote_service_count", { n: String(SERVICES.length) })}</p>
+        <div className="quote-service-catalogue" role="group" aria-labelledby={fid("step-title")}>
+          {SERVICE_GROUPS.map((group) => (
+            <section className="quote-service-group" key={group.id} aria-labelledby={fid(`group-${group.id}`)}>
+              <h4 id={fid(`group-${group.id}`)}>{t(group.titleKey)}</h4>
+              <div className="project-choices">
+                {group.slugs.map((slug) => {
+                  const service = SERVICE_BY_SLUG[slug]
+                  return (
+                    <button
+                      type="button"
+                      key={service.slug}
+                      className="project-choice"
+                      data-service={service.slug}
+                      aria-pressed={form.service === service.slug}
+                      onClick={() => choose(service.slug)}
+                    >
+                      <span className="project-choice-icon"><Icon name={service.icon} size={20} /></span>
+                      <span>{t(service.nameKey)}</span>
+                      <Icon name="arrow-right" size={17} />
+                    </button>
+                  )
+                })}
+              </div>
+            </section>
           ))}
           <button
             type="button"
-            className="project-choice"
+            className="project-choice project-choice-other"
             data-service="other"
             aria-pressed={form.service === "other"}
             onClick={() => choose("other")}
@@ -362,25 +369,6 @@ export default function QuoteForm({
             <Icon name="arrow-right" size={17} />
           </button>
         </div>
-        <details className="quote-more-services">
-          <summary>{t("quote_more_services")}</summary>
-          <div className="project-choices">
-            {SERVICES.filter((service) => !options.includes(service)).map((service) => (
-              <button
-                type="button"
-                key={service.slug}
-                className="project-choice"
-                data-service={service.slug}
-                aria-pressed={form.service === service.slug}
-                onClick={() => choose(service.slug)}
-              >
-                <span className="project-choice-icon"><Icon name={service.icon} size={22} /></span>
-                <span>{t(service.nameKey)}</span>
-                <Icon name="arrow-right" size={17} />
-              </button>
-            ))}
-          </div>
-        </details>
         {choiceError && <p role="alert" className="field-error">{t("quote_choose_error")}</p>}
         <p className="quote-safe-note"><Icon name="check" size={16} />{t("quote_project_first")}</p>
       </div>

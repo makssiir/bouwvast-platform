@@ -626,6 +626,7 @@ export const SERVICES_LIST = [
   "Warmtepompen",
   "Vloerverwarming",
   "Verwarming",
+  "Ramen & Deuren",
   "Demontage ramen & deuren",
   "Algemene Bouwwerkzaamheden",
   "Loodgieter",

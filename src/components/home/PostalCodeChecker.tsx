@@ -5,7 +5,7 @@ import LeadFallback from "../LeadFallback"
 import { Field } from "../QuoteForm"
 import { useLang } from "../../i18n/LangContext"
 import type { TranslationKey } from "../../i18n/translations"
-import { SERVICES } from "../../data/services"
+import { SERVICES, SERVICE_BY_SLUG, SERVICE_GROUPS } from "../../data/services"
 import { CITIES } from "../../data/cities"
 import { LEAD_LIMITS, validateLead } from "../../lib/leadSchema.ts"
 import type { ContactPreference, LeadField } from "../../lib/leadSchema.ts"
@@ -314,18 +314,29 @@ function AreaLeadDialog({ place, sourcePage, onClose }: { place: string; sourceP
 
         <fieldset className="min-w-0 border-0 p-0">
           <legend className="field-label">{t("area_modal_service")}</legend>
-          <div className="choice-grid">
-            {SERVICES.map((service) => (
-              <label key={service.slug} className="choice">
-                <input
-                  type="radio"
-                  name={fid("service")}
-                  value={service.slug}
-                  checked={form.service === service.slug}
-                  onChange={() => up("service", service.slug)}
-                />
-                <span>{t(service.nameKey)}</span>
-              </label>
+          <p className="quote-service-count">{t("quote_service_count", { n: String(SERVICES.length) })}</p>
+          <div className="quote-service-catalogue">
+            {SERVICE_GROUPS.map((group) => (
+              <div className="quote-service-group" key={group.id} role="group" aria-labelledby={fid(`group-${group.id}`)}>
+                <h4 id={fid(`group-${group.id}`)}>{t(group.titleKey)}</h4>
+                <div className="choice-grid">
+                  {group.slugs.map((slug) => {
+                    const service = SERVICE_BY_SLUG[slug]
+                    return (
+                      <label key={service.slug} className="choice">
+                        <input
+                          type="radio"
+                          name={fid("service")}
+                          value={service.slug}
+                          checked={form.service === service.slug}
+                          onChange={() => up("service", service.slug)}
+                        />
+                        <span>{t(service.nameKey)}</span>
+                      </label>
+                    )
+                  })}
+                </div>
+              </div>
             ))}
             <label className="choice">
               <input
@@ -496,7 +507,7 @@ function AreaLeadDialog({ place, sourcePage, onClose }: { place: string; sourceP
           type="button"
           onClick={onClose}
           aria-label={t("close")}
-          className="absolute top-4 right-4 grid h-10 w-10 cursor-pointer place-items-center rounded-full border-0 bg-sand-100 text-ink transition-colors hover:bg-sand-200"
+          className="absolute top-4 right-4 grid h-11 w-11 cursor-pointer place-items-center rounded-full border-0 bg-sand-100 text-ink transition-colors hover:bg-sand-200"
         >
           <Icon name="close" size={20} />
         </button>

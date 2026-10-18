@@ -34,6 +34,12 @@ export const SERVICE_LOCAL: Record<string, ServiceLocal> = {
     title: { nl: "Verwarming en radiatoren in {city}", en: "Heating and radiators in {city}", uk: "Опалення та радіатори у {city}", ru: "Отопление и радиаторы в {city}" },
     noun: { nl: "werk aan uw verwarming", en: "heating system work", uk: "роботи із системою опалення", ru: "работы с системой отопления" },
   },
+  "ramen-deuren": {
+    group: "outside",
+    priority: 0.75,
+    title: { nl: "Ramen en deuren plaatsen in {city}", en: "Window and door installation in {city}", uk: "Встановлення вікон і дверей у {city}", ru: "Установка окон и дверей в {city}" },
+    noun: { nl: "ramen of deuren plaatsen of vervangen", en: "window or door installation and replacement", uk: "встановлення чи заміна вікон і дверей", ru: "установка или замена окон и дверей" },
+  },
   "demontage-ramen-deuren": {
     group: "outside",
     priority: 0.6,

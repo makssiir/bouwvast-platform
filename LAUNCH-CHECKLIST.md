@@ -61,6 +61,10 @@ actual Dutch registration, policy, certificate or warranty first.
 - **Hero image**: AI-generated interior and craftsperson, explicitly labelled
   as an illustration, not the company's team or completed project. Replace
   with genuine permitted photography when available.
+- **Service photographs**: generated scenes are presented as illustrative
+  examples ("Sfeerbeeld"), not as a real project portfolio. There are no
+  public AI badges. Do not attach invented clients, addresses or completion
+  dates to these scenes or enable the real-projects claim for them.
 - **Before/after slider**: shows AI illustrations labelled "Impressie"
   (`src/data/impressions.ts`) until `projects` is on and projects have a
   `beforeImage`. The caption explicitly says they are not completed
@@ -76,7 +80,7 @@ actual Dutch registration, policy, certificate or warranty first.
 
 The site has a page for 58 places in all twelve provinces, and the 47 larger
 places also get a page per service (`/werkgebied/<plaats>/<dienst>/`,
-47 × 12 = 564 pages). Every one of those pages tells visitors and search
+47 × 17 = 799 pages). Every one of those pages tells visitors and search
 engines that you take on work there.
 
 - [ ] Remove every place the team cannot actually serve (delete it from

@@ -30,7 +30,8 @@ export const SERVICES: Service[] = [
     icon: "renovation",
     nameKey: "svc_renovation",
     descKey: "svc_renovation_desc",
-    image: "/images/renovation-ladder.webp",
+    image: "/images/renovated-interior.webp",
+    illustration: true,
     introKey: "svc_renovation_intro",
     includesKeys: [
       "svc_renovation_inc_1",
@@ -131,7 +132,7 @@ export const SERVICES: Service[] = [
     icon: "heating",
     nameKey: "svc_heating",
     descKey: "svc_heating_desc",
-    image: "/images/heat-pump.webp",
+    image: "/images/radiator-heating.webp",
     illustration: true,
     introKey: "svc_heating_intro",
     noteKey: "svc_heating_note",
@@ -144,12 +145,31 @@ export const SERVICES: Service[] = [
     ],
   },
   {
+    slug: "ramen-deuren",
+    name: "Ramen & Deuren",
+    icon: "window",
+    nameKey: "svc_windows",
+    descKey: "svc_windows_desc",
+    image: "/images/windows-doors.webp",
+    illustration: true,
+    introKey: "svc_windows_intro",
+    noteKey: "svc_windows_note",
+    includesKeys: [
+      "svc_windows_inc_1",
+      "svc_windows_inc_2",
+      "svc_windows_inc_3",
+      "svc_windows_inc_4",
+      "svc_windows_inc_5",
+    ],
+  },
+  {
     slug: "demontage-ramen-deuren",
     name: "Demontage ramen & deuren",
     icon: "window",
     nameKey: "svc_dismantling",
     descKey: "svc_dismantling_desc",
-    image: "/images/renovation-ladder.webp",
+    image: "/images/window-removal.webp",
+    illustration: true,
     introKey: "svc_dismantling_intro",
     noteKey: "svc_dismantling_note",
     includesKeys: [
@@ -197,7 +217,8 @@ export const SERVICES: Service[] = [
     icon: "facade",
     nameKey: "svc_facade",
     descKey: "svc_facade_desc",
-    image: "/images/site-team.webp",
+    image: "/images/brick-facade.webp",
+    illustration: true,
     introKey: "svc_facade_intro",
     includesKeys: [
       "svc_facade_inc_1",
@@ -245,7 +266,8 @@ export const SERVICES: Service[] = [
     icon: "bathroom",
     nameKey: "svc_plumber",
     descKey: "svc_plumber_desc",
-    image: "/images/kitchen-before.webp",
+    image: "/images/plumbing-installation.webp",
+    illustration: true,
     introKey: "svc_plumber_intro",
     includesKeys: [
       "svc_plumber_inc_1",
@@ -293,6 +315,42 @@ export const SERVICES: Service[] = [
 export const SERVICE_BY_SLUG: Record<string, Service> = Object.fromEntries(
   SERVICES.map((s) => [s.slug, s]),
 )
+
+/**
+ * One public catalogue for the service overview and both enquiry forms.
+ * Every service appears once; nothing is hidden behind a "more services" toggle.
+ */
+export const SERVICE_GROUPS: {
+  id: string
+  titleKey: TranslationKey
+  descKey: TranslationKey
+  slugs: string[]
+}[] = [
+  {
+    id: "installations",
+    titleKey: "services_group_installations",
+    descKey: "services_group_installations_desc",
+    slugs: ["warmtepompen", "vloerverwarming", "verwarming", "loodgieter"],
+  },
+  {
+    id: "windows",
+    titleKey: "services_group_windows",
+    descKey: "services_group_windows_desc",
+    slugs: ["ramen-deuren", "demontage-ramen-deuren", "timmerman"],
+  },
+  {
+    id: "renovation",
+    titleKey: "services_group_renovation",
+    descKey: "services_group_renovation_desc",
+    slugs: ["renovatie", "badkamer-keuken", "uitbouw-aanbouw", "dakkapel-zolder", "afbouw"],
+  },
+  {
+    id: "maintenance",
+    titleKey: "services_group_maintenance",
+    descKey: "services_group_maintenance_desc",
+    slugs: ["gevel-buitenwerk", "schilderwerk", "onderhoud-reparatie", "montage", "algemeen"],
+  },
+]
 
 /**
  * Owner launch gate, not a public certification claim. Confirm the actual scope,

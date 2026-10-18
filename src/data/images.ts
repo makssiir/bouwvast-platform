@@ -1,5 +1,11 @@
 /** Intrinsic sizes of images in /public, so the browser can reserve space (no layout shift). */
 export const IMAGE_SIZES: Record<string, { width: number; height: number }> = {
+  "/images/windows-doors.webp": { width: 1200, height: 900 },
+  "/images/plumbing-installation.webp": { width: 1200, height: 900 },
+  "/images/radiator-heating.webp": { width: 1200, height: 900 },
+  "/images/brick-facade.webp": { width: 1200, height: 900 },
+  "/images/window-removal.webp": { width: 1200, height: 900 },
+  "/images/renovated-interior.webp": { width: 1200, height: 900 },
   "/images/hero-craftsmanship.webp": { width: 1200, height: 900 },
   "/images/hero-craftsmanship-720.webp": { width: 720, height: 540 },
   "/images/heat-pump.webp": { width: 1200, height: 900 },

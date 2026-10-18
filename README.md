@@ -23,7 +23,7 @@ Node ≥ 22.18 (`.nvmrc`). Copy `.env.example` to `.env` for local settings;
 | Pages & routes | `src/pages`, `src/lib/routes.ts` | One route table drives navigation, prerendering, sitemap and robots |
 | Translations | `src/i18n/translations.ts` | nl (canonical), en, uk, ru; preference stored client-side |
 | Owner facts | `src/data/company.ts`, `claims.ts`, `pricing.ts`, `projects.ts`, `legal.ts`, `cities.ts` | Unverified values are never rendered — see `LAUNCH-CHECKLIST.md` |
-| Local pages | `src/data/cities.ts`, `cityIntros.ts`, `localTraits.ts`, `heatingTips.ts`, `serviceLocal.ts` | 58 places (`/werkgebied/<plaats>/`), 47 × 16 service × place pages (`/werkgebied/<plaats>/<dienst>/`), loaded as a separate chunk |
+| Local pages | `src/data/cities.ts`, `cityIntros.ts`, `localTraits.ts`, `heatingTips.ts`, `serviceLocal.ts` | 58 places (`/werkgebied/<plaats>/`), 47 × 17 service × place pages (`/werkgebied/<plaats>/<dienst>/`), loaded as a separate chunk |
 | Prerender | `scripts/prerender.mjs` | Writes `dist/<route>/index.html`, `404.html`, `robots.txt`, `sitemap.xml`, `llms.txt`, `llms-full.txt` |
 | Structured data | `src/lib/schema.ts`, `src/lib/localFaq.ts` | Business, service and place per page; FAQ markup for visible questions |
 | Server | `server/` | Static files with security headers + `POST /api/leads` + `GET /healthz` |
@@ -64,13 +64,20 @@ and/or Resend e-mail and are retried until delivered. Leads older than
 
 ### Services, images and VAT
 
-- There are 16 service pages. Heat pumps, underfloor heating, heating systems
-  and window/door removal have their own pages and request choices. Plumbing
+- There are 17 service pages. Heat pumps, underfloor heating, heating systems,
+  new window/door installation and old window/door removal have their own pages and request choices. Plumbing
   explicitly includes concealed toilet frames; renovation covers reconfiguration
   and restoration without claiming architectural or structural qualifications.
+- All 17 choices are immediately visible in both enquiry forms, organised into
+  four categories from the shared `SERVICE_GROUPS` catalogue. No services are
+  hidden behind a "more services" toggle. The public services page uses the
+  same categories, with category links and service-specific photographs.
 - The homepage uses one stronger architectural/craftsmanship image instead of
-  the downward-looking worker inset. Generated imagery is labelled as such,
-  never presented as a real project, real team or proof of experience.
+  the downward-looking worker inset. Six additional generated scenes illustrate
+  renovation, plumbing, radiators, facades, new windows/doors and old-frame
+  removal. Public copy uses an illustrative/inspiration context, without AI
+  badges; images are never presented as real projects, the real team or proof
+  of experience. Genuine projects still require the verified projects claim.
 - Consumer-facing indicative prices remain **including VAT**. Quote breakdowns
   show net amounts, VAT at the applicable rates and a gross total. Business
   quotes usually show net amounts, explicitly labelled; rates and exceptions
