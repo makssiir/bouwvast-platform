@@ -731,6 +731,50 @@ try {
     check("window page and catalogue hydrate without errors", problems.length === 0, problems.join("; "))
     await ctx.close()
   }
+  console.log("\n16. Legal company identity and direct phone contact")
+  for (const language of ["nl", "en", "uk", "ru"]) {
+    for (const width of [1100, 1280, 1440, 390]) {
+      const ctx = await browser.newContext({
+        viewport: { width, height: width === 390 ? 844 : 1000 },
+        reducedMotion: "reduce",
+      })
+      await ctx.addInitScript((lang) => localStorage.setItem("huisklusdienst.lang", lang), language)
+      const page = await ctx.newPage()
+      const problems = watch(page)
+      await page.goto(`${base}/contact/`)
+      await page.waitForLoadState("networkidle")
+      const label = `${language} ${width}px`
+      const details = page.locator("[data-company-details]")
+      const text = await details.innerText()
+      for (const value of ["Slim-Team Bouw B.V.", "Baarn", "97996939", "NL828110670B01", "Maksym Usyk", "06 17 55 25 58"])
+        check(`${label}: company card shows ${value}`, text.includes(value))
+      check(`${label}: no postcode is shown`, !/\b\d{4}\s*[A-Z]{2}\b/i.test(text))
+      const companyNotice = await page.locator("footer [data-company-notice]").innerText()
+      const trademarkWording = { nl: "is een merk van", en: "is a trademark owned by", uk: "є торговельною маркою, що належить", ru: "является товарным знаком, принадлежащим" }[language]
+      check(`${label}: trademark owner and legal operator are clear`, companyNotice.includes("Huisklusdienst") && companyNotice.includes(trademarkWording) && companyNotice.includes("Slim-Team Bouw B.V.") && companyNotice.includes("97996939"))
+      check(`${label}: phone is directly callable`, (await details.locator('a[href="tel:+31617552558"]').count()) === 1)
+      check(`${label}: no exact address or map link is published`, (await details.locator('a[href*="maps/search"]').count()) === 0)
+      check(`${label}: no unconfirmed email or WhatsApp is inferred`, await page.locator('a[href^="mailto:"], a[href*="wa.me/"]').count() === 0)
+      check(`${label}: company details fit the screen`, await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1))
+      check(`${label}: navigation stays within its container`, await page.evaluate(() => {
+        const nav = document.querySelector(".site-header .nav")
+        return nav.scrollWidth <= nav.clientWidth + 1
+      }))
+      check(`${label}: company page hydrates without errors`, problems.length === 0, problems.join("; "))
+      await ctx.close()
+    }
+  }
+  {
+    const ctx = await browser.newContext({ javaScriptEnabled: false })
+    const page = await ctx.newPage()
+    for (const path of ["/privacy/", "/voorwaarden/"]) {
+      await page.goto(`${base}${path}`)
+      const text = await page.locator("main").innerText()
+      check(`${path}: legal provider and trademark owner are named without JavaScript`, text.includes("Slim-Team Bouw B.V.") && text.includes("Huisklusdienst") && text.includes("is een merk van") && text.includes("Baarn") && text.includes("97996939") && text.includes("NL828110670B01") && !/\b\d{4}\s*[A-Z]{2}\b/i.test(text))
+      check(`${path}: supplied telephone is available without JavaScript`, await page.locator('main a[href="tel:+31617552558"]').count() > 0)
+    }
+    await ctx.close()
+  }
 } finally {
   console.log(`\n${passed} passed, ${failed} failed`)
   await browser.close()

@@ -5,6 +5,22 @@ renovatie en onderhoud in en om het huis, with a page per place and per service 
 React 19 + Vite 8 + Tailwind v4, prerendered to static HTML per route, served by
 a small dependency-free Node server that also receives quote requests.
 
+## Legal company and contact
+
+The owner-supplied website operator and service provider is **Slim-Team Bouw B.V.**,
+based in Baarn; KvK **97996939**; VAT **NL828110670B01**.
+Contact person: **Maksym Usyk**, **06 17 55 25 58** (`tel:+31617552558`).
+Only the town appears publicly; the street address and postcode are not included
+in the website, structured data, or machine-readable site information.
+**Huisklusdienst is a trademark owned by Slim-Team Bouw B.V. (KvK 97996939).**
+Confirmation is from the owner, not an independent registry lookup.
+
+**Trade name needs clarification:** the owner wrote “Klusvakdienst”, while the
+existing site and domain use “Huisklusdienst”. Branding is preserved and no
+trade-name relationship is published until the exact name is confirmed.
+No email, WhatsApp availability, opening hours or new service-area claim is inferred.
+Privacy/terms approval and production lead delivery remain separate launch gates.
+
 ## Quick start
 
 ```bash

@@ -2,10 +2,11 @@ import type { ReactNode } from "react"
 import PageHero from "../components/PageHero"
 import type { Page } from "../lib/routes"
 import { useLang } from "../i18n/LangContext"
-import { CONTACT, emailHref } from "../data/contact"
+import { CONTACT, emailHref, phoneHref } from "../data/contact"
 import { LEGAL } from "../data/legal"
 import PageLink from "../components/PageLink"
 import { LEAD_LIMITS } from "../lib/leadSchema"
+import CompanyNotice from "../components/CompanyNotice"
 
 /**
  * The legal texts are written in Dutch, the language of the agreement. Other
@@ -34,7 +35,7 @@ function LegalShell({
             {lang !== "nl" && <p className="notice" lang={lang}>{t("legal_dutch_only")}</p>}
             {!approved && (
               <p className="notice" role="note">
-                <strong>Concept.</strong> Deze tekst is nog niet definitief vastgesteld door Huisklusdienst en
+                <strong>Concept.</strong> Deze tekst is nog niet definitief vastgesteld door {CONTACT.legalName ?? "de website-exploitant"} en
                 kan nog wijzigen.
               </p>
             )}
@@ -68,10 +69,16 @@ function LegalShell({
 function CompanyIdentity() {
   const parts = [
     CONTACT.legalName ?? "Huisklusdienst",
-    CONTACT.address,
+    CONTACT.locality,
     CONTACT.kvk ? `KvK ${CONTACT.kvk}` : undefined,
+    CONTACT.btw ? `btw-identificatienummer ${CONTACT.btw}` : undefined,
   ].filter(Boolean)
-  return <>{parts.join(", ")}</>
+  return (
+    <>
+      {parts.join(", ")}
+      {CONTACT.tradeName && <> (handelend onder de naam {CONTACT.tradeName})</>}
+    </>
+  )
 }
 
 function ContactLine() {
@@ -82,6 +89,10 @@ function ContactLine() {
         per e-mail via <a href={mail}>{CONTACT.email}</a>
       </>
     )
+  }
+  const tel = phoneHref()
+  if (tel && CONTACT.phoneDisplay) {
+    return <>via telefoonnummer <a href={tel}>{CONTACT.phoneDisplay}</a></>
   }
   return <>via het contactformulier op deze website</>
 }
@@ -104,6 +115,7 @@ export function PrivacyPage({ navigate }: { navigate: (p: Page) => void }) {
         waarom, en welke rechten u heeft. Verantwoordelijke voor de verwerking is{" "}
         <CompanyIdentity />.
       </p>
+      <CompanyNotice className="mb-5" />
 
       <h2>Welke gegevens we verwerken</h2>
       <p>Als u het offerteformulier invult, ontvangen we:</p>
@@ -184,7 +196,8 @@ export function PrivacyPage({ navigate }: { navigate: (p: Page) => void }) {
       <h2>Beveiliging</h2>
       <p>
         De website werkt uitsluitend via een versleutelde verbinding (HTTPS). Aanvragen en foto's
-        worden opgeslagen op een server die alleen toegankelijk is voor Huisklusdienst.
+        worden opgeslagen op een server die alleen toegankelijk is voor {CONTACT.legalName ?? "de website-exploitant"} en de
+        bevoegde dienstverleners die hierboven zijn vermeld.
       </p>
     </LegalShell>
   )
@@ -202,11 +215,15 @@ export function TermsPage({ navigate }: { navigate: (p: Page) => void }) {
       lastUpdated={LEGAL.terms.lastUpdated}
     >
       <p>
+        De aanbieder van de diensten op deze website is <CompanyIdentity />.
+      </p>
+      <CompanyNotice className="mb-5" />
+      <p>
         Een aanvraag via deze website is vrijblijvend en verplicht u tot niets. Een overeenkomst
-        komt pas tot stand als u een offerte van Huisklusdienst schriftelijk of per e-mail accepteert.
+        komt pas tot stand als u een offerte van {CONTACT.legalName ?? "de aanbieder"} schriftelijk of per e-mail accepteert.
       </p>
       <p>
-        Op offertes en opdrachten zijn de algemene voorwaarden van Huisklusdienst van toepassing. U
+        Op offertes en opdrachten zijn de algemene voorwaarden van {CONTACT.legalName ?? "de aanbieder"} van toepassing. U
         ontvangt die voorwaarden samen met de offerte, zodat u ze kunt lezen voordat u akkoord
         gaat.
       </p>

@@ -128,7 +128,14 @@ function organization(origin: string, url: (page: Page) => string): SchemaNode {
   if (CONTACT.legalName) node.legalName = CONTACT.legalName
   if (CONTACT.phoneTel) node.telephone = CONTACT.phoneTel
   if (CONTACT.email) node.email = CONTACT.email
-  if (CONTACT.address) node.address = { "@type": "PostalAddress", streetAddress: CONTACT.address, addressCountry: "NL" }
+  if (CONTACT.tradeName) node.alternateName = CONTACT.tradeName
+  if (CONTACT.contactPerson && CONTACT.phoneTel) {
+    node.contactPoint = {
+      "@type": "ContactPoint",
+      name: CONTACT.contactPerson,
+      telephone: CONTACT.phoneTel,
+    }
+  }
   if (CONTACT.kvk) node.identifier = { "@type": "PropertyValue", propertyID: "KvK", value: CONTACT.kvk }
   if (CONTACT.btw) node.vatID = CONTACT.btw
   return node

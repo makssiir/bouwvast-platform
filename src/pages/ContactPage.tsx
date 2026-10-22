@@ -2,7 +2,8 @@ import Icon from "../components/Icon"
 import PageHero from "../components/PageHero"
 import QuoteForm from "../components/QuoteForm"
 import PageLink from "../components/PageLink"
-import { CONTACT, emailHref, googleMapsHref, phoneHref, whatsappHref } from "../data/contact"
+import CompanyNotice from "../components/CompanyNotice"
+import { CONTACT, emailHref, phoneHref, whatsappHref } from "../data/contact"
 import { useLang } from "../i18n/LangContext"
 import type { Page } from "../lib/routes"
 
@@ -43,8 +44,6 @@ export default function ContactPage({ navigate }: { navigate: (p: Page) => void 
   if (mail && CONTACT.email) {
     channels.push({ icon: "mail", label: "E-mail", value: CONTACT.email, href: mail, external: false })
   }
-
-  const maps = googleMapsHref()
 
   return (
     <>
@@ -113,34 +112,56 @@ export default function ContactPage({ navigate }: { navigate: (p: Page) => void 
                 </ol>
               </div>
 
-              <div className="card">
-                <h2 className="mb-2 text-lg">{CONTACT.legalName ?? "Huisklusdienst"}</h2>
-                <p className="mb-4 text-[0.9375rem] text-muted">{t("footer_desc")}</p>
-                <ul className="info-list">
-                  {CONTACT.address && (
-                    <li>
-                      <Icon name="home" size={16} />
-                      {maps ? (
-                        <a href={maps} target="_blank" rel="noopener noreferrer">
-                          {CONTACT.address}
-                        </a>
-                      ) : (
-                        <span>{CONTACT.address}</span>
-                      )}
-                    </li>
+              <div className="card" data-company-details>
+                <h2 className="mb-3 text-lg">
+                  {pick({ nl: "Bedrijfsgegevens", en: "Company details", uk: "Реквізити компанії", ru: "Реквизиты компании" })}
+                </h2>
+                <CompanyNotice className="mb-5 text-[0.9375rem] leading-relaxed text-muted" />
+                <dl className="company-details">
+                  {CONTACT.legalName && (
+                    <div>
+                      <dt>{pick({ nl: "Bedrijfsnaam", en: "Legal company name", uk: "Юридична назва", ru: "Юридическое наименование" })}</dt>
+                      <dd>{CONTACT.legalName}</dd>
+                    </div>
                   )}
-                  {CONTACT.hours && (
-                    <li>
-                      <Icon name="clock" size={16} />
-                      <span>{CONTACT.hours}</span>
-                    </li>
+                  {CONTACT.locality && (
+                    <div>
+                      <dt>{pick({ nl: "Plaats", en: "Town", uk: "Місто", ru: "Город" })}</dt>
+                      <dd>{CONTACT.locality}</dd>
+                    </div>
                   )}
                   {CONTACT.kvk && (
-                    <li>
-                      <Icon name="shield" size={16} />
-                      <span>KvK {CONTACT.kvk}</span>
-                    </li>
+                    <div>
+                      <dt>{pick({ nl: "KvK-nummer", en: "Chamber of Commerce number (KvK)", uk: "Реєстраційний номер KvK", ru: "Регистрационный номер KvK" })}</dt>
+                      <dd>{CONTACT.kvk}</dd>
+                    </div>
                   )}
+                  {CONTACT.btw && (
+                    <div>
+                      <dt>{pick({ nl: "Btw-identificatienummer", en: "VAT identification number", uk: "Ідентифікаційний номер ПДВ", ru: "Идентификационный номер НДС" })}</dt>
+                      <dd>{CONTACT.btw}</dd>
+                    </div>
+                  )}
+                  {CONTACT.contactPerson && (
+                    <div>
+                      <dt>{pick({ nl: "Contactpersoon", en: "Contact person", uk: "Контактна особа", ru: "Контактное лицо" })}</dt>
+                      <dd>{CONTACT.contactPerson}</dd>
+                    </div>
+                  )}
+                  {tel && (
+                    <div>
+                      <dt>{pick({ nl: "Telefoon", en: "Phone", uk: "Телефон", ru: "Телефон" })}</dt>
+                      <dd><a href={tel}>{CONTACT.phoneDisplay}</a></dd>
+                    </div>
+                  )}
+                  {CONTACT.hours && (
+                    <div>
+                      <dt>{pick({ nl: "Openingstijden", en: "Opening hours", uk: "Години роботи", ru: "Часы работы" })}</dt>
+                      <dd>{CONTACT.hours}</dd>
+                    </div>
+                  )}
+                </dl>
+                <ul className="info-list mt-5">
                   <li>
                     <Icon name="pin" size={16} />
                     <PageLink to="werkgebied" navigate={navigate}>

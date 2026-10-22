@@ -10,6 +10,7 @@ import { readFile } from "node:fs/promises"
 import { existsSync, readFileSync } from "node:fs"
 import { dirname, join, resolve } from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
+import { COMPANY, verifiedValue } from "../src/data/company.ts"
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..")
 const distDir = join(root, "dist")
@@ -113,6 +114,12 @@ async function main() {
     check(`${label} has exactly one h1`, (html.match(/<h1[\s>]/gi) ?? []).length === 1)
     check(`${label} has exactly one main landmark`, (html.match(/<main[\s>]/gi) ?? []).length === 1)
     check(`${label} renders content without JS`, text.length > 400, `${text.length} chars`)
+    for (const key of ["legalName", "locality", "phoneDisplay", "kvk", "btw"]) {
+      const value = verifiedValue(COMPANY[key])
+      if (value) check(`${label} shows confirmed company ${key}`, text.includes(value))
+    }
+    if (verifiedValue(COMPANY.phoneTel))
+      check(`${label} phone link uses the international number`, html.includes(`href="tel:${verifiedValue(COMPANY.phoneTel)}"`))
 
     const forms = (html.match(/<form[\s>]/gi) ?? []).length
     check(`${label} has at most one form`, forms <= 1, `${forms} forms`)
@@ -155,6 +162,17 @@ async function main() {
       check(`${label} is self-canonical`, canonical === expected, `${canonical} != ${expected}`)
       check(`${label} carries structured data`, /application\/ld\+json/.test(html))
       check(`${label} has an absolute og:image`, html.includes(`content="${origin}/og-image.jpg"`))
+      const schemaJson = first(html, /<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/i)
+      let organization
+      try {
+        const graph = JSON.parse(schemaJson)
+        organization = graph["@graph"]?.find((node) => node["@id"] === `${origin}/#organization`)
+      } catch {}
+      check(`${label} business schema identifies the legal company`, organization?.legalName === verifiedValue(COMPANY.legalName))
+      check(`${label} business schema has the correct phone`, organization?.telephone === verifiedValue(COMPANY.phoneTel))
+      check(`${label} business schema omits the street address`, !organization?.address)
+      check(`${label} business schema has the correct registrations`, organization?.identifier?.value === verifiedValue(COMPANY.kvk) && organization?.vatID === verifiedValue(COMPANY.btw))
+      check(`${label} business schema names the supplied contact`, organization?.contactPoint?.name === verifiedValue(COMPANY.contactPerson))
     } else {
       check(`${label} has no canonical without SITE_ORIGIN`, canonical === "", canonical)
     }

@@ -14,11 +14,15 @@ export const CONTACT = {
   phoneTel,
   phoneDisplay,
   email,
-  address: verifiedValue(COMPANY.address),
+  locality: verifiedValue(COMPANY.locality),
   hours: verifiedValue(COMPANY.hours),
   kvk: verifiedValue(COMPANY.kvk),
   btw: verifiedValue(COMPANY.btw),
   legalName: verifiedValue(COMPANY.legalName),
+  brand: verifiedValue(COMPANY.brand),
+  brandOwner: verifiedValue(COMPANY.brandOwner),
+  tradeName: verifiedValue(COMPANY.tradeName),
+  contactPerson: verifiedValue(COMPANY.contactPerson),
   hasWhatsApp: Boolean(whatsappNumber),
 }
 
@@ -40,12 +44,6 @@ export function emailHref(subject?: string, body?: string): string | undefined {
   if (body) params.set("body", body)
   const query = params.toString().replace(/\+/g, "%20")
   return `mailto:${email}${query ? `?${query}` : ""}`
-}
-
-export function googleMapsHref(): string | undefined {
-  return CONTACT.address
-    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CONTACT.address)}`
-    : undefined
 }
 
 /** True when at least one direct channel besides the form is available. */

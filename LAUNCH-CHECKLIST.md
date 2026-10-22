@@ -9,12 +9,17 @@ less until the owner supplies real, verifiable facts.
 For each field: fill in `value`, set `verified: true`, note the `source`
 (e.g. "KvK-uittreksel 2026-02-01").
 
-- [ ] Registered name (`legalName`) **(gate)**
-- [ ] Phone, as displayed and as `tel:` (`phoneDisplay`, `phoneTel`) **(gate)**
+- [x] Registered name (`legalName`): Slim-Team Bouw B.V. — owner supplied **(gate)**
+- [x] Phone, as displayed and as `tel:` (`phoneDisplay`, `phoneTel`): 06 17 55 25 58 / +31617552558 **(gate)**
 - [ ] Customer e-mail (`email`) **(gate)**
-- [ ] KvK number (`kvk`) **(gate)**
-- [ ] VAT/BTW number (`btw`)
-- [ ] Visiting/postal address (`address`) — enables full LocalBusiness data
+- [x] KvK number (`kvk`): 97996939 — owner supplied, not independently registry-checked **(gate)**
+- [x] VAT/BTW number (`btw`): NL828110670B01 — owner supplied, not independently registry-checked
+- [x] Public location (`locality`): Baarn; no street address or postcode is published.
+      Confirm the registered visiting address is shielded in the Business Register before launch.
+- [x] Contact person (`contactPerson`): Maksym Usyk
+- [ ] Exact trade name (`tradeName`): owner wrote “Klusvakdienst”; existing website is “Huisklusdienst”.
+      Confirm before publishing a trade-name statement or renaming the brand/domain.
+      Until then the site names Slim-Team Bouw B.V. as its operator without asserting a trade name.
 - [ ] Opening hours (`hours`)
 - [ ] WhatsApp number (`whatsapp`) — only if someone actually answers it.
       Until then every WhatsApp button stays hidden and the desktop pop-up

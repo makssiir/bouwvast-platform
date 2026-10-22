@@ -102,7 +102,7 @@ export default function Header({
 
         <nav
           aria-label={pick({ nl: "Hoofdnavigatie", en: "Main navigation", uk: "Головна навігація", ru: "Главная навигация" })}
-          className="hidden lg:flex items-center"
+          className="hidden xl:flex items-center"
         >
           <ul className="nav-links">
             {NAV.map((n) => (
@@ -175,10 +175,11 @@ export default function Header({
           {tel && (
             <a
               href={tel}
-              className="btn btn-outline btn-sm btn-hide-mobile hidden xl:inline-flex"
+              className="btn btn-outline btn-sm btn-hide-mobile nav-phone hidden xl:inline-flex"
+              aria-label={`${t("nav_call")}: ${CONTACT.phoneDisplay}`}
+              title={`${t("nav_call")}: ${CONTACT.phoneDisplay}`}
             >
               <Icon name="phone" size={16} />
-              {CONTACT.phoneDisplay}
             </a>
           )}
 

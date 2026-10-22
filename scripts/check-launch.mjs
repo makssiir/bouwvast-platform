@@ -108,7 +108,7 @@ if (Math.abs(retentionDays - expectedDays) > 31)
 
 // --- Reminders --------------------------------------------------------------
 warnings.push(`Service area lists ${CITIES.length} places (src/data/cities.ts): confirm with the owner.`)
-if (!COMPANY.address.verified) warnings.push("No verified address: LocalBusiness structured data stays minimal.")
+if (!COMPANY.locality.verified) warnings.push("No verified town: keep the business location out of public content.")
 
 // --- Report -----------------------------------------------------------------
 for (const w of warnings) console.log(`  warn  ${w}`)

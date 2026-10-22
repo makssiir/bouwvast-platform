@@ -543,6 +543,19 @@
     align-items: center;
     gap: 0.6rem;
   }
+  .nav-phone {
+    width: 44px;
+    min-height: 44px;
+    padding: 0;
+  }
+  @media (min-width: 1280px) {
+    .nav {
+      gap: 1rem;
+    }
+    .nav-links a {
+      padding-inline: 0.5rem;
+    }
+  }
 
   .lang-btn {
     display: inline-flex;
@@ -702,7 +715,7 @@
     margin-top: 1.5rem;
   }
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1279.98px) {
     .nav-links {
       display: none;
     }
@@ -2367,6 +2380,25 @@
   .contact-link strong {
     color: var(--color-ink);
     font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+  .company-details {
+    display: grid;
+    gap: 1rem;
+    margin: 0;
+  }
+  .company-details dt {
+    margin-bottom: 0.2rem;
+    color: var(--color-ink-soft);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  .company-details dd {
+    margin: 0;
+    color: var(--color-ink);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
     overflow-wrap: anywhere;
   }
   .info-list {

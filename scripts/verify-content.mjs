@@ -12,6 +12,7 @@ import { SERVICE_LOCAL } from "../src/data/serviceLocal.ts"
 import { HEATING_TIPS } from "../src/data/heatingTips.ts"
 import { TRAITS } from "../src/data/localTraits.ts"
 import { IMAGE_SIZES } from "../src/data/images.ts"
+import { COMPANY, verifiedValue } from "../src/data/company.ts"
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..")
 let passed = 0
@@ -60,6 +61,23 @@ check("heat-pump review cannot be claimed without evidence", !HEAT_PUMP_SCOPE.re
 check("consumer VAT wording is explicit", /particulieren.*inclusief btw/i.test(translations.nl.faq_1_a))
 check("business net pricing is explicit", /doorgaans exclusief btw/i.test(translations.nl.vat_business_note))
 check("quote contains gross total as well as net amounts", /zonder btw.*totaal inclusief btw/i.test(translations.nl.quote_vat_note))
+
+const suppliedCompanyDetails = {
+  legalName: "Slim-Team Bouw B.V.",
+  brandOwner: "Slim-Team Bouw B.V.",
+  contactPerson: "Maksym Usyk",
+  phoneDisplay: "06 17 55 25 58",
+  phoneTel: "+31617552558",
+  locality: "Baarn",
+  kvk: "97996939",
+  btw: "NL828110670B01",
+}
+for (const [key, value] of Object.entries(suppliedCompanyDetails)) {
+  check(`company: owner-supplied ${key} is published exactly`, verifiedValue(COMPANY[key]) === value)
+  check(`company: ${key} records its confirmation source`, Boolean(COMPANY[key].source?.trim()))
+}
+check("company: unconfirmed facts stay private", verifiedValue({ value: "not confirmed", verified: false }) === undefined)
+check("company: whitespace is not a published value", verifiedValue({ value: "  ", verified: true }) === undefined)
 
 for (const failure of failures) console.error(`  FAIL  ${failure}`)
 console.log(`${passed} content checks passed, ${failures.length} failed (${SERVICES.length} services, ${keys.length} keys per language).`)

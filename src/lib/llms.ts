@@ -37,10 +37,14 @@ function summary(): string {
 
 function contactLines(link: (page: Page) => string): string[] {
   const lines = [`- Offerte aanvragen of contact: ${link("contact")}`]
+  if (CONTACT.legalName) lines.push(`- Bedrijfsnaam / website-exploitant: ${CONTACT.legalName}`)
+  if (CONTACT.tradeName && CONTACT.legalName) lines.push(`- ${CONTACT.tradeName} is een handelsnaam van ${CONTACT.legalName}.`)
+  if (CONTACT.contactPerson) lines.push(`- Contactpersoon: ${CONTACT.contactPerson}`)
   if (CONTACT.phoneDisplay) lines.push(`- Telefoon: ${CONTACT.phoneDisplay}`)
   if (CONTACT.email) lines.push(`- E-mail: ${CONTACT.email}`)
-  if (CONTACT.address) lines.push(`- Adres: ${CONTACT.address}`)
+  if (CONTACT.locality) lines.push(`- Plaats: ${CONTACT.locality}`)
   if (CONTACT.kvk) lines.push(`- KvK: ${CONTACT.kvk}`)
+  if (CONTACT.btw) lines.push(`- Btw-identificatienummer: ${CONTACT.btw}`)
   lines.push("- Talen op de site: Nederlands, Engels, Oekraïens en Russisch")
   return lines
 }

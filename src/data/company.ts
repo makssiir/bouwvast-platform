@@ -15,20 +15,26 @@ export interface CompanyField {
 }
 
 export const COMPANY = {
-  /** Trading name shown in copy. The brand name itself is not a claim. */
+  /** Current website branding; this does not establish a registered trade name. */
   brand: { value: "Huisklusdienst", verified: true, source: "owner: domain huisklusdienst.nl" },
-  legalName: { value: "", verified: false },
+  /** Trademark owner confirmed by the owner. */
+  brandOwner: { value: "Slim-Team Bouw B.V.", verified: true, source: "Owner-confirmed trademark owner in chat; KvK 97996939." },
+  /** Keep the trade-name relationship hidden until the exact name is confirmed. */
+  tradeName: { value: "", verified: false },
+  legalName: { value: "Slim-Team Bouw B.V.", verified: true, source: "Owner-provided company details in chat." },
+  contactPerson: { value: "Maksym Usyk", verified: true, source: "Owner-provided company details in chat." },
   /** Display form, e.g. "033 - 123 45 67". */
-  phoneDisplay: { value: "", verified: false },
+  phoneDisplay: { value: "06 17 55 25 58", verified: true, source: "Owner-provided company details in chat." },
   /** E.164, e.g. "+31331234567". */
-  phoneTel: { value: "", verified: false },
+  phoneTel: { value: "+31617552558", verified: true, source: "Owner-provided phone number, normalized to E.164." },
   /** E.164 without spaces, e.g. "+31612345678". */
   whatsapp: { value: "", verified: false },
   email: { value: "", verified: false },
-  address: { value: "", verified: false },
+  /** Public location is limited to the town; no street or postal address is published. */
+  locality: { value: "Baarn", verified: true, source: "Owner-confirmed public location preference." },
   hours: { value: "", verified: false },
-  kvk: { value: "", verified: false },
-  btw: { value: "", verified: false },
+  kvk: { value: "97996939", verified: true, source: "Owner-provided company details in chat; not independently registry-checked." },
+  btw: { value: "NL828110670B01", verified: true, source: "Owner-provided company details in chat; not independently registry-checked." },
 } satisfies Record<string, CompanyField>
 
 export type CompanyKey = keyof typeof COMPANY

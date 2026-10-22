@@ -1,11 +1,12 @@
 import type { Page } from "../App"
 import PageLink from "./PageLink"
 import { Logo } from "./Logo"
-import { CONTACT, emailHref, googleMapsHref, phoneHref } from "../data/contact"
+import { CONTACT, emailHref, phoneHref } from "../data/contact"
 import { MAJOR_CITIES } from "../data/cities"
 import { SERVICES } from "../data/services"
 import { useLang } from "../i18n/LangContext"
 import Icon from "./Icon"
+import CompanyNotice from "./CompanyNotice"
 
 /** The larger jobs first, as in data/services.ts. */
 const FOOTER_SERVICES = SERVICES.slice(0, 8)
@@ -15,7 +16,6 @@ export default function Footer({ navigate }: { navigate: (p: Page) => void }) {
   const { t, pick } = useLang()
   const tel = phoneHref()
   const mail = emailHref()
-  const maps = googleMapsHref()
 
   return (
     <footer className="site-footer">
@@ -25,20 +25,16 @@ export default function Footer({ navigate }: { navigate: (p: Page) => void }) {
             <div className="mb-4">
               <Logo white />
             </div>
+            <CompanyNotice className="mb-3 max-w-xs text-[0.9375rem] leading-relaxed" />
             <p className="text-[0.95rem] leading-relaxed text-on-night-muted mb-6 max-w-xs">
               {t("footer_desc")}
             </p>
             <div className="space-y-3 text-[0.95rem]">
-              {CONTACT.address && (
-                <a
-                  href={maps}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2.5"
-                >
+              {CONTACT.locality && (
+                <div className="flex items-start gap-2.5 [&>svg]:shrink-0">
                   <Icon name="pin" size={18} color="var(--color-pine-300)" />
-                  <span className="font-medium">{CONTACT.address}</span>
-                </a>
+                  <span className="font-medium">{CONTACT.locality}</span>
+                </div>
               )}
               {tel && (
                 <a
