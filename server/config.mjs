@@ -17,7 +17,7 @@ export function loadConfig(env = process.env) {
     port: int(env.PORT, 3000),
     host: env.HOST || "0.0.0.0",
     distDir: resolve(env.DIST_DIR || "dist"),
-    dataDir: resolve(env.DATA_DIR || "data"),
+    dataDir: resolve(env.DATA_DIR || (env.VERCEL ? "/tmp/data" : "data")),
     siteOrigin,
     /** Extra origins allowed to POST leads (comma separated), e.g. a staging domain. */
     allowedOrigins: [siteOrigin, ...String(env.LEAD_ALLOWED_ORIGINS ?? "").split(",")]
