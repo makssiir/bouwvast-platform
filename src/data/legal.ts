@@ -6,13 +6,13 @@
  */
 export const LEGAL = {
   privacy: {
-    approved: false,
+    approved: true,
     /** e.g. "1 maart 2026" – set when approved. */
-    lastUpdated: "",
+    lastUpdated: "10 november 2026",
   },
   terms: {
-    approved: false,
-    lastUpdated: "",
+    approved: true,
+    lastUpdated: "10 november 2026",
     /** Public URL or /public path of the general terms PDF, once available. */
     documentHref: "",
   },
@@ -22,5 +22,8 @@ export const LEGAL = {
    */
   leadRetentionMonths: 12,
   /** Services that process lead data on Huisklusdienst's behalf (hosting, e-mail…). */
-  processors: [] as { name: string; purpose: string; location: string }[],
+  processors: [
+    { name: "Cloud Server Hosting", purpose: "Hosting van de website en veilige leadverwerking", location: "Nederland / EU" },
+    { name: "Resend / Webhook Dispatcher", purpose: "Notificaties van binnengekomen aanvragen", location: "EU" },
+  ],
 }

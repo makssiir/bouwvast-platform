@@ -29,7 +29,7 @@ export const COMPANY = {
   phoneTel: { value: "+31617552558", verified: true, source: "Owner-provided phone number, normalized to E.164." },
   /** E.164 without spaces, e.g. "+31612345678". */
   whatsapp: { value: "", verified: false },
-  email: { value: "", verified: false },
+  email: { value: "info@huisklusdienst.nl", verified: true, source: "Domein mailbox info@huisklusdienst.nl" },
   /** Public location is limited to the town; no street or postal address is published. */
   locality: { value: "Baarn", verified: true, source: "Owner-confirmed public location preference." },
   hours: { value: "", verified: false },

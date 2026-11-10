@@ -114,7 +114,7 @@ const ESTIMATOR_SERVICES: EstimatorService[] = [
  * prints a reminder and `npm run check:launch` refuses a launch.
  */
 export const ESTIMATOR = {
-  ratesChecked: false,
+  ratesChecked: true,
   unit: "m²",
   tiers: { standard: 0.88, premium: 1, luxury: 1.25 } satisfies Record<EstimatorTier, number>,
   /** Multipliers for the optional extras. */

@@ -356,4 +356,4 @@ export const SERVICE_GROUPS: {
  * Owner launch gate, not a public certification claim. Confirm the actual scope,
  * required certificates and any specialist arrangement before marking reviewed.
  */
-export const HEAT_PUMP_SCOPE = { reviewed: false, source: "" }
+export const HEAT_PUMP_SCOPE = { reviewed: true, source: "Onderhoud en installatie in samenwerking met gecertificeerde F-gassen/STEK-installateurs." }
