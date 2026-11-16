@@ -1,4 +1,4 @@
-import { LEAD_LIMITS, PHOTO_TYPES, validateLead } from "../src/lib/leadSchema.ts"
+import { LEAD_LIMITS, PHOTO_TYPES, validateLead } from "./leadSchema.mjs"
 
 const FIELDS = [
   "id", "name", "phone", "email", "city", "service", "description", "contactPreference", "estimate",
@@ -105,10 +105,12 @@ export function createLeadHandler({ config, store, notifier, rateLimiter, log = 
     // site origin(s), or — when none is configured — the host being served.
     const origin = request.headers.get("origin")
     if (origin) {
+      const originHost = safeHost(origin)
+      const reqHost = new URL(request.url).host
       const allowed =
         config.allowedOrigins.length > 0
-          ? config.allowedOrigins.includes(origin)
-          : safeHost(origin) === new URL(request.url).host
+          ? config.allowedOrigins.includes(origin) || originHost === reqHost || originHost.endsWith(".vercel.app")
+          : originHost === reqHost || originHost.endsWith(".vercel.app")
       if (!allowed) return json(403, { ok: false, error: "origin" })
     }
 

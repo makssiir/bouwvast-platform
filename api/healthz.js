@@ -5,6 +5,7 @@ import { createNotifier } from "../server/notify.mjs"
 export default async function handler(req, res) {
   const config = loadConfig(process.env)
   const store = createStore(config.dataDir)
+  await store.init().catch(() => {})
   const writable = await store.isWritable().catch(() => true)
   const notifier = createNotifier(config)
 
